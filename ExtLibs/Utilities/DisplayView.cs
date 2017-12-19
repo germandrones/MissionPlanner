@@ -34,7 +34,7 @@ namespace MissionPlanner.Utilities
         public Boolean displaySimpleActionsTab { get; set; }
         public Boolean displayGaugesTab { get; set; }
         public Boolean displayStatusTab { get; set; }
-        public Boolean displayServoTab { get; set; }
+        public Boolean displayServoTab { get; set; } 
         public Boolean displayScriptsTab { get; set; }
         public Boolean displayTelemetryTab { get; set; }
         public Boolean displayDataflashTab { get; set; }
