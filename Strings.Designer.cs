@@ -984,25 +984,6 @@ namespace MissionPlanner {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Firmware.
-        /// </summary>
-        public static string NewFirmware {
-            get {
-                return ResourceManager.GetString("NewFirmware", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New firmware available
-        ///.
-        /// </summary>
-        public static string NewFirmwareA {
-            get {
-                return ResourceManager.GetString("NewFirmwareA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No valid heartbeats read from port.
         /// </summary>
         public static string No_valid_heartbeats_read_from_port {

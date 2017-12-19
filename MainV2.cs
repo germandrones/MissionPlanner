@@ -1484,70 +1484,6 @@ namespace MissionPlanner
 
                 _connectionControl.UpdateSysIDS();
 
-                // detect firmware we are conected to.
-                if (comPort.MAV.cs.firmware == Firmwares.ArduCopter2)
-                {
-                    _connectionControl.TOOL_APMFirmware.SelectedIndex =
-                        _connectionControl.TOOL_APMFirmware.Items.IndexOf(Firmwares.ArduCopter2);
-                }
-                else if (comPort.MAV.cs.firmware == Firmwares.Ateryx)
-                {
-                    _connectionControl.TOOL_APMFirmware.SelectedIndex =
-                        _connectionControl.TOOL_APMFirmware.Items.IndexOf(Firmwares.Ateryx);
-                }
-                else if (comPort.MAV.cs.firmware == Firmwares.ArduRover)
-                {
-                    _connectionControl.TOOL_APMFirmware.SelectedIndex =
-                        _connectionControl.TOOL_APMFirmware.Items.IndexOf(Firmwares.ArduRover);
-                }
-                else if (comPort.MAV.cs.firmware == Firmwares.ArduSub)
-                {
-                    _connectionControl.TOOL_APMFirmware.SelectedIndex =
-                        _connectionControl.TOOL_APMFirmware.Items.IndexOf(Firmwares.ArduSub);
-                }
-                else if (comPort.MAV.cs.firmware == Firmwares.ArduPlane)
-                {
-                    _connectionControl.TOOL_APMFirmware.SelectedIndex =
-                        _connectionControl.TOOL_APMFirmware.Items.IndexOf(Firmwares.ArduPlane);
-                }
-
-                // check for newer firmware
-                var softwares = Firmware.LoadSoftwares();
-
-                if (softwares.Count > 0)
-                {
-                    try
-                    {
-                        string[] fields1 = comPort.MAV.VersionString.Split(' ');
-
-                        foreach (Firmware.software item in softwares)
-                        {
-                            string[] fields2 = item.name.Split(' ');
-
-                            // check primare firmware type. ie arudplane, arducopter
-                            if (fields1[0] == fields2[0])
-                            {
-                                Version ver1 = VersionDetection.GetVersion(comPort.MAV.VersionString);
-                                Version ver2 = VersionDetection.GetVersion(item.name);
-
-                                if (ver2 > ver1)
-                                {
-                                    Common.MessageShowAgain(Strings.NewFirmware + "-" + item.name,
-                                        Strings.NewFirmwareA + item.name + Strings.Pleaseup);
-                                    break;
-                                }
-
-                                // check the first hit only
-                                break;
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        log.Error(ex);
-                    }
-                }
-
                 FlightData.CheckBatteryShow();
 
                 MissionPlanner.Utilities.Tracking.AddEvent("Connect", "Connect", comPort.MAV.cs.firmware.ToString(),
@@ -2842,9 +2778,6 @@ namespace MissionPlanner
 
             ThreadPool.QueueUserWorkItem(BGGetKIndex);
 
-            // update firmware version list - only once per day
-            ThreadPool.QueueUserWorkItem(BGFirmwareCheck);
-
             log.Info("start udpvideoshim");
             // start listener
             UDPVideoShim.Start();
@@ -3084,26 +3017,6 @@ namespace MissionPlanner
             }
 
             return cmdargs;
-        }
-
-        private void BGFirmwareCheck(object state)
-        {
-            try
-            {
-                if (Settings.Instance["fw_check"] != DateTime.Now.ToShortDateString())
-                {
-                    var fw = new Firmware();
-                    var list = fw.getFWList();
-                    if (list.Count > 1)
-                        Firmware.SaveSoftwares(list);
-
-                    Settings.Instance["fw_check"] = DateTime.Now.ToShortDateString();
-                }
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex);
-            }
         }
 
         private void BGGetKIndex(object state)

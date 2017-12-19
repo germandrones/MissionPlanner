@@ -285,7 +285,7 @@ namespace MissionPlanner
         {
             var basedir = Settings.GetDataDirectory() + "History";
 
-            Directory.CreateDirectory(basedir);
+            /*Directory.CreateDirectory(basedir);
 
             var fw = new Firmware();
 
@@ -451,7 +451,7 @@ namespace MissionPlanner
                 xmlwriter.WriteEndDocument();
             }
 
-            Loading.Close();
+            Loading.Close();*/
         }
 
 

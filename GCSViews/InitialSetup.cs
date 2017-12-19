@@ -100,17 +100,6 @@ namespace MissionPlanner.GCSViews
         {
             ResourceManager rm = new ResourceManager(this.GetType());
 
-            if (MainV2.DisplayConfiguration.displayInstallFirmware)
-            {
-                if (!Program.WindowsStoreApp)
-                {
-                    AddBackstageViewPage(typeof(ConfigFirmwareDisabled), rm.GetString("backstageViewPagefw.Text"),
-                        isConnected);
-                    AddBackstageViewPage(typeof(ConfigFirmware), rm.GetString("backstageViewPagefw.Text"),
-                        isDisConnected);
-                }
-            }
-
             if (MainV2.DisplayConfiguration.displayWizard)
             {
                 AddBackstageViewPage(typeof(ConfigWizard), rm.GetString("backstageViewPagewizard.Text"));
