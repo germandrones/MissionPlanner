@@ -3570,7 +3570,7 @@ namespace MissionPlanner
         }        
 
         [StructLayout(LayoutKind.Sequential)]
-        internal class DEV_BROADCAST_HDR
+        internal class DEV_BROADCAST_HDR 
         {
             internal Int32 dbch_size;
             internal Int32 dbch_devicetype;

@@ -69,7 +69,7 @@ namespace MissionPlanner
             this.MenuFlightData,
             this.MenuFlightPlanner,
             this.MenuInitConfig,
-            this.MenuConfigTune,
+            this.MenuConfigTune, 
             this.MenuSimulation,
             this.MenuTerminal,
             this.MenuHelp,
