@@ -24,7 +24,6 @@ namespace MissionPlanner.Utilities
         //MainV2 buttons
         public Boolean displaySimulation { get; set; }
         public Boolean displayTerminal { get; set; }
-        public Boolean displayDonate { get; set; }
         public Boolean displayHelp { get; set; }
 
         //flight Data view
@@ -103,7 +102,6 @@ namespace MissionPlanner.Utilities
             //MainV2 buttons
             displaySimulation = false;
             displayTerminal = false;
-            displayDonate = true;
             displayHelp = true;
 
             //flight Data view
@@ -211,7 +209,6 @@ namespace MissionPlanner.Utilities
                 //MainV2 buttons
                 displaySimulation = true,
                 displayTerminal = false,
-                displayDonate = true,
                 displayHelp = true,
 
                 //flight Data view
@@ -289,7 +286,6 @@ namespace MissionPlanner.Utilities
                 //MainV2 buttons
                 displaySimulation = true,
                 displayTerminal = true,
-                displayDonate = true,
                 displayHelp = true,
 
                 //flight Data view
