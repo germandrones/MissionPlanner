@@ -169,7 +169,7 @@ namespace MissionPlanner.Wizard
         {
             // upload fw
 
-            Utilities.Firmware fw = new Utilities.Firmware();
+            /*Utilities.Firmware fw = new Utilities.Firmware();
             fw.Progress += fw_Progress;
             string firmwareurl = "";
             if (usebeta)
@@ -241,7 +241,7 @@ namespace MissionPlanner.Wizard
                 e.ErrorMessage = "Error with Firmware";
                 return;
             }
-
+            */
             return;
         }
 
