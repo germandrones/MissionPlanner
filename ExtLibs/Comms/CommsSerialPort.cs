@@ -8,7 +8,10 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 using System.Threading;
+
+
 using log4net;
+using System.Management;
 
 namespace MissionPlanner.Comms
 {
@@ -139,6 +142,7 @@ namespace MissionPlanner.Comms
             {
                 List<string> allPorts = new List<string>();
 
+                // Try to get a ports list in Mono
                 if (Directory.Exists("/dev/"))
                 {
                     // cleanup now
@@ -173,19 +177,38 @@ namespace MissionPlanner.Comms
                 }
 
                 string[] ports = null;
-
+                
                 try
                 {
+                    // Get the array of all serial ports
                     ports = System.IO.Ports.SerialPort.GetPortNames()
                     .Select(p => p.TrimEnd())
                     .Select(FixBlueToothPortNameBug)
                     .ToArray();
+
+                    // UPD: GDMP-9                    
+                    // Call a WMI Querry to get all data about connected Serial Ports.
+                    ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PnPEntity  WHERE Caption like '%(COM%'");
+
+                    // Check of all supported Telemetry devices and pack to the list
+                    foreach (ManagementObject queryObj in searcher.Get())
+                    {
+                        //  get all supported ports
+                        if (queryObj["DeviceID"].ToString().Contains("VID_0403"))
+                        {
+                            // this device is supported:
+                            string devCaption = queryObj["Caption"].ToString();
+                            foreach (string p in ports)
+                            {
+                                if (devCaption.Contains(p)) allPorts.Add(p);
+                            }
+                        }
+                    }
                 }
                 catch { }
 
-                if (ports != null)
-                    allPorts.AddRange(ports);
-
+                // TODO: Do we need it anymore?:
+                //if (ports != null) allPorts.AddRange(ports);
                 return allPorts.ToArray();
             }
         }

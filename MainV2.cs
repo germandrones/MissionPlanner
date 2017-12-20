@@ -609,7 +609,8 @@ namespace MissionPlanner
 
             comPort.BaseStream.BaudRate = 115200;
 
-            PopulateSerialportList();
+            PopulateSerialportList();            
+
             if (_connectionControl.CMB_serialport.Items.Count > 0)
             {
                 _connectionControl.CMB_baudrate.SelectedIndex = 8;
@@ -1203,10 +1204,12 @@ namespace MissionPlanner
         {
             _connectionControl.CMB_serialport.Items.Clear();
             _connectionControl.CMB_serialport.Items.Add("AUTO");
-            _connectionControl.CMB_serialport.Items.AddRange(SerialPort.GetPortNames());
+            _connectionControl.CMB_serialport.Items.AddRange(SerialPort.GetPortNames());            
             _connectionControl.CMB_serialport.Items.Add("TCP");
-            _connectionControl.CMB_serialport.Items.Add("UDP");
-            _connectionControl.CMB_serialport.Items.Add("UDPCl");
+            
+            /* UPD GDMP-9 Temporary commented */
+            //_connectionControl.CMB_serialport.Items.Add("UDP");
+            //_connectionControl.CMB_serialport.Items.Add("UDPCl");
         }
 
         private void MenuFlightData_Click(object sender, EventArgs e)
@@ -3778,6 +3781,11 @@ namespace MissionPlanner
                 }
                 //);
             }
+        }
+
+        private void toolStripConnectionControl_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
