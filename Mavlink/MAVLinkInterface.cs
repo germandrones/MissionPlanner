@@ -337,6 +337,7 @@ namespace MissionPlanner
             {
                 frmProgressReporter.DoWork += FrmProgressReporterDoWorkNOParams;
             }
+
             frmProgressReporter.UpdateProgressAndStatus(-1, Strings.MavlinkConnecting);
             ThemeManager.ApplyThemeTo(frmProgressReporter);
 
@@ -360,6 +361,7 @@ namespace MissionPlanner
             OpenBg(sender, false, e);
         }
 
+
         private void OpenBg(object PRsender, bool getparams, ProgressWorkerEventArgs progressWorkerEventArgs)
         {
             frmProgressReporter.UpdateProgressAndStatus(-1, Strings.MavlinkConnecting);
@@ -378,7 +380,7 @@ namespace MissionPlanner
 
             try
             {
-                BaseStream.ReadBufferSize = 16*1024;
+                BaseStream.ReadBufferSize = 16 * 1024;
 
                 lock (objlock) // so we dont have random traffic
                 {
@@ -386,9 +388,10 @@ namespace MissionPlanner
 
                     if (BaseStream is UdpSerial)
                     {
-                        progressWorkerEventArgs.CancelRequestChanged += (o,e) => { ((UdpSerial)BaseStream).CancelConnect = true;
-                                                                                     ((ProgressWorkerEventArgs) o)
-                                                                                         .CancelAcknowledged = true;
+                        progressWorkerEventArgs.CancelRequestChanged += (o, e) => {
+                            ((UdpSerial)BaseStream).CancelConnect = true;
+                            ((ProgressWorkerEventArgs)o)
+                                .CancelAcknowledged = true;
                         };
                     }
 
@@ -408,7 +411,7 @@ namespace MissionPlanner
                 DateTime start = DateTime.Now;
                 DateTime deadline = start.AddSeconds(CONNECT_TIMEOUT_SECONDS);
 
-                var countDown = new Timer {Interval = 1000, AutoReset = false};
+                var countDown = new Timer { Interval = 1000, AutoReset = false };
                 countDown.Elapsed += (sender, e) =>
                 {
                     int secondsRemaining = (deadline - e.SignalTime).Seconds;
@@ -468,7 +471,7 @@ Please check the following
                     {
                         mavlink_heartbeat_t hb = buffer.ToStructure<mavlink_heartbeat_t>();
 
-                        if (hb.type != (byte) MAV_TYPE.GCS)
+                        if (hb.type != (byte)MAV_TYPE.GCS)
                         {
                             hbhistory.Add(buffer);
                         }
@@ -502,9 +505,7 @@ Please check the following
                             // preference compid of 1, failover to anything that we have seen 4 times
                             if (seentimes >= 2 && msg.compid == 1 || seentimes >= 4)
                             {
-                                SetupMavConnect(msg, (mavlink_heartbeat_t) msg.data);
-                                sysidcurrent = msg.sysid;
-                                compidcurrent = msg.compid;
+                                SetupMavConnect(msg, (mavlink_heartbeat_t)msg.data);
                                 exit = true;
                                 break;
                             }
@@ -537,7 +538,7 @@ Please check the following
                     frmProgressReporter.UpdateProgressAndStatus(0,
                         "Getting Params.. (sysid " + MAV.sysid + " compid " + MAV.compid + ") ");
 
-                    getParamList(MAV.sysid,MAV.compid);
+                    getParamList();
                 }
 
                 if (frmProgressReporter.doWorkArgs.CancelAcknowledged == true)
@@ -570,6 +571,8 @@ Please check the following
             MAV.packetslost = 0;
             MAV.synclost = 0;
         }
+
+
 
         private string getAppVersion()
         {
@@ -3797,7 +3800,11 @@ Please check the following
                         mavlink_heartbeat_t hb = message.ToStructure<mavlink_heartbeat_t>();
 
                         // not a gcs
-                        if (hb.type != (byte) MAV_TYPE.GCS)
+
+                        // Profile Quadrotor is disabled by just ignoring the Aircraft type:
+                        // So the profile 12 will be never meet by connecting.
+
+                        if (hb.type != (byte) MAV_TYPE.GCS && hb.type != (byte)MAV_TYPE.QUADROTOR)
                         {
                             // add a seen sysid
                             if (!MAVlist.Contains(sysid, compid, false))
