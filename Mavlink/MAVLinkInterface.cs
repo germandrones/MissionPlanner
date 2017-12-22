@@ -1149,25 +1149,40 @@ Please check the following
         {
             // TODO: GDMP-23
             // Check if the parameters are up to date...
-            
-            getParamList(MAV.sysid, MAV.compid);
-            //getCustomtParamList(MAV.sysid, MAV.compid);
+
+            //getParamList(MAV.sysid, MAV.compid);     
+
+            // Use this if we need to read only custom parameters:
+            readParamListFromFile("sb_3_1_reduced_parameter_list.log");
+            getCustomParamList(MAV.sysid, MAV.compid);
         }
 
 
 
         // Define a list of required parameters for GD UAV
-        List<string> ShortParameterList = new List<string>
+        private List<string> ShortParameterList = new List<string>();
+
+        private void readParamListFromFile(string fileName)
         {
-            "TELEM_DELAY",
-            "ACRO_LOCKING",
-            "ACRO_PITCH_RATE",
-            "ACRO_ROLL_RATE",
-            "AHRS_GPS_USE",
-            "AHRS_ORIENTATION",
-        };
-
-
+            ShortParameterList.Clear();
+            try
+            {
+                using (StreamReader sReader = new StreamReader(fileName))
+                {
+                    while (sReader.Peek() >= 0)
+                    {
+                        String paramName = sReader.ReadLine();
+                        ShortParameterList.Add(paramName);
+                    }
+                }
+            }
+            catch
+            {
+                var exp = new Exception("Missing parameter File: " + fileName);
+                frmProgressReporter.doWorkArgs.ErrorMessage = exp.Message;
+                throw exp;
+            }
+        }
 
         /// <summary>
         /// Get param list from GDAPM
@@ -1175,21 +1190,21 @@ Please check the following
         /// <param name="sysid">AP System ID</param>
         /// <param name="compid">AP Component ID</param>
         /// <returns></returns>
-        public Dictionary<string, double> getCustomtParamList(byte sysid, byte compid)
+        public Dictionary<string, double> getCustomParamList(byte sysid, byte compid)
         {
             mavlink_param_request_read_t req = new mavlink_param_request_read_t();
-            
+
             // We gather parameters using the string names, so param_index must be set to -1 constantly
             req.param_index = -1;
             req.target_system = sysid;
             req.target_component = compid;
-            
+
             giveComport = true;
             MAVLinkParamList newparamlist = new MAVLinkParamList();
 
             int param_total = ShortParameterList.Count();
             List<int> indexsreceived = new List<int>();
-           
+
             do
             {
                 if (frmProgressReporter != null && frmProgressReporter.doWorkArgs.CancelRequested)
@@ -1230,7 +1245,7 @@ Please check the following
                         }
                     }
                 }
-                
+
                 MAVLinkMessage buffer = readPacket();
 
                 if (buffer.Length > 5)
@@ -1244,12 +1259,12 @@ Please check the following
                         if (pos != -1) { paramID = paramID.Substring(0, pos); }
 
                         // check if we already have parameter and ignore
-                        /*if (indexsreceived.Contains(ShortParameterList.IndexOf(paramID)))
+                        if (indexsreceived.Contains(ShortParameterList.IndexOf(paramID)))
                         {
                             log.Info("Already got " + (par.param_index) + " '" + paramID + "' " + (indexsreceived.Count * 100) / param_total);
                             if (frmProgressReporter != null) this.frmProgressReporter.UpdateProgressAndStatus((indexsreceived.Count * 100) / param_total, "Already Got param " + paramID);
                             continue;
-                        }*/
+                        }
 
                         if (!MainV2.MONO)
                         {
@@ -1337,11 +1352,14 @@ Please check the following
             return MAVlist[sysid, compid].param;
         }
 
-         /// <summary>
-         /// Get param list from apm
-         /// </summary>
-         /// <returns></returns>
-         public Dictionary<string, double> getParamList(byte sysid, byte compid)
+
+
+
+        /// <summary>
+        /// Get param list from apm
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, double> getParamList(byte sysid, byte compid)
          {
             giveComport = true;
             List<int> indexsreceived = new List<int>();
