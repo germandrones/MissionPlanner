@@ -1150,8 +1150,8 @@ Please check the following
             // TODO: GDMP-23
             // Check if the parameters are up to date...
             
-            //getParamList(MAV.sysid, MAV.compid);
-            getCustomtParamList(MAV.sysid, MAV.compid);
+            getParamList(MAV.sysid, MAV.compid);
+            //getCustomtParamList(MAV.sysid, MAV.compid);
         }
 
 
