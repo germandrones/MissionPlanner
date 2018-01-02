@@ -181,7 +181,11 @@ namespace MissionPlanner.Controls
                             mavComponentString = mavComponentString.Remove(0, mavComponentHeader.Length);
                         }
                     }
-                    e.Value = temp.port.BaseStream.PortName + "-" + ((int)temp.sysid) + "-" + mavComponentString.Replace("_"," ");
+
+                    //e.Value = temp.port.BaseStream.PortName + "-" + ((int)temp.sysid) + "-" + mavComponentString.Replace("_"," ");
+
+                    e.Value = mavComponentString.Replace("_", " "); //write just a MAV Component Profile
+
                 }
             }
         }
