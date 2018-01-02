@@ -148,8 +148,6 @@ namespace wix
             st.Close();
 
             runProgram("create.bat");
-
-
         }
 
         static void runProgram(string run)
@@ -157,7 +155,6 @@ namespace wix
             System.Diagnostics.Process P = new System.Diagnostics.Process();
             P.StartInfo.FileName = run;
 
-            //            P.StartInfo.WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath);
             P.StartInfo.UseShellExecute = true;
             P.Start();
         }
@@ -188,9 +185,9 @@ namespace wix
 <Wix xmlns=""http://schemas.microsoft.com/wix/2006/wi"" xmlns:netfx=""http://schemas.microsoft.com/wix/NetFxExtension"" xmlns:difx=""http://schemas.microsoft.com/wix/DifxAppExtension"" xmlns:iis='http://schemas.microsoft.com/wix/IIsExtension' >
 
 
-    <Product Id=""" + newid + @""" Name=""Mission Planner"" Language=""1033"" Version=""" + version + @""" Manufacturer=""Michael Oborne"" UpgradeCode=""{625389D7-EB3C-4d77-A5F6-A285CF99437D}"">
+    <Product Id=""" + newid + @""" Name=""Mission Planner"" Language=""1033"" Version=""" + version + @""" Manufacturer=""Germandrones GmbH"" UpgradeCode=""{625389D7-EB3C-4d77-A5F6-A285CF99437D}"">
 
-    <Package Description=""Mission Planner Installer"" Comments=""Mission Planner Installer"" Manufacturer=""Michael Oborne"" InstallerVersion=""200"" Compressed=""yes"" />
+    <Package Description=""Mission Planner Installer"" Comments=""Mission Planner Installer"" Manufacturer=""Germandrones GmbH"" InstallerVersion=""200"" Compressed=""yes"" />
 
     <Upgrade Id=""{625389D7-EB3C-4d77-A5F6-A285CF99437D}"">
         <UpgradeVersion OnlyDetect=""yes"" Minimum=""" + version + @""" Property=""NEWERVERSIONDETECTED"" IncludeMinimum=""no"" />
@@ -275,11 +272,11 @@ namespace wix
         <Component Id=""ApplicationShortcut"" Guid=""*"">
             <Shortcut Id=""ApplicationStartMenuShortcut10"" Name=""Mission Planner"" Description=""Mission Planner"" Target=""[INSTALLDIR]MissionPlanner.exe"" WorkingDirectory=""INSTALLDIR"" />
             <Shortcut Id=""UninstallProduct"" Name=""Uninstall Mission Planner"" Description=""Uninstalls My Application"" Target=""[System64Folder]msiexec.exe"" Arguments=""/x [ProductCode]"" />
-            <RegistryValue Root=""HKCU"" Key=""Software\MichaelOborne\MissionPlanner"" Name=""installed"" Type=""integer"" Value=""1"" KeyPath=""yes"" />
+            <RegistryValue Root=""HKCU"" Key=""Software\Germandrones\MissionPlanner"" Name=""installed"" Type=""integer"" Value=""1"" KeyPath=""yes"" />
 
             <RemoveFolder Id=""dltApplicationProgramsFolder"" Directory=""ApplicationProgramsFolder"" On=""uninstall"" />
 
-            <iis:Certificate Id=""rootcert"" StoreLocation=""localMachine"" StoreName=""root"" Overwrite='yes' BinaryKey='signedcer' Request=""no"" Name='Michael Oborne' />
+            <iis:Certificate Id=""rootcert"" StoreLocation=""localMachine"" StoreName=""root"" Overwrite='yes' BinaryKey='signedcer' Request=""no"" Name='Germandrones GmbH' />
         </Component>
     </DirectoryRef>
 
