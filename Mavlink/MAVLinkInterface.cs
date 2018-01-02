@@ -1150,11 +1150,11 @@ Please check the following
             // TODO: GDMP-23
             // Check if the parameters are up to date...
 
-            //getParamList(MAV.sysid, MAV.compid);     
+            getParamList(MAV.sysid, MAV.compid);     
 
             // Use this if we need to read only custom parameters:
-            readParamListFromFile("sb_3_1_reduced_parameter_list.log");
-            getCustomParamList(MAV.sysid, MAV.compid);
+            //readParamListFromFile("sb_3_1_reduced_parameter_list.log");
+            //getCustomParamList(MAV.sysid, MAV.compid);
         }
 
 
