@@ -2239,10 +2239,10 @@ namespace MissionPlanner.GCSViews
             {
                 MAVLinkInterface port = MainV2.comPort;
 
-                /*if (!port.BaseStream.IsOpen)
+                if (!port.BaseStream.IsOpen)
                 {
                     throw new Exception("Please connect first!");
-                }*/
+                }
 
                 MainV2.comPort.giveComport = true;
                 int a = 0;
