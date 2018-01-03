@@ -134,6 +134,65 @@ namespace MissionPlanner
             }
         }
 
+        public class menuicons2 : menuicons
+        {
+            public override Image fd
+            {
+                get { return global::MissionPlanner.Properties.Resources.dark_flightdata_icon; }
+            }
+
+            public override Image fp
+            {
+                get { return global::MissionPlanner.Properties.Resources.dark_flightplan_icon; }
+            }
+
+            public override Image initsetup
+            {
+                get { return global::MissionPlanner.Properties.Resources.dark_initialsetup_icon; }
+            }
+
+            public override Image config_tuning
+            {
+                get { return global::MissionPlanner.Properties.Resources.dark_tuningconfig_icon; }
+            }
+
+            public override Image sim
+            {
+                get { return global::MissionPlanner.Properties.Resources.dark_simulation_icon; }
+            }
+
+            public override Image terminal
+            {
+                get { return global::MissionPlanner.Properties.Resources.dark_terminal_icon; }
+            }
+
+            public override Image help
+            {
+                get { return global::MissionPlanner.Properties.Resources.dark_help_icon; }
+            }
+
+            
+            public override Image connect
+            {
+                get { return global::MissionPlanner.Properties.Resources.dark_connect_icon; }
+            }
+
+            public override Image disconnect
+            {
+                get { return global::MissionPlanner.Properties.Resources.dark_disconnect_icon; }
+            }
+
+            public override Image bg
+            {
+                get { return null; }
+            }          
+
+            public override Image wizard
+            {
+                get { return global::MissionPlanner.Properties.Resources.wizardicon; }
+            }
+        }
+
         public class highcontrastmenuicons : menuicons
         {
             public override Image fd
@@ -727,9 +786,9 @@ namespace MissionPlanner
                     }
                 }
 
-                if (ThemeManager.CurrentTheme == ThemeManager.Themes.HighContrast)
+                if (ThemeManager.CurrentTheme == ThemeManager.Themes.HighContrast || ThemeManager.CurrentTheme == ThemeManager.Themes.Custom)
                 {
-                    switchicons(new highcontrastmenuicons());
+                    switchicons(new menuicons2());
                 }
             }
 
