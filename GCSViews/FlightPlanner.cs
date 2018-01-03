@@ -7130,5 +7130,25 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             grid.Host = new PluginHost();
             grid.but_Click(sender, e);
         }
+
+        private void BUT_loadPoly_Click(object sender, EventArgs e)
+        {
+            loadPolygonToolStripMenuItem_Click(sender, e);
+        }
+
+        private void BUT_savePoly_Click(object sender, EventArgs e)
+        {
+            savePolygonToolStripMenuItem_Click(sender, e);
+        }
+
+        private void BUT_createPoly_Click(object sender, EventArgs e)
+        {
+            addPolygonPointToolStripMenuItem_Click(sender, e);
+        }
+
+        private void BUT_planAutoGrid_Click(object sender, EventArgs e)
+        {
+            surveyGridToolStripMenuItem_Click(sender, e);
+        }
     }
 }
