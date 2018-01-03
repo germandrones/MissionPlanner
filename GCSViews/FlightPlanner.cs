@@ -2121,6 +2121,23 @@ namespace MissionPlanner.GCSViews
                 return;
             }
 
+
+
+            // lets check the takeoff/landing points before mission upload.            
+            int takeoffTimes = 0;
+            int landingTimes = 0;
+            for (int i = 0; i < Commands.Rows.Count; i++)
+            {
+                if (Commands.Rows[i].Cells[0].Value.ToString().Contains("TAKEOFF")) takeoffTimes++;
+                if (Commands.Rows[i].Cells[0].Value.ToString().Contains("LAND")) landingTimes++;
+            }
+            if (takeoffTimes != landingTimes || takeoffTimes == 0 || landingTimes == 0)
+            {
+                CustomMessageBox.Show("Please check Takeoff and Landing points in Mission", Strings.Warning);
+                return;
+            }
+
+
             // check for invalid grid data
             for (int a = 0; a < Commands.Rows.Count - 0; a++)
             {

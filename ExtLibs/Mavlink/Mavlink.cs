@@ -1796,7 +1796,7 @@ AOA_SSA = 11020,
     ///<summary>  </summary>
     public enum MAV_FRAME: byte
     {
-			///<summary> Global coordinate frame, WGS84 coordinate system. First value / x: latitude, second value / y: longitude, third value / z: positive altitude over mean sea level (MSL) | </summary>
+	    ///<summary> Global coordinate frame, WGS84 coordinate system. First value / x: latitude, second value / y: longitude, third value / z: positive altitude over mean sea level (MSL) | </summary>
         GLOBAL=0, 
     	///<summary> Local coordinate frame, Z-up (x: north, y: east, z: down). | </summary>
         LOCAL_NED=1, 
