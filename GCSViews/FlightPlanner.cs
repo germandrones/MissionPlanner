@@ -2266,6 +2266,7 @@ namespace MissionPlanner.GCSViews
                 log.Info("cmd rows " + (Commands.Rows.Count + 1)); // + home
 
 
+
                 // Check if takeoff/landing point is set
                 bool takeoffSet = false;
                 bool landingSet = false;
@@ -2275,10 +2276,19 @@ namespace MissionPlanner.GCSViews
                     if (Commands.Rows[i].Cells[0].Value.ToString().Contains("LAND")) landingSet = true;
                 }
 
-                if (!takeoffSet || !landingSet){                    
-                    CustomMessageBox.Show("Takeoff and/or Landing point not set!", Strings.Warning);
+                // check takeoff point
+                if(!takeoffSet)
+                {
+                    CustomMessageBox.Show("Takeoff point not set!", Strings.Warning);
                     return;
                 }
+
+                // check landing point
+                if (!landingSet){                    
+                    CustomMessageBox.Show("Landing point not set!", Strings.Warning);
+                    return;
+                }
+
 
                 // check for changes / future mod to send just changed wp's
                 if (MainV2.comPort.MAV.wps.Values.Count == (Commands.Rows.Count + 1))
