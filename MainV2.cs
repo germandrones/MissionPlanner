@@ -786,8 +786,12 @@ namespace MissionPlanner
                     }
                 }
 
-                if (ThemeManager.CurrentTheme == ThemeManager.Themes.HighContrast || ThemeManager.CurrentTheme == ThemeManager.Themes.Custom)
+                if (ThemeManager.CurrentTheme == ThemeManager.Themes.HighContrast)
                 {
+                    switchicons(new highcontrastmenuicons());
+                }else if (ThemeManager.CurrentTheme == ThemeManager.Themes.Germandrones)
+                {
+                    // Use black icons on germandrones theme
                     switchicons(new menuicons2());
                 }
             }
