@@ -2129,13 +2129,17 @@ namespace MissionPlanner.GCSViews
             for (int i = 0; i < Commands.Rows.Count; i++)
             {
                 if (Commands.Rows[i].Cells[0].Value.ToString().Contains("TAKEOFF")) takeoffTimes++;
-                if (Commands.Rows[i].Cells[0].Value.ToString().Contains("LAND")) landingTimes++;
+                if (Commands.Rows[i].Cells[0].Value.ToString().Contains("LAND") || Commands.Rows[i].Cells[0].Value.ToString().Contains("RETURN")) landingTimes++;
             }
             if (takeoffTimes != landingTimes || takeoffTimes == 0 || landingTimes == 0)
             {
                 CustomMessageBox.Show("Please check Takeoff and Landing points in Mission", Strings.Warning);
                 return;
             }
+
+
+            // TODO: we can check all parameters about elevation and takeoff position
+
 
 
             // check for invalid grid data
@@ -2290,7 +2294,7 @@ namespace MissionPlanner.GCSViews
                 for (int i = 0; i < Commands.Rows.Count; i++)
                 {
                     if (Commands.Rows[i].Cells[0].Value.ToString().Contains("TAKEOFF")) takeoffSet = true;
-                    if (Commands.Rows[i].Cells[0].Value.ToString().Contains("LAND")) landingSet = true;
+                    if (Commands.Rows[i].Cells[0].Value.ToString().Contains("LAND") || Commands.Rows[i].Cells[0].Value.ToString().Contains("RETURN")) landingSet = true;
                 }
 
                 // check takeoff point
@@ -4365,12 +4369,21 @@ namespace MissionPlanner.GCSViews
                 drawnpolygon.Points[0] == drawnpolygon.Points[drawnpolygon.Points.Count - 1])
                 drawnpolygon.Points.RemoveAt(drawnpolygon.Points.Count - 1); // unmake a full loop
 
-            drawnpolygon.Points.Add(new PointLatLng(MouseDownStart.Lat, MouseDownStart.Lng));
 
-            addpolygonmarkergrid(drawnpolygon.Points.Count.ToString(), MouseDownStart.Lng, MouseDownStart.Lat, 0);
+            if (drawnpolygon.Points.Count == 0)
+            {
+                // first polygon point, set this first point in the middle of map viewport
+                drawnpolygon.Points.Add(new PointLatLng(MainMap.Position.Lat, MainMap.Position.Lng));
+                addpolygonmarkergrid(drawnpolygon.Points.Count.ToString(), MainMap.Position.Lng, MainMap.Position.Lat, 0);
+            }
+            else
+            {
+                drawnpolygon.Points.Add(new PointLatLng(MouseDownStart.Lat, MouseDownStart.Lng));
+                addpolygonmarkergrid(drawnpolygon.Points.Count.ToString(), MouseDownStart.Lng, MouseDownStart.Lat, 0);
+            }
+
 
             MainMap.UpdatePolygonLocalPosition(drawnpolygon);
-
             MainMap.Invalidate();
         }
 
@@ -5863,13 +5876,22 @@ namespace MissionPlanner.GCSViews
 
         private void takeoffToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // altitude
-            string alt = "10";
+            // Get the Altitude on clicked point
+            //double absAltitude = srtm.getAltitude(MouseDownStart.Lat, MouseDownStart.Lng).alt;
+            string alt = "50";
 
             if (DialogResult.Cancel == InputBox.Show("Altitude", "Please enter your takeoff altitude", ref alt))
                 return;
 
             int alti = -1;
+
+            const int minAltitude = 50; // set the constant safe minimum altitude to 50 meters.
+            if(int.Parse(alt) < minAltitude)
+            {
+                MessageBox.Show(String.Format("Takeoff Altitude can't be less than {0} meters!", minAltitude.ToString()));
+                return;
+            }
+
 
             if (!int.TryParse(alt, out alti))
             {
