@@ -77,6 +77,8 @@ namespace MissionPlanner
             MissionPlanner.Utilities.Tracking.AddPage(this.GetType().ToString(), this.Text);
         }
 
+
+
         private void ElevationProfile_Load(object sender, EventArgs e)
         {
             if (planlocs.Count <= 1)

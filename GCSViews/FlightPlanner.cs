@@ -2137,10 +2137,7 @@ namespace MissionPlanner.GCSViews
                 return;
             }
 
-
-            // TODO: we can check all parameters about elevation and takeoff position
-
-
+            
 
             // check for invalid grid data
             for (int a = 0; a < Commands.Rows.Count - 0; a++)
@@ -2183,6 +2180,16 @@ namespace MissionPlanner.GCSViews
                 }
             }
 
+            PointLatLngAlt collisionPoint = CheckMissionAltitude(pointlist);
+            if (collisionPoint != null)
+            {
+                CustomMessageBox.Show("Please check your Mission waypoints, a collision with ground detected!");
+
+                // center viewport position at collision point
+                MainMap.Position = new PointLatLng(collisionPoint.Lat, collisionPoint.Lng);
+                return;
+            }
+
             ProgressReporterDialogue frmProgressReporter = new ProgressReporterDialogue
             {
                 StartPosition = FormStartPosition.CenterScreen,
@@ -2200,6 +2207,59 @@ namespace MissionPlanner.GCSViews
 
             MainMap.Focus();
         }
+
+        /// <summary>
+        /// Internal Helper checks mission altitude. Returns collision point coordinate or null if no collision. it uses only MAVLink Waypoints
+        /// </summary>
+        /// <param name="locs">User definded Waypoints</param>
+        PointLatLngAlt CheckMissionAltitude(List<PointLatLngAlt> locs)
+        {
+            PointLatLngAlt collisionPoint = null;
+
+            // clean mission points
+            List<PointLatLngAlt> planlocs = locs;
+            for (int a = 0; a < planlocs.Count; a++)
+            {
+                if (planlocs[a] == null || planlocs[a].Tag != null && planlocs[a].Tag.Contains("ROI"))
+                {
+                    planlocs.RemoveAt(a);
+                    a--;
+                }
+            }
+
+            const int accuracy = 10;
+            //List<PointLatLngAlt> planPoints = new List<PointLatLngAlt>();
+
+            for (int p=0; p < planlocs.Count-1; p++)
+            {
+                double distance = (int)planlocs[p + 1].GetDistance(planlocs[p]);
+                int pcount = (int)Math.Abs(distance / accuracy);
+
+                if (pcount > 0)
+                {
+                    PointLatLngAlt delta = planlocs[p + 1] - planlocs[p];
+                    PointLatLngAlt inc = delta / pcount;
+
+                    int i = 0;
+                    do
+                    {
+                        PointLatLngAlt currentPoint = planlocs[p] + (inc * i);
+                        double srtmAltitude = srtm.getAltitude(currentPoint.Lat, currentPoint.Lng).alt;
+                        if(srtmAltitude > currentPoint.Alt)
+                        {
+                            //collision point detected!
+                            collisionPoint = currentPoint;
+                            return collisionPoint;
+                        }
+
+                        i++;
+                    } while (i < pcount);
+                }
+            }
+
+            return collisionPoint;
+        }
+
 
         Locationwp DataViewtoLocationwp(int a)
         {

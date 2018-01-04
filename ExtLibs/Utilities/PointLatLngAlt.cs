@@ -12,7 +12,7 @@ using GeoUtility.GeoSystem;
 namespace MissionPlanner.Utilities
 {
 
-    public class PointLatLngAlt: IComparable
+    public class PointLatLngAlt : IComparable
     {
         public static readonly PointLatLngAlt Zero = new PointLatLngAlt();
         public double Lat = 0;
@@ -89,7 +89,7 @@ namespace MissionPlanner.Utilities
             return a.Point();
         }
 
-        public static implicit operator double[](PointLatLngAlt a)
+        public static implicit operator double[] (PointLatLngAlt a)
         {
             return new double[] { a.Lng, a.Lat };
         }
@@ -98,15 +98,38 @@ namespace MissionPlanner.Utilities
         {
             if (a.Count() == 3)
             {
-                return new PointLatLngAlt() { Lng = a[0], Lat = a[1], Alt = a[2]};
+                return new PointLatLngAlt() { Lng = a[0], Lat = a[1], Alt = a[2] };
             }
-            return new PointLatLngAlt() { Lng =  a[0], Lat = a[1] };
+            return new PointLatLngAlt() { Lng = a[0], Lat = a[1] };
         }
 
         public static implicit operator PointLatLngAlt(GeoUtility.GeoSystem.Geographic geo)
         {
-            return new PointLatLngAlt() { Lat = geo.Latitude, Lng = geo.Longitude};
-        }        
+            return new PointLatLngAlt() { Lat = geo.Latitude, Lng = geo.Longitude };
+        }
+
+        #region operator overloads
+        public static PointLatLngAlt operator +(PointLatLngAlt a, PointLatLngAlt b)
+        {
+            return new PointLatLngAlt(a.Lat + b.Lat, a.Lng + b.Lng, a.Alt + b.Alt);
+        }
+
+        public static PointLatLngAlt operator -(PointLatLngAlt a, PointLatLngAlt b)
+        {
+            return new PointLatLngAlt(a.Lat - b.Lat, a.Lng - b.Lng, a.Alt - b.Alt);
+        }
+
+        public static PointLatLngAlt operator /(PointLatLngAlt a, int b)
+        {
+            return new PointLatLngAlt(a.Lat / b, a.Lng / b, a.Alt / b);
+        }
+
+        public static PointLatLngAlt operator *(PointLatLngAlt a, int b)
+        {
+            return new PointLatLngAlt(a.Lat * b, a.Lng * b, a.Alt * b);
+        }
+
+        #endregion
 
         public override bool Equals(Object pllaobj)
         {
