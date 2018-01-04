@@ -5877,10 +5877,7 @@ namespace MissionPlanner.GCSViews
         private void takeoffToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Get the Altitude on clicked point
-
-            int absAltitude = int.Parse(TXT_homealt.Text); // This is more exactly            
             //double absAltitude = srtm.getAltitude(MouseDownStart.Lat, MouseDownStart.Lng).alt;
-           
             string alt = "50";
 
             if (DialogResult.Cancel == InputBox.Show("Altitude", "Please enter your takeoff altitude", ref alt))
