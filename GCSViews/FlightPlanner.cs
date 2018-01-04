@@ -616,6 +616,9 @@ namespace MissionPlanner.GCSViews
             drawnpolygonsoverlay = new GMapOverlay("drawnpolygons");
             MainMap.Overlays.Add(drawnpolygonsoverlay);
 
+            warningPointsOverlay = new GMapOverlay("drawnpolygons");
+            MainMap.Overlays.Add(warningPointsOverlay);
+
             MainMap.Overlays.Add(poioverlay);
 
             top = new GMapOverlay("top");
@@ -1241,6 +1244,21 @@ namespace MissionPlanner.GCSViews
 
                 drawnpolygonsoverlay.Markers.Add(m);
                 drawnpolygonsoverlay.Markers.Add(mBorders);
+            }
+            catch (Exception ex)
+            {
+                log.Info(ex.ToString());
+            }
+        }
+
+        private void addCollisionPointMarker(double lng, double lat)
+        {
+            try
+            {
+                PointLatLng point = new PointLatLng(lat, lng);
+                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.orange_dot);
+                m.ToolTipMode = MarkerTooltipMode.Never;
+                warningPointsOverlay.Markers.Add(m);
             }
             catch (Exception ex)
             {
@@ -2180,15 +2198,34 @@ namespace MissionPlanner.GCSViews
                 }
             }
 
+            #region Collision Detection
             PointLatLngAlt collisionPoint = CheckMissionAltitude(pointlist);
+            warningPointsOverlay.Markers.Clear();
+
             if (collisionPoint != null)
             {
-                CustomMessageBox.Show("Please check your Mission waypoints, a collision with ground detected!");
-
                 // center viewport position at collision point
                 MainMap.Position = new PointLatLng(collisionPoint.Lat, collisionPoint.Lng);
-                return;
+
+                // show crash point on map using marker
+                addCollisionPointMarker(collisionPoint.Lng, collisionPoint.Lat);
+
+                // Show warning
+                DialogResult dialogResult = MessageBox.Show("Warning: Collision with ground is detected. Show Elevation Graph?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    //do nothing, continue or show an Elevation Graph?
+                    BUT_showElevationGraph.PerformClick();
+                    return;
+                }
+                else if (dialogResult == DialogResult.No)
+                {
+                    return;
+                }
             }
+            #endregion
+
+
 
             ProgressReporterDialogue frmProgressReporter = new ProgressReporterDialogue
             {
@@ -3211,6 +3248,7 @@ namespace MissionPlanner.GCSViews
         public static GMapOverlay airportsoverlay;
         public static GMapOverlay poioverlay = new GMapOverlay("POI"); // poi layer
         GMapOverlay drawnpolygonsoverlay;
+        GMapOverlay warningPointsOverlay;
         GMapOverlay kmlpolygonsoverlay;
         GMapOverlay geofenceoverlay;
         static GMapOverlay rallypointoverlay;
@@ -7248,6 +7286,11 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
         private void BUT_planAutoGrid_Click(object sender, EventArgs e)
         {
             surveyGridToolStripMenuItem_Click(sender, e);
+        }
+
+        private void BUT_showElevationGraph_Click(object sender, EventArgs e)
+        {
+            elevationGraphToolStripMenuItem_Click(sender, e);
         }
     }
 }

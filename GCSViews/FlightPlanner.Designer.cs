@@ -36,6 +36,8 @@ namespace MissionPlanner.GCSViews
                 geofenceoverlay.Dispose();
             if (drawnpolygonsoverlay != null)
                 drawnpolygonsoverlay.Dispose();
+            if (warningPointsOverlay != null)
+                warningPointsOverlay.Dispose();
             if (center != null)
                 center.Dispose(); 
 
@@ -116,6 +118,7 @@ namespace MissionPlanner.GCSViews
             this.splitter2 = new BSE.Windows.Forms.Splitter();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.BUT_showElevationGraph = new MissionPlanner.Controls.MyButton();
             this.lbl_wpfile = new System.Windows.Forms.Label();
             this.BUT_savePoly = new MissionPlanner.Controls.MyButton();
             this.BUT_loadPoly = new MissionPlanner.Controls.MyButton();
@@ -227,6 +230,8 @@ namespace MissionPlanner.GCSViews
             // CHK_verifyheight
             // 
             resources.ApplyResources(this.CHK_verifyheight, "CHK_verifyheight");
+            this.CHK_verifyheight.Checked = true;
+            this.CHK_verifyheight.CheckState = System.Windows.Forms.CheckState.Checked;
             this.CHK_verifyheight.Name = "CHK_verifyheight";
             this.CHK_verifyheight.UseVisualStyleBackColor = true;
             // 
@@ -707,6 +712,7 @@ namespace MissionPlanner.GCSViews
             // 
             // panel4
             // 
+            this.panel4.Controls.Add(this.BUT_showElevationGraph);
             this.panel4.Controls.Add(this.lbl_wpfile);
             this.panel4.Controls.Add(this.BUT_savePoly);
             this.panel4.Controls.Add(this.BUT_loadPoly);
@@ -718,6 +724,13 @@ namespace MissionPlanner.GCSViews
             this.panel4.Controls.Add(this.BUT_createPoly);
             resources.ApplyResources(this.panel4, "panel4");
             this.panel4.Name = "panel4";
+            // 
+            // BUT_showElevationGraph
+            // 
+            resources.ApplyResources(this.BUT_showElevationGraph, "BUT_showElevationGraph");
+            this.BUT_showElevationGraph.Name = "BUT_showElevationGraph";
+            this.BUT_showElevationGraph.UseVisualStyleBackColor = true;
+            this.BUT_showElevationGraph.Click += new System.EventHandler(this.BUT_showElevationGraph_Click);
             // 
             // lbl_wpfile
             // 
@@ -1578,5 +1591,6 @@ namespace MissionPlanner.GCSViews
         private MyButton BUT_createPoly;
         private MyButton BUT_savePoly;
         private MyButton BUT_loadPoly;
+        private MyButton BUT_showElevationGraph;
     }
 }
