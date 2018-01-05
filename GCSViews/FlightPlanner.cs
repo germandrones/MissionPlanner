@@ -2246,11 +2246,12 @@ namespace MissionPlanner.GCSViews
         }
 
         /// <summary>
-        /// Internal Helper checks mission altitude. Returns collision point coordinate or null if no collision. it uses only MAVLink Waypoints
+        /// Internal Helper checks mission altitude. Returns collision point coordinate or null if no collision. It uses only User defined Waypoints
         /// </summary>
         /// <param name="locs">User definded Waypoints</param>
         PointLatLngAlt CheckMissionAltitude(List<PointLatLngAlt> locs)
         {
+            // a return value, collision point.
             PointLatLngAlt collisionPoint = null;
 
             // clean mission points
@@ -2264,8 +2265,7 @@ namespace MissionPlanner.GCSViews
                 }
             }
 
-            const int accuracy = 10;
-            //List<PointLatLngAlt> planPoints = new List<PointLatLngAlt>();
+            const int accuracy = 10; // Predefined constant value, every 10 meters we check if the collision could happen
 
             for (int p=0; p < planlocs.Count-1; p++)
             {
