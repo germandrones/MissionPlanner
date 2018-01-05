@@ -5983,8 +5983,9 @@ namespace MissionPlanner.GCSViews
 
             int alti = -1;
 
-            const int minAltitude = 50; // set the constant safe minimum altitude to 50 meters.
-            if(int.Parse(alt) < minAltitude)
+            int minAltitude = int.Parse(TXT_minTakeoffAltitude.Text);
+
+            if (int.Parse(alt) < minAltitude)
             {
                 MessageBox.Show(String.Format("Takeoff Altitude can't be less than {0} meters!", minAltitude.ToString()));
                 return;
