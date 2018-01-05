@@ -1241,94 +1241,97 @@ Please check the following
                             Debug.WriteLine("GetParam Failed index: " + i + " " + excp);
                             throw excp;
                         }
-                    }
-                }
+                        //}
+                        //}
 
-                MAVLinkMessage buffer = readPacket();
+                        //for (short i = 0; i < param_total - indexsreceived.Count; i++)
+                        //{
+                        MAVLinkMessage buffer = readPacket();
 
-                if (buffer.Length > 5)
-                {
-                    if (buffer.msgid == (byte)MAVLINK_MSG_ID.PARAM_VALUE && buffer.sysid == req.target_system && buffer.compid == req.target_component)
-                    {
-                        mavlink_param_value_t par = buffer.ToStructure<mavlink_param_value_t>();
-                        string paramID = ASCIIEncoding.ASCII.GetString(par.param_id);
-
-                        int pos = paramID.IndexOf('\0');
-                        if (pos != -1) { paramID = paramID.Substring(0, pos); }
-
-                        // check if we already have parameter and ignore
-                        if (indexsreceived.Contains(ShortParameterList.IndexOf(paramID)))
+                        if (buffer.Length > 5)
                         {
-                            log.Info("Already got " + (par.param_index) + " '" + paramID + "' " + (indexsreceived.Count * 100) / param_total);
-                            if (frmProgressReporter != null) this.frmProgressReporter.UpdateProgressAndStatus((indexsreceived.Count * 100) / param_total, "Already Got param " + paramID);
-                            continue;
+                            if (buffer.msgid == (byte)MAVLINK_MSG_ID.PARAM_VALUE && buffer.sysid == req.target_system && buffer.compid == req.target_component)
+                            {
+                                mavlink_param_value_t par = buffer.ToStructure<mavlink_param_value_t>();
+                                string paramID = ASCIIEncoding.ASCII.GetString(par.param_id);
+
+                                int pos = paramID.IndexOf('\0');
+                                if (pos != -1) { paramID = paramID.Substring(0, pos); }
+
+                                // check if we already have parameter and ignore
+                                if (indexsreceived.Contains(ShortParameterList.IndexOf(paramID)))
+                                {
+                                    log.Info("Already got " + (par.param_index) + " '" + paramID + "' " + (indexsreceived.Count * 100) / param_total);
+                                    if (frmProgressReporter != null) this.frmProgressReporter.UpdateProgressAndStatus((indexsreceived.Count * 100) / param_total, "Already Got param " + paramID);
+                                    continue;
+                                }
+
+                                if (!MainV2.MONO)
+                                {
+                                    log.Info(DateTime.Now.Millisecond + " got param " + (par.param_index) + " of " + (par.param_count) + " name: " + paramID);
+                                    Debug.WriteLine("got param " + (par.param_index) + " of " + (par.param_count) + " name: " + paramID);
+                                }
+
+                                if (MAVlist[sysid, compid].apname == MAV_AUTOPILOT.ARDUPILOTMEGA)
+                                {
+                                    var offset = Marshal.OffsetOf(typeof(mavlink_param_value_t), "param_value");
+                                    newparamlist[paramID] = new MAVLinkParam(paramID, BitConverter.GetBytes(par.param_value), MAV_PARAM_TYPE.REAL32, (MAV_PARAM_TYPE)par.param_type);
+                                }
+                                else
+                                {
+                                    var offset = Marshal.OffsetOf(typeof(mavlink_param_value_t), "param_value");
+                                    newparamlist[paramID] = new MAVLinkParam(paramID, BitConverter.GetBytes(par.param_value), (MAV_PARAM_TYPE)par.param_type, (MAV_PARAM_TYPE)par.param_type);
+                                }
+
+                                indexsreceived.Add(ShortParameterList.IndexOf(paramID));
+
+                                MAVlist[sysid, compid].param_types[paramID] = (MAV_PARAM_TYPE)par.param_type;
+
+                                if (frmProgressReporter != null) this.frmProgressReporter.UpdateProgressAndStatus((indexsreceived.Count * 100) / param_total, Strings.Gotparam + paramID);
+                            }
+
+                            // Parse STATUS_TEXT messages
+                            if (buffer.msgid == (byte)MAVLINK_MSG_ID.STATUSTEXT)
+                            {
+                                var msg = buffer.ToStructure<mavlink_statustext_t>();
+
+                                string logdata = Encoding.ASCII.GetString(msg.text);
+
+                                int ind = logdata.IndexOf('\0');
+                                if (ind != -1)
+                                    logdata = logdata.Substring(0, ind);
+
+                                if (logdata.ToLower().Contains("copter") || logdata.ToLower().Contains("rover") ||
+                                    logdata.ToLower().Contains("plane"))
+                                {
+                                    MAVlist[sysid, compid].VersionString = logdata;
+                                }
+                                else if (logdata.ToLower().Contains("nuttx"))
+                                {
+                                    MAVlist[sysid, compid].SoftwareVersions = logdata;
+                                }
+                                else if (logdata.ToLower().Contains("px4v2"))
+                                {
+                                    MAVlist[sysid, compid].SerialString = logdata;
+                                }
+                                else if (logdata.ToLower().Contains("frame"))
+                                {
+                                    MAVlist[sysid, compid].FrameString = logdata;
+                                }
+                            }
+
+                            if (logreadmode && logplaybackfile.BaseStream.Position >= logplaybackfile.BaseStream.Length)
+                            {
+                                break;
+                            }
+
+                            if (!logreadmode && !BaseStream.IsOpen)
+                            {
+                                var exp = new Exception("Not Connected");
+                                frmProgressReporter.doWorkArgs.ErrorMessage = exp.Message;
+                                throw exp;
+                            }
                         }
-
-                        if (!MainV2.MONO)
-                        {
-                            log.Info(DateTime.Now.Millisecond + " got param " + (par.param_index) + " of " + (par.param_count) + " name: " + paramID);
-                            Debug.WriteLine("got param " + (par.param_index) + " of " + (par.param_count) + " name: " + paramID);
-                        }
-
-                        if (MAVlist[sysid, compid].apname == MAV_AUTOPILOT.ARDUPILOTMEGA)
-                        {
-                            var offset = Marshal.OffsetOf(typeof(mavlink_param_value_t), "param_value");
-                            newparamlist[paramID] = new MAVLinkParam(paramID, BitConverter.GetBytes(par.param_value), MAV_PARAM_TYPE.REAL32, (MAV_PARAM_TYPE)par.param_type);
-                        }
-                        else
-                        {
-                            var offset = Marshal.OffsetOf(typeof(mavlink_param_value_t), "param_value");
-                            newparamlist[paramID] = new MAVLinkParam(paramID, BitConverter.GetBytes(par.param_value), (MAV_PARAM_TYPE)par.param_type, (MAV_PARAM_TYPE)par.param_type);
-                        }
-
-                        // Add only new parameters
-                        indexsreceived.Add(ShortParameterList.IndexOf(paramID));
-
-                        MAVlist[sysid, compid].param_types[paramID] = (MAV_PARAM_TYPE)par.param_type;
-
-                        if (frmProgressReporter != null) this.frmProgressReporter.UpdateProgressAndStatus((indexsreceived.Count * 100) / param_total, Strings.Gotparam + paramID);
-                    }
-
-                    // Parse STATUS_TEXT messages
-                    if (buffer.msgid == (byte)MAVLINK_MSG_ID.STATUSTEXT)
-                    {
-                        var msg = buffer.ToStructure<mavlink_statustext_t>();
-
-                        string logdata = Encoding.ASCII.GetString(msg.text);
-
-                        int ind = logdata.IndexOf('\0');
-                        if (ind != -1)
-                            logdata = logdata.Substring(0, ind);
-
-                        if (logdata.ToLower().Contains("copter") || logdata.ToLower().Contains("rover") ||
-                            logdata.ToLower().Contains("plane"))
-                        {
-                            MAVlist[sysid, compid].VersionString = logdata;
-                        }
-                        else if (logdata.ToLower().Contains("nuttx"))
-                        {
-                            MAVlist[sysid, compid].SoftwareVersions = logdata;
-                        }
-                        else if (logdata.ToLower().Contains("px4v2"))
-                        {
-                            MAVlist[sysid, compid].SerialString = logdata;
-                        }
-                        else if (logdata.ToLower().Contains("frame"))
-                        {
-                            MAVlist[sysid, compid].FrameString = logdata;
-                        }
-                    }
-
-                    if (logreadmode && logplaybackfile.BaseStream.Position >= logplaybackfile.BaseStream.Length)
-                    {
-                        break;
-                    }
-
-                    if (!logreadmode && !BaseStream.IsOpen)
-                    {
-                        var exp = new Exception("Not Connected");
-                        frmProgressReporter.doWorkArgs.ErrorMessage = exp.Message;
-                        throw exp;
                     }
                 }
             } while (indexsreceived.Count < param_total);
@@ -1351,10 +1354,7 @@ Please check the following
         }
         #endregion
 
-        /// <summary>
-        /// Get param list from apm reworked
-        /// </summary>
-        /// <returns></returns>
+
         public Dictionary<string, double> getParamListEx(byte sysid, byte compid)
         {
             giveComport = true;
@@ -1387,7 +1387,6 @@ Please check the following
                 #region PARSE BUFFER Received Packets
                 if (buffer.Length > 5)
                 {
-
                     #region Parse Parameters
                     if (buffer.msgid == (byte)MAVLINK_MSG_ID.PARAM_VALUE && buffer.sysid == req.target_system && buffer.compid == req.target_component)
                     {
@@ -1472,133 +1471,43 @@ Please check the following
                 }
                 #endregion
 
-                if (!(start.AddMilliseconds(4000) > DateTime.Now) && !logreadmode)
+                if (!(start.AddMilliseconds(6000) > DateTime.Now) && !logreadmode) onebyone = true;
+
+                if (onebyone)
                 {
-                    //get out of the loop! 4 seconds are passed, time to gather 1-by-1 parameter.
-                    onebyone = true;
-                    break; // exit from loop
-                }
-
-            } while (indexsreceived.Count < param_total); // if all parameters are received, stop the loop
-
-
-            #region one-by-one parameters gather
-            if(onebyone)
-            {
-                // start oneby one loop here
-                for (short i = 0; i <= (param_total - 1); i++)
-                {
-                    if (!indexsreceived.Contains(i))
+                    for (short i = 0; i <= (param_total - 1); i++)
                     {
-                        if (frmProgressReporter != null && frmProgressReporter.doWorkArgs.CancelRequested)
+                        if (!indexsreceived.Contains(i))
                         {
-                            frmProgressReporter.doWorkArgs.CancelAcknowledged = true;
-                            giveComport = false;
-                            frmProgressReporter.doWorkArgs.ErrorMessage = "User Canceled";
-                            return MAVlist[sysid, compid].param;
-                        }
-
-                        try
-                        {
-                            mavlink_param_request_read_t req2 = new mavlink_param_request_read_t();
-                            req2.target_system = sysid;
-                            req2.target_component = compid;
-                            req2.param_index = i;
-                            req2.param_id = new byte[] { 0x0 };
-
-                            Array.Resize(ref req2.param_id, 16);
-                            generatePacket((byte)MAVLINK_MSG_ID.PARAM_REQUEST_READ, req2);
-                        }
-                        catch (Exception excp)
-                        {
-                            log.Info("GetParam Failed index: " + i + " " + excp);
-                            throw excp;
-                        }
-
-                        // Parse packets
-                        MAVLinkMessage buffer = readPacket();
-                        if (buffer.Length > 5)
-                        {
-                            #region Parse Parameters
-                            if (buffer.msgid == (byte)MAVLINK_MSG_ID.PARAM_VALUE && buffer.sysid == req.target_system && buffer.compid == req.target_component)
+                            if (frmProgressReporter != null && frmProgressReporter.doWorkArgs.CancelRequested)
                             {
-                                mavlink_param_value_t par = buffer.ToStructure<mavlink_param_value_t>();
-                                param_total = (par.param_count);
-                                newparamlist.TotalReported = param_total;
-
-                                string paramID = ASCIIEncoding.ASCII.GetString(par.param_id);
-
-                                int pos = paramID.IndexOf('\0');
-                                if (pos != -1) { paramID = paramID.Substring(0, pos); }
-
-                                // check if we already have it
-                                if (indexsreceived.Contains(par.param_index))
-                                {
-                                    log.Info("Already got " + (par.param_index) + " '" + paramID + "' " + (indexsreceived.Count * 100) / param_total);
-                                    if (frmProgressReporter != null)
-                                        this.frmProgressReporter.UpdateProgressAndStatus(
-                                            (indexsreceived.Count * 100) / param_total, "Already Got param " + paramID);
-                                    continue;
-                                }
-
-                                if (!MainV2.MONO) log.Info(DateTime.Now.Millisecond + " got param " + (par.param_index) + " of " + (par.param_count) + " name: " + paramID);
-
-                                if (MAVlist[sysid, compid].apname == MAV_AUTOPILOT.ARDUPILOTMEGA)
-                                {
-                                    var offset = Marshal.OffsetOf(typeof(mavlink_param_value_t), "param_value");
-                                    newparamlist[paramID] = new MAVLinkParam(paramID, BitConverter.GetBytes(par.param_value), MAV_PARAM_TYPE.REAL32, (MAV_PARAM_TYPE)par.param_type);
-                                }
-                                else
-                                {
-                                    var offset = Marshal.OffsetOf(typeof(mavlink_param_value_t), "param_value");
-                                    newparamlist[paramID] = new MAVLinkParam(paramID, BitConverter.GetBytes(par.param_value), (MAV_PARAM_TYPE)par.param_type, (MAV_PARAM_TYPE)par.param_type);
-                                }
-
-                                // exclude index of 65535
-                                //if (par.param_index != 65535)indexsreceived.Add(par.param_index);
-                                indexsreceived.Add(par.param_index);
-
-                                MAVlist[sysid, compid].param_types[paramID] = (MAV_PARAM_TYPE)par.param_type;
-
-                                if (frmProgressReporter != null) this.frmProgressReporter.UpdateProgressAndStatus((indexsreceived.Count * 100) / param_total, Strings.Gotparam + paramID);
+                                frmProgressReporter.doWorkArgs.CancelAcknowledged = true;
+                                giveComport = false;
+                                frmProgressReporter.doWorkArgs.ErrorMessage = "User Canceled";
+                                return MAVlist[sysid, compid].param;
                             }
-                            #endregion
 
-                            #region Parse Messages
-                            if (buffer.msgid == (byte)MAVLINK_MSG_ID.STATUSTEXT)
+                            try
                             {
-                                var msg = buffer.ToStructure<mavlink_statustext_t>();
+                                mavlink_param_request_read_t req2 = new mavlink_param_request_read_t();
+                                req2.target_system = sysid;
+                                req2.target_component = compid;
+                                req2.param_index = i;
+                                req2.param_id = new byte[] { 0x0 };
 
-                                string logdata = Encoding.ASCII.GetString(msg.text);
-
-                                int ind = logdata.IndexOf('\0');
-                                if (ind != -1)
-                                    logdata = logdata.Substring(0, ind);
-
-                                if (logdata.ToLower().Contains("copter") || logdata.ToLower().Contains("rover") ||
-                                    logdata.ToLower().Contains("plane"))
-                                {
-                                    MAVlist[sysid, compid].VersionString = logdata;
-                                }
-                                else if (logdata.ToLower().Contains("nuttx"))
-                                {
-                                    MAVlist[sysid, compid].SoftwareVersions = logdata;
-                                }
-                                else if (logdata.ToLower().Contains("px4v2"))
-                                {
-                                    MAVlist[sysid, compid].SerialString = logdata;
-                                }
-                                else if (logdata.ToLower().Contains("frame"))
-                                {
-                                    MAVlist[sysid, compid].FrameString = logdata;
-                                }
+                                Array.Resize(ref req2.param_id, 16);
+                                generatePacket((byte)MAVLINK_MSG_ID.PARAM_REQUEST_READ, req2);
                             }
-                            #endregion
+                            catch (Exception excp)
+                            {
+                                log.Info("GetParam Failed index: " + i + " " + excp);
+                                throw excp;
+                            }
                         }
                     }
                 }
-            }
-            #endregion
+
+            } while (indexsreceived.Count < param_total); // if all parameters are received, stop the loop
 
             if (indexsreceived.Count != param_total)
             {
@@ -1606,7 +1515,6 @@ Please check the following
                 frmProgressReporter.doWorkArgs.ErrorMessage = exp.Message;
                 throw exp;
             }
-
 
             giveComport = false;
             MAVlist[sysid, compid].param.Clear();

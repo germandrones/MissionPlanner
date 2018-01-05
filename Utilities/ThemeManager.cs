@@ -507,8 +507,8 @@ mc:Ignorable=""d""
             ButBG = Color.FromArgb(10, 27, 194);                       // This changes the colour of button backgrounds (Top)
             ButBGBot = Color.FromArgb(29, 174, 229);                    // This changes the colour of button backgrounds (Bot)
 
-            ProgressBarColorTop = Color.FromArgb(227, 227, 227);            // These three variables change the colours of progress bars
-            ProgressBarColorBot = Color.FromArgb(227, 227, 227);
+            ProgressBarColorTop = Color.FromArgb(10, 27, 194);            // These three variables change the colours of progress bars
+            ProgressBarColorBot = Color.FromArgb(29, 174, 229);
             ProgressBarOutlineColor = Color.FromArgb(150, 174, 112);
             BannerColor1 = Color.FromArgb(0x40, 0x57, 0x04);                // These two variables change the colours of banners such as "planner" umder configuration
             BannerColor2 = Color.FromArgb(0x94, 0xC1, 0x1F);
@@ -523,7 +523,6 @@ mc:Ignorable=""d""
             BSVButtonAreaBGColor = Color.White;                             // This changes the colour of a backstageview button area
             UnselectedTextColour = Color.Gray;                              // This changes the colour of unselected text in a BSV button
             HorizontalPBValueColor = Color.FromArgb(148, 193, 31);          // This changes the colour of the horizontal progressbar
-
 
 
             if (MainV2.instance != null && MainV2.instance.FlightPlanner != null)
@@ -732,6 +731,8 @@ mc:Ignorable=""d""
                     rs.BackColor = ControlBGColor;
                     rs.ForeColor = TextColor;
                     dgv.RowsDefaultCellStyle = rs;
+
+                    dgv.AlternatingRowsDefaultCellStyle.BackColor = BGColor;
 
                     DataGridViewCellStyle hs = new DataGridViewCellStyle(dgv.ColumnHeadersDefaultCellStyle);
                     hs.BackColor = BGColor;
