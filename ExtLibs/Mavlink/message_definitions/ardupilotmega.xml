@@ -1367,6 +1367,18 @@
       <field type="float" name="rpm1">RPM Sensor1</field>
       <field type="float" name="rpm2">RPM Sensor2</field>
     </message>
+    
+    <!-- VWP definition -->
+    <message id="238" name="VWP">
+      <description>VWP coordinates to be displayed</description>
+      <field name="vwp1" type="float[3]">Coordinates of first vwp</field>
+      <field name="vwp2" type="float[3]">Coordinates of second vwp</field>
+      <field name="vwp3" type="float[3]">Coordinates of third vwp</field>
+      <field name="wind_dir" type="float">Wind direction used for calculating VWP</field>
+      <field name="wind_spd" type="float">Wind speed used for calculating VWP</field>
+    </message>
+    
+    
     <!-- ardupilot specific mavlink2 messages starting at 11000-->
     <message id="11000" name="DEVICE_OP_READ">
       <description>Read registers for a device</description>

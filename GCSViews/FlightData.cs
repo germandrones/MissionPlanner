@@ -1137,6 +1137,9 @@ namespace MissionPlanner.GCSViews
                                     continue;
                                 }
 
+                                //HWP POINTS Visualization?
+                                //if (plla.command == (ushort)MAVLink.MAV_CMD.DO_SET_ROI) { }
+
                                 string tag = plla.seq.ToString();
                                 if (plla.seq == 0 && plla.current != 2)
                                 {
@@ -1741,6 +1744,43 @@ namespace MissionPlanner.GCSViews
                 }
             });
         }
+
+
+        // This function is just copy-and-paste of the addpolygonmarker, but without showing the tooltip on the virtual waypoints
+        private void addpolygonmarkerNoTooltip(string tag, double lng, double lat, int alt, Color? color, GMapOverlay overlay)
+        {
+            /*try
+            {
+                PointLatLng point = new PointLatLng(lat, lng);
+                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.red);
+                m.ToolTipMode = MarkerTooltipMode.Never;
+                m.ToolTipText = tag;
+                m.Tag = tag;
+
+                GMapMarkerRect mBorders = new GMapMarkerRect(point);
+                {
+                    mBorders.InnerMarker = m;
+                    try
+                    {
+                        mBorders.wprad = (int)(float.Parse(MainV2.config["TXT_WPRad"].ToString()) / CurrentState.multiplierdist);
+                    }
+                    catch
+                    {
+                    }
+                    if (color.HasValue)
+                    {
+                        mBorders.Color = color.Value;
+                    }
+                }
+
+                overlay.Markers.Add(m);
+                // overlay.Markers.Add(mBorders);
+            }
+            catch (Exception)
+            {
+            }*/
+        }
+
 
         private void addpolygonmarker(string tag, double lng, double lat, int alt, Color? color, GMapOverlay overlay)
         {
@@ -4546,6 +4586,72 @@ namespace MissionPlanner.GCSViews
             };
 
             MainV2.comPort.sendPacket(go, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
+        }
+
+
+
+        // DRAW VWP
+        private bool foundMessageStart = false;
+
+        private void VWP_Timer_Tick(object sender, EventArgs e)
+        {
+            // Everytime the message box is refreshed, the function RefreshMissionVWP is called.
+            StringBuilder message = new StringBuilder();
+            MainV2.comPort.MAV.cs.messages.ForEach(x => {
+                message.Insert(0, x + "\r\n");
+
+                if (x == "START" && !foundMessageStart)
+                {
+                    foundMessageStart = true;
+                    //CustomMessageBox.Show("Found Message START");
+                }
+
+                // Look for the first virtual waypoint
+                if (x.StartsWith("VWP1:"))
+                {
+                    // foundVWP1 = true;
+                    string[] msg = x.Split(':');
+                    string[] tokens = msg[1].Split(',');
+                    // CustomMessageBox.Show(msg[1]);
+                    double latitude = Convert.ToDouble(tokens[0]);
+                    double longitude = Convert.ToDouble(tokens[1]);
+                    int altitude = (int)Convert.ToDouble(tokens[2]);
+                    addpolygonmarkerNoTooltip("VWP1", longitude, latitude, altitude, Color.Red, polygons);
+                }
+
+                if (x.StartsWith("VWP2:"))
+                {
+                    // foundVWP1 = true;
+                    string[] msg = x.Split(':');
+                    string[] tokens = msg[1].Split(',');
+                    // CustomMessageBox.Show(msg[1]);
+                    double latitude = Convert.ToDouble(tokens[0]);
+                    double longitude = Convert.ToDouble(tokens[1]);
+                    int altitude = (int)Convert.ToDouble(tokens[2]);
+                    addpolygonmarkerNoTooltip("VWP2", longitude, latitude, altitude, Color.Red, polygons);
+                }
+
+                if (x.StartsWith("VWP3:"))
+                {
+                    // foundVWP1 = true;
+                    string[] msg = x.Split(':');
+                    string[] tokens = msg[1].Split(',');
+                    // CustomMessageBox.Show(msg[1]);
+                    double latitude = Convert.ToDouble(tokens[0]);
+                    double longitude = Convert.ToDouble(tokens[1]);
+                    int altitude = (int)Convert.ToDouble(tokens[2]);
+                    addpolygonmarkerNoTooltip("VWP3", longitude, latitude, altitude, Color.Red, polygons);
+                }
+                try
+                {
+                    RegeneratePolygon();
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex);
+                    Console.WriteLine("Not able to draw the VWPs:" + ex);
+                }
+            });
         }
     }
 }

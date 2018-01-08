@@ -1404,7 +1404,7 @@ namespace GMap.NET.WindowsForms
 #if !DESIGN
       protected override void OnPaint(PaintEventArgs e)
       {
-         if(ForceDoubleBuffer)
+         if (ForceDoubleBuffer)
          {
             #region -- manual buffer --
             if(gxOff != null && backBuffer != null)

@@ -1122,6 +1122,7 @@ Please check the following
         public void getParamList()
         {
             log.InfoFormat("getParamList {0} {1}", sysidcurrent, compidcurrent);
+            if (sysidcurrent > 1) return;
 
             frmProgressReporter = new ProgressReporterDialogue
             {
@@ -4195,6 +4196,7 @@ Please check the following
                         // Profile Quadrotor is disabled by just ignoring the Aircraft type:
                         // So the profile 12 will be never meet by connecting.
 
+                        // Is it the right way?
                         if (hb.type != (byte) MAV_TYPE.GCS && hb.type != (byte)MAV_TYPE.QUADROTOR)
                         {
                             // add a seen sysid
