@@ -1115,7 +1115,6 @@ Please check the following
         public Bitmap getImage()
         {
             MemoryStream ms = new MemoryStream();
-
         }
         */
 

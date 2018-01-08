@@ -16,6 +16,8 @@ namespace MissionPlanner.Utilities
     {
         static Settings _instance;
 
+        public static bool isDevMode = false;
+
         public static Settings Instance
         {
             get
@@ -321,6 +323,7 @@ namespace MissionPlanner.Utilities
                     }
                 }
             }
+
         }
 
         public void Save()

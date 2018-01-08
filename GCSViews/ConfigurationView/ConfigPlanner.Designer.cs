@@ -96,8 +96,6 @@
             this.chk_temp = new System.Windows.Forms.CheckBox();
             this.chk_norcreceiver = new System.Windows.Forms.CheckBox();
             this.but_AAsignin = new MissionPlanner.Controls.MyButton();
-            this.CMB_Layout = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.CHK_AutoParamCommit = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.NUM_tracklength)).BeginInit();
             this.SuspendLayout();
@@ -627,19 +625,6 @@
             this.but_AAsignin.UseVisualStyleBackColor = true;
             this.but_AAsignin.Click += new System.EventHandler(this.but_AAsignin_Click);
             // 
-            // CMB_Layout
-            // 
-            this.CMB_Layout.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.CMB_Layout.FormattingEnabled = true;
-            resources.ApplyResources(this.CMB_Layout, "CMB_Layout");
-            this.CMB_Layout.Name = "CMB_Layout";
-            this.CMB_Layout.SelectedIndexChanged += new System.EventHandler(this.CMB_Layout_SelectedIndexChanged);
-            // 
-            // label5
-            // 
-            resources.ApplyResources(this.label5, "label5");
-            this.label5.Name = "label5";
-            // 
             // CHK_AutoParamCommit
             // 
             resources.ApplyResources(this.CHK_AutoParamCommit, "CHK_AutoParamCommit");
@@ -653,8 +638,6 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.Controls.Add(this.CHK_AutoParamCommit);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.CMB_Layout);
             this.Controls.Add(this.but_AAsignin);
             this.Controls.Add(this.chk_norcreceiver);
             this.Controls.Add(this.chk_temp);
@@ -800,8 +783,6 @@
         private System.Windows.Forms.CheckBox chk_temp;
         private System.Windows.Forms.CheckBox chk_norcreceiver;
         private Controls.MyButton but_AAsignin;
-        public System.Windows.Forms.ComboBox CMB_Layout;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox CHK_AutoParamCommit;
     }
 }

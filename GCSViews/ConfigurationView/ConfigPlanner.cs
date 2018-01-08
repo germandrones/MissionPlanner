@@ -22,11 +22,7 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         public ConfigPlanner()
         {
             InitializeComponent();
-            CMB_Layout.Items.Add(DisplayNames.Basic);
-            CMB_Layout.Items.Add(DisplayNames.Advanced);
-
             txt_log_dir.TextChanged += OnLogDirTextChanged;
-
         }
 
 
@@ -34,19 +30,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         public void Activate()
         {
             startup = true; // flag to ignore changes while we programatically populate controls
-            if (MainV2.DisplayConfiguration.displayName == DisplayNames.Advanced)
-            {
-                CMB_Layout.SelectedIndex = 1;
-            }
-            else if (MainV2.DisplayConfiguration.displayName == DisplayNames.Basic)
-            {
-                CMB_Layout.SelectedIndex = 0;
-            }
-            else
-            {
-                CMB_Layout.SelectedIndex = 0;
-            }
-
 
             CMB_osdcolor.DataSource = Enum.GetNames(typeof (KnownColor));
 
@@ -892,7 +875,7 @@ namespace MissionPlanner.GCSViews.ConfigurationView
 
         private void CMB_Layout_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if ((DisplayNames)CMB_Layout.SelectedItem == DisplayNames.Advanced)
+            /*if ((DisplayNames)CMB_Layout.SelectedItem == DisplayNames.Advanced)
             {
                 MainV2.DisplayConfiguration = MainV2.DisplayConfiguration.Advanced();
             }
@@ -900,7 +883,7 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             {
                 MainV2.DisplayConfiguration = MainV2.DisplayConfiguration.Basic();
             }
-            Settings.Instance["displayview"] = MainV2.DisplayConfiguration.ConvertToString();
+            Settings.Instance["displayview"] = MainV2.DisplayConfiguration.ConvertToString();*/
         }
 
         private void CHK_AutoParamCommit_CheckedChanged(object sender, EventArgs e)

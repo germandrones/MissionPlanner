@@ -108,13 +108,13 @@ namespace MissionPlanner.GCSViews
                         AddBackstageViewPage(typeof(ConfigAteryxSensors), "Ateryx Zero Sensors");
                         AddBackstageViewPage(typeof(ConfigAteryx), "Ateryx Pids");
                     }
+                }
 
+                if (MainV2.DisplayConfiguration.displayMPSettings)
+                {
                     AddBackstageViewPage(typeof(ConfigPlanner), "Planner");
                 }
-                else
-                {
-                    start = AddBackstageViewPage(typeof(ConfigPlanner), "Planner");
-                }
+
 
                 // apply theme before trying to display it
                 ThemeManager.ApplyThemeTo(this);

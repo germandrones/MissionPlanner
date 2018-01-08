@@ -53,6 +53,7 @@ namespace MissionPlanner.Utilities
 
         //initial setup
         public Boolean displayWizard { get; set; }
+        public Boolean displayOptionalHardware { get; set; }
         public Boolean displayFrameType { get; set; }
         public Boolean displayAccelCalibration { get; set; }
         public Boolean displayCompassConfiguration { get; set; }
@@ -79,6 +80,7 @@ namespace MissionPlanner.Utilities
 
         //config tuning
         public Boolean displayBasicTuning { get; set; }
+        public Boolean displayMPSettings { get; set; }
         public Boolean displayExtendedTuning { get; set; }
         public Boolean displayStandardParams { get; set; }
         public Boolean displayAdvancedParams { get; set; }
@@ -130,6 +132,7 @@ namespace MissionPlanner.Utilities
 
             //initial setup
             displayWizard = true;
+            displayOptionalHardware = true;
             displayFrameType = true;
             displayAccelCalibration = true;
             displayCompassConfiguration = true;
@@ -156,6 +159,7 @@ namespace MissionPlanner.Utilities
 
             //config tuning
             displayBasicTuning = true;
+            displayMPSettings = false;
             displayExtendedTuning = true;
             displayStandardParams = true;
             displayAdvancedParams = false;
@@ -169,6 +173,7 @@ namespace MissionPlanner.Utilities
             isAdvancedMode = false;
         }
     }
+
     public static class DisplayViewExtensions
     {
         public static bool TryParse(string value, out DisplayView result)
@@ -199,13 +204,16 @@ namespace MissionPlanner.Utilities
                 return textWriter.ToString();
             }
         }
+
+        // View Settings Developer and User mode
+
         public static DisplayView Basic(this DisplayView v)
         {
             return new DisplayView()
             {
                 displayName = DisplayNames.Basic,
                 //MainV2 buttons
-                displaySimulation = true,
+                displaySimulation = false,
                 displayTerminal = false,
                 displayHelp = true,
 
@@ -213,10 +221,10 @@ namespace MissionPlanner.Utilities
                 displayAnenometer = true,
                 displayQuickTab = true,
                 displayPreFlightTab = true,
-                displayAdvActionsTab = false,
-                displaySimpleActionsTab = true,
-                displayGaugesTab = true,
-                displayStatusTab = false,
+                displayAdvActionsTab = true,
+                displaySimpleActionsTab = false,
+                displayGaugesTab = false,
+                displayStatusTab = true,
                 displayServoTab = false,
                 displayScriptsTab = false,
                 displayTelemetryTab = true,
@@ -235,13 +243,14 @@ namespace MissionPlanner.Utilities
                 displayPluginAutoWp = true,
 
                 //initial setup
-                displayWizard = true,
+                displayWizard = false,
+                displayOptionalHardware = false,
                 displayFrameType = true,
                 displayAccelCalibration = true,
                 displayCompassConfiguration = true,
                 displayRadioCalibration = true,
                 displayEscCalibration = true,
-                displayFlightModes = true,
+                displayFlightModes = false,
                 displayFailSafe = true,
                 displaySikRadio = true,
                 displayBattMonitor = true,
@@ -262,20 +271,22 @@ namespace MissionPlanner.Utilities
 
                 //config tuning
                 displayBasicTuning = true,
+                displayMPSettings = false,
                 displayExtendedTuning = true,
                 displayStandardParams = true,
-                displayAdvancedParams = false,
-                displayFullParamList = false,
-                displayFullParamTree = false,
+                displayAdvancedParams = true,
+                displayFullParamList = true,
+                displayFullParamTree = true,
                 displayParamCommitButton = false,
                 displayBaudCMB = true,
                 displaySerialPortCMB = true,
                 standardFlightModesOnly = false,
                 autoHideMenuForce = false,
-                isAdvancedMode = false
+                isAdvancedMode = true
             };
         }
-        public static DisplayView Advanced(this DisplayView v)
+
+        public static DisplayView Developer(this DisplayView v)
         {
             return new DisplayView()
             {
@@ -312,6 +323,7 @@ namespace MissionPlanner.Utilities
 
                 //initial setup
                 displayWizard = true,
+                displayOptionalHardware = true,
                 displayFrameType = true,
                 displayAccelCalibration = true,
                 displayCompassConfiguration = true,
@@ -338,6 +350,7 @@ namespace MissionPlanner.Utilities
 
                 //config tuning
                 displayBasicTuning = true,
+                displayMPSettings = true,
                 displayExtendedTuning = true,
                 displayStandardParams = true,
                 displayAdvancedParams = true,

@@ -252,7 +252,7 @@ namespace MissionPlanner
 
         Controls.MainSwitcher MyView;
 
-        private static DisplayView _displayConfiguration = new DisplayView().Advanced();
+        private static DisplayView _displayConfiguration = new DisplayView().Basic();
 
         public static event EventHandler LayoutChanged;
 
@@ -261,10 +261,8 @@ namespace MissionPlanner
             get { return _displayConfiguration; }
             set
             {
-                _displayConfiguration = value;
-                Settings.Instance["displayview"] = _displayConfiguration.ConvertToString();
-                if (LayoutChanged != null)
-                    LayoutChanged(null, EventArgs.Empty);
+                _displayConfiguration = value;                
+                if (LayoutChanged != null)LayoutChanged(null, EventArgs.Empty);
             }
         }
 
@@ -342,7 +340,7 @@ namespace MissionPlanner
         /// </summary>
         public static string comPortName = "";
 
-        public static int comPortBaud = 115200;
+        public static int comPortBaud = 57600;
 
         /// <summary>
         /// mono detection
@@ -849,13 +847,21 @@ namespace MissionPlanner
                 Application.Exit();
             }
 
+
+
             //set first instance display configuration
             if (DisplayConfiguration == null)
             {
-                DisplayConfiguration = DisplayConfiguration.Advanced();
+                DisplayConfiguration = DisplayConfiguration.Basic();
             }
 
-            // load old config
+            if (Settings.isDevMode)
+            {
+                DisplayConfiguration = DisplayConfiguration.Developer();
+            }
+
+            
+            /*// load old config
             if (Settings.Instance["advancedview"] != null)
             {
                 if (Settings.Instance.GetBoolean("advancedview") == true)
@@ -865,6 +871,7 @@ namespace MissionPlanner
                 // remove old config
                 Settings.Instance.Remove("advancedview");
             }            //// load this before the other screens get loaded
+
             if (Settings.Instance["displayview"] != null)
             {
                 try
@@ -875,7 +882,7 @@ namespace MissionPlanner
                 {
                     DisplayConfiguration = DisplayConfiguration.Advanced();
                 }
-            }
+            }*/
 
             LayoutChanged += updateLayout;
             LayoutChanged(null, EventArgs.Empty);
@@ -1010,21 +1017,9 @@ namespace MissionPlanner
                 this.Icon = Icon.FromHandle(((Bitmap)Program.IconFile).GetHicon());
             }
 
-            if (Program.Logo != null && Program.name == "VVVVZ")
-            {
-                MenuFlightData.Visible = false;
-                MenuFlightPlanner.Visible = true;
-                MenuConfigTune.Visible = false;
-                MenuHelp.Visible = false;
-                MenuInitConfig.Visible = false;
-                MenuSimulation.Visible = false;
-                MenuTerminal.Visible = false;
-            }
-            else if (Program.Logo != null && Program.names.Contains(Program.name))
-            {
-                /*Here was early a donate code*/                
-            }
+            
 
+            
             Application.DoEvents();
 
             Comports.Add(comPort);
@@ -1135,7 +1130,7 @@ namespace MissionPlanner
 
         void MenuCustom_Click(object sender, EventArgs e)
         {
-            if (Settings.Instance.GetBoolean("password_protect") == false)
+            /*if (Settings.Instance.GetBoolean("password_protect") == false)
             {
                 MenuFlightData.Visible = true;
                 MenuFlightPlanner.Visible = true;
@@ -1157,7 +1152,7 @@ namespace MissionPlanner
                     MenuSimulation.Visible = true;
                     MenuTerminal.Visible = true;
                 }
-            }
+            }*/
         }
 
         void adsb_UpdatePlanePosition(object sender, EventArgs e)
@@ -1267,12 +1262,15 @@ namespace MissionPlanner
         {
             _connectionControl.CMB_serialport.Items.Clear();
             _connectionControl.CMB_serialport.Items.Add("AUTO");
-            _connectionControl.CMB_serialport.Items.AddRange(SerialPort.GetPortNames());            
-            _connectionControl.CMB_serialport.Items.Add("TCP");
-            
-            /* UPD GDMP-9 Temporary commented */
-            //_connectionControl.CMB_serialport.Items.Add("UDP");
-            //_connectionControl.CMB_serialport.Items.Add("UDPCl");
+            _connectionControl.CMB_serialport.Items.AddRange(SerialPort.GetPortNames());
+
+            if (Settings.isDevMode)
+            {
+                _connectionControl.CMB_serialport.Items.Add("TCP");
+                /* UPD GDMP-9 Temporary commented */
+                //_connectionControl.CMB_serialport.Items.Add("UDP");
+                //_connectionControl.CMB_serialport.Items.Add("UDPCl");
+            }
         }
 
         private void MenuFlightData_Click(object sender, EventArgs e)
