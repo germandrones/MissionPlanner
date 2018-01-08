@@ -758,6 +758,8 @@ namespace MissionPlanner.GCSViews
 
             foreach (string item in cmdParamNames.Keys)
             {
+                // Disable parameters that we don,t use
+                if (item.Contains("VTOL") || item.Contains("DO_PARACHUTE")) continue;
                 cmds.Add(item);
             }
 
@@ -3695,6 +3697,7 @@ namespace MissionPlanner.GCSViews
                     isMouseDraging = false;
                     return;
                 }
+
                 if (!isMouseDraging)
                 {
                     if (CurentRectMarker != null)
@@ -3703,7 +3706,26 @@ namespace MissionPlanner.GCSViews
                     }
                     else
                     {
-                        AddWPToMap(currentMarker.Position.Lat, currentMarker.Position.Lng, 0);
+                        // check on key combination
+                        if(ModifierKeys == Keys.Shift)
+                        {
+                            string prevCmd = "";
+                            if(Commands.Rows.Count != 0)
+                            {
+                                prevCmd = Commands.Rows[Commands.Rows.Count - 1].Cells[0].Value.ToString();
+                            }
+
+                            //Check if we should add Takeoff or Land command
+                            if(Commands.Rows.Count == 0 || prevCmd.Contains("LAND"))
+                                takeoffToolStripMenuItem_Click(sender, e);
+                            else
+                                landToolStripMenuItem_Click(sender, e);
+                        }
+                        else
+                        {
+                            // Add normal waypoint
+                            AddWPToMap(currentMarker.Position.Lat, currentMarker.Position.Lng, 0);
+                        }
                     }
                 }
                 else
