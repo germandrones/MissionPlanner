@@ -1148,8 +1148,8 @@ Please check the following
 
         void FrmProgressReporterGetParams(object sender, ProgressWorkerEventArgs e, object passdata = null)
         {
-            //getParamList(MAV.sysid, MAV.compid);
-            getParamListEx(MAV.sysid, MAV.compid);
+            getParamList(MAV.sysid, MAV.compid);
+            //getParamListEx(MAV.sysid, MAV.compid);
 
             // Use this if we need to read only custom parameters:
             //readParamListFromFile("sb_3_1_reduced_parameter_list.log");
