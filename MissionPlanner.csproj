@@ -707,6 +707,7 @@
     <Content Include="ParameterMetaDataBackup.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="UserManual\Overview.html" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ConnectionOptions.resx"><DependentUpon>ConnectionOptions.cs</DependentUpon> </EmbeddedResource>
@@ -1834,6 +1835,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Drivers\vrugimbal.inf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="UserManual\GDMP.chm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Lib.zip">

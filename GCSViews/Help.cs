@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
@@ -13,12 +14,19 @@ namespace MissionPlanner.GCSViews
         public Help()
         {
             InitializeComponent();
-            PIC_wizard.Image = MainV2.displayicons.wizard;
         }
 
         public void Activate()
         {
-            try
+            // We can show compiled chm file or, we can just parse the contents.
+            //System.Windows.Forms.Help.ShowHelp(this, HelpFile);
+
+            string HelpDirectory = AppDomain.CurrentDomain.BaseDirectory + "\\UsrManual\\";
+            string HelpFile = "UserManual\\GDMP.chm";
+            webBrowser1.Navigate(new System.Uri(@"file://D:\dev\MissionPlanner\UserManual\index.html"));
+
+
+            /*try
             {
                 CHK_showconsole.Checked = Settings.Instance.GetBoolean("showconsole");
             }
@@ -30,7 +38,7 @@ namespace MissionPlanner.GCSViews
             {
                 BUT_betaupdate.Visible = false;
                 BUT_updatecheck.Visible = false;
-            }
+            }*/
         }
 
         public void BUT_updatecheck_Click(object sender, EventArgs e)
@@ -52,8 +60,8 @@ namespace MissionPlanner.GCSViews
 
         private void Help_Load(object sender, EventArgs e)
         {
-            richTextBox1.Rtf = Resources.help_text;
-            ThemeManager.ApplyThemeTo(richTextBox1);
+            //richTextBox1.Rtf = Resources.help_text;
+            //ThemeManager.ApplyThemeTo(richTextBox1);
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -82,5 +90,7 @@ namespace MissionPlanner.GCSViews
                 CustomMessageBox.Show(ex.ToString(), Strings.ERROR);
             }
         }
+
+        
     }
 }
