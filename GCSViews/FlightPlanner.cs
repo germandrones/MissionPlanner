@@ -2117,6 +2117,13 @@ namespace MissionPlanner.GCSViews
         /// <param name="e"></param>
         public void BUT_write_Click(object sender, EventArgs e)
         {
+            // Prevent upload mission if UAV is armed!
+            if (MainV2.comPort.MAV.cs.armed)
+            {
+                MessageBox.Show("UAV is Armed! Mission can't be uploaded!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if ((altmode)CMB_altmode.SelectedValue == altmode.Absolute)
             {
                 if (DialogResult.No ==
@@ -2141,23 +2148,43 @@ namespace MissionPlanner.GCSViews
                 return;
             }
 
-
-
+            #region Check if TAKEOFF and LAND poinits are present
             // lets check the takeoff/landing points before mission upload.            
             int takeoffTimes = 0;
             int landingTimes = 0;
+            bool isInAir = false;
+
             for (int i = 0; i < Commands.Rows.Count; i++)
             {
-                if (Commands.Rows[i].Cells[0].Value.ToString().Contains("TAKEOFF")) takeoffTimes++;
-                if (Commands.Rows[i].Cells[0].Value.ToString().Contains("LAND") || Commands.Rows[i].Cells[0].Value.ToString().Contains("RETURN")) landingTimes++;
+                if (Commands.Rows[i].Cells[0].Value.ToString().Contains("TAKEOFF"))
+                {
+                    if(isInAir)
+                    {
+                        // we can't TAKEOFF twice without landing!
+                        CustomMessageBox.Show("Please check TAKEOFF and LAND sequence in Mission", Strings.Warning);
+                        return;
+                    }
+                    takeoffTimes++;
+                    isInAir = true;
+                }
+                if (Commands.Rows[i].Cells[0].Value.ToString().Contains("LAND") || Commands.Rows[i].Cells[0].Value.ToString().Contains("RETURN"))
+                {
+                    if (!isInAir)
+                    {
+                        // we can't LAND twice without Takeoff!
+                        CustomMessageBox.Show("Please check TAKEOFF and LAND sequence in Mission", Strings.Warning);
+                        return;
+                    }
+                    landingTimes++;
+                    isInAir = false;
+                }
             }
             if (takeoffTimes != landingTimes || takeoffTimes == 0 || landingTimes == 0)
-            {
-                CustomMessageBox.Show("Please check Takeoff and Landing points in Mission", Strings.Warning);
+            {                
+                CustomMessageBox.Show("Please check TAKEOFF and LAND points count in Mission", Strings.Warning);
                 return;
             }
-
-            
+            #endregion
 
             // check for invalid grid data
             for (int a = 0; a < Commands.Rows.Count - 0; a++)
@@ -2174,8 +2201,7 @@ namespace MissionPlanner.GCSViews
                         }
                     }
 
-                    if (TXT_altwarn.Text == "")
-                        TXT_altwarn.Text = (0).ToString();
+                    if (TXT_altwarn.Text == "") TXT_altwarn.Text = (0).ToString();
 
                     if (Commands.Rows[a].Cells[Command.Index].Value.ToString().Contains("UNKNOWN"))
                         continue;
@@ -2185,8 +2211,7 @@ namespace MissionPlanner.GCSViews
                                 Enum.Parse(typeof(MAVLink.MAV_CMD),
                                     Commands.Rows[a].Cells[Command.Index].Value.ToString(), false);
 
-                    if (cmd < (ushort)MAVLink.MAV_CMD.LAST &&
-                        double.Parse(Commands[Alt.Index, a].Value.ToString()) < double.Parse(TXT_altwarn.Text))
+                    if (cmd < (ushort)MAVLink.MAV_CMD.LAST && double.Parse(Commands[Alt.Index, a].Value.ToString()) < double.Parse(TXT_altwarn.Text))
                     {
                         if (cmd != (ushort)MAVLink.MAV_CMD.TAKEOFF &&
                             cmd != (ushort)MAVLink.MAV_CMD.LAND &&
@@ -2200,7 +2225,10 @@ namespace MissionPlanner.GCSViews
                 }
             }
 
-            #region Collision Detection
+            #region Collision with ground Detection(SRTM Based)
+
+            // Do we need to define Safety distance?
+
             PointLatLngAlt collisionPoint = CheckMissionAltitude(pointlist);
             warningPointsOverlay.Markers.Clear();
 
@@ -2212,8 +2240,7 @@ namespace MissionPlanner.GCSViews
                 // show crash point on map using marker
                 addCollisionPointMarker(collisionPoint.Lng, collisionPoint.Lat);
 
-
-                DialogResult dialogResult = CustomMessageBox.ShowYesNoIgnoreWarning("Warning: Collision with ground is detected Show Elevation Graph?\nClick Ignore to upload mission to plane.", "Your Mission is not safe!");
+                DialogResult dialogResult = CustomMessageBox.ShowYesNoIgnoreWarning("Warning: Collision with ground is detected. Show Elevation Graph?\nClick Ignore to upload mission to plane.", "Your Mission is not safe!");
                 switch(dialogResult)
                 {
                     case DialogResult.Yes:
@@ -2237,8 +2264,27 @@ namespace MissionPlanner.GCSViews
             }
             #endregion
 
+            #region Safety Altitude check
+            if (TXT_minSafetyAltitude.Text == "") TXT_minSafetyAltitude.Text = (0).ToString();
+            int safetyAltitude = int.Parse(TXT_minSafetyAltitude.Text);
+            if (safetyAltitude > 0)
+            {
+                // perform check the unsafe positions, where the flight altitude is less than safety altitude
+                PointLatLngAlt unsafePoint = CheckMissionAltitude(pointlist, safetyAltitude);
+                if(unsafePoint != null)
+                {
+                    // unsafe poinst were found in mission, show the warning message
+                    if (CustomMessageBox.Show("Unsafe altitude was detected. Please check the elevation graph. \nContinue uploading mission?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No) return;
+                }
+            }
 
+            #endregion
 
+            #region Check TAKEOFF/LAND Minimal Altitude
+            // Walk through all mission? and check the commands?
+            #endregion
+
+            #region Saving and Uploading the mission
             ProgressReporterDialogue frmProgressReporter = new ProgressReporterDialogue
             {
                 StartPosition = FormStartPosition.CenterScreen,
@@ -2254,6 +2300,8 @@ namespace MissionPlanner.GCSViews
 
             frmProgressReporter.Dispose();
 
+            #endregion
+
             MainMap.Focus();
         }
 
@@ -2261,7 +2309,7 @@ namespace MissionPlanner.GCSViews
         /// Internal Helper checks mission altitude. Returns collision point coordinate or null if no collision. It uses only User defined Waypoints
         /// </summary>
         /// <param name="locs">User definded Waypoints</param>
-        PointLatLngAlt CheckMissionAltitude(List<PointLatLngAlt> locs)
+        PointLatLngAlt CheckMissionAltitude(List<PointLatLngAlt> locs, int SafetyDistance = 0)
         {
             // a return value, collision point.
             PointLatLngAlt collisionPoint = null;
@@ -2294,7 +2342,7 @@ namespace MissionPlanner.GCSViews
                     {
                         PointLatLngAlt currentPoint = planlocs[p] + (inc * i);
                         double srtmAltitude = srtm.getAltitude(currentPoint.Lat, currentPoint.Lng).alt;
-                        if(srtmAltitude > currentPoint.Alt)
+                        if(srtmAltitude > currentPoint.Alt - SafetyDistance)
                         {
                             //collision point detected!
                             collisionPoint = currentPoint;
@@ -2394,30 +2442,6 @@ namespace MissionPlanner.GCSViews
                 // log
                 log.Info("wps values " + MainV2.comPort.MAV.wps.Values.Count);
                 log.Info("cmd rows " + (Commands.Rows.Count + 1)); // + home
-
-
-
-                // Check if takeoff/landing point is set
-                bool takeoffSet = false;
-                bool landingSet = false;
-                for (int i = 0; i < Commands.Rows.Count; i++)
-                {
-                    if (Commands.Rows[i].Cells[0].Value.ToString().Contains("TAKEOFF")) takeoffSet = true;
-                    if (Commands.Rows[i].Cells[0].Value.ToString().Contains("LAND") || Commands.Rows[i].Cells[0].Value.ToString().Contains("RETURN")) landingSet = true;
-                }
-
-                // check takeoff point
-                if(!takeoffSet)
-                {
-                    CustomMessageBox.Show("Takeoff point not set!", Strings.Warning);
-                    return;
-                }
-
-                // check landing point
-                if (!landingSet){                    
-                    CustomMessageBox.Show("Landing point not set!", Strings.Warning);
-                    return;
-                }
 
 
                 // check for changes / future mod to send just changed wp's
@@ -6007,14 +6031,13 @@ namespace MissionPlanner.GCSViews
         private void takeoffToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Get the Altitude on clicked point
-            //double absAltitude = srtm.getAltitude(MouseDownStart.Lat, MouseDownStart.Lng).alt;
-            string alt = "50";
+            string alt = "20";
 
-            if (DialogResult.Cancel == InputBox.Show("Altitude", "Please enter your takeoff altitude", ref alt))
-                return;
+            if (DialogResult.Cancel == InputBox.Show("Altitude", "Please enter your takeoff altitude", ref alt)) return;
 
             int alti = -1;
 
+            if (TXT_minTakeoffAltitude.Text == "") TXT_minTakeoffAltitude.Text = (0).ToString();
             int minAltitude = int.Parse(TXT_minTakeoffAltitude.Text);
 
             if (int.Parse(alt) < minAltitude)

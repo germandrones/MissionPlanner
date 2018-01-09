@@ -379,8 +379,6 @@ namespace System
             return answer;
         }
 
-
-
         static DialogResult ShowUICustomWarning(string text, string caption, MessageBoxIcon icon)
         {
             DialogResult answer = DialogResult.Abort;
@@ -510,90 +508,7 @@ namespace System
             butignore.Click += delegate { _state = DialogResult.Ignore; msgBoxFrm.Close(); };
             msgBoxFrm.Controls.Add(butignore);
             msgBoxFrm.AcceptButton = butignore;
-
-            /*
-            switch (buttons)
-            {
-                case MessageBoxButtons.OK:
-                    var but = new MyButton
-                    {
-                        Size = new Size(75, 23),
-                        Text = "OK",
-                        Left = msgBoxFrm.Width - 100 - FORM_X_MARGIN,
-                        Top = msgBoxFrm.Height - 40 - FORM_Y_MARGIN - titleHeight
-                    };
-
-                    but.Click += delegate { _state = DialogResult.OK; msgBoxFrm.Close(); };
-                    msgBoxFrm.Controls.Add(but);
-                    msgBoxFrm.AcceptButton = but;
-                    break;
-
-                case MessageBoxButtons.YesNo:
-
-                    if (msgBoxFrm.Width < (75 * 2 + FORM_X_MARGIN * 3))
-                        msgBoxFrm.Width = (75 * 2 + FORM_X_MARGIN * 3);
-
-                    var butyes = new MyButton
-                    {
-                        Size = new Size(75, 23),
-                        Text = "Yes",
-                        Left = msgBoxFrm.Width - 75 * 2 - FORM_X_MARGIN * 2,
-                        Top = msgBoxFrm.Height - 23 - FORM_Y_MARGIN - titleHeight
-                    };
-
-                    butyes.Click += delegate { _state = DialogResult.Yes; msgBoxFrm.Close(); };
-                    msgBoxFrm.Controls.Add(butyes);
-                    msgBoxFrm.AcceptButton = butyes;
-
-                    var butno = new MyButton
-                    {
-                        Size = new Size(75, 23),
-                        Text = "No",
-                        Left = msgBoxFrm.Width - 75 - FORM_X_MARGIN,
-                        Top = msgBoxFrm.Height - 23 - FORM_Y_MARGIN - titleHeight
-                    };
-
-                    butno.Click += delegate { _state = DialogResult.No; msgBoxFrm.Close(); };
-                    msgBoxFrm.Controls.Add(butno);
-                    msgBoxFrm.CancelButton = butno;
-                    break;
-
-                case MessageBoxButtons.OKCancel:
-
-                    if (msgBoxFrm.Width < (75 * 2 + FORM_X_MARGIN * 3))
-                        msgBoxFrm.Width = (75 * 2 + FORM_X_MARGIN * 3);
-
-                    var butok = new MyButton
-                    {
-                        Size = new Size(75, 23),
-                        Text = "OK",
-                        Left = msgBoxFrm.Width - 75 * 2 - FORM_X_MARGIN * 2,
-                        Top = msgBoxFrm.Height - 23 - FORM_Y_MARGIN - titleHeight
-                    };
-
-                    butok.Click += delegate { _state = DialogResult.OK; msgBoxFrm.Close(); };
-                    msgBoxFrm.Controls.Add(butok);
-                    msgBoxFrm.AcceptButton = butok;
-
-                    var butcancel = new MyButton
-                    {
-                        Size = new Size(75, 23),
-                        Text = "Cancel",
-                        Left = msgBoxFrm.Width - 75 - FORM_X_MARGIN,
-                        Top = msgBoxFrm.Height - 23 - FORM_Y_MARGIN - titleHeight
-                    };
-
-                    butcancel.Click += delegate { _state = DialogResult.Cancel; msgBoxFrm.Close(); };
-                    msgBoxFrm.Controls.Add(butcancel);
-                    msgBoxFrm.CancelButton = butcancel;
-                    break;
-
-                default:
-                    throw new NotImplementedException("Only MessageBoxButtons.OK and YesNo supported at this time");
-            }*/
         }
-
-
 
         #endregion
     }

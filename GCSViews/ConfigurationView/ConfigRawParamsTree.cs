@@ -199,6 +199,14 @@ namespace MissionPlanner.GCSViews.ConfigurationView
 
         private void BUT_writePIDS_Click(object sender, EventArgs e)
         {
+            // Prevent upload mission if UAV is armed!
+            if (MainV2.comPort.MAV.cs.armed)
+            {
+                MessageBox.Show("UAV is Armed! Can't get Parameters!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+
             if (Common.MessageShowAgain("Write Raw Params Tree", "Are you Sure?") != DialogResult.OK)
                 return;
 
@@ -257,6 +265,7 @@ namespace MissionPlanner.GCSViews.ConfigurationView
 
         private void BUT_rerequestparams_Click(object sender, EventArgs e)
         {
+            
             if (!MainV2.comPort.BaseStream.IsOpen)
                 return;
 
