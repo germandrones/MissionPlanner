@@ -17,7 +17,7 @@ namespace MissionPlanner.GCSViews
         }
 
         public void Activate()
-        {
+        {            
             try
             {
                 string HelpURL = AppDomain.CurrentDomain.BaseDirectory + "UserManual\\index.html";

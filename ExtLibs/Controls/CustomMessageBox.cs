@@ -69,6 +69,7 @@ namespace System
             return answer;
         }
 
+        
         static DialogResult ShowUI(string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
         {
             DialogResult answer = DialogResult.Abort;
@@ -341,5 +342,259 @@ namespace System
             }
         }
 
+        #region YesNoIgnore Warning
+
+        public static DialogResult ShowYesNoIgnoreWarning(string text, string caption)
+        {
+            DialogResult answer = DialogResult.Cancel;
+
+            Console.WriteLine("CustomMessageBox thread calling " + System.Threading.Thread.CurrentThread.Name);
+
+            // ensure we run this on the right thread - mono - mac
+            if (Application.OpenForms.Count > 0 && Application.OpenForms[0].InvokeRequired)
+            {
+                try
+                {
+                    Application.OpenForms[0].Invoke((Action)delegate
+                    {
+                        Console.WriteLine("CustomMessageBox thread running invoke " +
+                                          System.Threading.Thread.CurrentThread.Name);
+                        answer = ShowUICustomWarning(text, caption, MessageBoxIcon.Warning);
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    // fall back
+                    Console.WriteLine("CustomMessageBox thread running " + System.Threading.Thread.CurrentThread.Name);
+                    answer = ShowUICustomWarning(text, caption, MessageBoxIcon.Warning);
+                }
+            }
+            else
+            {
+                Console.WriteLine("CustomMessageBox thread running " + System.Threading.Thread.CurrentThread.Name);
+                answer = ShowUICustomWarning(text, caption, MessageBoxIcon.Warning);
+            }
+
+            return answer;
+        }
+
+
+
+        static DialogResult ShowUICustomWarning(string text, string caption, MessageBoxIcon icon)
+        {
+            DialogResult answer = DialogResult.Abort;
+
+            if (text == null) text = "";
+            if (caption == null) caption = "";
+
+            // ensure we are always in a known state
+            _state = DialogResult.None;
+
+            // convert to nice wrapped lines.
+            text = AddNewLinesToText(text);
+            // get pixel width and height
+            Size textSize = TextRenderer.MeasureText(text, SystemFonts.DefaultFont);
+            
+            // allow for icon
+            if (icon != MessageBoxIcon.None) textSize.Width += SystemIcons.Question.Width;
+
+            using (var msgBoxFrm = new Form
+            {
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                ShowInTaskbar = true,
+                StartPosition = FormStartPosition.CenterParent,
+                Text = caption,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                Width = textSize.Width + 50,
+                Height = textSize.Height + 120,
+                TopMost = true,
+                AutoScaleMode = AutoScaleMode.None,
+            })
+            {
+                Rectangle screenRectangle = msgBoxFrm.RectangleToScreen(msgBoxFrm.ClientRectangle);
+                int titleHeight = screenRectangle.Top - msgBoxFrm.Top;
+
+                var lblMessage = new Label
+                {
+                    Left = 58,
+                    Top = 15,
+                    Width = textSize.Width + 10,
+                    Height = textSize.Height + 10,
+                    Text = text
+                };
+
+                msgBoxFrm.Controls.Add(lblMessage);
+
+                msgBoxFrm.Width = lblMessage.Right + 50;
+                var actualIcon = SystemIcons.Warning;
+
+                if (actualIcon == null)
+                {
+                    lblMessage.Location = new Point(FORM_X_MARGIN, FORM_Y_MARGIN);
+                }
+                else
+                {
+                    var iconPbox = new PictureBox
+                    {
+                        Image = actualIcon.ToBitmap(),
+                        Location = new Point(FORM_X_MARGIN, FORM_Y_MARGIN)
+                    };
+                    msgBoxFrm.Controls.Add(iconPbox);
+                }
+
+
+                AddCustomButtonsToForm(msgBoxFrm);
+
+                // display even if theme fails
+                try
+                {
+                    if (ApplyTheme != null) ApplyTheme(msgBoxFrm);
+                    //ThemeManager.ApplyThemeTo(msgBoxFrm);
+                }
+                catch
+                {
+                }
+
+                DialogResult test = msgBoxFrm.ShowDialog();
+
+                answer = _state;
+            }
+
+            return answer;
+        }
+
+        private static void AddCustomButtonsToForm(Form msgBoxFrm)
+        {
+            Rectangle screenRectangle = msgBoxFrm.RectangleToScreen(msgBoxFrm.ClientRectangle);
+            int titleHeight = screenRectangle.Top - msgBoxFrm.Top;
+
+            var t = Type.GetType("Mono.Runtime");
+            if ((t != null))titleHeight = 25;
+
+            if (msgBoxFrm.Width < (75 * 3 + FORM_X_MARGIN * 3)) msgBoxFrm.Width = (75 * 3 + FORM_X_MARGIN * 3);
+
+            var butyes = new MyButton
+            {
+                Size = new Size(75, 23),
+                Text = "Yes",
+                Left = msgBoxFrm.Width - 75 * 3 - FORM_X_MARGIN * 3,
+                Top = msgBoxFrm.Height - 23 - FORM_Y_MARGIN - titleHeight
+            };
+
+            butyes.Click += delegate { _state = DialogResult.Yes; msgBoxFrm.Close(); };
+            msgBoxFrm.Controls.Add(butyes);
+            msgBoxFrm.AcceptButton = butyes;
+
+            var butno = new MyButton
+            {
+                Size = new Size(75, 23),
+                Text = "No",
+                Left = msgBoxFrm.Width - 75 * 2 - FORM_X_MARGIN * 2,
+                Top = msgBoxFrm.Height - 23 - FORM_Y_MARGIN - titleHeight
+            };
+
+            butno.Click += delegate { _state = DialogResult.No; msgBoxFrm.Close(); };
+            msgBoxFrm.Controls.Add(butno);
+            msgBoxFrm.CancelButton = butno;
+
+            var butignore = new MyButton
+            {
+                Size = new Size(75, 23),
+                Text = "Ignore",
+                Left = msgBoxFrm.Width - 75 - FORM_X_MARGIN,
+                Top = msgBoxFrm.Height - 23 - FORM_Y_MARGIN - titleHeight
+            };
+
+            butignore.Click += delegate { _state = DialogResult.Ignore; msgBoxFrm.Close(); };
+            msgBoxFrm.Controls.Add(butignore);
+            msgBoxFrm.AcceptButton = butignore;
+
+            /*
+            switch (buttons)
+            {
+                case MessageBoxButtons.OK:
+                    var but = new MyButton
+                    {
+                        Size = new Size(75, 23),
+                        Text = "OK",
+                        Left = msgBoxFrm.Width - 100 - FORM_X_MARGIN,
+                        Top = msgBoxFrm.Height - 40 - FORM_Y_MARGIN - titleHeight
+                    };
+
+                    but.Click += delegate { _state = DialogResult.OK; msgBoxFrm.Close(); };
+                    msgBoxFrm.Controls.Add(but);
+                    msgBoxFrm.AcceptButton = but;
+                    break;
+
+                case MessageBoxButtons.YesNo:
+
+                    if (msgBoxFrm.Width < (75 * 2 + FORM_X_MARGIN * 3))
+                        msgBoxFrm.Width = (75 * 2 + FORM_X_MARGIN * 3);
+
+                    var butyes = new MyButton
+                    {
+                        Size = new Size(75, 23),
+                        Text = "Yes",
+                        Left = msgBoxFrm.Width - 75 * 2 - FORM_X_MARGIN * 2,
+                        Top = msgBoxFrm.Height - 23 - FORM_Y_MARGIN - titleHeight
+                    };
+
+                    butyes.Click += delegate { _state = DialogResult.Yes; msgBoxFrm.Close(); };
+                    msgBoxFrm.Controls.Add(butyes);
+                    msgBoxFrm.AcceptButton = butyes;
+
+                    var butno = new MyButton
+                    {
+                        Size = new Size(75, 23),
+                        Text = "No",
+                        Left = msgBoxFrm.Width - 75 - FORM_X_MARGIN,
+                        Top = msgBoxFrm.Height - 23 - FORM_Y_MARGIN - titleHeight
+                    };
+
+                    butno.Click += delegate { _state = DialogResult.No; msgBoxFrm.Close(); };
+                    msgBoxFrm.Controls.Add(butno);
+                    msgBoxFrm.CancelButton = butno;
+                    break;
+
+                case MessageBoxButtons.OKCancel:
+
+                    if (msgBoxFrm.Width < (75 * 2 + FORM_X_MARGIN * 3))
+                        msgBoxFrm.Width = (75 * 2 + FORM_X_MARGIN * 3);
+
+                    var butok = new MyButton
+                    {
+                        Size = new Size(75, 23),
+                        Text = "OK",
+                        Left = msgBoxFrm.Width - 75 * 2 - FORM_X_MARGIN * 2,
+                        Top = msgBoxFrm.Height - 23 - FORM_Y_MARGIN - titleHeight
+                    };
+
+                    butok.Click += delegate { _state = DialogResult.OK; msgBoxFrm.Close(); };
+                    msgBoxFrm.Controls.Add(butok);
+                    msgBoxFrm.AcceptButton = butok;
+
+                    var butcancel = new MyButton
+                    {
+                        Size = new Size(75, 23),
+                        Text = "Cancel",
+                        Left = msgBoxFrm.Width - 75 - FORM_X_MARGIN,
+                        Top = msgBoxFrm.Height - 23 - FORM_Y_MARGIN - titleHeight
+                    };
+
+                    butcancel.Click += delegate { _state = DialogResult.Cancel; msgBoxFrm.Close(); };
+                    msgBoxFrm.Controls.Add(butcancel);
+                    msgBoxFrm.CancelButton = butcancel;
+                    break;
+
+                default:
+                    throw new NotImplementedException("Only MessageBoxButtons.OK and YesNo supported at this time");
+            }*/
+        }
+
+
+
+        #endregion
     }
 }

@@ -2212,17 +2212,27 @@ namespace MissionPlanner.GCSViews
                 // show crash point on map using marker
                 addCollisionPointMarker(collisionPoint.Lng, collisionPoint.Lat);
 
-                // Show warning
-                DialogResult dialogResult = MessageBox.Show("Warning: Collision with ground is detected. Show Elevation Graph?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (dialogResult == DialogResult.Yes)
+
+                DialogResult dialogResult = CustomMessageBox.ShowYesNoIgnoreWarning("Warning: Collision with ground is detected Show Elevation Graph?\nClick Ignore to upload mission to plane.", "Your Mission is not safe!");
+                switch(dialogResult)
                 {
-                    //do nothing, continue or show an Elevation Graph?
-                    BUT_showElevationGraph.PerformClick();
-                    return;
-                }
-                else if (dialogResult == DialogResult.No)
-                {
-                    return;
+                    case DialogResult.Yes:
+                        {
+                            // Show an elevation graph
+                            BUT_showElevationGraph.PerformClick();
+                            return;
+                        }
+                    case DialogResult.No:
+                        {
+                            // back to mission planning                            
+                            return;
+                        }
+
+                    case DialogResult.Ignore:
+                        {
+                            // continue uploading mission, do nothing
+                            break;
+                        }
                 }
             }
             #endregion
