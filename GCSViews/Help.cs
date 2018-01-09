@@ -18,27 +18,15 @@ namespace MissionPlanner.GCSViews
 
         public void Activate()
         {
-            // We can show compiled chm file or, we can just parse the contents.
-            //System.Windows.Forms.Help.ShowHelp(this, HelpFile);
-
-            string HelpDirectory = AppDomain.CurrentDomain.BaseDirectory + "\\UsrManual\\";
-            string HelpFile = "UserManual\\GDMP.chm";
-            webBrowser1.Navigate(new System.Uri(@"file://D:\dev\MissionPlanner\UserManual\index.html"));
-
-
-            /*try
+            try
             {
-                CHK_showconsole.Checked = Settings.Instance.GetBoolean("showconsole");
+                string HelpURL = AppDomain.CurrentDomain.BaseDirectory + "UserManual\\index.html";
+                webBrowser1.Navigate(new System.Uri(HelpURL));
+            }catch
+            {
+                // We can show compiled chm file maybe?
+                //System.Windows.Forms.Help.ShowHelp(this, HelpFile);
             }
-            catch
-            {
-            }
-
-            if (Program.WindowsStoreApp)
-            {
-                BUT_betaupdate.Visible = false;
-                BUT_updatecheck.Visible = false;
-            }*/
         }
 
         public void BUT_updatecheck_Click(object sender, EventArgs e)
