@@ -226,7 +226,7 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             // Prevent upload mission if UAV is armed!
             if (MainV2.comPort.MAV.cs.armed)
             {
-                MessageBox.Show("UAV is Armed! Can't get Parameters!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("UAV is Armed! Can't set Parameters!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 

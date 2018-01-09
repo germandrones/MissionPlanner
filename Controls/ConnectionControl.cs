@@ -107,8 +107,9 @@ namespace MissionPlanner.Controls
                 foreach (int item in list)
                 {
                     var temp = new port_sysid() { compid = (item % 256) , sysid = (item /256), port = port};
-
-                    var idx = cmb_sysid.Items.Add(temp);
+                    
+                    int idx = -1;
+                    if (temp.sysid != 12) idx = cmb_sysid.Items.Add(temp); // Disable QUADROTOR Profile in Combobox.
 
                     if(temp.port == MainV2.comPort && temp.sysid == MainV2.comPort.sysidcurrent && temp.compid == MainV2.comPort.compidcurrent)
                     {
@@ -183,9 +184,7 @@ namespace MissionPlanner.Controls
                     }
 
                     //e.Value = temp.port.BaseStream.PortName + "-" + ((int)temp.sysid) + "-" + mavComponentString.Replace("_"," ");
-
                     e.Value = mavComponentString.Replace("_", " "); //write just a MAV Component Profile
-
                 }
             }
         }

@@ -4196,7 +4196,7 @@ Please check the following
                         // So the profile 12 will be never meet by connecting.
 
                         // Is it the right way?
-                        if (hb.type != (byte) MAV_TYPE.GCS && hb.type != (byte)MAV_TYPE.QUADROTOR)
+                        if (hb.type != (byte) MAV_TYPE.GCS/* && hb.type != (byte)MAV_TYPE.QUADROTOR*/)
                         {
                             // add a seen sysid
                             if (!MAVlist.Contains(sysid, compid, false))
