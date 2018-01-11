@@ -228,6 +228,7 @@ namespace MissionPlanner.Utilities
             temp.Add(new GCSViews.ConfigurationView.ConfigPlannerAdv());
             temp.Add(new GCSViews.ConfigurationView.ConfigRadioInput());
             temp.Add(new GCSViews.ConfigurationView.ConfigRawParams());
+            temp.Add(new GCSViews.ConfigurationView.ConfigRawParamsTree());
             temp.Add(new GCSViews.ConfigurationView.ConfigSimplePids());
             temp.Add(new GCSViews.ConfigurationView.ConfigTradHeli());
 
@@ -586,6 +587,11 @@ mc:Ignorable=""d""
                     ctl.ForeColor = TextColor;
                     TreeView txtr = (TreeView)ctl;
                     txtr.LineColor = TextColor;
+                }
+                else if (ctl.GetType() == typeof(DataTreeListView))
+                {
+                    ctl.BackColor = BGColor;
+                    ctl.ForeColor = TextColor;                                        
                 }
                 else if (ctl.GetType() == typeof(MyLabel))
                 {
