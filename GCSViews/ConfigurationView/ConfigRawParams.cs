@@ -150,6 +150,7 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                         continue;
                     if (name == "FORMAT_VERSION")
                         continue;
+                    
                     if (row.Cells[0].Value.ToString() == name)
                     {
                         set = true;
@@ -460,8 +461,14 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             // process hashdefines and update display
             foreach (var value in sorted)
             {
-                if (value == null || value == "")
+                // dont show the user the parameter ARMING_REQUIRE
+                if (value == "ARMING_REQUIRE" && Settings.isDevMode == false)
+                {
+                    if (MainV2.comPort.MAV.param[value].ToString() != "3") MessageBox.Show("ARMING_REQUIRE is not set to value 3. \nPlease contact to Developer", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     continue;
+                }
+
+                if (value == null || value == "") continue;
 
                 log.Info("Doing: " + value);
 

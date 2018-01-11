@@ -728,6 +728,12 @@ namespace MissionPlanner
             if (!Settings.Instance.ContainsKey("rover_guid"))
                 Settings.Instance["rover_guid"] = Guid.NewGuid().ToString();
 
+
+            // force the default parameters that user not allowed to change
+            if (string.IsNullOrEmpty(Settings.Instance["theme"])) Settings.Instance["theme"] = "Germandrones";
+            if (string.IsNullOrEmpty(Settings.Instance["language"])) Settings.Instance["language"] = "en";
+
+
             if (Settings.Instance.ContainsKey("language") && !string.IsNullOrEmpty(Settings.Instance["language"]))
             {
                 changelanguage(CultureInfoEx.GetCultureInfo(Settings.Instance["language"]));
