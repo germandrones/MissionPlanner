@@ -286,6 +286,8 @@ namespace MissionPlanner.Utilities
             };
         }
 
+
+
         public static DisplayView Developer(this DisplayView v)
         {
             return new DisplayView()

@@ -860,29 +860,6 @@ namespace MissionPlanner
                 DisplayConfiguration = DisplayConfiguration.Developer();
             }
 
-            
-            /*// load old config
-            if (Settings.Instance["advancedview"] != null)
-            {
-                if (Settings.Instance.GetBoolean("advancedview") == true)
-                {
-                    DisplayConfiguration = new DisplayView().Advanced();
-                }
-                // remove old config
-                Settings.Instance.Remove("advancedview");
-            }            //// load this before the other screens get loaded
-
-            if (Settings.Instance["displayview"] != null)
-            {
-                try
-                {
-                    DisplayConfiguration = Settings.Instance.GetDisplayView("displayview");
-                }
-                catch
-                {
-                    DisplayConfiguration = DisplayConfiguration.Advanced();
-                }
-            }*/
 
             LayoutChanged += updateLayout;
             LayoutChanged(null, EventArgs.Empty);
@@ -2941,24 +2918,17 @@ namespace MissionPlanner
                 System.Configuration.ConfigurationManager.AppSettings["BetaUpdateLocationVersion"] = "";
             }
 
+            #region Check for Automatic Updates at each startup
             try
             {
-                // single update check per day - in a seperate thread
-                if (Settings.Instance["update_check"] != DateTime.Now.ToShortDateString())
-                {
-                    System.Threading.ThreadPool.QueueUserWorkItem(checkupdate);
-                    Settings.Instance["update_check"] = DateTime.Now.ToShortDateString();
-                }
-                else if (Settings.Instance.GetBoolean("beta_updates") == true)
-                {
-                    MissionPlanner.Utilities.Update.dobeta = true;
-                    System.Threading.ThreadPool.QueueUserWorkItem(checkupdate);
-                }
+                System.Threading.ThreadPool.QueueUserWorkItem(checkupdate);
+                Settings.Instance["update_check"] = DateTime.Now.ToShortDateString();
             }
             catch (Exception ex)
             {
                 log.Error("Update check failed", ex);
             }
+            #endregion
 
             // play a tlog that was passed to the program/ load a bin log passed
             if (Program.args.Length > 0)
@@ -3033,21 +3003,6 @@ namespace MissionPlanner
 
                     doConnect(MainV2.comPort, cmds["port"], cmds["baud"]);
                 }
-            }
-
-            // show wizard on first use
-            if (Settings.Instance["newuser"] == null)
-            {
-                if (CustomMessageBox.Show("This is your first run, Do you wish to use the setup wizard?\nRecomended for new users.", "Wizard", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
-                {
-                    Wizard.Wizard wiz = new Wizard.Wizard();
-
-                    wiz.ShowDialog(this);
-                }
-
-                CustomMessageBox.Show("To use the wizard please goto the initial setup screen, and click the wizard icon.", "Wizard");
-
-                Settings.Instance["newuser"] = DateTime.Now.ToShortDateString();
             }
         }
 
@@ -3189,8 +3144,7 @@ namespace MissionPlanner
 
         private void checkupdate(object stuff)
         {
-            if (Program.WindowsStoreApp)
-                return;
+            if (Program.WindowsStoreApp) return;
 
             try
             {

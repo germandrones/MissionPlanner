@@ -27,6 +27,7 @@ namespace MissionPlanner.Utilities
         public static bool dobeta = false;
         public static bool domaster = false;
 
+
         public static void updateCheckMain(ProgressReporterDialogue frmProgressReporter)
         {
             var t = Type.GetType("Mono.Runtime");
@@ -52,7 +53,9 @@ namespace MissionPlanner.Utilities
                 }
 
                 var process = new Process();
+
                 string exePath = Path.GetDirectoryName(Application.ExecutablePath);
+
                 if (MONO)
                 {
                     process.StartInfo.FileName = "mono";
@@ -77,15 +80,13 @@ namespace MissionPlanner.Utilities
                 {
                     log.Error("Exception during update", ex);
                 }
-                if (frmProgressReporter != null)
-                    frmProgressReporter.UpdateProgressAndStatus(-1, "Starting Updater");
-                log.Info("Starting new process: " + process.StartInfo.FileName + " with " +
-                         process.StartInfo.Arguments);
+
+                if (frmProgressReporter != null) frmProgressReporter.UpdateProgressAndStatus(-1, "Starting Updater");
+                log.Info("Starting new process: " + process.StartInfo.FileName + " with " + process.StartInfo.Arguments);
                 process.Start();
                 log.Info("Quitting existing process");
 
-                if (frmProgressReporter != null)
-                    frmProgressReporter.BeginInvoke((Action) delegate { Application.Exit(); });
+                if (frmProgressReporter != null) frmProgressReporter.BeginInvoke((Action) delegate { Application.Exit(); });
             }
             catch (AggregateException ex)
             {
@@ -99,28 +100,24 @@ namespace MissionPlanner.Utilities
             }
         }
 
+        
+
         public static void CheckForUpdate(bool NotifyNoUpdate = false)
         {
-            if (Program.WindowsStoreApp)
-            {
-                return;
-            }
+            if (Program.WindowsStoreApp) { return; }
 
-            var baseurl = ConfigurationManager.AppSettings["UpdateLocationVersion"];
+            // GDMP-21: Re-enabling automaticaly updates
+            // Temporary define the locations of our updates.
+            // Also remove the beta updates at all, only a stable versions!
 
-            if (dobeta)
-                baseurl = ConfigurationManager.AppSettings["BetaUpdateLocationVersion"];
-
-            if (baseurl == "")
-                return;
+            var baseurl = @"http://germandrones.com/release/upgrade/";
+            //var baseurl = ConfigurationManager.AppSettings["UpdateLocationVersion"];
+            if (baseurl == "") return;
 
             string path = Path.GetDirectoryName(Application.ExecutablePath);
-
             path = path + Path.DirectorySeparatorChar + "version.txt";
 
-            ServicePointManager.ServerCertificateValidationCallback =
-                new System.Net.Security.RemoteCertificateValidationCallback(
-                    (sender, certificate, chain, policyErrors) => { return true; });
+            ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback((sender, certificate, chain, policyErrors) => { return true; });
 
             log.Debug(path);
 
@@ -130,6 +127,7 @@ namespace MissionPlanner.Utilities
             L10N.ReplaceMirrorUrl(ref requestUriString);
 
             log.Info("Checking for update at: " + requestUriString);
+
             var webRequest = WebRequest.Create(requestUriString);
             webRequest.Timeout = 5000;
 
@@ -185,22 +183,16 @@ namespace MissionPlanner.Utilities
                 }
             }
 
+
+            // If update were found, show a message, and link to changelog txt file
             if (updateFound)
             {
                 // do the update in the main thread
                 MainV2.instance.Invoke((MethodInvoker) delegate
                 {
-                    string extra = "";
-
-                    if (dobeta)
-                        extra = "BETA ";
-
                     DialogResult dr = DialogResult.Cancel;
 
-
-                    dr = CustomMessageBox.Show(
-                        extra + Strings.UpdateFound + " [link;" + baseurl + "/ChangeLog.txt;ChangeLog]",
-                        Strings.UpdateNow, MessageBoxButtons.YesNo);
+                    dr = CustomMessageBox.Show(Strings.UpdateFound + " [link;" + baseurl + "/ChangeLog.txt;ChangeLog]", Strings.UpdateNow, MessageBoxButtons.YesNo);
 
                     if (dr == DialogResult.Yes)
                     {
@@ -543,9 +535,7 @@ namespace MissionPlanner.Utilities
 
             try
             {
-                File.WriteAllText(
-                    Path.GetDirectoryName(Application.ExecutablePath) + Path.DirectorySeparatorChar + "writetest.txt",
-                    "this is a test");
+                File.WriteAllText( Path.GetDirectoryName(Application.ExecutablePath) + Path.DirectorySeparatorChar + "writetest.txt", "this is a test");
             }
             catch (Exception ex)
             {
