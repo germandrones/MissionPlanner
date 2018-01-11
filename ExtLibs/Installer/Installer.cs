@@ -64,6 +64,7 @@ namespace Installer
             {
                 List<string> filestoget = new List<string>();
                 var sums = File.ReadAllLines(checkfile);
+                
                 Parallel.ForEach(sums, sum =>
                 {
                     var match = regex.Match(sum);

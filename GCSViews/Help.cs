@@ -42,10 +42,7 @@ namespace MissionPlanner.GCSViews
             }
         }
 
-        private void CHK_showconsole_CheckedChanged(object sender, EventArgs e)
-        {
-            Settings.Instance["showconsole"] = CHK_showconsole.Checked.ToString();
-        }
+        
 
         private void Help_Load(object sender, EventArgs e)
         {
@@ -67,17 +64,7 @@ namespace MissionPlanner.GCSViews
 
         private void BUT_betaupdate_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Utilities.Update.dobeta = true;
-                if (Control.ModifierKeys == Keys.Control)
-                    Utilities.Update.domaster = true;
-                Utilities.Update.DoUpdate();
-            }
-            catch (Exception ex)
-            {
-                CustomMessageBox.Show(ex.ToString(), Strings.ERROR);
-            }
+            
         }
 
         

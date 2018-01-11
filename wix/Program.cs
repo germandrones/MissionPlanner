@@ -67,6 +67,31 @@ namespace wix
 
         static string basedir = "";
 
+        static string MD5File(string filename)
+        {
+            try
+            {
+                if (!File.Exists(filename)) return "FAILED";
+
+                using (var md5 = System.Security.Cryptography.MD5.Create())
+                {
+                    using (var stream = File.OpenRead(filename))
+                    {
+                        var answer = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLower();
+
+                        //log.Debug(filename + "," + hash + "," + answer);
+
+                        return answer;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                
+            }
+            return "FAILED";
+        }
+
         [STAThread]
         static void Main(string[] args)
         {
@@ -84,7 +109,22 @@ namespace wix
 
             string path = args[0];
             basedir = path;
-            //Path.GetDirectoryName(Application.ExecutablePath) + Path.DirectorySeparatorChar+ 
+
+
+            // Generate a checksum file for uploading it to update server
+            Console.WriteLine("Calculating checksums.txt");
+            string[] allfiles = System.IO.Directory.GetFiles(basedir, "*.*", System.IO.SearchOption.AllDirectories);
+            using (StreamWriter sw = new StreamWriter(basedir + "checksums.txt"))
+            {
+                foreach (var filename in allfiles)
+                {
+                    if (filename.Contains("checksums.txt")) continue; // dont add itselfs!
+                    string res = MD5File(filename) + " " + filename.Replace(basedir, "MP_Upgrade/");
+                    sw.WriteLine(res);
+                    
+                }
+            }
+
             string file = "installer.wxs";
 
             string outputfilename = "MissionPlanner";
@@ -147,6 +187,9 @@ namespace wix
             st.WriteLine(@"c:\cygwin\bin\rsync.exe -Pv -e '/usr/bin/ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /cygdrive/c/Users/michael/sitl'   -l MissionPlanner-latest.msi michael@bios.ardupilot.org:MissionPlanner/");
             */
             st.Close();
+
+
+            // generate checksums.txt for update location on server
 
             runProgram("create.bat");
         }

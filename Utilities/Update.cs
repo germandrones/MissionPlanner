@@ -35,22 +35,8 @@ namespace MissionPlanner.Utilities
 
             try
             {
-                if (domaster)
-                {
-                    CheckMD5(frmProgressReporter,
-                        ConfigurationManager.AppSettings["MasterUpdateLocationMD5"].ToString(),
-                        ConfigurationManager.AppSettings["MasterUpdateLocationZip"]);
-                }
-                else if (dobeta)
-                {
-                    CheckMD5(frmProgressReporter, ConfigurationManager.AppSettings["BetaUpdateLocationMD5"].ToString(),
-                        ConfigurationManager.AppSettings["BetaUpdateLocation"]);
-                } 
-                else
-                {
-                    CheckMD5(frmProgressReporter, ConfigurationManager.AppSettings["UpdateLocationMD5"].ToString(),
-                        ConfigurationManager.AppSettings["UpdateLocation"]);
-                }
+                CheckMD5(frmProgressReporter, ConfigurationManager.AppSettings["UpdateLocationMD5"].ToString(), ConfigurationManager.AppSettings["UpdateLocation"]);
+
 
                 var process = new Process();
 
@@ -82,6 +68,7 @@ namespace MissionPlanner.Utilities
                 }
 
                 if (frmProgressReporter != null) frmProgressReporter.UpdateProgressAndStatus(-1, "Starting Updater");
+
                 log.Info("Starting new process: " + process.StartInfo.FileName + " with " + process.StartInfo.Arguments);
                 process.Start();
                 log.Info("Quitting existing process");
@@ -110,8 +97,9 @@ namespace MissionPlanner.Utilities
             // Temporary define the locations of our updates.
             // Also remove the beta updates at all, only a stable versions!
 
-            var baseurl = @"http://germandrones.com/release/upgrade/";
-            //var baseurl = ConfigurationManager.AppSettings["UpdateLocationVersion"];
+            //var baseurl = @"http://germandrones.com/Software/MP_Upgrade/";
+
+            var baseurl = ConfigurationManager.AppSettings["UpdateLocationVersion"];
             if (baseurl == "") return;
 
             string path = Path.GetDirectoryName(Application.ExecutablePath);
@@ -192,7 +180,8 @@ namespace MissionPlanner.Utilities
                 {
                     DialogResult dr = DialogResult.Cancel;
 
-                    dr = CustomMessageBox.Show(Strings.UpdateFound + " [link;" + baseurl + "/ChangeLog.txt;ChangeLog]", Strings.UpdateNow, MessageBoxButtons.YesNo);
+                    // ToDo: Change the message in better way to invite the user to perform update
+                    dr = CustomMessageBox.Show(Strings.UpdateFound + " [link;" + baseurl + "ChangeLog.txt;ChangeLog]", Strings.UpdateNow, MessageBoxButtons.YesNo);
 
                     if (dr == DialogResult.Yes)
                     {
@@ -519,6 +508,7 @@ namespace MissionPlanner.Utilities
             var progressReporterDialogue = ((ProgressReporterDialogue) sender);
             progressReporterDialogue.UpdateProgressAndStatus(-1, "Getting Updated Parameters");
 
+            // ToDo: Check this:
             try
             {
                 ParameterMetaDataParser.GetParameterInformation();
@@ -533,6 +523,7 @@ namespace MissionPlanner.Utilities
 
             progressReporterDialogue.UpdateProgressAndStatus(-1, "Getting Base URL");
 
+            #region Writetest check
             try
             {
                 File.WriteAllText( Path.GetDirectoryName(Application.ExecutablePath) + Path.DirectorySeparatorChar + "writetest.txt", "this is a test");
@@ -554,6 +545,7 @@ namespace MissionPlanner.Utilities
                     log.Info("Write test cleanup failed");
                 }
             }
+            #endregion
 
             // check for updates
             //  if (Debugger.IsAttached)

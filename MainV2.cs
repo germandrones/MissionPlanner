@@ -2902,7 +2902,9 @@ namespace MissionPlanner
             MissionPlanner.Utilities.Tracking.AddTiming("AppLoad", "Load Time",
                 (DateTime.Now - Program.starttime).TotalMilliseconds, "");
 
-            bool winXp = Environment.OSVersion.Version.Major == 5;
+
+            // Release version build under windows xp, temporary disabled
+            /*bool winXp = Environment.OSVersion.Version.Major == 5;
             if (winXp)
             {
                 Common.MessageShowAgain("Windows XP",
@@ -2916,7 +2918,7 @@ namespace MissionPlanner
                 System.Configuration.ConfigurationManager.AppSettings["UpdateLocationMD5"] =
                     "http://firmware.ardupilot.org/MissionPlanner/xp/checksums.txt";
                 System.Configuration.ConfigurationManager.AppSettings["BetaUpdateLocationVersion"] = "";
-            }
+            }*/
 
             #region Check for Automatic Updates at each startup
             try
