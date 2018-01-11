@@ -1,4 +1,6 @@
-﻿*Mission Planner 1.3.52 - 16-12-2017
+﻿*Mission Planner 1.3.52.1 - 11-01-2018
+
+*Mission Planner 1.3.52 - 16-12-2017
 Utilities: namespace update
 Refactor and move
 BoardDetect: only upload v3 fw to bl_rev >= 5

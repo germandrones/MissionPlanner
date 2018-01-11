@@ -1679,7 +1679,9 @@ namespace MissionPlanner
 
             MainV2._connectionControl.UpdateSysIDS();
 
+
             loadph_serial();
+            
         }
 
         void loadph_serial()

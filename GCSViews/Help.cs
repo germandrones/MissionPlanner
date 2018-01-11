@@ -41,9 +41,7 @@ namespace MissionPlanner.GCSViews
                 CustomMessageBox.Show(ex.ToString(), Strings.ERROR);
             }
         }
-
         
-
         private void Help_Load(object sender, EventArgs e)
         {
             //richTextBox1.Rtf = Resources.help_text;
@@ -52,7 +50,7 @@ namespace MissionPlanner.GCSViews
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://firmware.ardupilot.org/Tools/MissionPlanner/upgrade/ChangeLog.txt");
+            Process.Start("http://germandrones.com/Software/MP_Upgrade/ChangeLog.txt");
         }
 
         private void PIC_wizard_Click(object sender, EventArgs e)

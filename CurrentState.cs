@@ -1947,8 +1947,13 @@ namespace MissionPlanner
 
                         if (!sensors_health.gps && sensors_enabled.gps && sensors_present.gps)
                         {
-                            messageHigh = Strings.BadGPSHealth;
-                            messageHighTime = DateTime.Now;
+                            // throttle is up, or groundspeed is > 3 m/s or armed
+                            // need to test!
+                            if (ch3percent > 12 || _groundspeed > 3.0 || armed)
+                            {
+                                messageHigh = Strings.BadGPSHealth;
+                                messageHighTime = DateTime.Now;
+                            }
                         }
                         else if (!sensors_health.gyro && sensors_enabled.gyro && sensors_present.gyro)
                         {
