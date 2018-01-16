@@ -4588,9 +4588,14 @@ namespace MissionPlanner.GCSViews
             MainV2.comPort.sendPacket(go, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
         }
 
+        private void VWP_Timer_Tick(object sender, EventArgs e)
+        {
+        }
+
 
 
         // DRAW VWP
+        /*
         private bool foundMessageStart = false;
 
         private void VWP_Timer_Tick(object sender, EventArgs e)
@@ -4652,7 +4657,8 @@ namespace MissionPlanner.GCSViews
                     Console.WriteLine("Not able to draw the VWPs:" + ex);
                 }
             });
-        }
+        }*/
+
     }
 }
  

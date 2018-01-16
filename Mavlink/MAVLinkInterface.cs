@@ -1147,6 +1147,9 @@ Please check the following
 
         void FrmProgressReporterGetParams(object sender, ProgressWorkerEventArgs e, object passdata = null)
         {
+            // Mock a right way to gather params
+            //getParamHash();
+
             getParamList(MAV.sysid, MAV.compid);
             //getParamListEx(MAV.sysid, MAV.compid);
 
@@ -1524,6 +1527,49 @@ Please check the following
         }
 
 
+        public bool getParamHash()
+        {
+            mavlink_autopilot_version_request_t req = new mavlink_autopilot_version_request_t();
+
+            req.target_component = MAV.compid;
+            req.target_system = MAV.sysid;
+
+            // request point
+            generatePacket((byte)MAVLINK_MSG_ID.PARAM_REQUEST_LIST, req);
+
+            DateTime start = DateTime.Now;
+            int retrys = 3;
+
+            while (true)
+            {
+                /*if (!(start.AddMilliseconds(200) > DateTime.Now))
+                {
+                    if (retrys > 0)
+                    {
+                        log.Info("getVersion Retry " + retrys + " - giv com " + giveComport);
+                        generatePacket((byte)MAVLINK_MSG_ID.AUTOPILOT_VERSION_REQUEST, req);
+                        start = DateTime.Now;
+                        retrys--;
+                        continue;
+                    }
+                    giveComport = false;
+                    return false;
+                }*/
+
+                MAVLinkMessage buffer = readPacket();
+                if (buffer.Length > 5)
+                {
+                    if (buffer.msgid == (byte)MAVLINK_MSG_ID.AUTOPILOT_VERSION)
+                    {
+                        giveComport = false;
+
+                        return true;
+                    }
+                }
+            }
+        }
+
+
         /// <summary>
         /// Get param list from apm
         /// </summary>
@@ -1693,8 +1739,7 @@ Please check the following
                         //Console.WriteLine(DateTime.Now.Millisecond + " gp2b ");
 
                         // exclude index of 65535
-                        if (par.param_index != 65535)
-                            indexsreceived.Add(par.param_index);
+                        if (par.param_index != 65535) indexsreceived.Add(par.param_index);
 
                         MAVlist[sysid, compid].param_types[paramID] = (MAV_PARAM_TYPE) par.param_type;
 
@@ -1708,14 +1753,12 @@ Please check the following
                             start = DateTime.MinValue;
                     }
 
-
                     if (buffer.msgid == (byte) MAVLINK_MSG_ID.STATUSTEXT)
                     {
                         var msg = buffer.ToStructure<mavlink_statustext_t>();
-
                         string logdata = Encoding.ASCII.GetString(msg.text);
-
                         int ind = logdata.IndexOf('\0');
+
                         if (ind != -1)
                             logdata = logdata.Substring(0, ind);
 
@@ -4224,8 +4267,7 @@ Please check the following
 
                     OnPacketReceived?.Invoke(this, message);
 
-                    if (debugmavlink)
-                        DebugPacket(message);
+                    if (debugmavlink) DebugPacket(message);
 
                     if (msgid == (byte)MAVLINK_MSG_ID.STATUSTEXT) // status text
                     {
@@ -4235,8 +4277,7 @@ Please check the following
 
                         string logdata = Encoding.ASCII.GetString(msg.text);
                         int ind = logdata.IndexOf('\0');
-                        if (ind != -1)
-                            logdata = logdata.Substring(0, ind);
+                        if (ind != -1) logdata = logdata.Substring(0, ind);
                         log.Info(DateTime.Now + " " + sev + " " + logdata);
 
                         MAVlist[sysid, compid].cs.messages.Add(logdata);

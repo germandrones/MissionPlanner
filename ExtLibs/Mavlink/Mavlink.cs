@@ -205,8 +205,8 @@ public partial class MAVLink
 		new message_info(219, "GOPRO_SET_RESPONSE", 162, 2, 2, typeof( mavlink_gopro_set_response_t )),
 		new message_info(226, "RPM", 207, 8, 8, typeof( mavlink_rpm_t )),
         
-        // VWP Message definition
-        new message_info(236, "VWP", 179, 44, 44, typeof( mavlink_vwp_t )), //TODO: sizes!!!?
+        // HWP Message definition
+        new message_info(238, "HWP", 179, 36, 36, typeof( mavlink_hwp_t )),
 
         new message_info(230, "ESTIMATOR_STATUS", 163, 42, 42, typeof( mavlink_estimator_status_t )),
 		new message_info(231, "WIND_COV", 105, 40, 40, typeof( mavlink_wind_cov_t )),
@@ -3728,23 +3728,19 @@ AOA_SSA = 11020,
     
     };
 
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 44)]
-    public struct mavlink_vwp_t
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 36)]
+    ///<summary> Head Wind Waypoints</summary>
+    public struct mavlink_hwp_t
     {
-        /// <summary> Coordinates of first vwp </summary>
+        /// <summary> Coordinates of first hwp </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float vwp1;
-        /// <summary> Coordinates of second vwp </summary>
+        public float hwp1;
+        /// <summary> Coordinates of second hwp </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float vwp2;
-        /// <summary> Coordinates of third vwp </summary>
+        public float hwp2;
+        /// <summary> Coordinates of third hwp </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float vwp3;
-        /// <summary> Wind direction used for calculating VWP </summary>
-        public Single wind_dir;
-        /// <summary> Wind speed used for calculating VWP </summary>
-        public Single wind_spd;
-
+        public float hwp3;
     };
 
 
