@@ -1370,10 +1370,13 @@
     
     <!-- HWP definition -->
     <message id="238" name="HWP">
-      <description>Head Wind Waypoints coordinates to be displayed</description>
-      <field name="hwp1" type="float[3]">Coordinates of first hwp</field>
-      <field name="hwp2" type="float[3]">Coordinates of second hwp</field>
-      <field name="hwp3" type="float[3]">Coordinates of third hwp</field>
+      <description>Headwind WP</description>
+      <field type="int32_t" name="hwp1_lat">HWP1 Lat</field>
+      <field type="int32_t" name="hwp1_lng">HWP1 Lng</field>
+      <field type="int32_t" name="hwp2_lat">HWP2 Lat</field>
+      <field type="int32_t" name="hwp2_lng">HWP2 Lng</field>
+      <field type="int32_t" name="hwp3_lat">HWP3 Lat</field>
+      <field type="int32_t" name="hwp3_lng">HWP3 Lng</field>
     </message>
     
     <!-- ardupilot specific mavlink2 messages starting at 11000-->
