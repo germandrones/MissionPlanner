@@ -204,10 +204,7 @@ public partial class MAVLink
 		new message_info(218, "GOPRO_SET_REQUEST", 17, 7, 7, typeof( mavlink_gopro_set_request_t )),
 		new message_info(219, "GOPRO_SET_RESPONSE", 162, 2, 2, typeof( mavlink_gopro_set_response_t )),
 		new message_info(226, "RPM", 207, 8, 8, typeof( mavlink_rpm_t )),
-        
-        // VWP Message definition
-        new message_info(236, "VWP", 179, 44, 44, typeof( mavlink_vwp_t )), //TODO: sizes!!!?
-
+        new message_info(238, "HWP", 98, 24, 24, typeof( mavlink_hwp_t )), // HWP Message definition
         new message_info(230, "ESTIMATOR_STATUS", 163, 42, 42, typeof( mavlink_estimator_status_t )),
 		new message_info(231, "WIND_COV", 105, 40, 40, typeof( mavlink_wind_cov_t )),
 		new message_info(232, "GPS_INPUT", 151, 63, 63, typeof( mavlink_gps_input_t )),
@@ -459,7 +456,7 @@ GOPRO_GET_RESPONSE = 217,
 GOPRO_SET_REQUEST = 218,
 GOPRO_SET_RESPONSE = 219,
 RPM = 226,
-VPF = 236, // VPW Message
+HWP = 238, // HWP Message
 ESTIMATOR_STATUS = 230,
 WIND_COV = 231,
 GPS_INPUT = 232,
@@ -3728,23 +3725,16 @@ AOA_SSA = 11020,
     
     };
 
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 44)]
-    public struct mavlink_vwp_t
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 24)]
+    ///<summary> Head Wind Waypoints</summary>
+    public struct mavlink_hwp_t
     {
-        /// <summary> Coordinates of first vwp </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float vwp1;
-        /// <summary> Coordinates of second vwp </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float vwp2;
-        /// <summary> Coordinates of third vwp </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float vwp3;
-        /// <summary> Wind direction used for calculating VWP </summary>
-        public Single wind_dir;
-        /// <summary> Wind speed used for calculating VWP </summary>
-        public Single wind_spd;
-
+        public int hwp1_lat;
+        public int hwp1_lng;
+        public int hwp2_lat;
+        public int hwp2_lng;
+        public int hwp3_lat;
+        public int hwp3_lng;
     };
 
 

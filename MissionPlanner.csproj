@@ -5,12 +5,12 @@
     <ApplicationIcon>mpdesktop.ico</ApplicationIcon>
     <OutputType>Exe</OutputType>
     <StartupObject></StartupObject>
-    <Authors>Michael Oborne</Authors>
+    <Authors>Germandrones GmbH</Authors>
     <Version>1.3.52</Version>
     <DebugType>full</DebugType>
-    <Company>Michael Oborne</Company>
+    <Company>Germandrones GmbH</Company>
     <Product>Mission Planner</Product>
-    <Description>Mission Planner ground control station for ardupilot</Description>
+    <Description>Mission Planner ground control station</Description>
     <Copyright>Copyright © Michael Oborne 2010-2017</Copyright>
     <AssemblyVersion>1.3.52.1</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>

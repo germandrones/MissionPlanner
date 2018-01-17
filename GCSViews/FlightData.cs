@@ -116,6 +116,13 @@ namespace MissionPlanner.GCSViews
         bool outputwindowstarted;
 
 
+        // HeadWind Waypoints
+        bool  gotHWP = false;
+        float hwp1_lat, hwp1_lng;
+        float hwp2_lat, hwp2_lng;
+        float hwp3_lat, hwp3_lng;
+
+
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (CurrentGMapMarker == null || !(CurrentGMapMarker is GMapMarkerPOI))
@@ -1071,6 +1078,23 @@ namespace MissionPlanner.GCSViews
                     // update map
                     if (tracklast.AddSeconds(1.2) < DateTime.Now)
                     {
+
+                        // Check if HWP points are already generated and received
+                        if (MainV2.comPort.MAV.cs.gotHWP)
+                        {
+                            // Visualize the HWP points on the map
+                            gotHWP = MainV2.comPort.MAV.cs.gotHWP; //true
+
+                            hwp1_lat = MainV2.comPort.MAV.cs.hwp1_lat;
+                            hwp1_lng = MainV2.comPort.MAV.cs.hwp1_lng;
+
+                            hwp2_lat = MainV2.comPort.MAV.cs.hwp2_lat;
+                            hwp2_lng = MainV2.comPort.MAV.cs.hwp2_lng;
+
+                            hwp3_lat = MainV2.comPort.MAV.cs.hwp3_lat;
+                            hwp3_lng = MainV2.comPort.MAV.cs.hwp3_lng;
+                        }
+
                         // show disable joystick button
                         if (MainV2.joystick != null && MainV2.joystick.enabled)
                         {
@@ -1096,132 +1120,29 @@ namespace MissionPlanner.GCSViews
                         gMapControl1.HoldInvalidation = true;
 
                         int numTrackLength = Settings.Instance.GetInt32("NUM_tracklength");
+                        
                         // maintain route history length
                         if (route.Points.Count > numTrackLength)
                         {
-                            route.Points.RemoveRange(0,
-                                route.Points.Count - numTrackLength);
+                            route.Points.RemoveRange(0, route.Points.Count - numTrackLength);
                         }
+
                         // add new route point
                         if (MainV2.comPort.MAV.cs.lat != 0 && MainV2.comPort.MAV.cs.lng != 0)
                         {
                             route.Points.Add(currentloc);
                         }
 
-                        if (!this.IsHandleCreated)
-                            continue;
+                        if (!this.IsHandleCreated) continue;
 
                         updateRoutePosition();
+
 
                         // update programed wp course
                         if (waypoints.AddSeconds(5) < DateTime.Now)
                         {
-                            //Console.WriteLine("Doing FD WP's");
-                            updateClearMissionRouteMarkers();
-
-                            float dist = 0;
-                            float travdist = 0;
-                            distanceBar1.ClearWPDist();
-                            MAVLink.mavlink_mission_item_t lastplla = new MAVLink.mavlink_mission_item_t();
-                            MAVLink.mavlink_mission_item_t home = new MAVLink.mavlink_mission_item_t();
-
-                            foreach (MAVLink.mavlink_mission_item_t plla in MainV2.comPort.MAV.wps.Values)
-                            {
-                                if (plla.x == 0 || plla.y == 0)
-                                    continue;
-
-                                if (plla.command == (ushort)MAVLink.MAV_CMD.DO_SET_ROI)
-                                {
-                                    addpolygonmarkerred(plla.seq.ToString(), plla.y, plla.x, (int) plla.z, Color.Red,
-                                        routes);
-                                    continue;
-                                }
-
-                                //HWP POINTS Visualization?
-                                //if (plla.command == (ushort)MAVLink.MAV_CMD.DO_SET_ROI) { }
-
-                                string tag = plla.seq.ToString();
-                                if (plla.seq == 0 && plla.current != 2)
-                                {
-                                    tag = "Home";
-                                    home = plla;
-                                }
-                                if (plla.current == 2)
-                                {
-                                    continue;
-                                }
-
-                                if (lastplla.command == 0)
-                                    lastplla = plla;
-
-                                try
-                                {
-                                    dist =
-                                        (float)
-                                            new PointLatLngAlt(plla.x, plla.y).GetDistance(new PointLatLngAlt(
-                                                lastplla.x, lastplla.y));
-
-                                    distanceBar1.AddWPDist(dist);
-
-                                    if (plla.seq <= MainV2.comPort.MAV.cs.wpno)
-                                    {
-                                        travdist += dist;
-                                    }
-
-                                    lastplla = plla;
-                                }
-                                catch
-                                {
-                                }
-
-                                addpolygonmarker(tag, plla.y, plla.x, (int) plla.z, Color.White, polygons);
-                            }
-
-                            try
-                            {
-                                //dist = (float)new PointLatLngAlt(home.x, home.y).GetDistance(new PointLatLngAlt(lastplla.x, lastplla.y));
-                                // distanceBar1.AddWPDist(dist);
-                            }
-                            catch
-                            {
-                            }
-
-                            travdist -= MainV2.comPort.MAV.cs.wp_dist;
-
-                            if (MainV2.comPort.MAV.cs.mode.ToUpper() == "AUTO")
-                                distanceBar1.traveleddist = travdist;
-
-                            RegeneratePolygon();
-
-                            // update rally points
-
-                            rallypointoverlay.Markers.Clear();
-
-                            foreach (var mark in MainV2.comPort.MAV.rallypoints.Values)
-                            {
-                                rallypointoverlay.Markers.Add(new GMapMarkerRallyPt(mark));
-                            }
-
-                            // optional on Flight data
-                            if (MainV2.ShowAirports)
-                            {
-                                // airports
-                                foreach (var item in Airports.getAirports(gMapControl1.Position).ToArray())
-                                {
-                                    try
-                                    {
-                                        rallypointoverlay.Markers.Add(new GMapMarkerAirport(item)
-                                        {
-                                            ToolTipText = item.Tag,
-                                            ToolTipMode = MarkerTooltipMode.OnMouseOver
-                                        });
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        log.Error(e);
-                                    }
-                                }
-                            }
+                            update_map();
+                            
                             waypoints = DateTime.Now;
                         }
 
@@ -1270,7 +1191,6 @@ namespace MissionPlanner.GCSViews
                                     }
                                 }
                             }
-
                             
                             // cleanup old - no markers where added, so remove all old 
                             if (MainV2.comPort.MAV.camerapoints.Count == 0)
@@ -1441,6 +1361,121 @@ namespace MissionPlanner.GCSViews
             }
             Console.WriteLine("FD Main loop exit");
         }
+
+
+        private void update_map()
+        {
+            updateClearMissionRouteMarkers();
+
+            float dist = 0;
+            float travdist = 0;
+            distanceBar1.ClearWPDist();
+            MAVLink.mavlink_mission_item_t lastplla = new MAVLink.mavlink_mission_item_t();
+            MAVLink.mavlink_mission_item_t home = new MAVLink.mavlink_mission_item_t();
+
+            foreach (MAVLink.mavlink_mission_item_t plla in MainV2.comPort.MAV.wps.Values)
+            {
+                if (plla.x == 0 || plla.y == 0)
+                    continue;
+
+                if (plla.command == (ushort)MAVLink.MAV_CMD.DO_SET_ROI)
+                {
+                    addpolygonmarkerred(plla.seq.ToString(), plla.y, plla.x, (int)plla.z, Color.Red, routes);
+                    continue;
+                }
+
+                string tag = plla.seq.ToString();
+
+                if (plla.seq == 0 && plla.current != 2)
+                {
+                    tag = "Home";
+                    home = plla;
+                }
+
+                if (plla.current == 2)
+                {
+                    continue;
+                }
+
+                if (lastplla.command == 0) lastplla = plla;
+
+                try
+                {
+                    dist =
+                        (float)
+                            new PointLatLngAlt(plla.x, plla.y).GetDistance(new PointLatLngAlt(
+                                lastplla.x, lastplla.y));
+
+                    distanceBar1.AddWPDist(dist);
+
+                    if (plla.seq <= MainV2.comPort.MAV.cs.wpno)
+                    {
+                        travdist += dist;
+                    }
+
+                    lastplla = plla;
+                }
+                catch
+                {
+                }
+
+                // HWP Points received?
+                if (gotHWP)
+                {
+                    addpolygonmarkerNoTooltip("HWP1", hwp1_lng, hwp1_lat, 0, Color.Red, polygons);
+                    addpolygonmarkerNoTooltip("HWP2", hwp2_lng, hwp2_lat, 0, Color.Red, polygons);
+                    addpolygonmarkerNoTooltip("HWP3", hwp3_lng, hwp3_lat, 0, Color.Red, polygons);
+                }
+
+                addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons);
+            }
+
+            try
+            {
+                //dist = (float)new PointLatLngAlt(home.x, home.y).GetDistance(new PointLatLngAlt(lastplla.x, lastplla.y));
+                // distanceBar1.AddWPDist(dist);
+            }
+            catch
+            {
+            }
+
+            travdist -= MainV2.comPort.MAV.cs.wp_dist;
+
+            if (MainV2.comPort.MAV.cs.mode.ToUpper() == "AUTO")
+                distanceBar1.traveleddist = travdist;
+
+            RegeneratePolygon();
+
+            // update rally points
+
+            rallypointoverlay.Markers.Clear();
+
+            foreach (var mark in MainV2.comPort.MAV.rallypoints.Values)
+            {
+                rallypointoverlay.Markers.Add(new GMapMarkerRallyPt(mark));
+            }
+
+            if (MainV2.ShowAirports)
+            {
+                // airports
+                foreach (var item in Airports.getAirports(gMapControl1.Position).ToArray())
+                {
+                    try
+                    {
+                        rallypointoverlay.Markers.Add(new GMapMarkerAirport(item)
+                        {
+                            ToolTipText = item.Tag,
+                            ToolTipMode = MarkerTooltipMode.OnMouseOver
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        log.Error(e);
+                    }
+                }
+            }
+        }
+
 
         private double ConvertToDouble(object input)
         {
@@ -1749,7 +1784,7 @@ namespace MissionPlanner.GCSViews
         // This function is just copy-and-paste of the addpolygonmarker, but without showing the tooltip on the virtual waypoints
         private void addpolygonmarkerNoTooltip(string tag, double lng, double lat, int alt, Color? color, GMapOverlay overlay)
         {
-            /*try
+            try
             {
                 PointLatLng point = new PointLatLng(lat, lng);
                 GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.red);
@@ -1762,7 +1797,7 @@ namespace MissionPlanner.GCSViews
                     mBorders.InnerMarker = m;
                     try
                     {
-                        mBorders.wprad = (int)(float.Parse(MainV2.config["TXT_WPRad"].ToString()) / CurrentState.multiplierdist);
+                        mBorders.wprad = (int)(20 / CurrentState.multiplierdist);
                     }
                     catch
                     {
@@ -1774,11 +1809,10 @@ namespace MissionPlanner.GCSViews
                 }
 
                 overlay.Markers.Add(m);
-                // overlay.Markers.Add(mBorders);
             }
             catch (Exception)
             {
-            }*/
+            }
         }
 
 
@@ -4588,9 +4622,15 @@ namespace MissionPlanner.GCSViews
             MainV2.comPort.sendPacket(go, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
         }
 
+        private void VWP_Timer_Tick(object sender, EventArgs e)
+        {
+
+        }
+
 
 
         // DRAW VWP
+        /*
         private bool foundMessageStart = false;
 
         private void VWP_Timer_Tick(object sender, EventArgs e)
@@ -4652,7 +4692,8 @@ namespace MissionPlanner.GCSViews
                     Console.WriteLine("Not able to draw the VWPs:" + ex);
                 }
             });
-        }
+        }*/
+
     }
 }
  

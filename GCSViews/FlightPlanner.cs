@@ -5288,6 +5288,66 @@ namespace MissionPlanner.GCSViews
             }
         }
 
+        private void newFeaturePointToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //Ask for radius, default radius is 50 meters
+            /*string RadiusIn = "50";
+            if (DialogResult.Cancel == InputBox.Show("Radius", "Radius", ref RadiusIn))
+                return;*/
+
+            int Points = 6;
+            int Radius = 50;
+            int startangle = 0;
+
+            // Check user parameters
+            //if (!int.TryParse(RadiusIn, out Radius)){ CustomMessageBox.Show("Bad Radius"); return; }
+
+            Radius = (int)(Radius / CurrentState.multiplierdist);
+
+            double a = startangle;
+            double step = 360.0f / Points;
+
+            quickadd = true;
+
+            // mouse click point
+            double m_lat = MouseDownEnd.Lat;
+            double m_lng = MouseDownEnd.Lng;
+
+            double m_lat_rad = m_lat * MathHelper.deg2rad;
+            double m_lng_rad = m_lng * MathHelper.deg2rad;
+
+            for (; a <= (startangle + 360) && a >= 0; a += step)
+            {
+                selectedrow = Commands.Rows.Add();
+                Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.WAYPOINT.ToString();
+                ChangeColumnHeader(MAVLink.MAV_CMD.WAYPOINT.ToString());
+
+                float d = Radius;
+                float R = 6371000;
+
+
+                var lat2 = Math.Asin(
+                    Math.Sin(m_lat_rad) * Math.Cos(d / R) + 
+                    Math.Cos(m_lat_rad) * Math.Sin(d / R) *
+                    Math.Cos(a * MathHelper.deg2rad)
+                    );
+
+                var lon2 = m_lng_rad + 
+                    Math.Atan2( Math.Sin(a * MathHelper.deg2rad) * Math.Sin(d / R) * Math.Cos(m_lat_rad), 
+                    Math.Cos(d / R) - Math.Sin(m_lat_rad) * Math.Sin(lat2));
+
+
+
+                PointLatLng pll = new PointLatLng(lat2 * MathHelper.rad2deg, lon2 * MathHelper.rad2deg);
+                setfromMap(pll.Lat, pll.Lng, (int)float.Parse(TXT_DefaultAlt.Text));
+            }
+
+            quickadd = false;
+            writeKML();
+
+        }
+
+
         private void createWpCircleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string RadiusIn = "50";
@@ -7348,5 +7408,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
         {
             elevationGraphToolStripMenuItem_Click(sender, e);
         }
+
+        
     }
 }
