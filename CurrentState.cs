@@ -1871,21 +1871,25 @@ namespace MissionPlanner
                     }
 
                     // HWP Points Messages
-                    mavLinkMessage = MAV.getPacket((uint)MAVLink.MAVLINK_MSG_ID.HWP);
-                    if (mavLinkMessage != null)
+                    if (!gotHWP)
                     {
-                        var hwp_points = mavLinkMessage.ToStructure<MAVLink.mavlink_hwp_t>();
+                        // we need to get the HWP only once of they were sent us
+                        mavLinkMessage = MAV.getPacket((uint)MAVLink.MAVLINK_MSG_ID.HWP);
+                        if (mavLinkMessage != null)
+                        {
+                            var hwp_points = mavLinkMessage.ToStructure<MAVLink.mavlink_hwp_t>();
 
-                        hwp1_lat = (float)(hwp_points.hwp1_lat * 0.0000001f);
-                        hwp1_lng = (float)(hwp_points.hwp1_lng * 0.0000001f);
+                            hwp1_lat = (float)(hwp_points.hwp1_lat * 0.0000001f);
+                            hwp1_lng = (float)(hwp_points.hwp1_lng * 0.0000001f);
 
-                        hwp2_lat = (float)(hwp_points.hwp2_lat * 0.0000001f);
-                        hwp2_lng = (float)(hwp_points.hwp2_lng * 0.0000001f);
+                            hwp2_lat = (float)(hwp_points.hwp2_lat * 0.0000001f);
+                            hwp2_lng = (float)(hwp_points.hwp2_lng * 0.0000001f);
 
-                        hwp3_lat = (float)(hwp_points.hwp3_lat * 0.0000001f);
-                        hwp3_lng = (float)(hwp_points.hwp3_lng * 0.0000001f);
+                            hwp3_lat = (float)(hwp_points.hwp3_lat * 0.0000001f);
+                            hwp3_lng = (float)(hwp_points.hwp3_lng * 0.0000001f);
 
-                        gotHWP = true;
+                            gotHWP = true;
+                        }
                     }
 
 

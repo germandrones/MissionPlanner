@@ -2121,7 +2121,7 @@ namespace MissionPlanner.GCSViews
             if (MainV2.comPort.MAV.cs.armed)
             {
                 MessageBox.Show("UAV is Armed! Mission can't be uploaded!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                //return;
             }
 
             if ((altmode)CMB_altmode.SelectedValue == altmode.Absolute)
