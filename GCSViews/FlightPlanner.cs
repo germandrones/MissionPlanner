@@ -5300,13 +5300,6 @@ namespace MissionPlanner.GCSViews
             return (MathHelper.rad2deg * (Math.Atan2(y, x)) + 360) % 360;
         }
 
-        private void newFeaturePointToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            
-
-        }
-
-
         private void createWpCircleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string RadiusIn = "50";
@@ -7398,6 +7391,15 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             double circle_step = 360.0f / Points;
             double mp_lat = MouseDownEnd.Lat;
             double mp_lng = MouseDownEnd.Lng;
+
+            // put DO_SET_ROI before 8 shape
+            selectedrow = Commands.Rows.Add();
+            Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.DO_SET_ROI.ToString();
+            ChangeColumnHeader(MAVLink.MAV_CMD.DO_SET_ROI.ToString());
+            Commands.Rows[selectedrow].Cells[Lat.Index].Value = mp_lat.ToString();
+            Commands.Rows[selectedrow].Cells[Lon.Index].Value = mp_lng.ToString();
+
+
             int index_of_repeatPosition = Commands.Rows.Count + 2; //Skip initial waypoint of 8 shape
 
             #region orientation of 8 shape
