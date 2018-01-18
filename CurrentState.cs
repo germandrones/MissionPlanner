@@ -1464,8 +1464,7 @@ namespace MissionPlanner
             UpdateCurrentSettings(bs, updatenow, mavinterface, mavinterface.MAV);
         }
 
-        public void UpdateCurrentSettings(System.Windows.Forms.BindingSource bs, bool updatenow,
-            MAVLinkInterface mavinterface, MAVState MAV)
+        public void UpdateCurrentSettings(System.Windows.Forms.BindingSource bs, bool updatenow, MAVLinkInterface mavinterface, MAVState MAV)
         {
             lock (this)
             {
@@ -1564,7 +1563,6 @@ namespace MissionPlanner
                     }
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.AUTOPILOT_VERSION);
-
                     if (mavLinkMessage != null)
                     {
                         var version = mavLinkMessage.ToStructure<MAVLink.mavlink_autopilot_version_t>();
@@ -1592,7 +1590,6 @@ namespace MissionPlanner
                     }
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.FENCE_STATUS);
-
                     if (mavLinkMessage != null)
                     {
                         var fence = mavLinkMessage.ToStructure<MAVLink.mavlink_fence_status_t>();
@@ -1608,7 +1605,6 @@ namespace MissionPlanner
                     }
 
                     mavLinkMessage = MAV.getPacket((uint)MAVLink.MAVLINK_MSG_ID.HIGH_LATENCY);
-
                     if (mavLinkMessage != null)
                     {
                         var highlatency = mavLinkMessage.ToStructure<MAVLink.mavlink_high_latency_t>();
@@ -1664,7 +1660,6 @@ namespace MissionPlanner
                     }
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.HIL_CONTROLS);
-
                     if (mavLinkMessage != null) // hil mavlink 0.9 and 1.0
                     {
                         var hil = mavLinkMessage.ToStructure<MAVLink.mavlink_hil_controls_t>();
@@ -1678,7 +1673,6 @@ namespace MissionPlanner
                     }
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.OPTICAL_FLOW);
-
                     if (mavLinkMessage != null)
                     {
                         var optflow = mavLinkMessage.ToStructure<MAVLink.mavlink_optical_flow_t>();
@@ -1691,7 +1685,6 @@ namespace MissionPlanner
                     }
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.MOUNT_STATUS);
-
                     if (mavLinkMessage != null)
                     {
                         var status = mavLinkMessage.ToStructure<MAVLink.mavlink_mount_status_t>();
@@ -1702,7 +1695,6 @@ namespace MissionPlanner
                     }
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.VIBRATION);
-
                     if (mavLinkMessage != null)
                     {
                         var vibe = mavLinkMessage.ToStructure<MAVLink.mavlink_vibration_t>();
@@ -1716,7 +1708,6 @@ namespace MissionPlanner
                     }
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.AIRSPEED_AUTOCAL);
-
                     if (mavLinkMessage != null)
                     {
                         var asac = mavLinkMessage.ToStructure<MAVLink.mavlink_airspeed_autocal_t>();
@@ -1725,7 +1716,6 @@ namespace MissionPlanner
                     }
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.SYSTEM_TIME);
-
                     if (mavLinkMessage != null)
                     {
                         var systime = mavLinkMessage.ToStructure<MAVLink.mavlink_system_time_t>();
@@ -1743,7 +1733,6 @@ namespace MissionPlanner
                     }
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.HWSTATUS);
-
                     if (mavLinkMessage != null)
                     {
                         var hwstatus = mavLinkMessage.ToStructure<MAVLink.mavlink_hwstatus_t>();
@@ -1858,7 +1847,6 @@ namespace MissionPlanner
                         }
                     }
 
-
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.WIND);
                     if (mavLinkMessage != null)
                     {
@@ -1870,28 +1858,23 @@ namespace MissionPlanner
                         wind_vel = wind.speed*multiplierspeed;
                     }
 
-                    // HWP Points Messages
-                    if (!gotHWP)
+                    mavLinkMessage = MAV.getPacket((uint)MAVLink.MAVLINK_MSG_ID.HWP);
+                    if (mavLinkMessage != null)
                     {
-                        // we need to get the HWP only once of they were sent us
-                        mavLinkMessage = MAV.getPacket((uint)MAVLink.MAVLINK_MSG_ID.HWP);
-                        if (mavLinkMessage != null)
-                        {
-                            var hwp_points = mavLinkMessage.ToStructure<MAVLink.mavlink_hwp_t>();
+                        var hwp_points = mavLinkMessage.ToStructure<MAVLink.mavlink_hwp_t>();
 
-                            hwp1_lat = (float)(hwp_points.hwp1_lat * 0.0000001f);
-                            hwp1_lng = (float)(hwp_points.hwp1_lng * 0.0000001f);
+                        hwp1_lat = (float)(hwp_points.hwp1_lat * 0.0000001f);
+                        hwp1_lng = (float)(hwp_points.hwp1_lng * 0.0000001f);
 
-                            hwp2_lat = (float)(hwp_points.hwp2_lat * 0.0000001f);
-                            hwp2_lng = (float)(hwp_points.hwp2_lng * 0.0000001f);
+                        hwp2_lat = (float)(hwp_points.hwp2_lat * 0.0000001f);
+                        hwp2_lng = (float)(hwp_points.hwp2_lng * 0.0000001f);
 
-                            hwp3_lat = (float)(hwp_points.hwp3_lat * 0.0000001f);
-                            hwp3_lng = (float)(hwp_points.hwp3_lng * 0.0000001f);
+                        hwp3_lat = (float)(hwp_points.hwp3_lat * 0.0000001f);
+                        hwp3_lng = (float)(hwp_points.hwp3_lng * 0.0000001f);
 
-                            gotHWP = true;
-                        }
+                        gotHWP = true;
+                        MAV.clearPacket((uint)MAVLink.MAVLINK_MSG_ID.HWP);
                     }
-
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.HEARTBEAT);
                     if (mavLinkMessage != null)
@@ -1961,7 +1944,6 @@ namespace MissionPlanner
                             }
                         }
                     }
-
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.SYS_STATUS);
                     if (mavLinkMessage != null)
@@ -2148,7 +2130,6 @@ namespace MissionPlanner
                     }
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.ATTITUDE);
-
                     if (mavLinkMessage != null)
                     {
                         var att = mavLinkMessage.ToStructure<MAVLink.mavlink_attitude_t>();
@@ -2291,7 +2272,6 @@ namespace MissionPlanner
                     }
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.NAV_CONTROLLER_OUTPUT);
-
                     if (mavLinkMessage != null)
                     {
                         var nav = mavLinkMessage.ToStructure<MAVLink.mavlink_nav_controller_output_t>();
@@ -2309,7 +2289,6 @@ namespace MissionPlanner
                     }
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.RPM);
-
                     if (mavLinkMessage != null)
                     {
                         var rpm = mavLinkMessage.ToStructure<MAVLink.mavlink_rpm_t>();
@@ -2468,7 +2447,6 @@ namespace MissionPlanner
                         my2 = imu2.ymag;
                         mz2 = imu2.zmag;
                     }
-
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.SCALED_IMU3);
                     if (mavLinkMessage != null)

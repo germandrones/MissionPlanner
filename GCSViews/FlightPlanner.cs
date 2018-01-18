@@ -2121,7 +2121,7 @@ namespace MissionPlanner.GCSViews
             if (MainV2.comPort.MAV.cs.armed)
             {
                 MessageBox.Show("UAV is Armed! Mission can't be uploaded!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                //return;
+                return;
             }
 
             if ((altmode)CMB_altmode.SelectedValue == altmode.Absolute)
@@ -5295,8 +5295,25 @@ namespace MissionPlanner.GCSViews
             if (DialogResult.Cancel == InputBox.Show("Radius", "Radius", ref RadiusIn))
                 return;*/
 
-            int Points = 6;
+            // point where mouse clicked:
+            double m_lat = MouseDownEnd.Lat;
+            double m_lng = MouseDownEnd.Lng;
+
+            // circle radius
             int Radius = 50;
+
+            // find the circle center points
+            // https://knowledge.safe.com/articles/725/calculating-accurate-length-in-meters-for-lat-long.html
+            // Meters per degree Latitude: = 111132.92 - 559.82 * cos(2 * rlat) + 1.175 * cos(4 * rlat)
+            // at 50 degrees lat = rlat = 50 * pi / 180 = 0.872665 rads
+
+
+            var plla = new PointLatLngAlt(m_lat, m_lng).gps_offset(50,0);
+            m_lat = plla.Lat;
+            m_lng = plla.Lng;
+
+            int Points = 6;
+            
             int startangle = 0;
 
             // Check user parameters
@@ -5309,9 +5326,7 @@ namespace MissionPlanner.GCSViews
 
             quickadd = true;
 
-            // mouse click point
-            double m_lat = MouseDownEnd.Lat;
-            double m_lng = MouseDownEnd.Lng;
+            
 
             double m_lat_rad = m_lat * MathHelper.deg2rad;
             double m_lng_rad = m_lng * MathHelper.deg2rad;
