@@ -194,6 +194,7 @@ namespace MissionPlanner.GCSViews
             this.autoWPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createWpCircleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createSplineCircleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.create8ShapeSurveyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.areaToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.textToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createCircleSurveyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -222,7 +223,6 @@ namespace MissionPlanner.GCSViews
             this.enterUTMCoordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.switchDockingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setHomeHereToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newFeaturePointToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.trackBar1 = new MissionPlanner.Controls.MyTrackBar();
             this.label11 = new System.Windows.Forms.Label();
             this.panelBASE = new System.Windows.Forms.Panel();
@@ -1008,8 +1008,7 @@ namespace MissionPlanner.GCSViews
             this.modifyAltToolStripMenuItem,
             this.enterUTMCoordToolStripMenuItem,
             this.switchDockingToolStripMenuItem,
-            this.setHomeHereToolStripMenuItem,
-            this.newFeaturePointToolStripMenuItem});
+            this.setHomeHereToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             resources.ApplyResources(this.contextMenuStrip1, "contextMenuStrip1");
             this.contextMenuStrip1.Closed += new System.Windows.Forms.ToolStripDropDownClosedEventHandler(this.contextMenuStrip1_Closed);
@@ -1284,6 +1283,7 @@ namespace MissionPlanner.GCSViews
             this.autoWPToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.createWpCircleToolStripMenuItem,
             this.createSplineCircleToolStripMenuItem,
+            this.create8ShapeSurveyToolStripMenuItem,
             this.areaToolStripMenuItem1,
             this.textToolStripMenuItem,
             this.createCircleSurveyToolStripMenuItem,
@@ -1302,6 +1302,12 @@ namespace MissionPlanner.GCSViews
             this.createSplineCircleToolStripMenuItem.Name = "createSplineCircleToolStripMenuItem";
             resources.ApplyResources(this.createSplineCircleToolStripMenuItem, "createSplineCircleToolStripMenuItem");
             this.createSplineCircleToolStripMenuItem.Click += new System.EventHandler(this.createSplineCircleToolStripMenuItem_Click);
+            // 
+            // create8ShapeSurveyToolStripMenuItem
+            // 
+            this.create8ShapeSurveyToolStripMenuItem.Name = "create8ShapeSurveyToolStripMenuItem";
+            resources.ApplyResources(this.create8ShapeSurveyToolStripMenuItem, "create8ShapeSurveyToolStripMenuItem");
+            this.create8ShapeSurveyToolStripMenuItem.Click += new System.EventHandler(this.create8ShapeSurveyToolStripMenuItem_Click);
             // 
             // areaToolStripMenuItem1
             // 
@@ -1486,12 +1492,6 @@ namespace MissionPlanner.GCSViews
             this.setHomeHereToolStripMenuItem.Name = "setHomeHereToolStripMenuItem";
             resources.ApplyResources(this.setHomeHereToolStripMenuItem, "setHomeHereToolStripMenuItem");
             this.setHomeHereToolStripMenuItem.Click += new System.EventHandler(this.setHomeHereToolStripMenuItem_Click);
-            // 
-            // newFeaturePointToolStripMenuItem
-            // 
-            this.newFeaturePointToolStripMenuItem.Name = "newFeaturePointToolStripMenuItem";
-            resources.ApplyResources(this.newFeaturePointToolStripMenuItem, "newFeaturePointToolStripMenuItem");
-            this.newFeaturePointToolStripMenuItem.Click += new System.EventHandler(this.newFeaturePointToolStripMenuItem_Click);
             // 
             // trackBar1
             // 
@@ -1738,6 +1738,6 @@ namespace MissionPlanner.GCSViews
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox TXT_minLandingAltitude;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.ToolStripMenuItem newFeaturePointToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem create8ShapeSurveyToolStripMenuItem;
     }
 }

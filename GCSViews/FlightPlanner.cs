@@ -5288,77 +5288,21 @@ namespace MissionPlanner.GCSViews
             }
         }
 
+        private double GetBearing(PointLatLng p1, PointLatLng p2)
+        {
+            var latitude1 = p1.Lat * MathHelper.deg2rad;
+            var latitude2 = p2.Lat * MathHelper.deg2rad;
+            var longitudeDifference = (p2.Lng - p1.Lng) * MathHelper.deg2rad;
+
+            var y = Math.Sin(longitudeDifference) * Math.Cos(latitude2);
+            var x = Math.Cos(latitude1) * Math.Sin(latitude2) - Math.Sin(latitude1) * Math.Cos(latitude2) * Math.Cos(longitudeDifference);
+
+            return (MathHelper.rad2deg * (Math.Atan2(y, x)) + 360) % 360;
+        }
+
         private void newFeaturePointToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //Ask for radius, default radius is 50 meters
-            /*string RadiusIn = "50";
-            if (DialogResult.Cancel == InputBox.Show("Radius", "Radius", ref RadiusIn))
-                return;*/
-
-            // point where mouse clicked:
-            double m_lat = MouseDownEnd.Lat;
-            double m_lng = MouseDownEnd.Lng;
-
-            // circle radius
-            int Radius = 50;
-
-            // find the circle center points
-            // https://knowledge.safe.com/articles/725/calculating-accurate-length-in-meters-for-lat-long.html
-            // Meters per degree Latitude: = 111132.92 - 559.82 * cos(2 * rlat) + 1.175 * cos(4 * rlat)
-            // at 50 degrees lat = rlat = 50 * pi / 180 = 0.872665 rads
-
-
-            var plla = new PointLatLngAlt(m_lat, m_lng).gps_offset(50,0);
-            m_lat = plla.Lat;
-            m_lng = plla.Lng;
-
-            int Points = 6;
             
-            int startangle = 0;
-
-            // Check user parameters
-            //if (!int.TryParse(RadiusIn, out Radius)){ CustomMessageBox.Show("Bad Radius"); return; }
-
-            Radius = (int)(Radius / CurrentState.multiplierdist);
-
-            double a = startangle;
-            double step = 360.0f / Points;
-
-            quickadd = true;
-
-            
-
-            double m_lat_rad = m_lat * MathHelper.deg2rad;
-            double m_lng_rad = m_lng * MathHelper.deg2rad;
-
-            for (; a <= (startangle + 360) && a >= 0; a += step)
-            {
-                selectedrow = Commands.Rows.Add();
-                Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.WAYPOINT.ToString();
-                ChangeColumnHeader(MAVLink.MAV_CMD.WAYPOINT.ToString());
-
-                float d = Radius;
-                float R = 6371000;
-
-
-                var lat2 = Math.Asin(
-                    Math.Sin(m_lat_rad) * Math.Cos(d / R) + 
-                    Math.Cos(m_lat_rad) * Math.Sin(d / R) *
-                    Math.Cos(a * MathHelper.deg2rad)
-                    );
-
-                var lon2 = m_lng_rad + 
-                    Math.Atan2( Math.Sin(a * MathHelper.deg2rad) * Math.Sin(d / R) * Math.Cos(m_lat_rad), 
-                    Math.Cos(d / R) - Math.Sin(m_lat_rad) * Math.Sin(lat2));
-
-
-
-                PointLatLng pll = new PointLatLng(lat2 * MathHelper.rad2deg, lon2 * MathHelper.rad2deg);
-                setfromMap(pll.Lat, pll.Lng, (int)float.Parse(TXT_DefaultAlt.Text));
-            }
-
-            quickadd = false;
-            writeKML();
 
         }
 
@@ -5508,7 +5452,7 @@ namespace MissionPlanner.GCSViews
 
                 writeKML();
             }
-        }
+        }        
 
         public void Deactivate()
         {
@@ -7424,6 +7368,169 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             elevationGraphToolStripMenuItem_Click(sender, e);
         }
 
-        
+        private void create8ShapeSurveyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            #region user parameters
+            string RadiusIn = "50";
+            if (DialogResult.Cancel == InputBox.Show("Radius", "Radius", ref RadiusIn))
+                return;
+
+            string PointsIn = "6";
+            if (DialogResult.Cancel == InputBox.Show("Points", "Number of points to generate each Circle", ref PointsIn))
+                return;
+
+            string RepeatsIn = "0";
+            if (DialogResult.Cancel == InputBox.Show("Repeats", "Repeat times", ref RepeatsIn))
+                return;
+
+            // User defined parameters:
+            int Radius = 0;
+            int Points = 0;
+            int Repeats = 0;
+
+            if (!int.TryParse(RadiusIn, out Radius)){ CustomMessageBox.Show("Bad Radius value"); return; }
+            if (!int.TryParse(PointsIn, out Points)) { CustomMessageBox.Show("Bad Points value"); return; }
+            if (!int.TryParse(RepeatsIn, out Repeats)) { CustomMessageBox.Show("Bad Repeat value"); return; }
+
+
+            #endregion
+
+            double circle_step = 360.0f / Points;
+            double mp_lat = MouseDownEnd.Lat;
+            double mp_lng = MouseDownEnd.Lng;
+            int index_of_repeatPosition = Commands.Rows.Count + 2; //Skip initial waypoint of 8 shape
+
+            #region orientation of 8 shape
+
+            // get the previous waypoint, if not exists, use homeposition
+            PointLatLngAlt plla_prev = new PointLatLngAlt();
+            bool prevPointFound = false;
+
+            // get back over the mission to find the lates waypoint
+            for (int missionItem = Commands.Rows.Count - 1; missionItem > 0; missionItem--)
+            {
+                if (Commands.Rows[missionItem].Cells[Command.Index].Value.ToString().Contains(MAVLink.MAV_CMD.WAYPOINT.ToString()))
+                {
+                    // Last WP found!
+                    plla_prev.Lat = Convert.ToDouble(Commands.Rows[missionItem].Cells[Lat.Index].Value);
+                    plla_prev.Lng = Convert.ToDouble(Commands.Rows[missionItem].Cells[Lon.Index].Value);
+                    prevPointFound = true;
+                    break;// exit from loop
+                }
+            }
+
+            // use home position if no wp defined
+            if (!prevPointFound)
+            {
+                plla_prev = MainV2.comPort.MAV.cs.HomeLocation;
+            }
+
+            // get bearing angle to define orientation of 8 shape
+            double bearing = GetBearing(plla_prev, new PointLatLng(mp_lat, mp_lng));
+            #endregion
+
+            #region 8-shape centers calculation
+            // calculate new points for the right center
+            PointLatLngAlt plla_right = new PointLatLngAlt(mp_lat, mp_lng).gps_offset(Radius * Math.Cos(bearing * MathHelper.deg2rad), -Radius * Math.Sin(bearing * MathHelper.deg2rad));
+            double start_angle_right = 270 + bearing;
+
+            // calculate new points for the left center of circle
+            PointLatLngAlt plla_left = new PointLatLngAlt(mp_lat, mp_lng).gps_offset(-Radius * Math.Cos(bearing * MathHelper.deg2rad), Radius * Math.Sin(bearing * MathHelper.deg2rad));
+            double start_angle_left = 90 + bearing;
+
+            // conwert to radians
+            double plla_right_lat_rad = plla_right.Lat * MathHelper.deg2rad;
+            double plla_right_lng_rad = plla_right.Lng * MathHelper.deg2rad;
+
+            double plla_left_lat_rad = plla_left.Lat * MathHelper.deg2rad;
+            double plla_left_lng_rad = plla_left.Lng * MathHelper.deg2rad;
+            #endregion
+
+            double a;
+
+            Radius = (int)(Radius / CurrentState.multiplierdist);
+            quickadd = true;
+
+            #region right ear of pattern
+            // Adding the right side of 8 shape
+            a = start_angle_right;
+            for (; a <= (start_angle_right + 360) && a >= 0; a += circle_step)
+            {
+                selectedrow = Commands.Rows.Add();
+                Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.WAYPOINT.ToString();
+                ChangeColumnHeader(MAVLink.MAV_CMD.WAYPOINT.ToString());
+
+                float d = Radius;
+                float R = 6371000;
+
+
+                var lat2 = Math.Asin(
+                    Math.Sin(plla_right_lat_rad) * Math.Cos(d / R) +
+                    Math.Cos(plla_right_lat_rad) * Math.Sin(d / R) *
+                    Math.Cos(a * MathHelper.deg2rad)
+                    );
+
+                var lon2 = plla_right_lng_rad +
+                    Math.Atan2(Math.Sin(a * MathHelper.deg2rad) * Math.Sin(d / R) * Math.Cos(plla_right_lat_rad),
+                    Math.Cos(d / R) - Math.Sin(plla_right_lat_rad) * Math.Sin(lat2));
+
+
+
+                PointLatLng pll = new PointLatLng(lat2 * MathHelper.rad2deg, lon2 * MathHelper.rad2deg);
+                setfromMap(pll.Lat, pll.Lng, (int)float.Parse(TXT_DefaultAlt.Text));
+            }
+            #endregion
+
+            #region left ear of pattern
+            // adding the left side of 8 shape and reverse the circle orientation loop
+            a = start_angle_left;
+            a += 360;
+            circle_step *= -1;
+            int ctr = 0;
+            for (; a <= (start_angle_left + 360) && a >= 0; a += circle_step)
+            {
+                // prevent repeating the points
+                if (ctr == 0 || ctr > Points) { ctr++; continue; } else { ctr++; }
+
+                selectedrow = Commands.Rows.Add();
+                Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.WAYPOINT.ToString();
+                ChangeColumnHeader(MAVLink.MAV_CMD.WAYPOINT.ToString());
+
+                float d = Radius;
+                float R = 6371000;
+
+
+                var lat2 = Math.Asin(
+                    Math.Sin(plla_left_lat_rad) * Math.Cos(d / R) +
+                    Math.Cos(plla_left_lat_rad) * Math.Sin(d / R) *
+                    Math.Cos(a * MathHelper.deg2rad)
+                    );
+
+                var lon2 = plla_left_lng_rad +
+                    Math.Atan2(Math.Sin(a * MathHelper.deg2rad) * Math.Sin(d / R) * Math.Cos(plla_left_lat_rad),
+                    Math.Cos(d / R) - Math.Sin(plla_left_lat_rad) * Math.Sin(lat2));
+
+
+
+                PointLatLng pll = new PointLatLng(lat2 * MathHelper.rad2deg, lon2 * MathHelper.rad2deg);
+                setfromMap(pll.Lat, pll.Lng, (int)float.Parse(TXT_DefaultAlt.Text));
+            }
+            #endregion
+
+            #region Repeats message
+            //do jump setting
+            if (Repeats > 0)
+            {
+                selectedrow = Commands.Rows.Add();
+                Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.DO_JUMP.ToString();
+                ChangeColumnHeader(MAVLink.MAV_CMD.DO_JUMP.ToString());
+                Commands.Rows[selectedrow].Cells[Param1.Index].Value = index_of_repeatPosition.ToString();
+                Commands.Rows[selectedrow].Cells[Param2.Index].Value = Repeats.ToString();
+            }
+            #endregion
+
+            quickadd = false;
+            writeKML();
+        }
     }
 }
