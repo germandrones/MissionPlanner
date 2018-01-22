@@ -9,8 +9,8 @@
     <Version>1.3.52</Version>
     <DebugType>full</DebugType>
     <Company>Germandrones GmbH</Company>
-    <Product>Mission Planner</Product>
-    <Description>Mission Planner ground control station</Description>
+    <Product>GD Ground Control Station</Product>
+    <Description>Germandrones ground control station</Description>
     <Copyright>Copyright © Michael Oborne 2010-2017</Copyright>
     <AssemblyVersion>1.3.52.1</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>

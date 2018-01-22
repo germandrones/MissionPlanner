@@ -60,7 +60,7 @@ namespace MissionPlanner
             static public int SW_HIDE = 0;
         }
 
-        public static menuicons displayicons = new burntkermitmenuicons();
+        public static menuicons displayicons = new highcontrastmenuicons();
 
         public abstract class menuicons
         {
@@ -75,122 +75,6 @@ namespace MissionPlanner
             public abstract Image disconnect { get; }
             public abstract Image bg { get; }
             public abstract Image wizard { get; }
-        }
-
-        public class burntkermitmenuicons : menuicons
-        {
-            public override Image fd
-            {
-                get { return global::MissionPlanner.Properties.Resources.light_flightdata_icon; }
-            }
-
-            public override Image fp
-            {
-                get { return global::MissionPlanner.Properties.Resources.light_flightplan_icon; }
-            }
-
-            public override Image initsetup
-            {
-                get { return global::MissionPlanner.Properties.Resources.light_initialsetup_icon; }
-            }
-
-            public override Image config_tuning
-            {
-                get { return global::MissionPlanner.Properties.Resources.light_tuningconfig_icon; }
-            }
-
-            public override Image sim
-            {
-                get { return global::MissionPlanner.Properties.Resources.light_simulation_icon; }
-            }
-
-            public override Image terminal
-            {
-                get { return global::MissionPlanner.Properties.Resources.light_terminal_icon; }
-            }
-
-            public override Image help
-            {
-                get { return global::MissionPlanner.Properties.Resources.light_help_icon; }
-            }
-           
-            public override Image connect
-            {
-                get { return global::MissionPlanner.Properties.Resources.light_connect_icon; }
-            }
-
-            public override Image disconnect
-            {
-                get { return global::MissionPlanner.Properties.Resources.light_disconnect_icon; }
-            }
-
-            public override Image bg
-            {
-                get { return global::MissionPlanner.Properties.Resources.bgdark; }
-            }
-            public override Image wizard
-            {
-                get { return global::MissionPlanner.Properties.Resources.wizardicon; }
-            }
-        }
-
-        public class menuicons2 : menuicons
-        {
-            public override Image fd
-            {
-                get { return global::MissionPlanner.Properties.Resources.dark_flightdata_icon; }
-            }
-
-            public override Image fp
-            {
-                get { return global::MissionPlanner.Properties.Resources.dark_flightplan_icon; }
-            }
-
-            public override Image initsetup
-            {
-                get { return global::MissionPlanner.Properties.Resources.dark_initialsetup_icon; }
-            }
-
-            public override Image config_tuning
-            {
-                get { return global::MissionPlanner.Properties.Resources.dark_tuningconfig_icon; }
-            }
-
-            public override Image sim
-            {
-                get { return global::MissionPlanner.Properties.Resources.dark_simulation_icon; }
-            }
-
-            public override Image terminal
-            {
-                get { return global::MissionPlanner.Properties.Resources.dark_terminal_icon; }
-            }
-
-            public override Image help
-            {
-                get { return global::MissionPlanner.Properties.Resources.dark_help_icon; }
-            }
-
-            
-            public override Image connect
-            {
-                get { return global::MissionPlanner.Properties.Resources.dark_connect_icon; }
-            }
-
-            public override Image disconnect
-            {
-                get { return global::MissionPlanner.Properties.Resources.dark_disconnect_icon; }
-            }
-
-            public override Image bg
-            {
-                get { return null; }
-            }          
-
-            public override Image wizard
-            {
-                get { return global::MissionPlanner.Properties.Resources.wizardicon; }
-            }
         }
 
         public class highcontrastmenuicons : menuicons
@@ -619,14 +503,8 @@ namespace MissionPlanner
             }
 
             InitializeComponent();
-            try
-            {
-                if(Settings.Instance["theme"] != null)
-                    ThemeManager.SetTheme((ThemeManager.Themes)Enum.Parse(typeof(ThemeManager.Themes), Settings.Instance["theme"]));
-            }
-            catch
-            {
-            }
+
+            
             Utilities.ThemeManager.ApplyThemeTo(this);
             MyView = new MainSwitcher(this);
 
@@ -730,7 +608,9 @@ namespace MissionPlanner
 
 
             // force the default parameters that user not allowed to change
-            if (string.IsNullOrEmpty(Settings.Instance["theme"])) Settings.Instance["theme"] = "Germandrones";
+            Settings.Instance["theme"] = "Germandrones";
+
+            // Default language EN
             if (string.IsNullOrEmpty(Settings.Instance["language"])) Settings.Instance["language"] = "en";
 
 
@@ -760,46 +640,7 @@ namespace MissionPlanner
 
             ChangeUnits();
 
-            if (Settings.Instance["theme"] != null)
-            {
-                try
-                {
-                    ThemeManager.SetTheme(
-                        (ThemeManager.Themes)
-                            Enum.Parse(typeof (ThemeManager.Themes), Settings.Instance["theme"].ToString()));
-                }
-                catch (Exception exception)
-                {
-                    log.Error(exception);
-                }
-
-                if (ThemeManager.CurrentTheme == ThemeManager.Themes.Custom)
-                {
-                    try
-                    {
-                        ThemeManager.BGColor = Color.FromArgb(int.Parse(Settings.Instance["theme_bg"].ToString()));
-                        ThemeManager.ControlBGColor = Color.FromArgb(int.Parse(Settings.Instance["theme_ctlbg"].ToString()));
-                        ThemeManager.TextColor = Color.FromArgb(int.Parse(Settings.Instance["theme_text"].ToString()));
-                        ThemeManager.ButBG = Color.FromArgb(int.Parse(Settings.Instance["theme_butbg"].ToString()));
-                        ThemeManager.ButBorder = Color.FromArgb(int.Parse(Settings.Instance["theme_butbord"].ToString()));
-                    }
-                    catch
-                    {
-                        log.Error("Bad Custom theme - reset to standard");
-                        ThemeManager.SetTheme(ThemeManager.Themes.BurntKermit);
-                    }
-                }
-
-                if (ThemeManager.CurrentTheme == ThemeManager.Themes.HighContrast)
-                {
-                    switchicons(new highcontrastmenuicons());
-                }else if (ThemeManager.CurrentTheme == ThemeManager.Themes.Germandrones)
-                {
-                    // Use black icons on germandrones theme
-                    switchicons(new menuicons2());
-                }
-            }
-
+            switchicons(new highcontrastmenuicons());
             if (Settings.Instance["showairports"] != null)
             {
                 MainV2.ShowAirports = bool.Parse(Settings.Instance["showairports"]);
@@ -1081,10 +922,6 @@ namespace MissionPlanner
 
         public void switchicons(menuicons icons)
         {
-            // dont update if no change
-            if (displayicons.GetType() == icons.GetType())
-                return;
-
             displayicons = icons;
 
             MainMenu.BackColor = SystemColors.MenuBar;
@@ -1109,33 +946,6 @@ namespace MissionPlanner
             MenuTerminal.ForeColor = ThemeManager.TextColor;
             MenuConnect.ForeColor = ThemeManager.TextColor;
             MenuHelp.ForeColor = ThemeManager.TextColor;
-        }
-
-        void MenuCustom_Click(object sender, EventArgs e)
-        {
-            /*if (Settings.Instance.GetBoolean("password_protect") == false)
-            {
-                MenuFlightData.Visible = true;
-                MenuFlightPlanner.Visible = true;
-                MenuConfigTune.Visible = true;
-                MenuHelp.Visible = true;
-                MenuInitConfig.Visible = true;
-                MenuSimulation.Visible = true;
-                MenuTerminal.Visible = true;
-            }
-            else
-            {
-                if (Password.VerifyPassword())
-                {
-                    MenuFlightData.Visible = true;
-                    MenuFlightPlanner.Visible = true;
-                    MenuConfigTune.Visible = true;
-                    MenuHelp.Visible = true;
-                    MenuInitConfig.Visible = true;
-                    MenuSimulation.Visible = true;
-                    MenuTerminal.Visible = true;
-                }
-            }*/
         }
 
         void adsb_UpdatePlanePosition(object sender, EventArgs e)
