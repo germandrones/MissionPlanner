@@ -130,6 +130,7 @@ namespace MissionPlanner
             // 
             resources.ApplyResources(this.MenuFlightData, "MenuFlightData");
             this.MenuFlightData.ForeColor = System.Drawing.Color.White;
+            this.MenuFlightData.Image = global::MissionPlanner.Properties.Resources.dark_flightdata_icon;
             this.MenuFlightData.Margin = new System.Windows.Forms.Padding(0);
             this.MenuFlightData.Name = "MenuFlightData";
             this.MenuFlightData.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
@@ -139,6 +140,7 @@ namespace MissionPlanner
             // 
             resources.ApplyResources(this.MenuFlightPlanner, "MenuFlightPlanner");
             this.MenuFlightPlanner.ForeColor = System.Drawing.Color.White;
+            this.MenuFlightPlanner.Image = global::MissionPlanner.Properties.Resources.dark_flightplan_icon;
             this.MenuFlightPlanner.Margin = new System.Windows.Forms.Padding(0);
             this.MenuFlightPlanner.Name = "MenuFlightPlanner";
             this.MenuFlightPlanner.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
@@ -148,6 +150,7 @@ namespace MissionPlanner
             // 
             resources.ApplyResources(this.MenuInitConfig, "MenuInitConfig");
             this.MenuInitConfig.ForeColor = System.Drawing.Color.White;
+            this.MenuInitConfig.Image = global::MissionPlanner.Properties.Resources.dark_initialsetup_icon;
             this.MenuInitConfig.Margin = new System.Windows.Forms.Padding(0);
             this.MenuInitConfig.Name = "MenuInitConfig";
             this.MenuInitConfig.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
@@ -157,6 +160,7 @@ namespace MissionPlanner
             // 
             resources.ApplyResources(this.MenuConfigTune, "MenuConfigTune");
             this.MenuConfigTune.ForeColor = System.Drawing.Color.White;
+            this.MenuConfigTune.Image = global::MissionPlanner.Properties.Resources.dark_tuningconfig_icon;
             this.MenuConfigTune.Margin = new System.Windows.Forms.Padding(0);
             this.MenuConfigTune.Name = "MenuConfigTune";
             this.MenuConfigTune.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
@@ -166,6 +170,7 @@ namespace MissionPlanner
             // 
             resources.ApplyResources(this.MenuSimulation, "MenuSimulation");
             this.MenuSimulation.ForeColor = System.Drawing.Color.White;
+            this.MenuSimulation.Image = global::MissionPlanner.Properties.Resources.dark_simulation_icon;
             this.MenuSimulation.Margin = new System.Windows.Forms.Padding(0);
             this.MenuSimulation.Name = "MenuSimulation";
             this.MenuSimulation.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
@@ -175,6 +180,7 @@ namespace MissionPlanner
             // 
             resources.ApplyResources(this.MenuTerminal, "MenuTerminal");
             this.MenuTerminal.ForeColor = System.Drawing.Color.White;
+            this.MenuTerminal.Image = global::MissionPlanner.Properties.Resources.dark_terminal_icon;
             this.MenuTerminal.Margin = new System.Windows.Forms.Padding(0);
             this.MenuTerminal.Name = "MenuTerminal";
             this.MenuTerminal.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
@@ -184,6 +190,7 @@ namespace MissionPlanner
             // 
             resources.ApplyResources(this.MenuHelp, "MenuHelp");
             this.MenuHelp.ForeColor = System.Drawing.Color.White;
+            this.MenuHelp.Image = global::MissionPlanner.Properties.Resources.dark_help_icon;
             this.MenuHelp.Margin = new System.Windows.Forms.Padding(0);
             this.MenuHelp.Name = "MenuHelp";
             this.MenuHelp.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
