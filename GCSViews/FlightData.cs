@@ -1080,7 +1080,7 @@ namespace MissionPlanner.GCSViews
                     {
 
                         // Check if HWP points are already generated and received
-                        if (MainV2.comPort.MAV.cs.gotHWP)
+                        if (MainV2.comPort.MAV.cs.hwp1_lat != hwp1_lat)
                         {
                             // Visualize the HWP points on the map
                             gotHWP = MainV2.comPort.MAV.cs.gotHWP; //true
@@ -1093,6 +1093,8 @@ namespace MissionPlanner.GCSViews
 
                             hwp3_lat = MainV2.comPort.MAV.cs.hwp3_lat;
                             hwp3_lng = MainV2.comPort.MAV.cs.hwp3_lng;
+
+                            update_map();
                         }
 
                         // show disable joystick button
@@ -1422,9 +1424,11 @@ namespace MissionPlanner.GCSViews
                 // HWP Points received?
                 if (gotHWP)
                 {
-                    addpolygonmarkerNoTooltip("HWP1", hwp1_lng, hwp1_lat, 0, Color.Red, polygons);
-                    addpolygonmarkerNoTooltip("HWP2", hwp2_lng, hwp2_lat, 0, Color.Red, polygons);
-                    addpolygonmarkerNoTooltip("HWP3", hwp3_lng, hwp3_lat, 0, Color.Red, polygons);
+                    addpolygonmarkerNoTooltip("HWP1", hwp1_lng, hwp1_lat, 0, Color.Blue, polygons);
+                    addpolygonmarkerNoTooltip("HWP2", hwp2_lng, hwp2_lat, 0, Color.Blue, polygons);
+                    addpolygonmarkerNoTooltip("HWP3", hwp3_lng, hwp3_lat, 0, Color.Blue, polygons);
+
+                    RegeneratePolygonsLanding();
                 }
 
                 addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons);
@@ -1787,7 +1791,7 @@ namespace MissionPlanner.GCSViews
             try
             {
                 PointLatLng point = new PointLatLng(lat, lng);
-                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.red);
+                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.blue_small);
                 m.ToolTipMode = MarkerTooltipMode.Never;
                 m.ToolTipText = tag;
                 m.Tag = tag;
@@ -1878,6 +1882,30 @@ namespace MissionPlanner.GCSViews
             catch (Exception)
             {
             }
+        }
+
+        void RegeneratePolygonsLanding()
+        {
+            List<PointLatLng> polygonPoints = new List<PointLatLng>();
+
+            polygonPoints.Add(new PointLatLng(hwp1_lat, hwp1_lng));
+            polygonPoints.Add(new PointLatLng(hwp2_lat, hwp2_lng));
+            polygonPoints.Add(new PointLatLng(hwp3_lat, hwp3_lng));
+            var last_wp = MainV2.comPort.MAV.wps[MainV2.comPort.MAV.wps.Count - 1];
+            polygonPoints.Add(new PointLatLng(last_wp.x, last_wp.y));
+
+            GMapRoute landingWay = new GMapRoute("LandingWay");
+            landingWay.Stroke = new Pen(Color.LightBlue, 2);
+
+            foreach(var pp in polygonPoints)
+            {
+                landingWay.Points.Add(pp);
+            }
+
+            Invoke((MethodInvoker)delegate
+            {
+                polygons.Routes.Add(landingWay);
+            });
         }
 
         /// <summary>

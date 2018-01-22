@@ -228,6 +228,7 @@ namespace MissionPlanner.GCSViews
             this.panelBASE = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.DebugMsg = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panelWaypoints.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -930,6 +931,7 @@ namespace MissionPlanner.GCSViews
             // 
             // panelMap
             // 
+            this.panelMap.Controls.Add(this.DebugMsg);
             this.panelMap.Controls.Add(this.lbl_distance);
             this.panelMap.Controls.Add(this.lbl_homedist);
             this.panelMap.Controls.Add(this.lbl_prevdist);
@@ -1527,6 +1529,11 @@ namespace MissionPlanner.GCSViews
             this.timer1.Interval = 1200;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // DebugMsg
+            // 
+            resources.ApplyResources(this.DebugMsg, "DebugMsg");
+            this.DebugMsg.Name = "DebugMsg";
+            // 
             // FlightPlanner
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1739,5 +1746,6 @@ namespace MissionPlanner.GCSViews
         private System.Windows.Forms.TextBox TXT_minLandingAltitude;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ToolStripMenuItem create8ShapeSurveyToolStripMenuItem;
+        private System.Windows.Forms.Label DebugMsg;
     }
 }

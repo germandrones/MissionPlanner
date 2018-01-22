@@ -46,6 +46,7 @@ namespace MissionPlanner.GCSViews
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         int selectedrow;
+        int m_selectedPoint;
         public bool quickadd;
         bool isonline = true;
         bool sethome;
@@ -442,6 +443,8 @@ namespace MissionPlanner.GCSViews
                 lbl_prevdist.Text = rm.GetString("lbl_prevdist.Text") + ": " + FormatDistance(lastdist, true) + " AZ: " +
                                     lastbearing.ToString("0");
 
+                DebugMsg.Text = m_selectedPoint.ToString();
+                
                 // 0 is home
                 if (pointlist[0] != null)
                 {
@@ -558,7 +561,7 @@ namespace MissionPlanner.GCSViews
             MainMap.OnPositionChanged += MainMap_OnCurrentPositionChanged;
             MainMap.OnTileLoadStart += MainMap_OnTileLoadStart;
             MainMap.OnTileLoadComplete += MainMap_OnTileLoadComplete;
-            MainMap.OnMarkerClick += MainMap_OnMarkerClick;
+            MainMap.OnMarkerClick += MainMap_OnMarkerClick;            
             MainMap.OnMapZoomChanged += MainMap_OnMapZoomChanged;
             MainMap.OnMapTypeChanged += MainMap_OnMapTypeChanged;
             MainMap.MouseMove += MainMap_MouseMove;
@@ -1161,6 +1164,7 @@ namespace MissionPlanner.GCSViews
         private void Commands_RowValidating(object sender, DataGridViewCellCancelEventArgs e)
         {
             selectedrow = e.RowIndex;
+            
             Commands_RowEnter(sender, new DataGridViewCellEventArgs(0, e.RowIndex - 0));
             // do header labels - encure we dont 0 out valid colums
             int cols = Commands.Columns.Count;
@@ -3310,6 +3314,7 @@ namespace MissionPlanner.GCSViews
         {
             if (!isMouseDown)
             {
+                m_selectedPoint = Commands.RowCount;
                 if (item is GMapMarkerRect)
                 {
                     CurentRectMarker = null;
@@ -3343,7 +3348,7 @@ namespace MissionPlanner.GCSViews
                     rc.Pen.Color = Color.Red;
                     MainMap.Invalidate(false);
 
-                    int answer;
+                    int answer = 0;
                     if (item.Tag != null && rc.InnerMarker != null &&
                         int.TryParse(rc.InnerMarker.Tag.ToString(), out answer))
                     {
@@ -3360,7 +3365,10 @@ namespace MissionPlanner.GCSViews
                     }
 
                     CurentRectMarker = rc;
+                    m_selectedPoint = answer;
                 }
+                
+
                 if (item is GMapMarkerRallyPt)
                 {
                     CurrentRallyPt = item as GMapMarkerRallyPt;
@@ -7363,7 +7371,24 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
 
         private void create8ShapeSurveyToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // quickly store the point number to be replaced if needed!
+            // if do_insert is set, replace the WP with pattern...
+            bool do_insert = false;
+            int RWP = m_selectedPoint;
+            if (RWP < Commands.Rows.Count){
+                do_insert = true;
+                selectedrow = RWP - 1;
+                if(MessageBox.Show("Modyfy existing Waypoint #"+RWP.ToString()+" as 8 Shape Pattern?", "Modification", MessageBoxButtons.YesNo) == DialogResult.No) return;
+            }
+
             #region user parameters
+            // if Last mission item exist and it is landing point, downt add any shapes
+            if (Commands.Rows.Count > 0 && Commands.Rows[Commands.Rows.Count - 1].Cells[Command.Index].Value.ToString().Contains(MAVLink.MAV_CMD.LAND.ToString()))
+            {
+                MessageBox.Show("Cant't add new shape after Landing waypoint. Please remove last Landing point.", "Warning", MessageBoxButtons.OK);
+                return;
+            }
+
             string RadiusIn = "50";
             if (DialogResult.Cancel == InputBox.Show("Radius", "Radius", ref RadiusIn))
                 return;
@@ -7385,22 +7410,31 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             if (!int.TryParse(PointsIn, out Points)) { CustomMessageBox.Show("Bad Points value"); return; }
             if (!int.TryParse(RepeatsIn, out Repeats)) { CustomMessageBox.Show("Bad Repeat value"); return; }
 
-
+            double circle_step = 360.0f / Points;
             #endregion
 
-            double circle_step = 360.0f / Points;
-            double mp_lat = MouseDownEnd.Lat;
-            double mp_lng = MouseDownEnd.Lng;
+            double mp_lat = do_insert ? Double.Parse(Commands.Rows[selectedrow].Cells[Lat.Index].Value.ToString()) : MouseDownEnd.Lat;
+            double mp_lng = do_insert ? Double.Parse(Commands.Rows[selectedrow].Cells[Lon.Index].Value.ToString()) : MouseDownEnd.Lng;
 
             // put DO_SET_ROI before 8 shape
-            selectedrow = Commands.Rows.Add();
-            Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.DO_SET_ROI.ToString();
-            ChangeColumnHeader(MAVLink.MAV_CMD.DO_SET_ROI.ToString());
-            Commands.Rows[selectedrow].Cells[Lat.Index].Value = mp_lat.ToString();
-            Commands.Rows[selectedrow].Cells[Lon.Index].Value = mp_lng.ToString();
+            #region ROI Point inserting
+            if (do_insert)
+            {
+                // convert selected wp to DO_SET_ROI
+                Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.DO_SET_ROI.ToString();
+                ChangeColumnHeader(MAVLink.MAV_CMD.DO_SET_ROI.ToString());                
+            }
+            else
+            {
+                selectedrow = Commands.Rows.Add();
+                Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.DO_SET_ROI.ToString();
+                ChangeColumnHeader(MAVLink.MAV_CMD.DO_SET_ROI.ToString());
+                Commands.Rows[selectedrow].Cells[Lat.Index].Value = mp_lat.ToString();
+                Commands.Rows[selectedrow].Cells[Lon.Index].Value = mp_lng.ToString();
+            }
+            #endregion
 
-
-            int index_of_repeatPosition = Commands.Rows.Count + 2; //Skip initial waypoint of 8 shape
+            int index_of_repeatPosition = do_insert ? selectedrow + 2 : Commands.Rows.Count + 2; //Skip initial waypoint of 8 shape
 
             #region orientation of 8 shape
 
@@ -7409,7 +7443,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             bool prevPointFound = false;
 
             // get back over the mission to find the lates waypoint
-            for (int missionItem = Commands.Rows.Count - 1; missionItem > 0; missionItem--)
+            for (int missionItem = do_insert ? selectedrow : Commands.Rows.Count - 1; missionItem >= 0; missionItem--)
             {
                 if (Commands.Rows[missionItem].Cells[Command.Index].Value.ToString().Contains(MAVLink.MAV_CMD.WAYPOINT.ToString()))
                 {
@@ -7458,14 +7492,12 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             a = start_angle_right;
             for (; a <= (start_angle_right + 360) && a >= 0; a += circle_step)
             {
-                selectedrow = Commands.Rows.Add();
+                if (do_insert) { selectedrow++; Commands.Rows.Insert(selectedrow, 1); } else { selectedrow = Commands.Rows.Add(); }
                 Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.WAYPOINT.ToString();
                 ChangeColumnHeader(MAVLink.MAV_CMD.WAYPOINT.ToString());
-
+                
                 float d = Radius;
                 float R = 6371000;
-
-
                 var lat2 = Math.Asin(
                     Math.Sin(plla_right_lat_rad) * Math.Cos(d / R) +
                     Math.Cos(plla_right_lat_rad) * Math.Sin(d / R) *
@@ -7475,10 +7507,8 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 var lon2 = plla_right_lng_rad +
                     Math.Atan2(Math.Sin(a * MathHelper.deg2rad) * Math.Sin(d / R) * Math.Cos(plla_right_lat_rad),
                     Math.Cos(d / R) - Math.Sin(plla_right_lat_rad) * Math.Sin(lat2));
-
-
-
                 PointLatLng pll = new PointLatLng(lat2 * MathHelper.rad2deg, lon2 * MathHelper.rad2deg);
+
                 setfromMap(pll.Lat, pll.Lng, (int)float.Parse(TXT_DefaultAlt.Text));
             }
             #endregion
@@ -7493,14 +7523,12 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             {
                 // prevent repeating the points
                 if (ctr == 0 || ctr > Points) { ctr++; continue; } else { ctr++; }
-
-                selectedrow = Commands.Rows.Add();
+                if (do_insert) { selectedrow++; Commands.Rows.Insert(selectedrow, 1); } else { selectedrow = Commands.Rows.Add(); }
                 Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.WAYPOINT.ToString();
                 ChangeColumnHeader(MAVLink.MAV_CMD.WAYPOINT.ToString());
 
                 float d = Radius;
                 float R = 6371000;
-
 
                 var lat2 = Math.Asin(
                     Math.Sin(plla_left_lat_rad) * Math.Cos(d / R) +
@@ -7512,8 +7540,6 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                     Math.Atan2(Math.Sin(a * MathHelper.deg2rad) * Math.Sin(d / R) * Math.Cos(plla_left_lat_rad),
                     Math.Cos(d / R) - Math.Sin(plla_left_lat_rad) * Math.Sin(lat2));
 
-
-
                 PointLatLng pll = new PointLatLng(lat2 * MathHelper.rad2deg, lon2 * MathHelper.rad2deg);
                 setfromMap(pll.Lat, pll.Lng, (int)float.Parse(TXT_DefaultAlt.Text));
             }
@@ -7523,7 +7549,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             //do jump setting
             if (Repeats > 0)
             {
-                selectedrow = Commands.Rows.Add();
+                if (do_insert) { selectedrow++; Commands.Rows.Insert(selectedrow, 1); } else { selectedrow = Commands.Rows.Add(); }
                 Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.DO_JUMP.ToString();
                 ChangeColumnHeader(MAVLink.MAV_CMD.DO_JUMP.ToString());
                 Commands.Rows[selectedrow].Cells[Param1.Index].Value = index_of_repeatPosition.ToString();
