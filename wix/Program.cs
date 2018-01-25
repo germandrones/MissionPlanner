@@ -136,7 +136,7 @@ namespace wix
 
             header();
 
-            sw.WriteLine("    <Directory Id=\"INSTALLDIR\" Name=\"GDGroundControl\">");
+            sw.WriteLine("    <Directory Id=\"INSTALLDIR\" Name=\"Germandrones GCS\">");
 
             sw.WriteLine(@"        <Component Id=""InstallDirPermissions"" Guid=""{525389D7-EB3C-4d77-A5F6-A285CF99437D}"" KeyPath=""yes""> 
             <CreateFolder> 
@@ -226,12 +226,10 @@ namespace wix
             sr.Close();
 
             string data = @"<?xml version=""1.0"" encoding=""utf-8""?>
-<Wix xmlns=""http://schemas.microsoft.com/wix/2006/wi"" xmlns:netfx=""http://schemas.microsoft.com/wix/NetFxExtension"" xmlns:difx=""http://schemas.microsoft.com/wix/DifxAppExtension"" xmlns:iis='http://schemas.microsoft.com/wix/IIsExtension' >
 
-
-    <Product Id=""" + newid + @""" Name=""GDGroundControl"" Language=""1033"" Version=""" + version + @""" Manufacturer=""Germandrones GmbH"" UpgradeCode=""{625389D7-EB3C-4d77-A5F6-A285CF99437D}"">
-
-    <Package Description=""GDGroundControl Installer"" Comments=""GDGroundControl Installer"" Manufacturer=""Germandrones GmbH"" InstallerVersion=""200"" Compressed=""yes"" />
+    <Wix xmlns=""http://schemas.microsoft.com/wix/2006/wi"" xmlns:netfx=""http://schemas.microsoft.com/wix/NetFxExtension"" xmlns:difx=""http://schemas.microsoft.com/wix/DifxAppExtension"" xmlns:iis='http://schemas.microsoft.com/wix/IIsExtension' >
+    <Product Id=""" + newid + @""" Name=""Germandrones GCS"" Language=""1033"" Version=""" + version + @""" Manufacturer=""Germandrones GmbH"" UpgradeCode=""{625389D7-EB3C-4d77-A5F6-A285CF99437D}"">
+    <Package Description=""Germandrones GCS Installer"" Comments=""Germandrones GCS Installer"" Manufacturer=""Germandrones GmbH"" InstallerVersion=""200"" Compressed=""yes"" />
 
     <Upgrade Id=""{625389D7-EB3C-4d77-A5F6-A285CF99437D}"">
         <UpgradeVersion OnlyDetect=""yes"" Minimum=""" + version + @""" Property=""NEWERVERSIONDETECTED"" IncludeMinimum=""no"" />
@@ -263,7 +261,7 @@ namespace wix
         </Directory>
 
         <Directory Id=""ProgramMenuFolder"">
-            <Directory Id=""ApplicationProgramsFolder"" Name=""GDGroundControl"" />
+            <Directory Id=""ApplicationProgramsFolder"" Name=""Germandrones GCS"" />
         </Directory>
     </Directory>
 
@@ -314,8 +312,8 @@ namespace wix
 
     <DirectoryRef Id=""ApplicationProgramsFolder"">
         <Component Id=""ApplicationShortcut"" Guid=""*"">
-            <Shortcut Id=""ApplicationStartMenuShortcut10"" Name=""GDGroundControl"" Description=""GDGroundControl"" Target=""[INSTALLDIR]MissionPlanner.exe"" WorkingDirectory=""INSTALLDIR"" />
-            <Shortcut Id=""UninstallProduct"" Name=""Uninstall GDGroundControl"" Description=""Uninstalls My Application"" Target=""[System64Folder]msiexec.exe"" Arguments=""/x [ProductCode]"" />
+            <Shortcut Id=""ApplicationStartMenuShortcut10"" Name=""Germandrones GCS"" Description=""Germandrones GCS"" Target=""[INSTALLDIR]MissionPlanner.exe"" WorkingDirectory=""INSTALLDIR"" />
+            <Shortcut Id=""UninstallProduct"" Name=""Uninstall Germandrones GCS"" Description=""Uninstalls My Application"" Target=""[System64Folder]msiexec.exe"" Arguments=""/x [ProductCode]"" />
             <RegistryValue Root=""HKCU"" Key=""Software\Germandrones\MissionPlanner"" Name=""installed"" Type=""integer"" Value=""1"" KeyPath=""yes"" />
 
             <RemoveFolder Id=""dltApplicationProgramsFolder"" Directory=""ApplicationProgramsFolder"" On=""uninstall"" />
@@ -325,7 +323,7 @@ namespace wix
     </DirectoryRef>
 
 
-    <Feature Id=""Complete"" Title=""GDGroundControl"" Level=""1"">
+    <Feature Id=""Complete"" Title=""Germandrones GCS"" Level=""1"">
         <ComponentRef Id=""InstallDirPermissions"" />
 ";
             sw.WriteLine(data);
@@ -352,7 +350,7 @@ namespace wix
             Event=""DoAction"" 
             Value=""LaunchApplication"">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
     </UI>
-    <Property Id=""WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT"" Value=""Launch GDGroundControl"" />
+    <Property Id=""WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT"" Value=""Launch Germandrones GCS"" />
 
     <!-- Step 3: Include the custom action -->
     <Property Id=""WixShellExecTarget"" Value=""[#" + mainexeid + @"]"" />

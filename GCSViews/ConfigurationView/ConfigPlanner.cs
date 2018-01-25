@@ -868,11 +868,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             Settings.Instance["norcreceiver"] = chk_norcreceiver.Checked.ToString();
         }
 
-        private void but_AAsignin_Click(object sender, EventArgs e)
-        {
-            new Utilities.AltitudeAngel.AASettings().Show(this);
-        }
-
         private void CMB_Layout_SelectedIndexChanged(object sender, EventArgs e)
         {
             /*if ((DisplayNames)CMB_Layout.SelectedItem == DisplayNames.Advanced)

@@ -80,7 +80,7 @@ namespace tlogThumbnailHandler
 
         static string commonAppData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
 
-        public static string queuefile = commonAppData + Path.DirectorySeparatorChar + "Mission Planner" + Path.DirectorySeparatorChar + "tlogimagecache" + Path.DirectorySeparatorChar + "queue.txt";
+        public static string queuefile = commonAppData + Path.DirectorySeparatorChar + "Germandrones GCS" + Path.DirectorySeparatorChar + "tlogimagecache" + Path.DirectorySeparatorChar + "queue.txt";
 
         private static class NativeMethods
         {

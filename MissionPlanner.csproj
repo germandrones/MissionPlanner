@@ -496,11 +496,6 @@
     <Compile Include="Utilities\UDPMavlinkShim.cs" />
     <Compile Include="Utilities\UDPVideoShim.cs" />
     <Compile Include="Utilities\Update.cs" />
-    <Compile Include="Utilities\AltitudeAngel\AASettings.cs"> <SubType>Control</SubType> </Compile>
-    <Compile Include="Utilities\AltitudeAngel\AltitudeAngel.cs" />
-    <Compile Include="Utilities\AltitudeAngel\MapAdapter.cs" />
-    <Compile Include="Utilities\AltitudeAngel\MissionPlannerAdaptor.cs" />
-    <Compile Include="Utilities\AltitudeAngel\OverlayAdapter.cs" />
     <Compile Include="Warnings\CustomWarning.cs" />
     <Compile Include="Warnings\WarningControl.cs" />
     <Compile Include="Warnings\WarningEngine.cs" />
@@ -633,7 +628,6 @@
     <Compile Include="Swarm\SRB\Control.Designer.cs"><DependentUpon>Control.cs</DependentUpon> </Compile>
     <Compile Include="Swarm\WaypointLeader\WPControl.Designer.cs"><DependentUpon>WPControl.cs</DependentUpon> </Compile>
     <Compile Include="Utilities\fftui.Designer.cs"><DependentUpon>fftui.cs</DependentUpon> </Compile>
-    <Compile Include="Utilities\AltitudeAngel\AASettings.Designer.cs"><DependentUpon>AASettings.cs</DependentUpon> </Compile>
     <Compile Include="Warnings\WarningsManager.Designer.cs"><DependentUpon>WarningsManager.cs</DependentUpon> </Compile>
     <Compile Include="Wizard\10FlightModes.Designer.cs"><DependentUpon>10FlightModes.cs</DependentUpon> </Compile>
     <Compile Include="Wizard\11Verify.Designer.cs"><DependentUpon>11Verify.cs</DependentUpon> </Compile>
@@ -1549,7 +1543,6 @@
     <EmbeddedResource Include="Swarm\WaypointLeader\WPControl.az-Latn-AZ.resx"><DependentUpon>WPControl.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="Swarm\WaypointLeader\WPControl.pt.resx"><DependentUpon>WPControl.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="Utilities\fftui.resx"><DependentUpon>fftui.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="Utilities\AltitudeAngel\AASettings.resx"><DependentUpon>AASettings.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="Warnings\WarningControl.resx"><DependentUpon>WarningControl.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="Warnings\WarningsManager.resx"><DependentUpon>WarningsManager.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="Wizard\10FlightModes.resx"><DependentUpon>10FlightModes.cs</DependentUpon> </EmbeddedResource>

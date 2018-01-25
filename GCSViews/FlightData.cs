@@ -4517,11 +4517,6 @@ namespace MissionPlanner.GCSViews
             CameraOverlap = onOffCameraOverlapToolStripMenuItem.Checked;
         }
 
-        private void altitudeAngelSettingsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            new Utilities.AltitudeAngel.AASettings().Show(this);
-        }
-
         private void setViewCountToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string cols = "2", rows = "3";

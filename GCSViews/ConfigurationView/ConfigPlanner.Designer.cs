@@ -618,13 +618,6 @@
             this.chk_norcreceiver.UseVisualStyleBackColor = true;
             this.chk_norcreceiver.CheckedChanged += new System.EventHandler(this.chk_norcreceiver_CheckedChanged);
             // 
-            // but_AAsignin
-            // 
-            resources.ApplyResources(this.but_AAsignin, "but_AAsignin");
-            this.but_AAsignin.Name = "but_AAsignin";
-            this.but_AAsignin.UseVisualStyleBackColor = true;
-            this.but_AAsignin.Click += new System.EventHandler(this.but_AAsignin_Click);
-            // 
             // CHK_AutoParamCommit
             // 
             resources.ApplyResources(this.CHK_AutoParamCommit, "CHK_AutoParamCommit");

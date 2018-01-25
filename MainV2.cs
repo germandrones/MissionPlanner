@@ -2683,7 +2683,7 @@ namespace MissionPlanner
 
             ZeroConf.ProbeForRTSP();
 
-            try
+            /*try
             {
                 log.Info("Load AltitudeAngel");
                 new Utilities.AltitudeAngel.AltitudeAngel();
@@ -2710,7 +2710,7 @@ namespace MissionPlanner
             catch (Exception ex)
             {
                 Tracking.AddException(ex);
-            }
+            }*/
 
             this.ResumeLayout();
 
