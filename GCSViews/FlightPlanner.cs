@@ -5963,7 +5963,7 @@ namespace MissionPlanner.GCSViews
 
             ChangeColumnHeader(MAVLink.MAV_CMD.LAND.ToString());
 
-            setfromMap(MouseDownEnd.Lat, MouseDownEnd.Lng, 1);
+            setfromMap(MouseDownEnd.Lat, MouseDownEnd.Lng, int.Parse(TXT_minLandingAltitude.Text));
 
             writeKML();
         }
@@ -6051,7 +6051,7 @@ namespace MissionPlanner.GCSViews
         private void takeoffToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Get the Altitude on clicked point
-            string alt = "20";
+            string alt = "25";
 
             if (DialogResult.Cancel == InputBox.Show("Altitude", "Please enter your takeoff altitude", ref alt)) return;
 

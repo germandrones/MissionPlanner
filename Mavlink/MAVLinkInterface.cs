@@ -1155,36 +1155,56 @@ Please check the following
 
         void FrmProgressReporterGetParams(object sender, ProgressWorkerEventArgs e, object passdata = null)
         {
-            // get magic parameter hash value
-            float param_hash = GetParam("_HASH_CHECK");
-            string PX4_hash = ((int)param_hash).ToString();
+            bool gotHash = false;
+            float param_hash = 0;
 
-            // check if local hash not as  on pixhawk side
-            if (Settings.Instance["param_hash"] == PX4_hash && File.Exists("autosave.p"))
+            try
             {
-                // load from autosave file
-                try
+                /* CASE 1: PIXHAWK SUPPORTS _HASH_CHECK PARAMETER*/
+
+                // try to get magic parameter hash value
+                param_hash = GetParam("_HASH_CHECK");
+                gotHash = true;
+            }
+            catch
+            {
+                /* CASE 2: PIXHAWK do not sends _HASH_CHECK PARAMETER */
+                getParamList(MAV.sysid, MAV.compid); // obtain parameters from PX4
+                return;
+            }
+
+            /* NORMAL CASE: PX4 returns hash */
+            if(gotHash)
+            {
+                string PX4_hash = ((int)param_hash).ToString();
+                
+                // check if local hash not as on pixhawk side
+                if (Settings.Instance["param_hash"] == PX4_hash && File.Exists("autosave.p"))
                 {
-                    // try to restore params
-                    restoreParamsFromFile("autosave.p");
+                    // load from autosave file
+                    try
+                    {
+                        // try to restore params
+                        restoreParamsFromFile("autosave.p");
+                    }
+                    catch
+                    {
+                        // if restore crash, reload params from controller
+                        getParamList(MAV.sysid, MAV.compid);
+                        saveParamsToFile("autosave.p");
+                    }
                 }
-                catch
+                else
                 {
-                    // if restore crash, reload params from controller
-                    getParamList(MAV.sysid, MAV.compid);
+                    // parameters are changed or no autosave file
+                    getParamList(MAV.sysid, MAV.compid); // obtain parameters from PX4
+
+                    // save params to file!
                     saveParamsToFile("autosave.p");
                 }
-            }
-            else
-            {
-                // parameters are changed of no autosave file
-                getParamList(MAV.sysid, MAV.compid); // obtain parameters from PX4
 
-                // save params to file!
-                saveParamsToFile("autosave.p");
+                Settings.Instance["param_hash"] = PX4_hash; // save the remote hash in config
             }
-
-            Settings.Instance["param_hash"] = PX4_hash; // save the remote hash in config
         }
 
 
