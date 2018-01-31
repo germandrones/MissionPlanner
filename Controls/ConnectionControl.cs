@@ -116,6 +116,7 @@ namespace MissionPlanner.Controls
                         if (temp.port == MainV2.comPort && temp.sysid == MainV2.comPort.sysidcurrent && temp.compid == MainV2.comPort.compidcurrent)
                         {
                             selectidx = idx;
+                            if (selectidx < 0 && cmb_sysid.Items.Count > 0) { selectidx = 0; } // fix up the dropdown
                         }
                     }
                 }
