@@ -83,7 +83,7 @@ namespace MissionPlanner.Utilities
             return param;
         }
 
-        public static void SaveParamFile(string fn, Hashtable paramlist)
+        public static void SaveParamFile(string fn, Hashtable paramlist, bool addNote = true)
         {
             using (StreamWriter sw = new StreamWriter(File.Open(fn, FileMode.Create)))
             {
@@ -92,10 +92,11 @@ namespace MissionPlanner.Utilities
                 {
                     input = DateTime.Now + " Plane: Skywalker";
                 }
-                InputBox.Show("Custom Note", "Enter your Notes/Frame Type etc", ref input);
-                if (input != "")
-                    sw.WriteLine("#NOTE: " + input.Replace(',', '|'));
-
+                if (addNote)
+                {
+                    InputBox.Show("Custom Note", "Enter your Notes/Frame Type etc", ref input);
+                    if (input != "")sw.WriteLine("#NOTE: " + input.Replace(',', '|'));
+                }
                 var list = new SortedList(paramlist);
 
                 foreach (var item in list.Keys)

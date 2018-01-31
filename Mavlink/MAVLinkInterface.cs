@@ -588,7 +588,7 @@ Please check the following
                         entryAssembly.GetCustomAttributes(typeof(AssemblyFileVersionAttribute), false);
                     if (customAttributes != null && customAttributes.Length != 0)
                     {
-                        return ((AssemblyFileVersionAttribute) customAttributes[0]).Version;
+                        return ((AssemblyFileVersionAttribute)customAttributes[0]).Version;
                         ;
                     }
                 }
@@ -605,8 +605,8 @@ Please check the following
         void SetupMavConnect(MAVLinkMessage message, mavlink_heartbeat_t hb)
         {
             mavlinkversion = hb.mavlink_version;
-            MAVlist[message.sysid, message.compid].aptype = (MAV_TYPE) hb.type;
-            MAVlist[message.sysid, message.compid].apname = (MAV_AUTOPILOT) hb.autopilot;
+            MAVlist[message.sysid, message.compid].aptype = (MAV_TYPE)hb.type;
+            MAVlist[message.sysid, message.compid].apname = (MAV_AUTOPILOT)hb.autopilot;
 
             setAPType(message.sysid, message.compid);
 
@@ -629,11 +629,11 @@ Please check the following
                 if (buffer.Length > 5)
                 {
                     //log.Info("getHB packet received: " + buffer.Length + " btr " + BaseStream.BytesToRead + " type " + buffer.msgid );
-                    if (buffer.msgid == (byte) MAVLINK_MSG_ID.HEARTBEAT)
+                    if (buffer.msgid == (byte)MAVLINK_MSG_ID.HEARTBEAT)
                     {
                         mavlink_heartbeat_t hb = buffer.ToStructure<mavlink_heartbeat_t>();
 
-                        if (hb.type != (byte) MAV_TYPE.GCS)
+                        if (hb.type != (byte)MAV_TYPE.GCS)
                         {
                             SetupMavConnect(buffer, hb);
 
@@ -694,13 +694,13 @@ Please check the following
             if (ReadOnly)
             {
                 // allow these messages
-                if (messageType == (byte) MAVLINK_MSG_ID.MISSION_REQUEST_LIST ||
-                    messageType == (byte) MAVLINK_MSG_ID.MISSION_REQUEST_PARTIAL_LIST ||
-                    messageType == (byte) MAVLINK_MSG_ID.MISSION_REQUEST ||
-                    messageType == (byte) MAVLINK_MSG_ID.PARAM_REQUEST_LIST ||
-                    messageType == (byte) MAVLINK_MSG_ID.PARAM_REQUEST_READ ||
-                    messageType == (byte) MAVLINK_MSG_ID.RALLY_FETCH_POINT ||
-                    messageType == (byte) MAVLINK_MSG_ID.FENCE_FETCH_POINT
+                if (messageType == (byte)MAVLINK_MSG_ID.MISSION_REQUEST_LIST ||
+                    messageType == (byte)MAVLINK_MSG_ID.MISSION_REQUEST_PARTIAL_LIST ||
+                    messageType == (byte)MAVLINK_MSG_ID.MISSION_REQUEST ||
+                    messageType == (byte)MAVLINK_MSG_ID.PARAM_REQUEST_LIST ||
+                    messageType == (byte)MAVLINK_MSG_ID.PARAM_REQUEST_READ ||
+                    messageType == (byte)MAVLINK_MSG_ID.RALLY_FETCH_POINT ||
+                    messageType == (byte)MAVLINK_MSG_ID.FENCE_FETCH_POINT
                     )
                 {
                 }
@@ -730,13 +730,13 @@ Please check the following
                     packet = new byte[data.Length + 6 + 2];
 
                     packet[0] = MAVLINK_STX_MAVLINK1;
-                    packet[1] = (byte) data.Length;
-                    packet[2] = (byte) packetcount;
+                    packet[1] = (byte)data.Length;
+                    packet[2] = (byte)packetcount;
 
                     packetcount++;
 
                     packet[3] = gcssysid;
-                    packet[4] = (byte) MAV_COMPONENT.MAV_COMP_ID_MISSIONPLANNER;
+                    packet[4] = (byte)MAV_COMPONENT.MAV_COMP_ID_MISSIONPLANNER;
                     packet[5] = (byte)messageType;
 
                     i = 6;
@@ -751,8 +751,8 @@ Please check the following
                     checksum = MavlinkCRC.crc_accumulate(MAVLINK_MESSAGE_INFOS.GetMessageInfo((uint)messageType).crc, checksum);
 
 
-                    byte ck_a = (byte) (checksum & 0xFF); ///< High byte
-                    byte ck_b = (byte) (checksum >> 8); ///< Low byte
+                    byte ck_a = (byte)(checksum & 0xFF); ///< High byte
+                    byte ck_b = (byte)(checksum >> 8); ///< Low byte
 
                     packet[i] = ck_a;
                     i += 1;
@@ -766,7 +766,7 @@ Please check the following
 
                     packet = new byte[data.Length + MAVLINK_NUM_HEADER_BYTES + MAVLINK_NUM_CHECKSUM_BYTES + MAVLINK_SIGNATURE_BLOCK_LEN];
 
-                    packet[0] = MAVLINK_STX ;
+                    packet[0] = MAVLINK_STX;
                     packet[1] = (byte)data.Length;
                     packet[2] = 0; // incompat
                     if (MAVlist[sysid, compid].signing || forcesigning) // current mav
@@ -813,7 +813,7 @@ Please check the following
 
                         // signature = sha256_48(secret_key + header + payload + CRC + link-ID + timestamp)
 
-                        var timestamp = (UInt64) ((DateTime.UtcNow - new DateTime(2015, 1, 1)).TotalMilliseconds*100);
+                        var timestamp = (UInt64)((DateTime.UtcNow - new DateTime(2015, 1, 1)).TotalMilliseconds * 100);
 
                         if (timestamp == MAVlist[sysid, compid].timestamp)
                             timestamp++;
@@ -874,7 +874,7 @@ Please check the following
                         {
                             byte[] datearray =
                                 BitConverter.GetBytes(
-                                    (UInt64) ((DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds*1000));
+                                    (UInt64)((DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds * 1000));
                             Array.Reverse(datearray);
                             logfile.Write(datearray, 0, datearray.Length);
                             logfile.Write(packet, 0, i);
@@ -921,7 +921,7 @@ Please check the following
             if (!clearkey)
             {
                 MAV.signingKey = shauser;
-                sign.initial_timestamp = (UInt64) ((DateTime.UtcNow - new DateTime(2015, 1, 1)).TotalMilliseconds*100);
+                sign.initial_timestamp = (UInt64)((DateTime.UtcNow - new DateTime(2015, 1, 1)).TotalMilliseconds * 100);
                 sign.secret_key = shauser;
             }
             else
@@ -933,9 +933,9 @@ Please check the following
             sign.target_component = (byte)compidcurrent;
             sign.target_system = (byte)sysidcurrent;
 
-            generatePacket((int) MAVLINK_MSG_ID.SETUP_SIGNING, sign, MAV.sysid, MAV.compid);
+            generatePacket((int)MAVLINK_MSG_ID.SETUP_SIGNING, sign, MAV.sysid, MAV.compid);
 
-            generatePacket((int) MAVLINK_MSG_ID.SETUP_SIGNING, sign, MAV.sysid, MAV.compid);
+            generatePacket((int)MAVLINK_MSG_ID.SETUP_SIGNING, sign, MAV.sysid, MAV.compid);
 
             if (clearkey)
             {
@@ -947,7 +947,7 @@ Please check the following
 
         public bool enableSigning(int sysid, int compid)
         {
-            MAVlist[sysid,compid].signing = true;
+            MAVlist[sysid, compid].signing = true;
             MAVlist[sysid, compid].mavlinkv2 = true;
 
 
@@ -992,7 +992,7 @@ Please check the following
         /// <param name="value"></param>
         public bool setParam(byte sysid, byte compid, string paramname, double value, bool force = false)
         {
-            if (!MAVlist[sysid,compid].param.ContainsKey(paramname))
+            if (!MAVlist[sysid, compid].param.ContainsKey(paramname))
             {
                 log.Warn("Trying to set Param that doesnt exist " + paramname + "=" + value);
                 return false;
@@ -1011,7 +1011,7 @@ Please check the following
             {
                 target_system = sysid,
                 target_component = compid,
-                param_type = (byte)MAVlist[sysid, compid].param_types[paramname]
+                param_type = (byte)MAV_PARAM_TYPE.REAL32//(byte)MAVlist[sysid, compid].param_types[paramname]
             };
 
             byte[] temp = Encoding.ASCII.GetBytes(paramname);
@@ -1029,7 +1029,7 @@ Please check the following
 
             int currentparamcount = MAVlist[sysid, compid].param.Count;
 
-            generatePacket((byte) MAVLINK_MSG_ID.PARAM_SET, req, sysid, compid);
+            generatePacket((byte)MAVLINK_MSG_ID.PARAM_SET, req, sysid, compid);
 
             log.InfoFormat("setParam '{0}' = '{1}' sysid {2} compid {3}", paramname, value, sysid,
                 compid);
@@ -1044,7 +1044,7 @@ Please check the following
                     if (retrys > 0)
                     {
                         log.Info("setParam Retry " + retrys);
-                        generatePacket((byte) MAVLINK_MSG_ID.PARAM_SET, req, sysid, compid);
+                        generatePacket((byte)MAVLINK_MSG_ID.PARAM_SET, req, sysid, compid);
                         start = DateTime.Now;
                         retrys--;
                         continue;
@@ -1056,7 +1056,7 @@ Please check the following
                 MAVLinkMessage buffer = readPacket();
                 if (buffer.Length > 5)
                 {
-                    if (buffer.msgid == (byte) MAVLINK_MSG_ID.PARAM_VALUE)
+                    if (buffer.msgid == (byte)MAVLINK_MSG_ID.PARAM_VALUE)
                     {
                         mavlink_param_value_t par = buffer.ToStructure<mavlink_param_value_t>();
 
@@ -1078,7 +1078,7 @@ Please check the following
                         if (MAVlist[sysid, compid].apname == MAV_AUTOPILOT.ARDUPILOTMEGA)
                         {
                             var offset = Marshal.OffsetOf(typeof(mavlink_param_value_t), "param_value");
-                            MAVlist[sysid, compid].param[st] = new MAVLinkParam(st, BitConverter.GetBytes(par.param_value), MAV_PARAM_TYPE.REAL32, (MAV_PARAM_TYPE) par.param_type);
+                            MAVlist[sysid, compid].param[st] = new MAVLinkParam(st, BitConverter.GetBytes(par.param_value), MAV_PARAM_TYPE.REAL32, (MAV_PARAM_TYPE)par.param_type);
                         }
                         else
                         {
@@ -1118,7 +1118,7 @@ Please check the following
         }
         */
 
-        public void getParamList()
+        public void getParamList(bool force_params_reading = false)
         {
             log.InfoFormat("getParamList {0} {1}", sysidcurrent, compidcurrent);
             if (sysidcurrent > 1) return;
@@ -1129,7 +1129,11 @@ Please check the following
                 Text = Strings.GettingParams + " " + sysidcurrent
             };
 
-            frmProgressReporter.DoWork += FrmProgressReporterGetParams;
+            if (force_params_reading)
+                frmProgressReporter.DoWork += FrmProgressReporterGetParamsNoCheck;
+            else
+                frmProgressReporter.DoWork += FrmProgressReporterGetParams;
+
             frmProgressReporter.UpdateProgressAndStatus(-1, Strings.GettingParamsD);
             ThemeManager.ApplyThemeTo(frmProgressReporter);
 
@@ -1143,14 +1147,81 @@ Please check the following
             }
         }
 
+        void FrmProgressReporterGetParamsNoCheck(object sender, ProgressWorkerEventArgs e, object passdata = null)
+        {
+            getParamList(MAV.sysid, MAV.compid); // obtain parameters from PX4
+        }
 
 
         void FrmProgressReporterGetParams(object sender, ProgressWorkerEventArgs e, object passdata = null)
         {
-            getParamList(MAV.sysid, MAV.compid);
+            // get magic parameter hash value
+            float param_hash = GetParam("_HASH_CHECK");
+            string PX4_hash = ((int)param_hash).ToString();
+
+            // check if local hash not as  on pixhawk side
+            if (Settings.Instance["param_hash"] == PX4_hash && File.Exists("autosave.p"))
+            {
+                // load from autosave file
+                try
+                {
+                    // try to restore params
+                    restoreParamsFromFile("autosave.p");
+                }
+                catch
+                {
+                    // if restore crash, reload params from controller
+                    getParamList(MAV.sysid, MAV.compid);
+                    saveParamsToFile("autosave.p");
+                }
+            }
+            else
+            {
+                // parameters are changed of no autosave file
+                getParamList(MAV.sysid, MAV.compid); // obtain parameters from PX4
+
+                // save params to file!
+                saveParamsToFile("autosave.p");
+            }
+
+            Settings.Instance["param_hash"] = PX4_hash; // save the remote hash in config
         }
 
 
+        private void restoreParamsFromFile(string filename)
+        {
+            var param2 = ParamFile.loadParamFile(filename);
+
+            int restored = 0;
+            MainV2.comPort.MAV.param.Clear();
+
+            foreach (string name in param2.Keys)
+            {               
+                var value = param2[name].ToString();
+                MainV2.comPort.MAV.param.Add(new MAVLinkParam(name, double.Parse(value), MAV_PARAM_TYPE.REAL32));
+                restored++;
+            }
+            MainV2.comPort.MAV.param.TotalReported = restored;
+        }
+
+        private void saveParamsToFile(string filename)
+        {
+            var data = new Hashtable();
+            var param_list = MAVlist[MAV.sysid, MAV.compid];
+
+            foreach (var p in param_list.param)
+            {
+                try
+                {
+                    data[p.Name] = p.Value;
+                }
+                catch (Exception)
+                {
+                    CustomMessageBox.Show(Strings.InvalidNumberEntered + " " + p.Value);
+                }
+            }
+            ParamFile.SaveParamFile(filename, data, false);
+        }
 
         /// <summary>
         /// Get param list from apm

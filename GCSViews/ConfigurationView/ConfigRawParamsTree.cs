@@ -360,6 +360,9 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             // process hashdefines and update display
             foreach (var value in sorted)
             {
+                // don't even show the _HASH_CHECK parameter and it's value
+                if(value == "_HASH_CHECK") { continue; }
+
                 // dont show the user the parameter ARMING_REQUIRE
                 if (value == "ARMING_REQUIRE" && Settings.isDevMode == false)
                 {

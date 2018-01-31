@@ -84,7 +84,7 @@ namespace MissionPlanner
                 return;
             }
 
-            name = "Germandrones Ground Control Station";
+            name = "Germandrones GCS";
 
             try
             {
