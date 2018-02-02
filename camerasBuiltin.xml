@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Cameras>
   <Camera>
+    <name>Sony 5100 16mm</name>
+    <flen>16</flen>
+    <imgh>4000</imgh>
+    <imgw>6000</imgw>
+    <senh>15.6</senh>
+    <senw>23.5</senw>
+  </Camera>
+  <Camera>
     <name>Nikon aw100</name>
     <flen>5</flen>
     <imgh>3456</imgh>

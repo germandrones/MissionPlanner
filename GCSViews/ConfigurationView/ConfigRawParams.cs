@@ -225,10 +225,9 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         private void BUT_writePIDS_Click(object sender, EventArgs e)
         {
             // Prevent upload mission if UAV is armed!
-            if (MainV2.comPort.MAV.cs.armed)
+            if (MainV2.comPort.MAV.cs.armed && !Settings.isDevMode)
             {
-                MessageBox.Show("UAV is Armed! Can't set Parameters!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                if (MessageBox.Show("UAV is Armed! Are You sure want to write parameters?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No) return;
             }
 
 
@@ -438,6 +437,41 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Method checks the parameter, on visibility for end_user
+        /// </summary>
+        internal bool CheckParamVisibility(string param_name)
+        {
+            if (param_name.Contains("_HASH_CHECK")) { return false; } // never show the parameter _HASH_CHECK!
+
+            if (Settings.isDevMode) return true; // all parameters are visible for developer mode
+
+            // define the list of all invisible parameters here:
+            if( param_name.Contains("ARMING_REQUIRE") ||
+                param_name.Contains("ACRO_") ||
+                param_name.Contains("AHRS_ORIENTATION") ||
+                param_name.Contains("BRD_TYPE") ||
+                param_name.Contains("CHUTE_") ||
+                param_name.Contains("COMPASS_ORIENT") ||
+                param_name.Contains("FLAP_") ||
+                param_name.Contains("FORMAT_") ||
+                param_name.Contains("HIL_") ||
+                param_name.Contains("LAND_") ||
+                param_name.Contains("Q_ENABLE") ||
+                param_name.Contains("RALLY_") ||
+                param_name.Contains("RNGFND") ||
+                param_name.Contains("SR0_") ||
+                param_name.Contains("SR1_") ||
+                param_name.Contains("SR2_") ||
+                param_name.Contains("SR3_") ||
+                param_name.Contains("TECS_") ||
+                param_name.Contains("TKOFF_")
+                )
+            {
+                return false;
+            }else return true;
+        }
+
         internal void processToScreen()
         {
             toolTip1.RemoveAll();
@@ -461,14 +495,12 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             // process hashdefines and update display
             foreach (var value in sorted)
             {
-                // don't even show the _HASH_CHECK parameter and it's value
-                if (value == "_HASH_CHECK") { continue; }
+                if (!CheckParamVisibility(value)) { continue; } // don't show the invisible params to end-user
 
-                // dont show the user the parameter ARMING_REQUIRE
-                if (value == "ARMING_REQUIRE" && Settings.isDevMode == false)
+                // show warning only in dev mode
+                if (value.Contains("ARMING_REQUIRE") && MainV2.comPort.MAV.param[value].ToString() != "3" && Settings.isDevMode)
                 {
-                    if (MainV2.comPort.MAV.param[value].ToString() != "3") MessageBox.Show("ARMING_REQUIRE is not set to value 3. \nPlease contact to Developer", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    continue;
+                    MessageBox.Show("ARMING_REQUIRE is not set to value 3.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
                 if (value == null || value == "") continue;

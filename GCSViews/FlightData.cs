@@ -4590,25 +4590,8 @@ namespace MissionPlanner.GCSViews
 
         Color GetColor()
         {
-            Color mix = Color.White;
-            
-            int red = random.Next(256);
-            int green = random.Next(256);
-            int blue = random.Next(256);
-
-            // mix the color
-            if (mix != null)
-            {
-                red = (red + mix.R) / 2;
-                green = (green + mix.G) / 2;
-                blue = (blue + mix.B) / 2;
-            }
-
-            var col = Color.FromArgb(red, green, blue);
-
-            this.LogInfo("GetColor() " + col);
-
-            return col;
+            // default Germandrones color
+            return Color.FromArgb(72, 95, 154);
         }
 
         private void setGStreamerSourceToolStripMenuItem_Click(object sender, EventArgs e)

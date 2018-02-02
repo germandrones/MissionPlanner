@@ -2122,7 +2122,7 @@ namespace MissionPlanner.GCSViews
         public void BUT_write_Click(object sender, EventArgs e)
         {
             // Prevent upload mission if UAV is armed!
-            if (MainV2.comPort.MAV.cs.armed)
+            if (MainV2.comPort.MAV.cs.armed && !Settings.isDevMode)
             {
                 MessageBox.Show("UAV is Armed! Mission can't be uploaded!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;

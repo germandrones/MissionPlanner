@@ -54,7 +54,7 @@ namespace MissionPlanner
                 "If your error is about Microsoft.DirectX.DirectInput, please install the latest directx redist from here http://www.microsoft.com/en-us/download/details.aspx?id=35 \n\n");
             Console.WriteLine("Debug under mono    MONO_LOG_LEVEL=debug mono MissionPlanner.exe");
 
-            if (Program.args.Contains("devmode")) Settings.isDevMode = true;
+            if (Program.args.Contains("-dev")) Settings.isDevMode = true;
 
             var t = Type.GetType("Mono.Runtime");
             MONO = (t != null);
@@ -84,7 +84,7 @@ namespace MissionPlanner
                 return;
             }
 
-            name = "Germandrones GCS";
+            name = Settings.isDevMode ? "Germandrones GCS DEVMODE" : "Germandrones GCS";
 
             try
             {
