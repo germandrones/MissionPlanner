@@ -441,9 +441,7 @@ namespace MissionPlanner.GCSViews
                 }
 
                 lbl_prevdist.Text = rm.GetString("lbl_prevdist.Text") + ": " + FormatDistance(lastdist, true) + " AZ: " +
-                                    lastbearing.ToString("0");
-
-                DebugMsg.Text = m_selectedPoint.ToString();
+                                    lastbearing.ToString("0");                
                 
                 // 0 is home
                 if (pointlist[0] != null)
@@ -3313,8 +3311,7 @@ namespace MissionPlanner.GCSViews
         void MainMap_OnMarkerLeave(GMapMarker item)
         {
             if (!isMouseDown)
-            {
-                m_selectedPoint = Commands.RowCount;
+            {                
                 if (item is GMapMarkerRect)
                 {
                     CurentRectMarker = null;
@@ -3335,6 +3332,8 @@ namespace MissionPlanner.GCSViews
                     // when you click the context menu this triggers and causes problems
                     CurrentGMapMarker = null;
                 }
+                m_selectedPoint = -1;
+                DebugMsg.Text = m_selectedPoint.ToString();
             }
         }
 
@@ -3349,8 +3348,7 @@ namespace MissionPlanner.GCSViews
                     MainMap.Invalidate(false);
 
                     int answer = 0;
-                    if (item.Tag != null && rc.InnerMarker != null &&
-                        int.TryParse(rc.InnerMarker.Tag.ToString(), out answer))
+                    if (item.Tag != null && rc.InnerMarker != null && int.TryParse(rc.InnerMarker.Tag.ToString(), out answer))
                     {
                         try
                         {
@@ -3362,12 +3360,13 @@ namespace MissionPlanner.GCSViews
                         {
                             log.Error(ex);
                         }
+                        
                     }
-
-                    CurentRectMarker = rc;
                     m_selectedPoint = answer;
+                    CurentRectMarker = rc;
                 }
-                
+
+                DebugMsg.Text = m_selectedPoint.ToString();
 
                 if (item is GMapMarkerRallyPt)
                 {
@@ -7375,15 +7374,24 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             // if do_insert is set, replace the WP with pattern...
             bool do_insert = false;
             int RWP = m_selectedPoint;
-            if (RWP < Commands.Rows.Count){
+            if (RWP < 0) { do_insert = false; }
+            else
+            {
                 do_insert = true;
                 selectedrow = RWP - 1;
-                if(MessageBox.Show("Modyfy existing Waypoint #"+RWP.ToString()+" as 8 Shape Pattern?", "Modification", MessageBoxButtons.YesNo) == DialogResult.No) return;
+                if (MessageBox.Show("Modyfy existing Waypoint #" + RWP.ToString() + " as 8 Shape Pattern?", "Modification", MessageBoxButtons.YesNo) == DialogResult.No) return;
+            }
+
+            // only WPoint can be modified, check:
+            if(!Commands.Rows[selectedrow].Cells[Command.Index].Value.ToString().Contains(MAVLink.MAV_CMD.WAYPOINT.ToString()))
+            {
+                MessageBox.Show("Only a waypoint can be modified.", "Warning", MessageBoxButtons.OK);
+                return;
             }
 
             #region user parameters
-            // if Last mission item exist and it is landing point, downt add any shapes
-            if (Commands.Rows.Count > 0 && Commands.Rows[Commands.Rows.Count - 1].Cells[Command.Index].Value.ToString().Contains(MAVLink.MAV_CMD.LAND.ToString()))
+            // if Last mission item exist and it is landing point, dont add any shapes
+            if (Commands.Rows.Count > 0 && Commands.Rows[Commands.Rows.Count - 1].Cells[Command.Index].Value.ToString().Contains(MAVLink.MAV_CMD.LAND.ToString()) && !do_insert)
             {
                 MessageBox.Show("Cant't add new shape after Landing waypoint. Please remove last Landing point.", "Warning", MessageBoxButtons.OK);
                 return;
