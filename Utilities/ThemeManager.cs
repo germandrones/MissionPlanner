@@ -460,15 +460,17 @@ mc:Ignorable=""d""
 
             BGColor = Color.FromArgb(0xEE, 0xEE, 0xEE);                     // This changes the colour of the main menu background
             ControlBGColor = Color.FromArgb(0xE2, 0xE2, 0xE2);              // This changes the colour of the sub menu backgrounds
+
             TextColor = Color.Black;                                        // This changes the colour of text
             BGColorTextBox = ControlBGColor;                                // This changes the colour of the background of textboxes
             ButtonTextColor = Color.White;                                  // This changes the colour of button text
 
-            ButBG = Color.FromArgb(10, 27, 194);                       // This changes the colour of button backgrounds (Top)
-            ButBGBot = Color.FromArgb(29, 174, 229);                    // This changes the colour of button backgrounds (Bot)
+            ButBG = Color.FromArgb(72, 95, 154);                       // This changes the colour of button backgrounds (Top)
+            ButBGBot = Color.FromArgb(72, 95, 154);//Color.FromArgb(29, 174, 229);                    // This changes the colour of button backgrounds (Bot)
 
-            ProgressBarColorTop = Color.FromArgb(10, 27, 194);            // These three variables change the colours of progress bars
-            ProgressBarColorBot = Color.FromArgb(29, 174, 229);
+            ProgressBarColorTop = Color.FromArgb(72, 95, 154);            // These three variables change the colours of progress bars
+            ProgressBarColorBot = Color.FromArgb(72, 95, 154);
+
             ProgressBarOutlineColor = Color.FromArgb(150, 174, 112);
             BannerColor1 = Color.FromArgb(0x40, 0x57, 0x04);                // These two variables change the colours of banners such as "planner" umder configuration
             BannerColor2 = Color.FromArgb(0x94, 0xC1, 0x1F);
@@ -565,8 +567,8 @@ mc:Ignorable=""d""
                 else if (ctl.GetType() == typeof(MyButton))
                 {
                     Controls.MyButton but = (MyButton)ctl;
-                    but.BGGradTop = Color.FromArgb(10, 27, 194);
-                    but.BGGradBot = Color.FromArgb(29, 174, 229);
+                    but.BGGradTop = Color.FromArgb(72, 95, 154);
+                    but.BGGradBot = Color.FromArgb(72, 95, 154);
                     but.TextColor = Color.White;
                     but.Outline = Color.FromArgb(35, 31, 32);
                 }
@@ -745,8 +747,8 @@ mc:Ignorable=""d""
 
                     bsv.BackColor = BGColor;
                     bsv.ButtonsAreaBgColor = ControlBGColor;
-                    bsv.HighlightColor2 = Color.FromArgb(0x94, 0xc1, 0x1f);
-                    bsv.HighlightColor1 = Color.FromArgb(0x40, 0x57, 0x04);
+                    bsv.HighlightColor2 = Color.FromArgb(72, 95, 154);
+                    bsv.HighlightColor1 = Color.FromArgb(72, 95, 154);
                     bsv.SelectedTextColor = Color.White;
                     bsv.UnSelectedTextColor = Color.Gray;
                     bsv.ButtonsAreaPencilColor = Color.DarkGray;
@@ -759,8 +761,8 @@ mc:Ignorable=""d""
                 }
                 else if (ctl.GetType() == typeof(MyProgressBar))
                 {
-                    ((MyProgressBar)ctl).BGGradBot = ControlBGColor;
-                    ((MyProgressBar)ctl).BGGradTop = BGColor;
+                    ((MyProgressBar)ctl).BGGradBot = Color.FromArgb(72, 95, 154);
+                    ((MyProgressBar)ctl).BGGradTop = Color.FromArgb(72, 95, 154);
                 }
 
                 if (ctl.Controls.Count > 0) ApplyCustomTheme(ctl, 1);
@@ -808,8 +810,8 @@ mc:Ignorable=""d""
                 else if (ctl.GetType() == typeof (MyButton))
                 {
                     Controls.MyButton but = (MyButton)ctl;
-                    but.BGGradTop = Color.FromArgb(10, 27, 194);
-                    but.BGGradBot = Color.FromArgb(29, 174, 229);
+                    but.BGGradTop = Color.FromArgb(72, 95, 154);
+                    but.BGGradBot = Color.FromArgb(72, 95, 154);
                     but.TextColor = Color.White;
                     but.Outline = Color.FromArgb(35, 31, 32);
                 }
@@ -1000,7 +1002,7 @@ mc:Ignorable=""d""
                 }
                 else if (ctl.GetType() == typeof(MyProgressBar))
                 {
-                    ((MyProgressBar)ctl).BGGradBot = ControlBGColor;
+                    ((MyProgressBar)ctl).BGGradBot = Color.FromArgb(72, 95, 154);
                     ((MyProgressBar)ctl).BGGradTop = BGColor;
                 }
 

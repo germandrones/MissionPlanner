@@ -290,11 +290,11 @@ namespace MissionPlanner
                 // Add a another text item to to point out a graph feature
                 TextObj text = new TextObj((string) pp.Tag, pp.X, pp.Y);
                 // rotate the text 90 degrees
-                text.FontSpec.Angle = 90;
-                text.FontSpec.FontColor = Color.White;
+                text.FontSpec.Angle = 0;
+                text.FontSpec.FontColor = Color.Black;
                 // Align the text such that the Right-Center is at (700, 50) in user scale coordinates
                 text.Location.AlignH = AlignH.Right;
-                text.Location.AlignV = AlignV.Center;
+                text.Location.AlignV = AlignV.Bottom;
                 // Disable the border and background fill options for the text
                 text.FontSpec.Fill.IsVisible = false;
                 text.FontSpec.Border.IsVisible = false;

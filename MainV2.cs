@@ -519,6 +519,10 @@ namespace MissionPlanner
             _connectionControl.CMB_serialport.Click += this.CMB_serialport_Click;
             _connectionControl.cmb_sysid.Click += cmb_sysid_Click;
 
+            if (!Settings.isDevMode) { _connectionControl.cmb_sysid.Visible = false; }
+
+
+
             _connectionControl.ShowLinkStats += (sender, e) => ShowConnectionStatsForm();
             srtm.datadirectory = Settings.GetDataDirectory() +
                                  "srtm";
@@ -542,13 +546,15 @@ namespace MissionPlanner
             if (_connectionControl.TOOL_APMFirmware.Items.Count > 0)
                 _connectionControl.TOOL_APMFirmware.SelectedIndex = 0;
 
-            comPort.BaseStream.BaudRate = 115200;
+            comPort.BaseStream.BaudRate = 57600;
 
             PopulateSerialportList();            
 
             if (_connectionControl.CMB_serialport.Items.Count > 0)
             {
-                _connectionControl.CMB_baudrate.SelectedIndex = 8;
+                // Set default baudrate to 57600
+                int def_baudrate_idx = _connectionControl.CMB_baudrate.FindString("57600");
+                _connectionControl.CMB_baudrate.SelectedIndex = def_baudrate_idx;
                 _connectionControl.CMB_serialport.SelectedIndex = 0;
             }
             // ** Done
@@ -696,15 +702,14 @@ namespace MissionPlanner
 
 
 
-            //set first instance display configuration
-            if (DisplayConfiguration == null)
-            {
-                DisplayConfiguration = DisplayConfiguration.Basic();
-            }
+           
 
             if (Settings.isDevMode)
             {
                 DisplayConfiguration = DisplayConfiguration.Developer();
+            }
+            else {
+                DisplayConfiguration = DisplayConfiguration.Basic();
             }
 
 

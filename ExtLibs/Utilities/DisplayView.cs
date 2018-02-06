@@ -109,10 +109,10 @@ namespace MissionPlanner.Utilities
             displayAnenometer = true;
             displayQuickTab = true;
             displayPreFlightTab = true;
-            displayAdvActionsTab = false;
-            displaySimpleActionsTab = true;
-            displayGaugesTab = true;
-            displayStatusTab = false;
+            displayAdvActionsTab = true;
+            displaySimpleActionsTab = false;
+            displayGaugesTab = false;
+            displayStatusTab = true;
             displayServoTab = false;
             displayScriptsTab = false;
             displayTelemetryTab = true;

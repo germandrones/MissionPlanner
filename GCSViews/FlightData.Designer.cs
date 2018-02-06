@@ -481,7 +481,7 @@
             resources.ApplyResources(this.quickView6, "quickView6");
             this.quickView6.Name = "quickView6";
             this.quickView6.number = 0D;
-            this.quickView6.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(252)))));
+            this.quickView6.numberColor = System.Drawing.Color.FromArgb(72, 95, 154);
             this.quickView6.numberformat = "0.00";
             this.quickView6.DoubleClick += new System.EventHandler(this.quickView_DoubleClick);
             // 
@@ -510,7 +510,7 @@
             resources.ApplyResources(this.quickView5, "quickView5");
             this.quickView5.Name = "quickView5";
             this.quickView5.number = 0D;
-            this.quickView5.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(254)))), ((int)(((byte)(86)))));
+            this.quickView5.numberColor = System.Drawing.Color.FromArgb(72, 95, 154);
             this.quickView5.numberformat = "0.00";
             this.quickView5.DoubleClick += new System.EventHandler(this.quickView_DoubleClick);
             // 
@@ -522,7 +522,7 @@
             resources.ApplyResources(this.quickView4, "quickView4");
             this.quickView4.Name = "quickView4";
             this.quickView4.number = 0D;
-            this.quickView4.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(83)))));
+            this.quickView4.numberColor = System.Drawing.Color.FromArgb(72, 95, 154);
             this.quickView4.numberformat = "0.00";
             this.quickView4.DoubleClick += new System.EventHandler(this.quickView_DoubleClick);
             // 
@@ -534,7 +534,7 @@
             resources.ApplyResources(this.quickView3, "quickView3");
             this.quickView3.Name = "quickView3";
             this.quickView3.number = 0D;
-            this.quickView3.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(91)))));
+            this.quickView3.numberColor = System.Drawing.Color.FromArgb(72, 95, 154);
             this.quickView3.numberformat = "0.00";
             this.quickView3.DoubleClick += new System.EventHandler(this.quickView_DoubleClick);
             // 
@@ -546,7 +546,7 @@
             resources.ApplyResources(this.quickView2, "quickView2");
             this.quickView2.Name = "quickView2";
             this.quickView2.number = 0D;
-            this.quickView2.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(132)))), ((int)(((byte)(46)))));
+            this.quickView2.numberColor = System.Drawing.Color.FromArgb(72, 95, 154);
             this.quickView2.numberformat = "0.00";
             this.quickView2.DoubleClick += new System.EventHandler(this.quickView_DoubleClick);
             // 
@@ -558,7 +558,7 @@
             resources.ApplyResources(this.quickView1, "quickView1");
             this.quickView1.Name = "quickView1";
             this.quickView1.number = 0D;
-            this.quickView1.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(151)))), ((int)(((byte)(248)))));
+            this.quickView1.numberColor = System.Drawing.Color.FromArgb(72, 95, 154);
             this.quickView1.numberformat = "0.00";
             this.toolTip1.SetToolTip(this.quickView1, resources.GetString("quickView1.ToolTip"));
             this.quickView1.DoubleClick += new System.EventHandler(this.quickView_DoubleClick);

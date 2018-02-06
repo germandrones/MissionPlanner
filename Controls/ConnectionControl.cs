@@ -106,25 +106,20 @@ namespace MissionPlanner.Controls
 
                 foreach (int item in list)
                 {
-                    var temp = new port_sysid() { compid = (item % 256) , sysid = (item /256), port = port};
+                    var temp = new port_sysid() { compid = (item % 256), sysid = (item / 256), port = port };
 
-                    int idx = -1;
+                    var idx = cmb_sysid.Items.Add(temp);
 
-                    if (temp.sysid != 12)
+                    if (temp.port == MainV2.comPort && temp.sysid == MainV2.comPort.sysidcurrent && temp.compid == MainV2.comPort.compidcurrent)
                     {
-                        idx = cmb_sysid.Items.Add(temp); // Disable QUADROTOR Profile in Combobox.
-                        if (temp.port == MainV2.comPort && temp.sysid == MainV2.comPort.sysidcurrent && temp.compid == MainV2.comPort.compidcurrent)
-                        {
-                            selectidx = idx;
-                            if (selectidx < 0 && cmb_sysid.Items.Count > 0) { selectidx = 0; } // fix up the dropdown
-                        }
+                        selectidx = idx;
                     }
                 }
             }
 
             if (oldidx == -1 && selectidx != -1)
-            {                
-                cmb_sysid.SelectedIndex = selectidx;               
+            {
+                cmb_sysid.SelectedIndex = selectidx;
             }
 
             cmb_sysid.SelectedIndexChanged += CMB_sysid_SelectedIndexChanged;
