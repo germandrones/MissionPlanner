@@ -2363,44 +2363,44 @@
   <data name="geoFenceToolStripMenuItem.Text" xml:space="preserve">
     <value>Geo-Fence</value>
   </data>
-  <data name="createWpCircleToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 22</value>
+  <data name="createCircleSurveyToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 22</value>
   </data>
-  <data name="createWpCircleToolStripMenuItem.Text" xml:space="preserve">
-    <value>Create Wp Circle</value>
-  </data>
-  <data name="createSplineCircleToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 22</value>
-  </data>
-  <data name="createSplineCircleToolStripMenuItem.Text" xml:space="preserve">
-    <value>Create Spline Circle</value>
+  <data name="createCircleSurveyToolStripMenuItem1.Text" xml:space="preserve">
+    <value>Create Circle Survey</value>
   </data>
   <data name="create8ShapeSurveyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 22</value>
+    <value>219, 22</value>
   </data>
   <data name="create8ShapeSurveyToolStripMenuItem.Text" xml:space="preserve">
     <value>Create 8 Shape Survey</value>
   </data>
+  <data name="createWpCircleToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 22</value>
+  </data>
+  <data name="createWpCircleToolStripMenuItem.Text" xml:space="preserve">
+    <value>Create Cutom Circle Survey</value>
+  </data>
   <data name="areaToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 22</value>
+    <value>219, 22</value>
   </data>
   <data name="areaToolStripMenuItem1.Text" xml:space="preserve">
     <value>Area</value>
   </data>
   <data name="textToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 22</value>
+    <value>219, 22</value>
   </data>
   <data name="textToolStripMenuItem.Text" xml:space="preserve">
     <value>Text</value>
   </data>
   <data name="createCircleSurveyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 22</value>
+    <value>219, 22</value>
   </data>
   <data name="createCircleSurveyToolStripMenuItem.Text" xml:space="preserve">
     <value>Create Circle Survey</value>
   </data>
   <data name="surveyGridToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 22</value>
+    <value>219, 22</value>
   </data>
   <data name="surveyGridToolStripMenuItem.Text" xml:space="preserve">
     <value>Survey (Grid)</value>
@@ -3101,10 +3101,10 @@
   <data name="&gt;&gt;createWpCircleToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;createSplineCircleToolStripMenuItem.Name" xml:space="preserve">
-    <value>createSplineCircleToolStripMenuItem</value>
+  <data name="&gt;&gt;createCircleSurveyToolStripMenuItem1.Name" xml:space="preserve">
+    <value>createCircleSurveyToolStripMenuItem1</value>
   </data>
-  <data name="&gt;&gt;createSplineCircleToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;createCircleSurveyToolStripMenuItem1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;create8ShapeSurveyToolStripMenuItem.Name" xml:space="preserve">

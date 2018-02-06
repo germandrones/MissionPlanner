@@ -46,7 +46,7 @@ namespace MissionPlanner.GCSViews
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         int selectedrow;
-        int m_selectedPoint;
+        int m_selectedPoint = -1; // default value initializing
         public bool quickadd;
         bool isonline = true;
         bool sethome;
@@ -959,7 +959,7 @@ namespace MissionPlanner.GCSViews
         {
             rallyPointsToolStripMenuItem.Visible = MainV2.DisplayConfiguration.displayRallyPointsMenu;
             geoFenceToolStripMenuItem.Visible = MainV2.DisplayConfiguration.displayGeoFenceMenu;
-            createSplineCircleToolStripMenuItem.Visible = MainV2.DisplayConfiguration.displaySplineCircleAutoWp;
+            //createSplineCircleToolStripMenuItem.Visible = MainV2.DisplayConfiguration.displaySplineCircleAutoWp;
             textToolStripMenuItem.Visible = MainV2.DisplayConfiguration.displayTextAutoWp;
             createCircleSurveyToolStripMenuItem.Visible = MainV2.DisplayConfiguration.displayCircleSurveyAutoWp;
             pOIToolStripMenuItem.Visible = MainV2.DisplayConfiguration.displayPoiMenu;
@@ -5310,51 +5310,28 @@ namespace MissionPlanner.GCSViews
         private void createWpCircleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string RadiusIn = "50";
-            if (DialogResult.Cancel == InputBox.Show("Radius", "Radius", ref RadiusIn))
-                return;
+            if (DialogResult.Cancel == InputBox.Show("Radius", "Radius", ref RadiusIn)) return;
 
             string Pointsin = "20";
-            if (DialogResult.Cancel == InputBox.Show("Points", "Number of points to generate Circle", ref Pointsin))
-                return;
+            if (DialogResult.Cancel == InputBox.Show("Points", "Number of points to generate Circle", ref Pointsin)) return;
 
             string Directionin = "1";
-            if (DialogResult.Cancel == InputBox.Show("Points", "Direction of circle (-1 or 1)", ref Directionin))
-                return;
+            if (DialogResult.Cancel == InputBox.Show("Points", "Direction of circle (-1 or 1)", ref Directionin)) return;
 
             string startanglein = "0";
-            if (DialogResult.Cancel == InputBox.Show("angle", "Angle of first point (whole degrees)", ref startanglein))
-                return;
+            if (DialogResult.Cancel == InputBox.Show("angle", "Angle of first point (whole degrees)", ref startanglein)) return;
+
 
             int Points = 0;
             int Radius = 0;
             int Direction = 1;
             int startangle = 0;
 
-            if (!int.TryParse(RadiusIn, out Radius))
-            {
-                CustomMessageBox.Show("Bad Radius");
-                return;
-            }
-
+            if (!int.TryParse(RadiusIn, out Radius)) { CustomMessageBox.Show("Bad Radius"); return; }
+            if (!int.TryParse(Pointsin, out Points)) { CustomMessageBox.Show("Bad Point value"); return; }
+            if (!int.TryParse(Directionin, out Direction)) { CustomMessageBox.Show("Bad Direction value"); return; }
+            if (!int.TryParse(startanglein, out startangle)) { CustomMessageBox.Show("Bad start angle value"); return; }
             Radius = (int)(Radius / CurrentState.multiplierdist);
-
-            if (!int.TryParse(Pointsin, out Points))
-            {
-                CustomMessageBox.Show("Bad Point value");
-                return;
-            }
-
-            if (!int.TryParse(Directionin, out Direction))
-            {
-                CustomMessageBox.Show("Bad Direction value");
-                return;
-            }
-
-            if (!int.TryParse(startanglein, out startangle))
-            {
-                CustomMessageBox.Show("Bad start angle value");
-                return;
-            }
 
             double a = startangle;
             double step = 360.0f / Points;
@@ -7368,6 +7345,107 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             elevationGraphToolStripMenuItem_Click(sender, e);
         }
 
+        // method creates a circle survey with the ROI in the center of circle
+        private void createCircleSurveyToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+            #region User given parameter parse
+            // User defined parameters:
+            int Radius = 0;
+            int Points = 0;
+            int Repeats = 0;
+            int Direction = 0;
+
+            string RadiusIn = "50";
+            if (DialogResult.Cancel == InputBox.Show("Radius", "Radius", ref RadiusIn)) return;
+
+            string PointsIn = "6";
+            if (DialogResult.Cancel == InputBox.Show("Points", "Number of points to generate each Circle", ref PointsIn)) return;
+
+            string RepeatsIn = "0";
+            if (DialogResult.Cancel == InputBox.Show("Repeats", "Repeat times", ref RepeatsIn)) return;
+
+            string Directionin = "1";
+            if (DialogResult.Cancel == InputBox.Show("Points", "Direction of circle survey. CW or CCW (-1 or 1)", ref Directionin)) return;
+
+            if (!int.TryParse(RadiusIn, out Radius))        { CustomMessageBox.Show("Bad Radius value"); return; }
+            if (!int.TryParse(PointsIn, out Points))        { CustomMessageBox.Show("Bad Points value"); return; }
+            if (!int.TryParse(Directionin, out Direction))  { CustomMessageBox.Show("Bad Direction value"); return; }
+            if (!int.TryParse(RepeatsIn, out Repeats))      { CustomMessageBox.Show("Bad Repeat value"); return; }
+            #endregion
+
+            // where the mouse is clicked
+            double mp_lat = MouseDownEnd.Lat;
+            double mp_lng = MouseDownEnd.Lng;
+
+
+            // put the new DO_SET_ROI in the middle of circle
+            selectedrow = Commands.Rows.Add();
+            Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.DO_SET_ROI.ToString();
+            ChangeColumnHeader(MAVLink.MAV_CMD.DO_SET_ROI.ToString());
+            Commands.Rows[selectedrow].Cells[Lat.Index].Value = mp_lat.ToString();
+            Commands.Rows[selectedrow].Cells[Lon.Index].Value = mp_lng.ToString();
+
+
+            // find the previous WP location(lat,lng), if exists otherwise use homeposition
+            PointLatLngAlt plla_prev = new PointLatLngAlt();
+            bool prevPointFound = false;
+
+            // get back over the planned mission to find the lates waypoint
+            for (int missionItem = Commands.Rows.Count - 1; missionItem >= 0; missionItem--)
+            {
+                if (Commands.Rows[missionItem].Cells[Command.Index].Value.ToString().Contains(MAVLink.MAV_CMD.WAYPOINT.ToString()))
+                {
+                    // Last WP found!
+                    plla_prev.Lat = Convert.ToDouble(Commands.Rows[missionItem].Cells[Lat.Index].Value);
+                    plla_prev.Lng = Convert.ToDouble(Commands.Rows[missionItem].Cells[Lon.Index].Value);
+                    prevPointFound = true;
+                    break;// exit from loop
+                }
+            }
+            if (!prevPointFound) { plla_prev = MainV2.comPort.MAV.cs.HomeLocation; } // use the home position if no wp defined
+
+
+            // get bearing angle to define orientation circle based on previous WP location
+            double bearing = GetBearing(plla_prev, new PointLatLng(mp_lat, mp_lng));
+
+            double start_angle = Direction > 0 ? 270 + bearing : 90 + bearing;
+
+            double a = start_angle;
+            double step = 360.0f / Points;
+            
+            if (Direction == -1) { a += 360; step *= -1; }
+
+            quickadd = true;
+            int ctr = 0;
+            for (; a <= (start_angle + 360) && a >= 0; a += step)
+            {
+                if (ctr > Points && Direction < 0) { ctr++; continue; } else { ctr++; }
+                selectedrow = Commands.Rows.Add();
+
+                Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.WAYPOINT.ToString();
+
+                ChangeColumnHeader(MAVLink.MAV_CMD.WAYPOINT.ToString());
+
+                float d = Radius;
+                float R = 6371000;
+
+                var lat2 = Math.Asin(Math.Sin(MouseDownEnd.Lat * MathHelper.deg2rad) * Math.Cos(d / R) + Math.Cos(MouseDownEnd.Lat * MathHelper.deg2rad) * Math.Sin(d / R) * Math.Cos(a * MathHelper.deg2rad));
+                var lon2 = MouseDownEnd.Lng * MathHelper.deg2rad + Math.Atan2(Math.Sin(a * MathHelper.deg2rad) * Math.Sin(d / R) * Math.Cos(MouseDownEnd.Lat * MathHelper.deg2rad), Math.Cos(d / R) - Math.Sin(MouseDownEnd.Lat * MathHelper.deg2rad) * Math.Sin(lat2));
+
+                PointLatLng pll = new PointLatLng(lat2 * MathHelper.rad2deg, lon2 * MathHelper.rad2deg);
+
+                setfromMap(pll.Lat, pll.Lng, (int)float.Parse(TXT_DefaultAlt.Text));
+            }
+
+            quickadd = false;
+            writeKML();
+        }
+
+
+
+
+        // method creates an 8 shape survey with ROI in the middle of the shape
         private void create8ShapeSurveyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // quickly store the point number to be replaced if needed!
@@ -7383,7 +7461,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             }
 
             // only WPoint can be modified, check:
-            if(!Commands.Rows[selectedrow].Cells[Command.Index].Value.ToString().Contains(MAVLink.MAV_CMD.WAYPOINT.ToString()))
+            if(do_insert && !Commands.Rows[RWP].Cells[Command.Index].Value.ToString().Contains(MAVLink.MAV_CMD.WAYPOINT.ToString()))
             {
                 MessageBox.Show("Only a waypoint can be modified.", "Warning", MessageBoxButtons.OK);
                 return;

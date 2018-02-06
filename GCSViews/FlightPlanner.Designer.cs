@@ -146,6 +146,7 @@ namespace MissionPlanner.GCSViews
             this.lnk_kml = new System.Windows.Forms.LinkLabel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panelMap = new System.Windows.Forms.Panel();
+            this.DebugMsg = new System.Windows.Forms.Label();
             this.lbl_distance = new System.Windows.Forms.Label();
             this.lbl_homedist = new System.Windows.Forms.Label();
             this.lbl_prevdist = new System.Windows.Forms.Label();
@@ -193,7 +194,7 @@ namespace MissionPlanner.GCSViews
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoWPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createWpCircleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.createSplineCircleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createCircleSurveyToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.create8ShapeSurveyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.areaToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.textToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -228,7 +229,6 @@ namespace MissionPlanner.GCSViews
             this.panelBASE = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.DebugMsg = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panelWaypoints.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -943,6 +943,11 @@ namespace MissionPlanner.GCSViews
             this.panelMap.Name = "panelMap";
             this.panelMap.Resize += new System.EventHandler(this.panelMap_Resize);
             // 
+            // DebugMsg
+            // 
+            resources.ApplyResources(this.DebugMsg, "DebugMsg");
+            this.DebugMsg.Name = "DebugMsg";
+            // 
             // lbl_distance
             // 
             resources.ApplyResources(this.lbl_distance, "lbl_distance");
@@ -1283,9 +1288,9 @@ namespace MissionPlanner.GCSViews
             // autoWPToolStripMenuItem
             // 
             this.autoWPToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createWpCircleToolStripMenuItem,
-            this.createSplineCircleToolStripMenuItem,
+            this.createCircleSurveyToolStripMenuItem1,
             this.create8ShapeSurveyToolStripMenuItem,
+            this.createWpCircleToolStripMenuItem,
             this.areaToolStripMenuItem1,
             this.textToolStripMenuItem,
             this.createCircleSurveyToolStripMenuItem,
@@ -1299,11 +1304,11 @@ namespace MissionPlanner.GCSViews
             resources.ApplyResources(this.createWpCircleToolStripMenuItem, "createWpCircleToolStripMenuItem");
             this.createWpCircleToolStripMenuItem.Click += new System.EventHandler(this.createWpCircleToolStripMenuItem_Click);
             // 
-            // createSplineCircleToolStripMenuItem
+            // createCircleSurveyToolStripMenuItem1
             // 
-            this.createSplineCircleToolStripMenuItem.Name = "createSplineCircleToolStripMenuItem";
-            resources.ApplyResources(this.createSplineCircleToolStripMenuItem, "createSplineCircleToolStripMenuItem");
-            this.createSplineCircleToolStripMenuItem.Click += new System.EventHandler(this.createSplineCircleToolStripMenuItem_Click);
+            this.createCircleSurveyToolStripMenuItem1.Name = "createCircleSurveyToolStripMenuItem1";
+            resources.ApplyResources(this.createCircleSurveyToolStripMenuItem1, "createCircleSurveyToolStripMenuItem1");
+            this.createCircleSurveyToolStripMenuItem1.Click += new System.EventHandler(this.createCircleSurveyToolStripMenuItem1_Click);
             // 
             // create8ShapeSurveyToolStripMenuItem
             // 
@@ -1529,11 +1534,6 @@ namespace MissionPlanner.GCSViews
             this.timer1.Interval = 1200;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // DebugMsg
-            // 
-            resources.ApplyResources(this.DebugMsg, "DebugMsg");
-            this.DebugMsg.Name = "DebugMsg";
-            // 
             // FlightPlanner
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1689,7 +1689,6 @@ namespace MissionPlanner.GCSViews
         private System.Windows.Forms.ToolStripMenuItem switchDockingToolStripMenuItem;
         private BSE.Windows.Forms.Splitter splitter2;
         private System.Windows.Forms.ToolStripMenuItem insertSplineWPToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem createSplineCircleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fromSHPToolStripMenuItem;
         private System.Windows.Forms.Label lbl_wpfile;
         private System.Windows.Forms.ToolStripMenuItem textToolStripMenuItem;
@@ -1747,5 +1746,6 @@ namespace MissionPlanner.GCSViews
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ToolStripMenuItem create8ShapeSurveyToolStripMenuItem;
         private System.Windows.Forms.Label DebugMsg;
+        private System.Windows.Forms.ToolStripMenuItem createCircleSurveyToolStripMenuItem1;
     }
 }
