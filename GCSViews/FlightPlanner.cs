@@ -7348,8 +7348,33 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
         // method creates a circle survey with the ROI in the center of circle
         private void createCircleSurveyToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+            #region check if we modify an existing wp into circle
+            bool do_insert = false;
+            int RWP = m_selectedPoint;
+            if (RWP < 0) { do_insert = false; }
+            else
+            {
+                do_insert = true;
+                selectedrow = RWP - 1;
+                if (MessageBox.Show("Modyfy existing Waypoint #" + RWP.ToString() + " into circle survey?", "Modification", MessageBoxButtons.YesNo) == DialogResult.No) return;
+            }
+
+            // only WPoint can be modified, check:
+            if (do_insert && !Commands.Rows[RWP].Cells[Command.Index].Value.ToString().Contains(MAVLink.MAV_CMD.WAYPOINT.ToString()))
+            {
+                MessageBox.Show("Only a waypoint can be modified.", "Warning", MessageBoxButtons.OK);
+                return;
+            }
+            #endregion
 
             #region User given parameter parse
+            // if Last mission item exist and it is landing point, dont add any shapes
+            if (Commands.Rows.Count > 0 && Commands.Rows[Commands.Rows.Count - 1].Cells[Command.Index].Value.ToString().Contains(MAVLink.MAV_CMD.LAND.ToString()) && !do_insert)
+            {
+                MessageBox.Show("Unable to add new shape survey after landing waypoint. Please remove last landing waypoint.", "Warning", MessageBoxButtons.OK);
+                return;
+            }
+
             // User defined parameters:
             int Radius = 0;
             int Points = 0;
@@ -7375,24 +7400,37 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             #endregion
 
             // where the mouse is clicked
-            double mp_lat = MouseDownEnd.Lat;
-            double mp_lng = MouseDownEnd.Lng;
+            double mp_lat = do_insert ? Double.Parse(Commands.Rows[selectedrow].Cells[Lat.Index].Value.ToString()) : MouseDownEnd.Lat;
+            double mp_lng = do_insert ? Double.Parse(Commands.Rows[selectedrow].Cells[Lon.Index].Value.ToString()) : MouseDownEnd.Lng;
 
+            #region ROI Point inserting(new or modify existing)
 
-            // put the new DO_SET_ROI in the middle of circle
-            selectedrow = Commands.Rows.Add();
-            Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.DO_SET_ROI.ToString();
-            ChangeColumnHeader(MAVLink.MAV_CMD.DO_SET_ROI.ToString());
-            Commands.Rows[selectedrow].Cells[Lat.Index].Value = mp_lat.ToString();
-            Commands.Rows[selectedrow].Cells[Lon.Index].Value = mp_lng.ToString();
+            if (do_insert)
+            {
+                // convert selected wp to DO_SET_ROI
+                Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.DO_SET_ROI.ToString();
+                ChangeColumnHeader(MAVLink.MAV_CMD.DO_SET_ROI.ToString());
+            }
+            else
+            {
+                selectedrow = Commands.Rows.Add();
+                Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.DO_SET_ROI.ToString();
+                ChangeColumnHeader(MAVLink.MAV_CMD.DO_SET_ROI.ToString());
+                Commands.Rows[selectedrow].Cells[Lat.Index].Value = mp_lat.ToString();
+                Commands.Rows[selectedrow].Cells[Lon.Index].Value = mp_lng.ToString();
+            }
 
+            #endregion
 
+            int index_of_repeatPosition = do_insert ? selectedrow + 2 : Commands.Rows.Count + 2; //Skip initial waypoint of 8 shape
+
+            #region find the previous WP or use Home Position
             // find the previous WP location(lat,lng), if exists otherwise use homeposition
             PointLatLngAlt plla_prev = new PointLatLngAlt();
             bool prevPointFound = false;
 
             // get back over the planned mission to find the lates waypoint
-            for (int missionItem = Commands.Rows.Count - 1; missionItem >= 0; missionItem--)
+            for (int missionItem = do_insert ? selectedrow : Commands.Rows.Count - 1; missionItem >= 0; missionItem--)
             {
                 if (Commands.Rows[missionItem].Cells[Command.Index].Value.ToString().Contains(MAVLink.MAV_CMD.WAYPOINT.ToString()))
                 {
@@ -7404,7 +7442,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 }
             }
             if (!prevPointFound) { plla_prev = MainV2.comPort.MAV.cs.HomeLocation; } // use the home position if no wp defined
-
+            #endregion
 
             // get bearing angle to define orientation circle based on previous WP location
             double bearing = GetBearing(plla_prev, new PointLatLng(mp_lat, mp_lng));
@@ -7421,10 +7459,10 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             for (; a <= (start_angle + 360) && a >= 0; a += step)
             {
                 if (ctr > Points && Direction < 0) { ctr++; continue; } else { ctr++; }
-                selectedrow = Commands.Rows.Add();
+                if (do_insert) { selectedrow++; Commands.Rows.Insert(selectedrow, 1); } else { selectedrow = Commands.Rows.Add(); }
+                //selectedrow = Commands.Rows.Add();
 
                 Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.WAYPOINT.ToString();
-
                 ChangeColumnHeader(MAVLink.MAV_CMD.WAYPOINT.ToString());
 
                 float d = Radius;
@@ -7437,6 +7475,18 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
 
                 setfromMap(pll.Lat, pll.Lng, (int)float.Parse(TXT_DefaultAlt.Text));
             }
+
+            #region Repeats message
+            //do jump setting
+            if (Repeats > 0)
+            {
+                if (do_insert) { selectedrow++; Commands.Rows.Insert(selectedrow, 1); } else { selectedrow = Commands.Rows.Add(); }
+                Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.DO_JUMP.ToString();
+                ChangeColumnHeader(MAVLink.MAV_CMD.DO_JUMP.ToString());
+                Commands.Rows[selectedrow].Cells[Param1.Index].Value = index_of_repeatPosition.ToString();
+                Commands.Rows[selectedrow].Cells[Param2.Index].Value = Repeats.ToString();
+            }
+            #endregion
 
             quickadd = false;
             writeKML();
