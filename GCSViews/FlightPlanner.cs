@@ -7360,7 +7360,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             }
 
             // only WPoint can be modified, check:
-            if (do_insert && !Commands.Rows[RWP].Cells[Command.Index].Value.ToString().Contains(MAVLink.MAV_CMD.WAYPOINT.ToString()))
+            if (do_insert && !Commands.Rows[selectedrow].Cells[Command.Index].Value.ToString().Contains(MAVLink.MAV_CMD.WAYPOINT.ToString()))
             {
                 MessageBox.Show("Only a waypoint can be modified.", "Warning", MessageBoxButtons.OK);
                 return;
@@ -7511,7 +7511,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             }
 
             // only WPoint can be modified, check:
-            if(do_insert && !Commands.Rows[RWP].Cells[Command.Index].Value.ToString().Contains(MAVLink.MAV_CMD.WAYPOINT.ToString()))
+            if(do_insert && !Commands.Rows[selectedrow].Cells[Command.Index].Value.ToString().Contains(MAVLink.MAV_CMD.WAYPOINT.ToString()))
             {
                 MessageBox.Show("Only a waypoint can be modified.", "Warning", MessageBoxButtons.OK);
                 return;
