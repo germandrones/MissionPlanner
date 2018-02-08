@@ -1957,16 +1957,29 @@ Please check the following
             }
         }
 
+        
+
         public void SendAck()
         {
             mavlink_command_ack_t ack = new mavlink_command_ack_t();
-            ack.command = (ushort) MAV_CMD.PREFLIGHT_CALIBRATION;
+
+            ack.command = (ushort)MAV_CMD.PREFLIGHT_CALIBRATION;
             ack.result = 0;
 
             // send twice
             generatePacket(MAVLINK_MSG_ID.COMMAND_ACK, ack);
             Thread.Sleep(20);
             generatePacket(MAVLINK_MSG_ID.COMMAND_ACK, ack);
+        }
+
+        // Method sends an empty HWP echo responce to pixhawk
+        public void Send_HWP_Ack()
+        {
+            mavlink_hwp_t ack = new mavlink_hwp_t();
+            // send twice
+            generatePacket(MAVLINK_MSG_ID.HWP, ack);
+            Thread.Sleep(20);
+            generatePacket(MAVLINK_MSG_ID.HWP, ack);
         }
 
         public void SendSerialControl(SERIAL_CONTROL_DEV port, ushort timeoutms, byte[] data, uint baudrate = 0,
