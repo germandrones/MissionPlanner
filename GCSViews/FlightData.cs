@@ -1094,6 +1094,9 @@ namespace MissionPlanner.GCSViews
                             hwp3_lat = MainV2.comPort.MAV.cs.hwp3_lat;
                             hwp3_lng = MainV2.comPort.MAV.cs.hwp3_lng;
 
+                            // Before update Map send an ACK Handshake message to PX4, that we have the message received and parsed
+                            if (MainV2.comPort.BaseStream.IsOpen) MainV2.comPort.Send_HWP_Ack();
+
                             update_map();
                         }
 
