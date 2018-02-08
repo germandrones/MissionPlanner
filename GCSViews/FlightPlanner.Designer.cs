@@ -193,9 +193,9 @@ namespace MissionPlanner.GCSViews
             this.saveToFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoWPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.createWpCircleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createCircleSurveyToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.create8ShapeSurveyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createWpCircleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.areaToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.textToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createCircleSurveyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1298,12 +1298,6 @@ namespace MissionPlanner.GCSViews
             this.autoWPToolStripMenuItem.Name = "autoWPToolStripMenuItem";
             resources.ApplyResources(this.autoWPToolStripMenuItem, "autoWPToolStripMenuItem");
             // 
-            // createWpCircleToolStripMenuItem
-            // 
-            this.createWpCircleToolStripMenuItem.Name = "createWpCircleToolStripMenuItem";
-            resources.ApplyResources(this.createWpCircleToolStripMenuItem, "createWpCircleToolStripMenuItem");
-            this.createWpCircleToolStripMenuItem.Click += new System.EventHandler(this.createWpCircleToolStripMenuItem_Click);
-            // 
             // createCircleSurveyToolStripMenuItem1
             // 
             this.createCircleSurveyToolStripMenuItem1.Name = "createCircleSurveyToolStripMenuItem1";
@@ -1315,6 +1309,12 @@ namespace MissionPlanner.GCSViews
             this.create8ShapeSurveyToolStripMenuItem.Name = "create8ShapeSurveyToolStripMenuItem";
             resources.ApplyResources(this.create8ShapeSurveyToolStripMenuItem, "create8ShapeSurveyToolStripMenuItem");
             this.create8ShapeSurveyToolStripMenuItem.Click += new System.EventHandler(this.create8ShapeSurveyToolStripMenuItem_Click);
+            // 
+            // createWpCircleToolStripMenuItem
+            // 
+            this.createWpCircleToolStripMenuItem.Name = "createWpCircleToolStripMenuItem";
+            resources.ApplyResources(this.createWpCircleToolStripMenuItem, "createWpCircleToolStripMenuItem");
+            this.createWpCircleToolStripMenuItem.Click += new System.EventHandler(this.createWpCircleToolStripMenuItem_Click);
             // 
             // areaToolStripMenuItem1
             // 

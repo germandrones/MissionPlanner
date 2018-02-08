@@ -117,7 +117,7 @@ namespace MissionPlanner.GCSViews
 
 
         // HeadWind Waypoints
-        bool  gotHWP = false;
+        bool  HWP_updated = false;
         float hwp1_lat, hwp1_lng;
         float hwp2_lat, hwp2_lng;
         float hwp3_lat, hwp3_lng;
@@ -1080,11 +1080,12 @@ namespace MissionPlanner.GCSViews
                     {
 
                         // Check if HWP points are already generated and received
-                        if (MainV2.comPort.MAV.cs.hwp1_lat != hwp1_lat)
+                        if (MainV2.comPort.MAV.cs.gotHWP == true)
                         {
-                            // Visualize the HWP points on the map
-                            gotHWP = MainV2.comPort.MAV.cs.gotHWP; //true
+                            // Set flag to true
+                            HWP_updated = true;
 
+                            //refresh the HWPs
                             hwp1_lat = MainV2.comPort.MAV.cs.hwp1_lat;
                             hwp1_lng = MainV2.comPort.MAV.cs.hwp1_lng;
 
@@ -1098,6 +1099,7 @@ namespace MissionPlanner.GCSViews
                             if (MainV2.comPort.BaseStream.IsOpen) MainV2.comPort.Send_HWP_Ack();
 
                             update_map();
+                            MainV2.comPort.MAV.cs.gotHWP = false;
                         }
 
                         // show disable joystick button
@@ -1425,7 +1427,7 @@ namespace MissionPlanner.GCSViews
                 }
 
                 // HWP Points received?
-                if (gotHWP)
+                if (HWP_updated)
                 {
                     addpolygonmarkerNoTooltip("HWP1", hwp1_lng, hwp1_lat, 0, Color.Blue, polygons);
                     addpolygonmarkerNoTooltip("HWP2", hwp2_lng, hwp2_lat, 0, Color.Blue, polygons);

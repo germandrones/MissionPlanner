@@ -1518,7 +1518,7 @@
     <value>Commands</value>
   </data>
   <data name="&gt;&gt;Commands.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyDataGridView, MissionPlanner, Version=1.3.52.1, Culture=neutral, PublicKeyToken=null</value>
+    <value>MissionPlanner.Controls.MyDataGridView, MissionPlanner, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;Commands.Parent" xml:space="preserve">
     <value>panelWaypoints</value>
@@ -3095,12 +3095,6 @@
   <data name="&gt;&gt;autoWPToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;createWpCircleToolStripMenuItem.Name" xml:space="preserve">
-    <value>createWpCircleToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;createWpCircleToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;createCircleSurveyToolStripMenuItem1.Name" xml:space="preserve">
     <value>createCircleSurveyToolStripMenuItem1</value>
   </data>
@@ -3111,6 +3105,12 @@
     <value>create8ShapeSurveyToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;create8ShapeSurveyToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;createWpCircleToolStripMenuItem.Name" xml:space="preserve">
+    <value>createWpCircleToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;createWpCircleToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;areaToolStripMenuItem1.Name" xml:space="preserve">
