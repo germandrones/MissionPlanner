@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization.Formatters.Binary; 
 using System.Text;
 using System.Threading;
 using System.Xml.Serialization;
@@ -117,7 +117,7 @@ namespace MissionPlanner.Utilities
             displayScriptsTab = false;
             displayTelemetryTab = true;
             displayDataflashTab = true;
-            displayMessagesTab = true;
+            displayMessagesTab = false;
 
             //flight plan
             displayRallyPointsMenu = true;
@@ -229,7 +229,7 @@ namespace MissionPlanner.Utilities
                 displayScriptsTab = false,
                 displayTelemetryTab = true,
                 displayDataflashTab = true,
-                displayMessagesTab = true,
+                displayMessagesTab = false,
 
                 //flight plan
                 displayRallyPointsMenu = true,
@@ -304,13 +304,13 @@ namespace MissionPlanner.Utilities
                 displayPreFlightTab = true,
                 displayAdvActionsTab = true,
                 displaySimpleActionsTab = false,
-                displayGaugesTab = true,
+                displayGaugesTab = false,
                 displayStatusTab = true,
                 displayServoTab = true,
                 displayScriptsTab = true,
                 displayTelemetryTab = true,
                 displayDataflashTab = true,
-                displayMessagesTab = true,
+                displayMessagesTab = false,
 
                 //flight plan
                 displayRallyPointsMenu = true,
