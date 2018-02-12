@@ -4022,6 +4022,7 @@ namespace MissionPlanner.GCSViews
                 {
                     StringBuilder message = new StringBuilder();
                     MainV2.comPort.MAV.cs.messages.ForEach(x => { message.Insert(0, x + "\r\n"); });
+
                     txt_messagebox.Text = message.ToString();
 
                     messagecount = newmsgcount;
