@@ -52,6 +52,7 @@ namespace MissionPlanner.Utilities
         public Boolean displayPluginAutoWp { get; set; }
 
         //initial setup
+        public Boolean displayInstallFirmware { get; set; }
         public Boolean displayWizard { get; set; }
         public Boolean displayOptionalHardware { get; set; }
         public Boolean displayFrameType { get; set; }
@@ -131,6 +132,7 @@ namespace MissionPlanner.Utilities
             displayPluginAutoWp = true;
 
             //initial setup
+            displayInstallFirmware = true;
             displayWizard = true;
             displayOptionalHardware = true;
             displayFrameType = true;
@@ -243,6 +245,7 @@ namespace MissionPlanner.Utilities
                 displayPluginAutoWp = true,
 
                 //initial setup
+                displayInstallFirmware = true,
                 displayWizard = false,
                 displayOptionalHardware = false,
                 displayFrameType = true,
@@ -324,6 +327,7 @@ namespace MissionPlanner.Utilities
                 displayPluginAutoWp = true,
 
                 //initial setup
+                displayInstallFirmware = true,
                 displayWizard = true,
                 displayOptionalHardware = true,
                 displayFrameType = true,

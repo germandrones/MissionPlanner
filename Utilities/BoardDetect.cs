@@ -31,6 +31,7 @@ namespace MissionPlanner.Utilities
             vrbrainv50,
             vrbrainv51,
             vrbrainv52,
+            vrbrainv54,
             vrcorev10,
             vrubrainv51,
             vrubrainv52,

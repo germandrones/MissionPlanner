@@ -335,6 +335,8 @@
     <Compile Include="GCSViews\ConfigurationView\ConfigCompassMot.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigESCCalibration.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigFailSafe.cs"> <SubType>Control</SubType> </Compile>
+    <Compile Include="GCSViews\ConfigurationView\ConfigFirmware.cs"><SubType>Control</SubType></Compile>
+    <Compile Include="GCSViews\ConfigurationView\ConfigFirmwareDisabled.cs"><SubType>Control</SubType></Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigFlightModes.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigFrameClassType.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigFrameType.cs"> <SubType>Control</SubType> </Compile>
@@ -471,6 +473,7 @@
     <Compile Include="Utilities\CircleSurveyMission.cs" />
     <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Utilities\fftui.cs"> <SubType>Control</SubType> </Compile>
+    <Compile Include="Utilities\Firmware.cs" />
     <Compile Include="Utilities\GimbalPoint.cs" />
     <Compile Include="Utilities\httpserver.cs" />
     <Compile Include="Utilities\LangUtility.cs" />
@@ -517,7 +520,8 @@
     <Compile Include="Wizard\9RadioCalibration.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="Wizard\IWizard.cs" />
     <Compile Include="Wizard\Wizard.cs"> <SubType>Control</SubType> </Compile>
-  </ItemGroup>
+  
+    </ItemGroup>
   <ItemGroup>
     <Compile Include="ConnectionOptions.Designer.cs"><DependentUpon>ConnectionOptions.cs</DependentUpon> </Compile>
     <Compile Include="ElevationProfile.Designer.cs"><DependentUpon>ElevationProfile.cs</DependentUpon> </Compile>
@@ -574,6 +578,8 @@
     <Compile Include="GCSViews\ConfigurationView\ConfigCompassMot.Designer.cs"><DependentUpon>ConfigCompassMot.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigESCCalibration.Designer.cs"><DependentUpon>ConfigESCCalibration.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigFailSafe.Designer.cs"><DependentUpon>ConfigFailSafe.cs</DependentUpon> </Compile>
+    <Compile Include="GCSViews\ConfigurationView\ConfigFirmware.Designer.cs"><DependentUpon>ConfigFirmware.cs</DependentUpon></Compile>
+    <Compile Include="GCSViews\ConfigurationView\ConfigFirmwareDisabled.Designer.cs"><DependentUpon>ConfigFirmwareDisabled.cs</DependentUpon></Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigFlightModes.Designer.cs"><DependentUpon>ConfigFlightModes.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigFrameClassType.Designer.cs"><DependentUpon>ConfigFrameClassType.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigFrameType.Designer.cs"><DependentUpon>ConfigFrameType.cs</DependentUpon> </Compile>
@@ -1142,6 +1148,69 @@
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFailSafe.zh-Hans.resx"><DependentUpon>ConfigFailSafe.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFailSafe.zh-Hant.resx"><DependentUpon>ConfigFailSafe.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFailSafe.zh-TW.resx"><DependentUpon>ConfigFailSafe.cs</DependentUpon> </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmware.resx">
+      <DependentUpon>ConfigFirmware.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmware.ar.resx">
+      <DependentUpon>ConfigFirmware.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmware.az-Latn-AZ.resx">
+      <DependentUpon>ConfigFirmware.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmware.de-DE.resx">
+      <DependentUpon>ConfigFirmware.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmware.es-ES.resx">
+      <DependentUpon>ConfigFirmware.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmware.fr.resx">
+      <DependentUpon>ConfigFirmware.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmware.id-ID.resx">
+      <DependentUpon>ConfigFirmware.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmware.it-IT.resx">
+      <DependentUpon>ConfigFirmware.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmware.ja-JP.resx">
+      <DependentUpon>ConfigFirmware.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmware.ko-KR.resx">
+      <DependentUpon>ConfigFirmware.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmware.pl.resx">
+      <DependentUpon>ConfigFirmware.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmware.pt.resx">
+      <DependentUpon>ConfigFirmware.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmware.ru-RU.resx">
+      <DependentUpon>ConfigFirmware.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmware.zh-Hans.resx">
+      <DependentUpon>ConfigFirmware.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmware.zh-Hant.resx">
+      <DependentUpon>ConfigFirmware.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmware.zh-TW.resx">
+      <DependentUpon>ConfigFirmware.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmwareDisabled.resx">
+      <DependentUpon>ConfigFirmwareDisabled.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmwareDisabled.ar.resx">
+      <DependentUpon>ConfigFirmwareDisabled.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmwareDisabled.az-Latn-AZ.resx">
+      <DependentUpon>ConfigFirmwareDisabled.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmwareDisabled.de-DE.resx"><DependentUpon>ConfigFirmwareDisabled.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmwareDisabled.id-ID.resx"><DependentUpon>ConfigFirmwareDisabled.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmwareDisabled.ja-JP.resx"><DependentUpon>ConfigFirmwareDisabled.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmwareDisabled.ko-KR.resx"><DependentUpon>ConfigFirmwareDisabled.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmwareDisabled.pt.resx"><DependentUpon>ConfigFirmwareDisabled.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFirmwareDisabled.zh-Hans.resx"><DependentUpon>ConfigFirmwareDisabled.cs</DependentUpon></EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFlightModes.resx"><DependentUpon>ConfigFlightModes.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFlightModes.ar.resx"><DependentUpon>ConfigFlightModes.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigFlightModes.az-Latn-AZ.resx"><DependentUpon>ConfigFlightModes.cs</DependentUpon> </EmbeddedResource>
