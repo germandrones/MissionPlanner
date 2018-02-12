@@ -496,6 +496,7 @@
             this.quickView6.number = 0D;
             this.quickView6.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(95)))), ((int)(((byte)(154)))));
             this.quickView6.numberformat = "0.00";
+            this.quickView6.DoubleClick += new System.EventHandler(this.quickView_DoubleClick);
             // 
             // contextMenuStripQuickView
             // 
@@ -520,6 +521,7 @@
             this.quickView5.number = 0D;
             this.quickView5.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(95)))), ((int)(((byte)(154)))));
             this.quickView5.numberformat = "0.00";
+            this.quickView5.DoubleClick += new System.EventHandler(this.quickView_DoubleClick);
             // 
             // quickView4
             // 
@@ -531,6 +533,7 @@
             this.quickView4.number = 0D;
             this.quickView4.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(95)))), ((int)(((byte)(154)))));
             this.quickView4.numberformat = "0.00";
+            this.quickView4.DoubleClick += new System.EventHandler(this.quickView_DoubleClick);
             // 
             // quickView3
             // 
@@ -542,6 +545,7 @@
             this.quickView3.number = 0D;
             this.quickView3.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(95)))), ((int)(((byte)(154)))));
             this.quickView3.numberformat = "0.00";
+            this.quickView3.DoubleClick += new System.EventHandler(this.quickView_DoubleClick);
             // 
             // quickView2
             // 
@@ -553,6 +557,7 @@
             this.quickView2.number = 0D;
             this.quickView2.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(95)))), ((int)(((byte)(154)))));
             this.quickView2.numberformat = "0.00";
+            this.quickView2.DoubleClick += new System.EventHandler(this.quickView_DoubleClick);
             // 
             // quickView1
             // 
@@ -565,9 +570,11 @@
             this.quickView1.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(95)))), ((int)(((byte)(154)))));
             this.quickView1.numberformat = "0.00";
             this.toolTip1.SetToolTip(this.quickView1, resources.GetString("quickView1.ToolTip"));
+            this.quickView1.DoubleClick += new System.EventHandler(this.quickView_DoubleClick);
             // 
             // txt_messagebox
             // 
+            this.txt_messagebox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             resources.ApplyResources(this.txt_messagebox, "txt_messagebox");
             this.txt_messagebox.Name = "txt_messagebox";
             // 
@@ -1822,7 +1829,7 @@
             this.windDir1.BackColor = System.Drawing.Color.Transparent;
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Direction", this.bindingSource1, "wind_dir", true, System.Windows.Forms.DataSourceUpdateMode.Never));
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Speed", this.bindingSource1, "wind_vel", true, System.Windows.Forms.DataSourceUpdateMode.Never));
-            this.windDir1.Direction = 180D;
+            this.windDir1.Direction = 360D;
             resources.ApplyResources(this.windDir1, "windDir1");
             this.windDir1.Name = "windDir1";
             this.windDir1.Speed = 0D;
