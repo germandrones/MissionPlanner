@@ -691,6 +691,9 @@ namespace MissionPlanner.GCSViews
             thisthread.Name = "FD Mainloop";
             thisthread.IsBackground = true;
             thisthread.Start();
+
+            // start the messsagetab update by default
+            Messagetabtimer.Start();
         }
 
         void tfr_GotTFRs(object sender, EventArgs e)
@@ -2756,7 +2759,7 @@ namespace MissionPlanner.GCSViews
                 tabStatus.Visible = true;
                 tabControlactions.Visible = true;
             }
-            else if (tabControlactions.SelectedTab == tabPagemessages)
+            else if (tabControlactions.SelectedTab == tabQuick)
             {
                 Messagetabtimer.Start();
             }
@@ -4545,6 +4548,8 @@ namespace MissionPlanner.GCSViews
 
         private void setQuickViewRowsCols(string cols, string rows)
         {
+            
+
             tableLayoutPanelQuick.ColumnCount = int.Parse(cols);
             tableLayoutPanelQuick.RowCount = int.Parse(rows);
 
@@ -4633,11 +4638,7 @@ namespace MissionPlanner.GCSViews
             MainV2.comPort.sendPacket(go, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
         }
 
-        private void VWP_Timer_Tick(object sender, EventArgs e)
-        {
-
-        }
-
+      
 
 
         // DRAW VWP
