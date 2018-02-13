@@ -39,18 +39,23 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigFirmware));
             this.panel1 = new System.Windows.Forms.Panel();
-            this.BUT_Serial_Refresh = new MissionPlanner.Controls.MyButton(); //new System.Windows.Forms.Button();
+            this.progress = new System.Windows.Forms.ProgressBar();
+            this.lbl_status = new System.Windows.Forms.Label();
+            this.BUT_Serial_Refresh = new MissionPlanner.Controls.MyButton();
             this.PX_port = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.FW_Uploader_log = new System.Windows.Forms.TextBox();
-            this.BUT_FW_Update = new MissionPlanner.Controls.MyButton(); //new System.Windows.Forms.Button();
+            this.BUT_FW_Update = new MissionPlanner.Controls.MyButton();
             this.GD_Port = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.progress);
+            this.panel1.Controls.Add(this.lbl_status);
             this.panel1.Controls.Add(this.BUT_Serial_Refresh);
             this.panel1.Controls.Add(this.PX_port);
             this.panel1.Controls.Add(this.label2);
@@ -60,6 +65,16 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             this.panel1.Controls.Add(this.GD_Port);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
+            // 
+            // progress
+            // 
+            resources.ApplyResources(this.progress, "progress");
+            this.progress.Name = "progress";
+            // 
+            // lbl_status
+            // 
+            resources.ApplyResources(this.lbl_status, "lbl_status");
+            this.lbl_status.Name = "lbl_status";
             // 
             // BUT_Serial_Refresh
             // 
@@ -125,5 +140,7 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         private Controls.MyButton BUT_FW_Update;
         private ComboBox GD_Port;
         private Controls.MyButton BUT_Serial_Refresh;
+        private ProgressBar progress;
+        private Label lbl_status;
     }
 }

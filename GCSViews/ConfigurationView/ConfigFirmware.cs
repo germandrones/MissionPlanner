@@ -47,38 +47,32 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             {
                 fd.ShowDialog();
 
-                // Unzip archive files into temporaries
-                add_LogText("Trying to unzip files");
                 UnzipArchive(fd.FileName);
-                add_LogText("Unzipped");
-
 
                 // Upload firmware on PX4
                 if (PX4_Serial_Port.Length != 0)
                 {
-                    add_LogText("Trying to upload a FW Firmware on port: " + PX4_Serial_Port + ". Please Wait...");
+                    add_LogText("Uploading PX Firmware. Please Wait...");
                     if (!upload_PX4_Firmware("firmware_temp.px4", PX4_Serial_Port))
                     {
-                        add_LogText("Unable to upload a FW Firmware.");
-                    }
-                    else { add_LogText("OK!"); }
+                        add_LogText("Unable to upload PX Firmware.");
+                    }                    
                 }
 
                 //upload a GD Firmware
                 if (GD_Serial_Port.Length != 0)
                 {
-                    add_LogText("Trying to upload a QUAD Firmware on port: " + GD_Serial_Port + ". Please Wait...");
-                    if(!upload_PGD_Firmware("firmware_temp.hex", GD_Serial_Port))
+                    add_LogText("Uploading GD Firmware. Please Wait...");
+                    if (!upload_PGD_Firmware("firmware_temp.hex", GD_Serial_Port))
                     {
-                        add_LogText("Unable to upload a QUAD Firmware.");
-                    }
-                    else { add_LogText("OK!"); }
+                        add_LogText("Unable to upload GD Firmware.");
+                    }                    
                 }
                 
             }
             
-            RemoveTemporaries();
-            add_LogText("Remove temporaries...Done"); 
+            RemoveTemporaries();  
+            add_LogText("Done!");
         }
 
         #region GD Uploader
@@ -138,10 +132,12 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         {
             if (File.Exists(fileName))
             {
+                fw.Progress += fw_Progress;
+
                 var boardtype = BoardDetect.boards.b2560;
                 try
                 {
-                    return fw.UploadArduino(comPort, fileName, boardtype);
+                    return fw.UploadFlash(comPort, fileName, boardtype);
                 }
                 catch (MissingFieldException)
                 {
@@ -199,10 +195,12 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         {
             if (File.Exists(fileName))
             {
+                fw.Progress += fw_Progress;
+
                 var boardtype = BoardDetect.boards.px4v2;
                 try
                 {
-                    return fw.UploadPX4(comPort, fileName, boardtype);
+                    return fw.UploadFlash(comPort, fileName, boardtype);
                 }
                 catch (MissingFieldException)
                 {
@@ -257,6 +255,12 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         {
             FW_Uploader_log.AppendText(text + Environment.NewLine);
         }
+
+        private void fw_Progress(int progress, string status)
+        {
+            if (progress != -1) this.progress.Value = progress;
+            lbl_status.Text = status;            
+        }        
         #endregion
 
         private void GD_Port_SelectedIndexChanged(object sender, EventArgs e)
