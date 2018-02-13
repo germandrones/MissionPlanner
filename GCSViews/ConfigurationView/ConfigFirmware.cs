@@ -59,29 +59,29 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                 // Upload firmware on PX4
                 if (PX4_Serial_Port.Length != 0)
                 {
-                    add_LogText("Trying to upload a FW Firmware on port: " + PX4_Serial_Port + "...");
+                    add_LogText("Trying to upload a FW Firmware on port: " + PX4_Serial_Port + ". Please Wait...");
                     if (!upload_PX4_Firmware("firmware_temp.px4", PX4_Serial_Port))
                     {
                         add_LogText("Unable to upload a FW Firmware.");
                     }
-                    else { add_LogText("Done."); }
+                    else { add_LogText("OK!"); }
                 }
 
                 //upload a GD Firmware
                 if (GD_Serial_Port.Length != 0)
                 {
-                    add_LogText("Trying to upload a QUAD Firmware on port: " + GD_Serial_Port + "...");
+                    add_LogText("Trying to upload a QUAD Firmware on port: " + GD_Serial_Port + ". Please Wait...");
                     if(!upload_PGD_Firmware("firmware_temp.hex", GD_Serial_Port))
                     {
                         add_LogText("Unable to upload a QUAD Firmware.");
                     }
-                    else { add_LogText("Done."); }
+                    else { add_LogText("OK!"); }
                 }
                 
             }
-            add_LogText("Remove temporaries...");
+            
             RemoveTemporaries();
-            add_LogText("Done");
+            add_LogText("Remove temporaries...Done"); 
         }
 
         #region GD Uploader
@@ -142,7 +142,15 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             if (File.Exists(fileName))
             {
                 var boardtype = BoardDetect.boards.b2560;
-                return fw.UploadArduino(comPort, fileName, boardtype);
+                try
+                {
+                    return fw.UploadArduino(comPort, fileName, boardtype);
+                }
+                catch (MissingFieldException)
+                {
+                    CustomMessageBox.Show("Please update, your install is currupt", Strings.ERROR);
+                    return false;
+                }                
             }
             return false;
         }
@@ -195,7 +203,15 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             if (File.Exists(fileName))
             {
                 var boardtype = BoardDetect.boards.px4v2;
-                return fw.UploadFlash(comPort, fileName, boardtype);
+                try
+                {
+                    return fw.UploadPX4(comPort, fileName, boardtype);
+                }
+                catch (MissingFieldException)
+                {
+                    CustomMessageBox.Show("Please update, your install is currupt", Strings.ERROR);
+                    return false;
+                }
             }
             return false;
         }

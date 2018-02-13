@@ -186,24 +186,31 @@ namespace MissionPlanner.Comms
                     .Select(FixBlueToothPortNameBug)
                     .ToArray();
 
-                    // UPD: GDMP-9                    
-                    // Call a WMI Querry to get all data about connected Serial Ports.
+                    // UPD: GDMP-9                     
+                    #region find all FTDI
                     ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PnPEntity  WHERE Caption like '%(COM%'");
-
-                    // Check of all supported Telemetry devices and pack to the list
+                    List<string> ftdi_ports = new List<string>();
+                    
                     foreach (ManagementObject queryObj in searcher.Get())
                     {
-                        //  get all supported ports
-                        if (queryObj["DeviceID"].ToString().Contains("VID_0403"))
+                        if (queryObj["DeviceID"].ToString().Contains("VID_0403") || queryObj["DeviceID"].ToString().Contains("VID_26AC"))
                         {
                             // this device is supported:
                             string devCaption = queryObj["Caption"].ToString();
                             foreach (string p in ports)
                             {
-                                if (devCaption.Contains(p)) allPorts.Add(p);
+                                if (devCaption.Contains(p))
+                                {
+                                    ftdi_ports.Add(p);
+                                    allPorts.Add(p);
+                                }
                             }
                         }
                     }
+
+                    #endregion
+
+                    
                 }
                 catch { }
 
