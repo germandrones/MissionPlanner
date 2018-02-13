@@ -104,9 +104,8 @@ namespace MissionPlanner.GCSViews
             {
                 if (!Program.WindowsStoreApp)
                 {
-                    //AddBackstageViewPage(typeof(ConfigFirmwareDisabled), rm.GetString("backstageViewPagefw.Text"), isConnected);
-                    //AddBackstageViewPage(typeof(ConfigFirmware), rm.GetString("backstageViewPagefw.Text"), isDisConnected);
-                    AddBackstageViewPage(typeof(ConfigFirmware), "Firmware Update", true);
+                    AddBackstageViewPage(typeof(ConfigFirmwareDisabled), "Firmware Update", isConnected);
+                    AddBackstageViewPage(typeof(ConfigFirmware), "Firmware Update", isDisConnected);
                 }
             }
 

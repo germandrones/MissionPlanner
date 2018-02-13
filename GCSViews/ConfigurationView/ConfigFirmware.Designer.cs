@@ -39,17 +39,19 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigFirmware));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.BUT_Serial_Refresh = new MissionPlanner.Controls.MyButton(); //new System.Windows.Forms.Button();
             this.PX_port = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.FW_Uploader_log = new System.Windows.Forms.TextBox();
-            this.BUT_FW_Update = new System.Windows.Forms.Button();
+            this.BUT_FW_Update = new MissionPlanner.Controls.MyButton(); //new System.Windows.Forms.Button();
             this.GD_Port = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.BUT_Serial_Refresh);
             this.panel1.Controls.Add(this.PX_port);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
@@ -58,6 +60,13 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             this.panel1.Controls.Add(this.GD_Port);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
+            // 
+            // BUT_Serial_Refresh
+            // 
+            resources.ApplyResources(this.BUT_Serial_Refresh, "BUT_Serial_Refresh");
+            this.BUT_Serial_Refresh.Name = "BUT_Serial_Refresh";
+            this.BUT_Serial_Refresh.UseVisualStyleBackColor = true;
+            this.BUT_Serial_Refresh.Click += new System.EventHandler(this.BUT_Serial_Refresh_Click);
             // 
             // PX_port
             // 
@@ -113,7 +122,8 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         private Label label2;
         private Label label1;
         private TextBox FW_Uploader_log;
-        private Button BUT_FW_Update;
+        private Controls.MyButton BUT_FW_Update;
         private ComboBox GD_Port;
+        private Controls.MyButton BUT_Serial_Refresh;
     }
 }

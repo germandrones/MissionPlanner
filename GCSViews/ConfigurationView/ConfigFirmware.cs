@@ -30,13 +30,10 @@ namespace MissionPlanner.GCSViews.ConfigurationView
 
         public void Activate()
         {
-            PX_port.Items.Clear();
-            FindPX4_port();
-            if (PX_port.Items.Count > 0) PX_port.SelectedIndex = 0;
-
-            GD_Port.Items.Clear();
-            FindGD_port();
-            if (GD_Port.Items.Count > 0) GD_Port.SelectedIndex = 0;
+            if(PX_port.Items.Count == 0 || GD_Port.Items.Count == 0)
+            {
+                BUT_FW_Update.Enabled = false;
+            }
         }
 
 
@@ -270,6 +267,30 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         private void PX_port_SelectedIndexChanged(object sender, EventArgs e)
         {
             PX4_Serial_Port = PX_port.SelectedItem.ToString();
+        }
+
+        private void BUT_Serial_Refresh_Click(object sender, EventArgs e)
+        {
+            add_LogText("Trying to find FW Board...");
+            PX_port.Items.Clear();
+            FindPX4_port();
+            if (PX_port.Items.Count > 0) { PX_port.SelectedIndex = 0; }else add_LogText("FW Board not found!");
+
+            add_LogText("Trying to find GD Board...");
+            GD_Port.Items.Clear();
+            FindGD_port();
+            if (GD_Port.Items.Count > 0) { GD_Port.SelectedIndex = 0; } else add_LogText("GD Board not found!");
+
+            
+            if (PX_port.Items.Count == 0 || GD_Port.Items.Count == 0)
+            {
+                BUT_FW_Update.Enabled = false;
+            }
+            else
+            {
+                BUT_FW_Update.Enabled = true;
+                add_LogText("Ready");
+            }
         }
     }
 
