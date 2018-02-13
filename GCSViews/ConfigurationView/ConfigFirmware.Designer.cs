@@ -38,63 +38,82 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigFirmware));
-            this.BTN_Custom_firmware = new System.Windows.Forms.Button();
-            this.progress = new System.Windows.Forms.ProgressBar();
-            this.lbl_status = new System.Windows.Forms.Label();
-            this.BTN_Custom_GD_firmware = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.PX_port = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.FW_Uploader_log = new System.Windows.Forms.TextBox();
+            this.BUT_FW_Update = new System.Windows.Forms.Button();
             this.GD_Port = new System.Windows.Forms.ComboBox();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // BTN_Custom_firmware
+            // panel1
             // 
-            resources.ApplyResources(this.BTN_Custom_firmware, "BTN_Custom_firmware");
-            this.BTN_Custom_firmware.Name = "BTN_Custom_firmware";
-            this.BTN_Custom_firmware.UseVisualStyleBackColor = true;
-            this.BTN_Custom_firmware.Click += new System.EventHandler(this.BTN_Custom_firmware_Click);
+            this.panel1.Controls.Add(this.PX_port);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.FW_Uploader_log);
+            this.panel1.Controls.Add(this.BUT_FW_Update);
+            this.panel1.Controls.Add(this.GD_Port);
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Name = "panel1";
             // 
-            // progress
+            // PX_port
             // 
-            resources.ApplyResources(this.progress, "progress");
-            this.progress.Name = "progress";
+            this.PX_port.FormattingEnabled = true;
+            resources.ApplyResources(this.PX_port, "PX_port");
+            this.PX_port.Name = "PX_port";
+            this.PX_port.SelectedIndexChanged += new System.EventHandler(this.PX_port_SelectedIndexChanged);
             // 
-            // lbl_status
+            // label2
             // 
-            resources.ApplyResources(this.lbl_status, "lbl_status");
-            this.lbl_status.Name = "lbl_status";
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
             // 
-            // BTN_Custom_GD_firmware
+            // label1
             // 
-            resources.ApplyResources(this.BTN_Custom_GD_firmware, "BTN_Custom_GD_firmware");
-            this.BTN_Custom_GD_firmware.Name = "BTN_Custom_GD_firmware";
-            this.BTN_Custom_GD_firmware.UseVisualStyleBackColor = true;
-            this.BTN_Custom_GD_firmware.Click += new System.EventHandler(this.BTN_Custom_GD_firmware_Click);
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // FW_Uploader_log
+            // 
+            resources.ApplyResources(this.FW_Uploader_log, "FW_Uploader_log");
+            this.FW_Uploader_log.Name = "FW_Uploader_log";
+            this.FW_Uploader_log.ReadOnly = true;
+            // 
+            // BUT_FW_Update
+            // 
+            resources.ApplyResources(this.BUT_FW_Update, "BUT_FW_Update");
+            this.BUT_FW_Update.Name = "BUT_FW_Update";
+            this.BUT_FW_Update.UseVisualStyleBackColor = true;
+            this.BUT_FW_Update.Click += new System.EventHandler(this.BUT_FW_Update_Click);
             // 
             // GD_Port
             // 
             this.GD_Port.FormattingEnabled = true;
             resources.ApplyResources(this.GD_Port, "GD_Port");
             this.GD_Port.Name = "GD_Port";
-            this.GD_Port.SelectedValueChanged += new System.EventHandler(this.GD_Port_SelectedValueChanged);
+            this.GD_Port.SelectedIndexChanged += new System.EventHandler(this.GD_Port_SelectedIndexChanged);
             // 
             // ConfigFirmware
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.Controls.Add(this.GD_Port);
-            this.Controls.Add(this.BTN_Custom_GD_firmware);
-            this.Controls.Add(this.lbl_status);
-            this.Controls.Add(this.progress);
-            this.Controls.Add(this.BTN_Custom_firmware);
+            this.Controls.Add(this.panel1);
             this.Name = "ConfigFirmware";
             resources.ApplyResources(this, "$this");
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
-        private Button BTN_Custom_firmware;
-        private ProgressBar progress;
-        private Label lbl_status;
-        private Button BTN_Custom_GD_firmware;
+        private Panel panel1;
+        private ComboBox PX_port;
+        private Label label2;
+        private Label label1;
+        private TextBox FW_Uploader_log;
+        private Button BUT_FW_Update;
         private ComboBox GD_Port;
     }
 }
