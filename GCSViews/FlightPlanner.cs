@@ -52,6 +52,12 @@ namespace MissionPlanner.GCSViews
         bool sethome;
         bool polygongridmode;
         bool splinemode;
+
+        bool land_procedure_changed;
+        bool hwp_enabled = true; // by default is enabled
+        bool rtl_defined = false;
+        double hwp_radius = 200.0f; // default HWP radius value        
+
         altmode currentaltmode = altmode.Relative;
 
         bool grid;
@@ -101,6 +107,7 @@ namespace MissionPlanner.GCSViews
             POI.POIAdd(MouseDownStart);
         }
 
+        
         /// <summary>
         /// used to adjust existing point in the datagrid including "H"
         /// </summary>
@@ -1230,6 +1237,60 @@ namespace MissionPlanner.GCSViews
             }
         }
 
+        private void add_takeoff_polygonmarker(string tag, double lng, double lat, double alt)
+        {
+            try
+            {
+                PointLatLng point = new PointLatLng(lat, lng);
+                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.blue);
+                
+                m.ToolTipMode = MarkerTooltipMode.OnMouseOver;
+                m.ToolTipText = "Alt: " + alt.ToString("0");
+                m.Tag = tag;
+
+                GMapMarkerRect mBorders = new GMapMarkerRect(point);
+                {
+                    mBorders.InnerMarker = m;
+                    mBorders.Tag = tag;
+                    mBorders.wprad = rtl_defined ? (int)(hwp_radius * 1.5f) : (int)(float.Parse(TXT_WPRad.Text) / CurrentState.multiplierdist); // extend radius +50%
+                    mBorders.Color = Color.LightBlue;                    
+                }
+
+                objectsoverlay.Markers.Add(m);
+                objectsoverlay.Markers.Add(mBorders);
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void add_land_polygonmarker(string tag, double lng, double lat, double alt)
+        {
+            try
+            {
+                PointLatLng point = new PointLatLng(lat, lng);
+                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.blue);
+
+                m.ToolTipMode = MarkerTooltipMode.OnMouseOver;
+                m.ToolTipText = "Alt: " + alt.ToString("0");
+                m.Tag = tag;
+
+                GMapMarkerRect mBorders = new GMapMarkerRect(point);
+                {
+                    mBorders.InnerMarker = m;
+                    mBorders.Tag = tag;
+                    mBorders.wprad = (int)(hwp_radius * 1.5f); // extend radius +50%
+                    mBorders.Color = Color.LightBlue;
+                }
+
+                objectsoverlay.Markers.Add(m);
+                objectsoverlay.Markers.Add(mBorders);
+            }
+            catch (Exception)
+            {
+            }
+        }
+
         private void addpolygonmarkergrid(string tag, double lng, double lat, int alt)
         {
             try
@@ -1394,9 +1455,11 @@ namespace MissionPlanner.GCSViews
                                     Enum.Parse(typeof(MAVLink.MAV_CMD),
                                         Commands.Rows[a].Cells[Command.Index].Value.ToString(), false);
                         if (command < (ushort)MAVLink.MAV_CMD.LAST &&
-                            command != (ushort)MAVLink.MAV_CMD.TAKEOFF && // doesnt have a position
+                            //command != (ushort)MAVLink.MAV_CMD.TAKEOFF && // doesnt have a position
                             command != (ushort)MAVLink.MAV_CMD.VTOL_TAKEOFF && // doesnt have a position
                             command != (ushort)MAVLink.MAV_CMD.RETURN_TO_LAUNCH &&
+                            command != (ushort)MAVLink.MAV_CMD.MAV_CMD_LAND_AT_TAKEOFF && //no position
+                            command != (ushort)MAVLink.MAV_CMD.MAV_CMD_HWP && //no position
                             command != (ushort)MAVLink.MAV_CMD.CONTINUE_AND_CHANGE_ALT &&
                             command != (ushort)MAVLink.MAV_CMD.DELAY &&
                             command != (ushort)MAVLink.MAV_CMD.GUIDED_ENABLE
@@ -1453,6 +1516,18 @@ namespace MissionPlanner.GCSViews
                                 fullpointlist.Add(pointlist[pointlist.Count - 1]);
                                 addpolygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3),
                                     double.Parse(cell2), Color.LightBlue);
+                            }                           
+                            else if (command == (ushort)MAVLink.MAV_CMD.TAKEOFF) // Visualize takoff point
+                            {
+                                pointlist.Add(new PointLatLngAlt(double.Parse(cell3), double.Parse(cell4), double.Parse(cell2) + gethomealt(double.Parse(cell3), double.Parse(cell4)), "TAKEOFF"));
+                                fullpointlist.Add(pointlist[pointlist.Count - 1]);
+                                add_takeoff_polygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), double.Parse(cell2));
+                            }
+                            else if (command == (ushort)MAVLink.MAV_CMD.LAND) // Visualize takoff point
+                            {
+                                pointlist.Add(new PointLatLngAlt(double.Parse(cell3), double.Parse(cell4), double.Parse(cell2) + gethomealt(double.Parse(cell3), double.Parse(cell4)), "TAKEOFF"));
+                                fullpointlist.Add(pointlist[pointlist.Count - 1]);
+                                add_land_polygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), double.Parse(cell2));
                             }
                             else if (command == (ushort)MAVLink.MAV_CMD.SPLINE_WAYPOINT)
                             {
@@ -2318,7 +2393,7 @@ namespace MissionPlanner.GCSViews
 
             // clean mission points
             List<PointLatLngAlt> planlocs = locs;
-            for (int a = 0; a < planlocs.Count; a++)
+            for (int a = 1; a < planlocs.Count; a++)
             {
                 if (planlocs[a] == null || planlocs[a].Tag != null && planlocs[a].Tag.Contains("ROI"))
                 {
@@ -2329,7 +2404,7 @@ namespace MissionPlanner.GCSViews
 
             const int accuracy = 10; // Predefined constant value, every 10 meters we check if the collision could happen
 
-            for (int p=0; p < planlocs.Count-1; p++)
+            for (int p=1; p < planlocs.Count-1; p++)
             {
                 double distance = (int)planlocs[p + 1].GetDistance(planlocs[p]);
                 int pcount = (int)Math.Abs(distance / accuracy);
@@ -2822,6 +2897,12 @@ namespace MissionPlanner.GCSViews
                 {
                     TXT_WPRad.Text = (((double)param["WP_RADIUS"] * CurrentState.multiplierdist)).ToString();
                 }
+
+                if (param.ContainsKey("HWP_RADIUS"))
+                {
+                    hwp_radius = param["HWP_RADIUS"];
+                }
+
                 if (param.ContainsKey("WPNAV_RADIUS"))
                 {
                     TXT_WPRad.Text = (((double)param["WPNAV_RADIUS"] * CurrentState.multiplierdist / 100.0)).ToString();
@@ -2849,6 +2930,8 @@ namespace MissionPlanner.GCSViews
                 {
                     log.Error(ex);
                 }
+
+                writeKML();// update points
             }
             catch (Exception ex)
             {
@@ -4170,6 +4253,90 @@ namespace MissionPlanner.GCSViews
             }
         }
 
+        /// <summary>
+        /// Method check the landing procedure according a LAND point or RTL
+        /// </summary>
+        void check_landing_procedure()
+        {
+            if (!land_procedure_changed) return;
+
+            hwp_enabled = true;
+            PointLatLngAlt land_point = null;
+
+            #region Get the LAT;LNG;ALT of landing point
+            // landing point is TAKEOFF point or normal LAND?
+            string land_command = rtl_defined ? "TAKEOFF" : "LAND";
+
+            int index_land = -1;
+
+            for (int a = 0; a < Commands.Rows.Count - 0; a++)
+            {
+                // catch also two indexes to know where we should modify the mission
+                if (Commands.Rows[a].Cells[Command.Index].Value.ToString().Contains("LAND")||
+                    Commands.Rows[a].Cells[Command.Index].Value.ToString().Contains("MAV_CMD_LAND_AT_TAKEOFF")) index_land = a;
+
+                if (Commands.Rows[a].Cells[Command.Index].Value.ToString().Contains(land_command))
+                {
+                    string cell2 = Commands.Rows[a].Cells[Alt.Index].Value.ToString(); // alt
+                    string cell3 = Commands.Rows[a].Cells[Lat.Index].Value.ToString(); // lat
+                    string cell4 = Commands.Rows[a].Cells[Lon.Index].Value.ToString(); // lng
+
+                    land_point = new PointLatLngAlt(double.Parse(cell3), double.Parse(cell4), double.Parse(cell2));
+                }
+            }
+
+            if (land_point == null) { return; } // no landing point found, abort;
+            #endregion
+
+            bool is_landingUnsafe = true;
+
+            #region Check area around land point
+
+            #endregion
+
+            if (is_landingUnsafe)
+            {
+                // warn the user, that landing is unsafe, HWP points will be disabled
+                MessageBox.Show("Landing point is unsafe, landing procedure will be modified", "Warning", MessageBoxButtons.OK);
+
+                // get previous waypoint before LAND, RTL command...
+                string cell2 = Commands.Rows[selectedrow - 1].Cells[Alt.Index].Value.ToString(); // alt
+                string cell3 = Commands.Rows[selectedrow - 1].Cells[Lat.Index].Value.ToString(); // lat
+                string cell4 = Commands.Rows[selectedrow - 1].Cells[Lon.Index].Value.ToString(); // lng
+
+                PointLatLngAlt last_nav_point = new PointLatLngAlt(double.Parse(cell3), double.Parse(cell4), double.Parse(cell2));
+
+                Commands.Rows.Insert(selectedrow, 2);
+                Commands.Rows[selectedrow - 2].Cells[Command.Index].Value = MAVLink.MAV_CMD.LOITER_TO_ALT.ToString();
+                Commands.Rows[selectedrow - 2].Cells[Lat.Index].Value = cell3;
+                Commands.Rows[selectedrow - 2].Cells[Lon.Index].Value = cell4;
+                Commands.Rows[selectedrow - 2].Cells[Alt.Index].Value = cell2;
+                ChangeColumnHeader(MAVLink.MAV_CMD.LOITER_TO_ALT.ToString());
+
+                Commands.Rows[selectedrow - 1].Cells[Command.Index].Value = MAVLink.MAV_CMD.WAYPOINT.ToString();
+                Commands.Rows[selectedrow - 1].Cells[Lat.Index].Value = cell3;
+                Commands.Rows[selectedrow - 1].Cells[Lon.Index].Value = cell4;
+                Commands.Rows[selectedrow - 1].Cells[Alt.Index].Value = cell2;
+                ChangeColumnHeader(MAVLink.MAV_CMD.WAYPOINT.ToString());
+                
+
+                // Add MAV_CMD_HWP disabled command
+                selectedrow = Commands.Rows.Add();
+                Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.MAV_CMD_HWP.ToString();
+                ChangeColumnHeader(MAVLink.MAV_CMD.MAV_CMD_HWP.ToString());
+                Commands.Rows[selectedrow].Cells[Param1.Index].Value = "0"; // HWP are disabled
+            }
+            else
+            {
+                // do normal landing
+                MessageBox.Show("Please check the landing point area if any obstacles are present (trees, power lines, buildings etc...)", "Warning", MessageBoxButtons.OK);
+
+            }
+            land_procedure_changed = false;
+        }
+
+
+
         void Commands_SelectionChangeCommitted(object sender, EventArgs e)
         {
             // update row headers
@@ -4177,6 +4344,11 @@ namespace MissionPlanner.GCSViews
             ChangeColumnHeader(((ComboBox)sender).Text);
             try
             {
+                // current command is modified?
+                if (((ComboBox)sender).Text == "MAV_CMD_LAND_AT_TAKEOFF") { rtl_defined = true; land_procedure_changed = true; }
+                if (((ComboBox)sender).Text == "LAND") { rtl_defined = false; land_procedure_changed = true; }
+
+
                 // default takeoff to non 0 alt
                 if (((ComboBox)sender).Text == "TAKEOFF")
                 {
@@ -4184,6 +4356,7 @@ namespace MissionPlanner.GCSViews
                         Commands.Rows[selectedrow].Cells[Alt.Index].Value.ToString() == "0")
                         Commands.Rows[selectedrow].Cells[Alt.Index].Value = TXT_DefaultAlt.Text;
                 }
+
 
                 // default to take shot
                 if (((ComboBox)sender).Text == "DO_DIGICAM_CONTROL")
@@ -4213,7 +4386,7 @@ namespace MissionPlanner.GCSViews
                         if (tcell.Value.ToString() == "?")
                             tcell.Value = "0";
                     }
-                }
+                }                
             }
             catch (Exception ex)
             {
@@ -4318,9 +4491,9 @@ namespace MissionPlanner.GCSViews
                 }
             }
 
-            Commands_RowEnter(null,
-                new DataGridViewCellEventArgs(Commands.CurrentCell.ColumnIndex, Commands.CurrentCell.RowIndex));
+            Commands_RowEnter(null, new DataGridViewCellEventArgs(Commands.CurrentCell.ColumnIndex, Commands.CurrentCell.RowIndex));
 
+            check_landing_procedure();
             writeKML();
         }
 
@@ -6075,7 +6248,16 @@ namespace MissionPlanner.GCSViews
 
             Commands.Rows[selectedrow].Cells[Alt.Index].Value = alti;
 
+            // fix the takeoff coordinates
+            double lat = MouseDownStart.Lat;
+            double lng = MouseDownStart.Lng;
+
+            Commands.Rows[selectedrow].Cells[Lat.Index].Value = lat.ToString();
+            Commands.Rows[selectedrow].Cells[Lon.Index].Value = lng.ToString();
+
             ChangeColumnHeader(MAVLink.MAV_CMD.TAKEOFF.ToString());
+
+            setfromMap(lat, lng, alti);// like a WP
 
             writeKML();
         }

@@ -574,9 +574,15 @@ AOA_SSA = 11020,
     	///<summary> Takeoff from ground using VTOL mode |Empty| Empty| Empty| Yaw angle in degrees. NaN for unchanged.| Latitude| Longitude| Altitude|  </summary>
         VTOL_TAKEOFF=84, 
     	///<summary> Land using VTOL mode |Empty| Empty| Empty| Yaw angle in degrees. NaN for unchanged.| Latitude| Longitude| Altitude|  </summary>
-        VTOL_LAND=85, 
-    	///<summary> hand control over to an external controller |On / Off (> 0.5f on)| Empty| Empty| Empty| Empty| Empty| Empty|  </summary>
-        GUIDED_ENABLE=92, 
+        VTOL_LAND=85,
+
+        ///<summary> Disable/ Enable HWP Waypoints feature</summary>
+        MAV_CMD_HWP = 86,
+        ///<summary> Land at the takeoff waypoint </summary>
+        MAV_CMD_LAND_AT_TAKEOFF = 87,    	
+        
+        ///<summary> hand control over to an external controller |On / Off (> 0.5f on)| Empty| Empty| Empty| Empty| Empty| Empty|  </summary>
+        GUIDED_ENABLE =92, 
     	///<summary> Delay the next navigation command a number of seconds or until a specified time |Delay in seconds (decimal, -1 to enable time-of-day fields)| hour (24h format, UTC, -1 to ignore)| minute (24h format, UTC, -1 to ignore)| second (24h format, UTC)| Empty| Empty| Empty|  </summary>
         DELAY=93, 
     	///<summary> Descend and place payload.  Vehicle descends until it detects a hanging payload has reached the ground, the gripper is opened to release the payload |Maximum distance to descend (meters)| Empty| Empty| Empty| Latitude (deg * 1E7)| Longitude (deg * 1E7)| Altitude (meters)|  </summary>
@@ -802,8 +808,8 @@ AOA_SSA = 11020,
     	///<summary> Starts commutation calibration on the gimbal |Empty| Empty| Empty| Empty| Empty| Empty| Empty|  </summary>
         GIMBAL_REQUEST_AXIS_CALIBRATION=42503, 
     	///<summary> Erases gimbal application and parameters |Magic number| Magic number| Magic number| Magic number| Magic number| Magic number| Magic number|  </summary>
-        GIMBAL_FULL_RESET=42505, 
-    
+        GIMBAL_FULL_RESET=42505,
+        
     };
     
     ///<summary>  </summary>
