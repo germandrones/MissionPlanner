@@ -482,6 +482,7 @@
     <Compile Include="Utilities\LangUtility.cs" />
     <Compile Include="Utilities\LogAnalyzer.cs" />
     <Compile Include="Utilities\MeasureString.cs" />
+    <Compile Include="Utilities\MissionChecker.cs" />
     <Compile Include="Utilities\NGEN.cs" />
     <Compile Include="Utilities\OpticalFlow.cs" />
     <Compile Include="Utilities\ParameterMetaDataConstants.cs" />

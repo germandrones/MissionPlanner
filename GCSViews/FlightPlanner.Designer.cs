@@ -229,6 +229,7 @@ namespace MissionPlanner.GCSViews
             this.panelBASE = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panelWaypoints.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -825,6 +826,7 @@ namespace MissionPlanner.GCSViews
             // 
             // panel4
             // 
+            this.panel4.Controls.Add(this.button1);
             this.panel4.Controls.Add(this.BUT_showElevationGraph);
             this.panel4.Controls.Add(this.lbl_wpfile);
             this.panel4.Controls.Add(this.BUT_savePoly);
@@ -1534,6 +1536,13 @@ namespace MissionPlanner.GCSViews
             this.timer1.Interval = 1200;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // button1
+            // 
+            resources.ApplyResources(this.button1, "button1");
+            this.button1.Name = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // FlightPlanner
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1747,5 +1756,6 @@ namespace MissionPlanner.GCSViews
         private System.Windows.Forms.ToolStripMenuItem create8ShapeSurveyToolStripMenuItem;
         private System.Windows.Forms.Label DebugMsg;
         private System.Windows.Forms.ToolStripMenuItem createCircleSurveyToolStripMenuItem1;
+        private System.Windows.Forms.Button button1;
     }
 }

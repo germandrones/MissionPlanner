@@ -53,10 +53,10 @@ namespace MissionPlanner.GCSViews
         bool polygongridmode;
         bool splinemode;
 
-        bool land_procedure_changed;
-        bool hwp_enabled = true; // by default is enabled
-        bool rtl_defined = false;
+        bool hwp_enabled = false;   // by default is disabled
         double hwp_radius = 200.0f; // default HWP radius value        
+
+        MissionChecker missionChecker = new MissionChecker();
 
         altmode currentaltmode = altmode.Relative;
 
@@ -1252,7 +1252,7 @@ namespace MissionPlanner.GCSViews
                 {
                     mBorders.InnerMarker = m;
                     mBorders.Tag = tag;
-                    mBorders.wprad = rtl_defined ? (int)(hwp_radius * 1.5f) : (int)(float.Parse(TXT_WPRad.Text) / CurrentState.multiplierdist); // extend radius +50%
+                    mBorders.wprad = (int)(float.Parse(TXT_WPRad.Text) / CurrentState.multiplierdist);
                     mBorders.Color = Color.LightBlue;                    
                 }
 
@@ -1455,11 +1455,9 @@ namespace MissionPlanner.GCSViews
                                     Enum.Parse(typeof(MAVLink.MAV_CMD),
                                         Commands.Rows[a].Cells[Command.Index].Value.ToString(), false);
                         if (command < (ushort)MAVLink.MAV_CMD.LAST &&
-                            //command != (ushort)MAVLink.MAV_CMD.TAKEOFF && // doesnt have a position
                             command != (ushort)MAVLink.MAV_CMD.VTOL_TAKEOFF && // doesnt have a position
                             command != (ushort)MAVLink.MAV_CMD.RETURN_TO_LAUNCH &&
-                            command != (ushort)MAVLink.MAV_CMD.MAV_CMD_LAND_AT_TAKEOFF && //no position
-                            command != (ushort)MAVLink.MAV_CMD.MAV_CMD_HWP && //no position
+                            command != (ushort)MAVLink.MAV_CMD.DISABLE_HWP && //no position
                             command != (ushort)MAVLink.MAV_CMD.CONTINUE_AND_CHANGE_ALT &&
                             command != (ushort)MAVLink.MAV_CMD.DELAY &&
                             command != (ushort)MAVLink.MAV_CMD.GUIDED_ENABLE
@@ -1516,19 +1514,21 @@ namespace MissionPlanner.GCSViews
                                 fullpointlist.Add(pointlist[pointlist.Count - 1]);
                                 addpolygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3),
                                     double.Parse(cell2), Color.LightBlue);
-                            }                           
-                            else if (command == (ushort)MAVLink.MAV_CMD.TAKEOFF) // Visualize takoff point
+                            }
+
+                            else if (command == (ushort)MAVLink.MAV_CMD.TAKEOFF) // Visualize TAKEOFF point
                             {
                                 pointlist.Add(new PointLatLngAlt(double.Parse(cell3), double.Parse(cell4), double.Parse(cell2) + gethomealt(double.Parse(cell3), double.Parse(cell4)), "TAKEOFF"));
                                 fullpointlist.Add(pointlist[pointlist.Count - 1]);
                                 add_takeoff_polygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), double.Parse(cell2));
                             }
-                            else if (command == (ushort)MAVLink.MAV_CMD.LAND) // Visualize takoff point
+                            else if (command == (ushort)MAVLink.MAV_CMD.LAND || command == (ushort)MAVLink.MAV_CMD.LAND_AT_TAKEOFF) // Visualize LAND point
                             {
                                 pointlist.Add(new PointLatLngAlt(double.Parse(cell3), double.Parse(cell4), double.Parse(cell2) + gethomealt(double.Parse(cell3), double.Parse(cell4)), "TAKEOFF"));
                                 fullpointlist.Add(pointlist[pointlist.Count - 1]);
                                 add_land_polygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), double.Parse(cell2));
                             }
+
                             else if (command == (ushort)MAVLink.MAV_CMD.SPLINE_WAYPOINT)
                             {
                                 pointlist.Add(new PointLatLngAlt(double.Parse(cell3), double.Parse(cell4),
@@ -2225,43 +2225,48 @@ namespace MissionPlanner.GCSViews
                 return;
             }
 
-            #region Check if TAKEOFF and LAND poinits are present
-            // lets check the takeoff/landing points before mission upload.            
-            int takeoffTimes = 0;
-            int landingTimes = 0;
-            bool isInAir = false;
 
-            for (int i = 0; i < Commands.Rows.Count; i++)
+            #region Check the mission before upload            
+
+            MissionChecker.MissionCheckerResult result = missionChecker.CheckMission(Commands);
+            switch (result)
             {
-                if (Commands.Rows[i].Cells[0].Value.ToString().Contains("TAKEOFF"))
-                {
-                    if(isInAir)
+                case MissionChecker.MissionCheckerResult.NO_LAND_POINT:
                     {
-                        // we can't TAKEOFF twice without landing!
-                        CustomMessageBox.Show("Please check TAKEOFF and LAND sequence in Mission", Strings.Warning);
-                        return;
+                        MessageBox.Show("No LAND point is defined", "Mission Checker", MessageBoxButtons.OK);
+                        break;
                     }
-                    takeoffTimes++;
-                    isInAir = true;
-                }
-                if (Commands.Rows[i].Cells[0].Value.ToString().Contains("LAND") || Commands.Rows[i].Cells[0].Value.ToString().Contains("RETURN"))
-                {
-                    if (!isInAir)
+
+                case MissionChecker.MissionCheckerResult.NO_TAKEOFF_POINT:
                     {
-                        // we can't LAND twice without Takeoff!
-                        CustomMessageBox.Show("Please check TAKEOFF and LAND sequence in Mission", Strings.Warning);
-                        return;
+                        MessageBox.Show("No TAKEOFF point is defined", "Mission Checker", MessageBoxButtons.OK);
+                        break;
                     }
-                    landingTimes++;
-                    isInAir = false;
-                }
+
+                //case MissionChecker.MissionCheckerResult.ALTITUDE_UNSAFE:{ break;}
+                //case MissionChecker.MissionCheckerResult.GROUND_COLLISION:{ break;}
+
+                case MissionChecker.MissionCheckerResult.LANDING_UNSAFE:
+                    {
+                        MessageBox.Show("Landing is unsafe! Mission will be modified, apply modifications?", "Mission Checker", MessageBoxButtons.OK);
+                        if (missionChecker.ModifyLandingProcedure())
+                        {
+                            Commands.Rows.Clear();
+                            foreach (var mi in missionChecker.modified_mission) { AddCommand((MAVLink.MAV_CMD)mi.getCommand(), mi.P1, mi.P2, mi.P3, mi.P4, mi.getCoords().Lng, mi.getCoords().Lat, mi.getCoords().Alt); }
+                        }
+                        break;
+                    }
+
+                case MissionChecker.MissionCheckerResult.OK:
+                default:
+                    {
+                        // everything is ok!
+                        break;
+                    }
             }
-            if (takeoffTimes != landingTimes || takeoffTimes == 0 || landingTimes == 0)
-            {                
-                CustomMessageBox.Show("Please check TAKEOFF and LAND points count in Mission", Strings.Warning);
-                return;
-            }
+
             #endregion
+
 
             // check for invalid grid data
             for (int a = 0; a < Commands.Rows.Count - 0; a++)
@@ -2901,9 +2906,17 @@ namespace MissionPlanner.GCSViews
                 if (param.ContainsKey("HWP_RADIUS"))
                 {
                     hwp_radius = param["HWP_RADIUS"];
+                    missionChecker.HWP_RADIUS = hwp_radius;
                 }
 
-                if (param.ContainsKey("WPNAV_RADIUS"))
+                if (param.ContainsKey("HWP_ENABLED"))
+                {
+                    hwp_enabled = param["HWP_ENABLED"] > 0 ? true : false;
+                    missionChecker.HWP_ENABLED = hwp_enabled;
+                }
+
+
+                    if (param.ContainsKey("WPNAV_RADIUS"))
                 {
                     TXT_WPRad.Text = (((double)param["WPNAV_RADIUS"] * CurrentState.multiplierdist / 100.0)).ToString();
                 }
@@ -4253,90 +4266,38 @@ namespace MissionPlanner.GCSViews
             }
         }
 
-        /// <summary>
-        /// Method check the landing procedure according a LAND point or RTL
-        /// </summary>
-        void check_landing_procedure()
+
+        private void modify_landing_point()
         {
-            if (!land_procedure_changed) return;
+            // 1. find TAKEOFF coords
+            PointLatLngAlt takeoff = null;
 
-            hwp_enabled = true;
-            PointLatLngAlt land_point = null;
-
-            #region Get the LAT;LNG;ALT of landing point
-            // landing point is TAKEOFF point or normal LAND?
-            string land_command = rtl_defined ? "TAKEOFF" : "LAND";
-
-            int index_land = -1;
-
-            for (int a = 0; a < Commands.Rows.Count - 0; a++)
+            foreach(DataGridViewRow Command in Commands.Rows)
             {
-                // catch also two indexes to know where we should modify the mission
-                if (Commands.Rows[a].Cells[Command.Index].Value.ToString().Contains("LAND")||
-                    Commands.Rows[a].Cells[Command.Index].Value.ToString().Contains("MAV_CMD_LAND_AT_TAKEOFF")) index_land = a;
-
-                if (Commands.Rows[a].Cells[Command.Index].Value.ToString().Contains(land_command))
+                if (Command.Cells[0].Value.ToString() == "TAKEOFF")
                 {
-                    string cell2 = Commands.Rows[a].Cells[Alt.Index].Value.ToString(); // alt
-                    string cell3 = Commands.Rows[a].Cells[Lat.Index].Value.ToString(); // lat
-                    string cell4 = Commands.Rows[a].Cells[Lon.Index].Value.ToString(); // lng
-
-                    land_point = new PointLatLngAlt(double.Parse(cell3), double.Parse(cell4), double.Parse(cell2));
+                    double lat = double.Parse(Command.Cells[Lat.Index].Value.ToString());
+                    double lng = double.Parse(Command.Cells[Lon.Index].Value.ToString());
+                    double alt = double.Parse(Command.Cells[Alt.Index].Value.ToString());
+                    takeoff = new PointLatLngAlt(lat, lng, alt);
                 }
             }
 
-            if (land_point == null) { return; } // no landing point found, abort;
-            #endregion
-
-            bool is_landingUnsafe = true;
-
-            #region Check area around land point
-
-            #endregion
-
-            if (is_landingUnsafe)
+            if(takeoff != null)
             {
-                // warn the user, that landing is unsafe, HWP points will be disabled
-                MessageBox.Show("Landing point is unsafe, landing procedure will be modified", "Warning", MessageBoxButtons.OK);
-
-                // get previous waypoint before LAND, RTL command...
-                string cell2 = Commands.Rows[selectedrow - 1].Cells[Alt.Index].Value.ToString(); // alt
-                string cell3 = Commands.Rows[selectedrow - 1].Cells[Lat.Index].Value.ToString(); // lat
-                string cell4 = Commands.Rows[selectedrow - 1].Cells[Lon.Index].Value.ToString(); // lng
-
-                PointLatLngAlt last_nav_point = new PointLatLngAlt(double.Parse(cell3), double.Parse(cell4), double.Parse(cell2));
-
-                Commands.Rows.Insert(selectedrow, 2);
-                Commands.Rows[selectedrow - 2].Cells[Command.Index].Value = MAVLink.MAV_CMD.LOITER_TO_ALT.ToString();
-                Commands.Rows[selectedrow - 2].Cells[Lat.Index].Value = cell3;
-                Commands.Rows[selectedrow - 2].Cells[Lon.Index].Value = cell4;
-                Commands.Rows[selectedrow - 2].Cells[Alt.Index].Value = cell2;
-                ChangeColumnHeader(MAVLink.MAV_CMD.LOITER_TO_ALT.ToString());
-
-                Commands.Rows[selectedrow - 1].Cells[Command.Index].Value = MAVLink.MAV_CMD.WAYPOINT.ToString();
-                Commands.Rows[selectedrow - 1].Cells[Lat.Index].Value = cell3;
-                Commands.Rows[selectedrow - 1].Cells[Lon.Index].Value = cell4;
-                Commands.Rows[selectedrow - 1].Cells[Alt.Index].Value = cell2;
-                ChangeColumnHeader(MAVLink.MAV_CMD.WAYPOINT.ToString());
-                
-
-                // Add MAV_CMD_HWP disabled command
-                selectedrow = Commands.Rows.Add();
-                Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.MAV_CMD_HWP.ToString();
-                ChangeColumnHeader(MAVLink.MAV_CMD.MAV_CMD_HWP.ToString());
-                Commands.Rows[selectedrow].Cells[Param1.Index].Value = "0"; // HWP are disabled
+                Commands.Rows[selectedrow].Cells[Lat.Index].Value = takeoff.Lat.ToString();
+                Commands.Rows[selectedrow].Cells[Lon.Index].Value = takeoff.Lng.ToString();
+                Commands.Rows[selectedrow].Cells[Alt.Index].Value = takeoff.Alt.ToString();
             }
             else
             {
-                // do normal landing
-                MessageBox.Show("Please check the landing point area if any obstacles are present (trees, power lines, buildings etc...)", "Warning", MessageBoxButtons.OK);
-
+                MessageBox.Show("No TAKEOFF POINT Exists!");
             }
-            land_procedure_changed = false;
+
+            
         }
 
-
-
+        
         void Commands_SelectionChangeCommitted(object sender, EventArgs e)
         {
             // update row headers
@@ -4345,9 +4306,7 @@ namespace MissionPlanner.GCSViews
             try
             {
                 // current command is modified?
-                if (((ComboBox)sender).Text == "MAV_CMD_LAND_AT_TAKEOFF") { rtl_defined = true; land_procedure_changed = true; }
-                if (((ComboBox)sender).Text == "LAND") { rtl_defined = false; land_procedure_changed = true; }
-
+                if (((ComboBox)sender).Text == "LAND_AT_TAKEOFF") { modify_landing_point(); }
 
                 // default takeoff to non 0 alt
                 if (((ComboBox)sender).Text == "TAKEOFF")
@@ -4493,7 +4452,6 @@ namespace MissionPlanner.GCSViews
 
             Commands_RowEnter(null, new DataGridViewCellEventArgs(Commands.CurrentCell.ColumnIndex, Commands.CurrentCell.RowIndex));
 
-            check_landing_procedure();
             writeKML();
         }
 
@@ -7877,6 +7835,50 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
 
             quickadd = false;
             writeKML();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            #region Check the mission before upload            
+
+            MissionChecker.MissionCheckerResult result = missionChecker.CheckMission(Commands);
+            switch (result)
+            {
+                case MissionChecker.MissionCheckerResult.NO_LAND_POINT:
+                    {
+                        MessageBox.Show("No LAND point is defined", "Mission Checker", MessageBoxButtons.OK);
+                        break;
+                    }
+
+                case MissionChecker.MissionCheckerResult.NO_TAKEOFF_POINT:
+                    {
+                        MessageBox.Show("No TAKEOFF point is defined", "Mission Checker", MessageBoxButtons.OK);
+                        break;
+                    }
+
+                //case MissionChecker.MissionCheckerResult.ALTITUDE_UNSAFE:{ break;}
+                //case MissionChecker.MissionCheckerResult.GROUND_COLLISION:{ break;}
+
+                case MissionChecker.MissionCheckerResult.LANDING_UNSAFE:
+                    {
+                        MessageBox.Show("Landing is unsafe! Mission will be modified", "Mission Checker", MessageBoxButtons.OK);
+                        if (missionChecker.ModifyLandingProcedure())
+                        {
+                            Commands.Rows.Clear();
+                            foreach (var mi in missionChecker.modified_mission) { AddCommand((MAVLink.MAV_CMD)mi.getCommand(), mi.P1, mi.P2, mi.P3, mi.P4, mi.getCoords().Lng, mi.getCoords().Lat, mi.getCoords().Alt); }
+                        }
+                        break;
+                    }
+
+                case MissionChecker.MissionCheckerResult.OK:
+                default:
+                    {
+                        // everything is ok!
+                        break;
+                    }
+            }
+
+            #endregion
         }
     }
 }

@@ -577,9 +577,9 @@ AOA_SSA = 11020,
         VTOL_LAND=85,
 
         ///<summary> Disable/ Enable HWP Waypoints feature</summary>
-        MAV_CMD_HWP = 86,
+        DISABLE_HWP = 86,
         ///<summary> Land at the takeoff waypoint </summary>
-        MAV_CMD_LAND_AT_TAKEOFF = 87,    	
+        LAND_AT_TAKEOFF = 87,    	
         
         ///<summary> hand control over to an external controller |On / Off (> 0.5f on)| Empty| Empty| Empty| Empty| Empty| Empty|  </summary>
         GUIDED_ENABLE =92, 
