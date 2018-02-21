@@ -1457,7 +1457,7 @@ namespace MissionPlanner.GCSViews
                         if (command < (ushort)MAVLink.MAV_CMD.LAST &&
                             command != (ushort)MAVLink.MAV_CMD.VTOL_TAKEOFF && // doesnt have a position
                             command != (ushort)MAVLink.MAV_CMD.RETURN_TO_LAUNCH &&
-                            command != (ushort)MAVLink.MAV_CMD.DISABLE_HWP && //no position
+                            command != (ushort)MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP && //no position
                             command != (ushort)MAVLink.MAV_CMD.CONTINUE_AND_CHANGE_ALT &&
                             command != (ushort)MAVLink.MAV_CMD.DELAY &&
                             command != (ushort)MAVLink.MAV_CMD.GUIDED_ENABLE
@@ -2194,6 +2194,7 @@ namespace MissionPlanner.GCSViews
         /// <param name="e"></param>
         public void BUT_write_Click(object sender, EventArgs e)
         {
+            #region Common Checks on upload
             // Prevent upload mission if UAV is armed!
             if (MainV2.comPort.MAV.cs.armed && !Settings.isDevMode)
             {
@@ -2224,49 +2225,10 @@ namespace MissionPlanner.GCSViews
                 CustomMessageBox.Show("Your home location is invalid", Strings.ERROR);
                 return;
             }
-
-
-            #region Check the mission before upload            
-
-            MissionChecker.MissionCheckerResult result = missionChecker.CheckMission(Commands);
-            switch (result)
-            {
-                case MissionChecker.MissionCheckerResult.NO_LAND_POINT:
-                    {
-                        MessageBox.Show("No LAND point is defined", "Mission Checker", MessageBoxButtons.OK);
-                        break;
-                    }
-
-                case MissionChecker.MissionCheckerResult.NO_TAKEOFF_POINT:
-                    {
-                        MessageBox.Show("No TAKEOFF point is defined", "Mission Checker", MessageBoxButtons.OK);
-                        break;
-                    }
-
-                //case MissionChecker.MissionCheckerResult.ALTITUDE_UNSAFE:{ break;}
-                //case MissionChecker.MissionCheckerResult.GROUND_COLLISION:{ break;}
-
-                case MissionChecker.MissionCheckerResult.LANDING_UNSAFE:
-                    {
-                        MessageBox.Show("Landing is unsafe! Mission will be modified, apply modifications?", "Mission Checker", MessageBoxButtons.OK);
-                        if (missionChecker.ModifyLandingProcedure())
-                        {
-                            Commands.Rows.Clear();
-                            foreach (var mi in missionChecker.modified_mission) { AddCommand((MAVLink.MAV_CMD)mi.getCommand(), mi.P1, mi.P2, mi.P3, mi.P4, mi.getCoords().Lng, mi.getCoords().Lat, mi.getCoords().Alt); }
-                        }
-                        break;
-                    }
-
-                case MissionChecker.MissionCheckerResult.OK:
-                default:
-                    {
-                        // everything is ok!
-                        break;
-                    }
-            }
-
             #endregion
 
+            // check mission on safety
+            doCheckMission();
 
             // check for invalid grid data
             for (int a = 0; a < Commands.Rows.Count - 0; a++)
@@ -2451,11 +2413,15 @@ namespace MissionPlanner.GCSViews
                 }
                 else
                 {
-                    temp.id =
-                        (ushort)
-                                Enum.Parse(typeof(MAVLink.MAV_CMD),
-                                    Commands.Rows[a].Cells[Command.Index].Value.ToString(),
-                                    false);
+                    if (Commands.Rows[a].Cells[Command.Index].Value.ToString().Contains("LAND_AT_TAKEOFF"))
+                    {
+                        // rewrite the LAND_AT_TAKEOFF as LAND command
+                        temp.id = (ushort)MAVLink.MAV_CMD.LAND;
+                    }
+                    else
+                    {
+                        temp.id = (ushort)Enum.Parse(typeof(MAVLink.MAV_CMD), Commands.Rows[a].Cells[Command.Index].Value.ToString(), false);
+                    }
                 }
                 temp.p1 = float.Parse(Commands.Rows[a].Cells[Param1.Index].Value.ToString());
 
@@ -2635,7 +2601,7 @@ namespace MissionPlanner.GCSViews
 
                     ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(a * 100 / Commands.Rows.Count,
                         "Setting WP " + a);
-
+                    
                     // make sure we are using the correct frame for these commands
                     if (temp.id < (ushort)MAVLink.MAV_CMD.LAST || temp.id == (ushort)MAVLink.MAV_CMD.DO_SET_HOME)
                     {
@@ -7837,10 +7803,8 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             writeKML();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void doCheckMission()
         {
-            #region Check the mission before upload            
-
             MissionChecker.MissionCheckerResult result = missionChecker.CheckMission(Commands);
             switch (result)
             {
@@ -7856,13 +7820,9 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                         break;
                     }
 
-                //case MissionChecker.MissionCheckerResult.ALTITUDE_UNSAFE:{ break;}
-                //case MissionChecker.MissionCheckerResult.GROUND_COLLISION:{ break;}
-
                 case MissionChecker.MissionCheckerResult.LANDING_UNSAFE:
                     {
-                        MessageBox.Show("Landing is unsafe! Mission will be modified", "Mission Checker", MessageBoxButtons.OK);
-                        if (missionChecker.ModifyLandingProcedure())
+                        if (DialogResult.Yes == CustomMessageBox.Show("Landing is unsafe! Mission will be modified, apply modifications?", "Mission Checker", MessageBoxButtons.YesNo))
                         {
                             Commands.Rows.Clear();
                             foreach (var mi in missionChecker.modified_mission) { AddCommand((MAVLink.MAV_CMD)mi.getCommand(), mi.P1, mi.P2, mi.P3, mi.P4, mi.getCoords().Lng, mi.getCoords().Lat, mi.getCoords().Alt); }
@@ -7877,8 +7837,11 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                         break;
                     }
             }
+        }
 
-            #endregion
+        private void button1_Click(object sender, EventArgs e)
+        {
+            doCheckMission();
         }
     }
 }

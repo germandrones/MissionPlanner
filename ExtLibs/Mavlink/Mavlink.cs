@@ -575,11 +575,11 @@ AOA_SSA = 11020,
         VTOL_TAKEOFF=84, 
     	///<summary> Land using VTOL mode |Empty| Empty| Empty| Yaw angle in degrees. NaN for unchanged.| Latitude| Longitude| Altitude|  </summary>
         VTOL_LAND=85,
-
+        
         ///<summary> Disable/ Enable HWP Waypoints feature</summary>
-        DISABLE_HWP = 86,
+        MAV_CMD_DO_DISABLE_HWP = 86,
         ///<summary> Land at the takeoff waypoint </summary>
-        LAND_AT_TAKEOFF = 87,    	
+        LAND_AT_TAKEOFF = 87,  
         
         ///<summary> hand control over to an external controller |On / Off (> 0.5f on)| Empty| Empty| Empty| Empty| Empty| Empty|  </summary>
         GUIDED_ENABLE =92, 
@@ -648,11 +648,11 @@ AOA_SSA = 11020,
     	///<summary> Mission command to set CAM_TRIGG_DIST for this flight |Camera trigger distance (meters)| Empty| Empty| Empty| Empty| Empty| Empty|  </summary>
         DO_SET_CAM_TRIGG_DIST=206, 
     	///<summary> Mission command to enable the geofence |enable? (0=disable, 1=enable, 2=disable_floor_only)| Empty| Empty| Empty| Empty| Empty| Empty|  </summary>
-        DO_FENCE_ENABLE=207, 
-    	///<summary> Mission command to trigger a parachute |action (0=disable, 1=enable, 2=release, for some systems see PARACHUTE_ACTION enum, not in general message set.)| Empty| Empty| Empty| Empty| Empty| Empty|  </summary>
+        DO_FENCE_ENABLE=207,
+        ///<summary> Mission command to trigger a parachute |action (0=disable, 1=enable, 2=release, for some systems see PARACHUTE_ACTION enum, not in general message set.)| Empty| Empty| Empty| Empty| Empty| Empty|  </summary>
         DO_PARACHUTE=208, 
     	///<summary> Mission command to perform motor test |motor number (a number from 1 to max number of motors on the vehicle)| throttle type (0=throttle percentage, 1=PWM, 2=pilot throttle channel pass-through. See MOTOR_TEST_THROTTLE_TYPE enum)| throttle| timeout (in seconds)| motor count (number of motors to test to test in sequence, waiting for the timeout above between them; 0=1 motor, 1=1 motor, 2=2 motors...)| motor test order (See MOTOR_TEST_ORDER enum)| Empty|  </summary>
-        DO_MOTOR_TEST=209, 
+        DO_MOTOR_TEST =209, 
     	///<summary> Change to/from inverted flight |inverted (0=normal, 1=inverted)| Empty| Empty| Empty| Empty| Empty| Empty|  </summary>
         DO_INVERTED_FLIGHT=210, 
     	///<summary> Mission command to operate EPM gripper |gripper number (a number from 1 to max number of grippers on the vehicle)| gripper action (0=release, 1=grab. See GRIPPER_ACTIONS enum)| Empty| Empty| Empty| Empty| Empty|  </summary>

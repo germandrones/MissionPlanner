@@ -57,6 +57,24 @@
       <Y></Y>
       <Z></Z>
     </RETURN_TO_LAUNCH>
+    <LAND_AT_TAKEOFF>
+      <P1>Abort Alt</P1>
+      <P2></P2>
+      <P3></P3>
+      <P4></P4>
+      <X>Lat</X>
+      <Y>Long</Y>
+      <Z>Alt</Z>
+    </LAND_AT_TAKEOFF>
+    <MAV_CMD_DO_DISABLE_HWP>
+      <P1>Status</P1>
+      <P2></P2>
+      <P3></P3>
+      <P4></P4>
+      <X></X>
+      <Y></Y>
+      <Z></Z>
+    </MAV_CMD_DO_DISABLE_HWP>
     <LAND>
       <P1></P1>
       <P2></P2>
@@ -322,7 +340,6 @@
       <Y></Y>
       <Z></Z>
     </RETURN_TO_LAUNCH>
-
     <LAND_AT_TAKEOFF>
       <P1>Abort Alt</P1>
       <P2></P2>
@@ -332,7 +349,7 @@
       <Y>Long</Y>
       <Z>Alt</Z>
     </LAND_AT_TAKEOFF>
-    <DISABLE_HWP>
+    <MAV_CMD_DO_DISABLE_HWP>
       <P1>Status</P1>
       <P2></P2>
       <P3></P3>
@@ -340,8 +357,7 @@
       <X></X>
       <Y></Y>
       <Z></Z>
-    </DISABLE_HWP>
-    
+    </MAV_CMD_DO_DISABLE_HWP>
     <LAND>
       <P1>Abort Alt</P1>
       <P2></P2>
@@ -633,6 +649,24 @@
       <Y>Long</Y>
       <Z>Alt</Z>
     </RETURN_TO_LAUNCH>
+    <LAND_AT_TAKEOFF>
+      <P1>Abort Alt</P1>
+      <P2></P2>
+      <P3></P3>
+      <P4></P4>
+      <X>Lat</X>
+      <Y>Long</Y>
+      <Z>Alt</Z>
+    </LAND_AT_TAKEOFF>
+    <MAV_CMD_DO_DISABLE_HWP>
+      <P1>Status</P1>
+      <P2></P2>
+      <P3></P3>
+      <P4></P4>
+      <X></X>
+      <Y></Y>
+      <Z></Z>
+    </MAV_CMD_DO_DISABLE_HWP>
     <LAND>
       <P1></P1>
       <P2></P2>

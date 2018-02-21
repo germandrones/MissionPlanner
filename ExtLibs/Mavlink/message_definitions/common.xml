@@ -784,7 +784,7 @@
         <param index="6">Longitude</param>
         <param index="7">Altitude</param>
       </entry>
-      <entry value="86" name="MAV_CMD_HWP">
+      <entry value="86" name="MAV_CMD_DO_DISABLE_HWP">
         <description>Command for selecting the landing procedure</description>
         <param index="1">Status (0: default landing procedure, 1: hwp)</param>
         <param index="2">Empy</param>
@@ -794,7 +794,6 @@
         <param index="6">Empy</param>
         <param index="7">Empy</param>
       </entry>
-      
       <!-- IDs 90 and 91 are reserved until the end of 2014,
                     as they were used in some conflicting proposals
                     between PX4 and ardupilot and need to be kept

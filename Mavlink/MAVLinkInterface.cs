@@ -2463,7 +2463,6 @@ Please check the following
                     else if (buffer.msgid == (byte) MAVLINK_MSG_ID.MISSION_ITEM_INT)
                     {
                         //Console.WriteLine("getwp ans " + DateTime.Now.Millisecond);
-
                         var wp = buffer.ToStructure<mavlink_mission_item_int_t>();
 
                         // received a packet, but not what we requested

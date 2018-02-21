@@ -55,11 +55,12 @@ namespace MissionPlanner.Utilities
         int m_land_id;
         PointLatLngAlt m_land_point;
 
-        double m_hwp_radius;
+        double m_hwp_radius = 200; // 200 meters HWP radius by default
         bool   m_hwp_enabled;
 
         double m_loiter_radius;
         double m_exit_tangent;
+        double m_safe_altitude_delta = 20;  // 20 meters of altitude difference is safe for landing?
 
         List<MissionItem> defined_mission = new List<MissionItem>(); // List of all mission items which are created by user.
         public List<MissionItem> modified_mission = new List<MissionItem>(); // list of mission items modified by mission checker
@@ -139,22 +140,44 @@ namespace MissionPlanner.Utilities
         {
             bool is_safe = false;
 
-            //TODO: checking here...
-            //is_safe = true;
-            //...
+            // hwp_radius default 200
+            is_safe = scan_srtm(land_point, m_hwp_radius, 10, 10);
 
             return is_safe;
         }
 
+        // Scan SRTM Data
+        private bool scan_srtm(PointLatLngAlt lp, double scan_radius, double scan_step, double scan_angle_step)
+        {
+            double min_alt = lp.Alt;
+            double max_alt = lp.Alt;
+
+            double scan_upper_value = (scan_radius * 2);
+
+            for (int angle = 0; angle < 180; angle += (int)scan_angle_step)
+            {
+                PointLatLngAlt l_point = lp.newpos(angle + 180, scan_radius); // lowest point
+
+                //get SRTM data between l_point and u_point with step = scan_step
+                for(double step = 0; step <= scan_upper_value; step +=scan_step)
+                {
+                    PointLatLngAlt scan_point = l_point.newpos(angle, step);
+                    double srtmAltitude = srtm.getAltitude(scan_point.Lat, scan_point.Lng).alt;
+
+                    if (srtmAltitude > max_alt) max_alt = srtmAltitude;
+                    if (srtmAltitude < min_alt) min_alt = srtmAltitude;
+                }
+            }
+            // check if the min and max altitude are safe for landing
+            if (max_alt - min_alt < m_safe_altitude_delta) return true; else return false;
+        }
+
+        
+
         #endregion
 
-
-
-
-
-
-        #region Public Methods
-        public void StoreOriginalMission(MyDataGridView Commands)
+        
+        private void StoreOriginalMission(MyDataGridView Commands)
         {
             defined_mission.Clear();
 
@@ -179,21 +202,8 @@ namespace MissionPlanner.Utilities
         /// Modifies the mission according the rules of HWP
         /// </summary>
         /// <returns>True or False if the mission was modified</returns>
-        public bool ModifyLandingProcedure()
+        private void ModifyLandingProcedure()
         {
-            //if(defined_mission[defined_mission.Count])
-            if (defined_mission.Count >= 4)
-            {
-                List<MissionItem> temp = defined_mission.GetRange(defined_mission.Count - 4, 4);
-                int mod = 0; // list of modifications in last 4 nav points
-                foreach (var t in temp)
-                {
-                    if (t.getCommand() == (int)MAVLink.MAV_CMD.DISABLE_HWP) mod++;
-                    if (t.getCommand() == (int)MAVLink.MAV_CMD.LOITER_TO_ALT) mod++;
-                    if (t.getCommand() == (int)MAVLink.MAV_CMD.LAND || t.getCommand() == (int)MAVLink.MAV_CMD.LAND_AT_TAKEOFF) mod++;
-                }
-                if (mod >= 2) { return false; }// mission is already modified
-            }
             modified_mission.Clear();
 
             // just copy user defined mission to modified mission list
@@ -212,12 +222,40 @@ namespace MissionPlanner.Utilities
                 }
                 modified_mission.Add(defined_mission[i]);
             }
-            if(m_hwp_enabled)modified_mission.Add(new MissionItem((int)MAVLink.MAV_CMD.DISABLE_HWP, 0, 0, 0, 0, 0, 0, 0));// disable HWP Points
+            if(m_hwp_enabled)modified_mission.Add(new MissionItem((int)MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP, 0, 0, 0, 0, 0, 0, 0));// disable HWP Points
+        }
 
-            return true;
+        private void GenerateSafeLandingPoints()
+        {
+            // check if the mission already contains the addition points
+            bool isLTA = false;
+            bool isWP = false;
+            if (defined_mission[m_land_id - 1].getCommand() == (int)MAVLink.MAV_CMD.WAYPOINT) { isWP = true; }
+            if (defined_mission[m_land_id - 2].getCommand() == (int)MAVLink.MAV_CMD.LOITER_TO_ALT) { isLTA = true; }
+
+            if(isWP && isLTA)
+            {
+                //mission is already modified, remove this two points
+                defined_mission.RemoveAt(m_land_id - 1);
+                defined_mission.RemoveAt(m_land_id - 2);
+
+                if(defined_mission[defined_mission.Count-1].getCommand() == (int)MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP)
+                {
+                    defined_mission.RemoveAt(defined_mission.Count - 1);
+                }
+            }
+            // refresh info
+            get_takeoff_land_ids(out m_takeoff_id, out m_land_id);
+            ModifyLandingProcedure();
         }
 
 
+
+        #region Public Methods
+
+        /// <summary>
+        /// Checks the mission before uploading
+        /// </summary>
         public MissionCheckerResult CheckMission(MyDataGridView Commands)
         {
             StoreOriginalMission(Commands);
@@ -228,22 +266,32 @@ namespace MissionPlanner.Utilities
             if (m_land_id < 0) return MissionCheckerResult.NO_LAND_POINT;
             #endregion
 
-            #region Landing point testing
-                m_land_point = defined_mission[m_land_id].getCoords();
-                if (m_land_point == null) return MissionCheckerResult.ERROR;
+            #region collision detection using SRTM
 
-                if (m_hwp_enabled) // check the landing area if any obstacles are present
+
+            #endregion
+            
+            #region Landing point testing, must be always the last check
+            m_land_point = defined_mission[m_land_id].getCoords();
+            if (m_land_point == null) return MissionCheckerResult.ERROR;
+
+            if(m_hwp_enabled)
+            {
+                // if HWP Enabled and Landing is Safe according to SRTM, we don't modify the mission.
+                bool is_landing_safe = check_landing_obstacles(m_land_point);
+                if(!is_landing_safe)
                 {
-                    if (!check_landing_obstacles(m_land_point))
-                    {
-                        return MissionCheckerResult.LANDING_UNSAFE;
-                    }
-                }
-                else
-                {
+                    GenerateSafeLandingPoints();
                     return MissionCheckerResult.LANDING_UNSAFE;
                 }
-                #endregion
+            }
+            else
+            {
+                // if HWP is Disabled, we always modify the mission by adding a LTA+WP
+                GenerateSafeLandingPoints();
+                return MissionCheckerResult.LANDING_UNSAFE;
+            }
+            #endregion
 
             return MissionCheckerResult.OK;
         }
