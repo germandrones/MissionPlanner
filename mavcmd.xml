@@ -358,10 +358,19 @@
       <Y></Y>
       <Z></Z>
     </MAV_CMD_DO_DISABLE_HWP>
+    <MAV_CMD_SET_FORBIDDEN_ZONE>
+      <P1>Param1</P1>
+      <P2>Param2</P2>
+      <P3></P3>
+      <P4></P4>
+      <X>Lat</X>
+      <Y>Long</Y>
+      <Z>Alt</Z>
+    </MAV_CMD_SET_FORBIDDEN_ZONE>
     <LAND>
       <P1>Abort Alt</P1>
-      <P2></P2>
-      <P3></P3>
+      <P2>Unsafe Angle 1</P2>
+      <P3>Unsafe Angle 2</P3>
       <P4></P4>
       <X>Lat</X>
       <Y>Long</Y>

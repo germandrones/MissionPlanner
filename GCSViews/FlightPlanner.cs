@@ -618,6 +618,9 @@ namespace MissionPlanner.GCSViews
             airportsoverlay = new GMapOverlay("airports");
             MainMap.Overlays.Add(airportsoverlay);
 
+            landpointoverlay = new GMapOverlay("landpoint");
+            MainMap.Overlays.Add(landpointoverlay);
+
             objectsoverlay = new GMapOverlay("objects");
             MainMap.Overlays.Add(objectsoverlay);
 
@@ -1264,12 +1267,13 @@ namespace MissionPlanner.GCSViews
             }
         }
 
-        private void add_land_polygonmarker(string tag, double lng, double lat, double alt)
+        private void add_land_polygonmarker(string tag, double lng, double lat, double alt, double unsafe_area_angle_1, double unsafe_area_angle_2)
         {
             try
             {
                 PointLatLng point = new PointLatLng(lat, lng);
                 GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.blue);
+                int land_radius = (int)(hwp_radius);
 
                 m.ToolTipMode = MarkerTooltipMode.OnMouseOver;
                 m.ToolTipText = "Alt: " + alt.ToString("0");
@@ -1279,12 +1283,30 @@ namespace MissionPlanner.GCSViews
                 {
                     mBorders.InnerMarker = m;
                     mBorders.Tag = tag;
-                    mBorders.wprad = (int)(hwp_radius * 1.5f); // extend radius +50%
+                    mBorders.wprad = land_radius;
                     mBorders.Color = Color.LightBlue;
                 }
-
                 objectsoverlay.Markers.Add(m);
                 objectsoverlay.Markers.Add(mBorders);
+
+
+                // unsafe area controlling stuff on GDI
+                PointLatLngAlt scrollPoint1 = new PointLatLngAlt(lat, lng, alt);
+                PointLatLngAlt scrollPoint2 = new PointLatLngAlt(lat, lng, alt);
+
+                scrollPoint1 = scrollPoint1.newpos(unsafe_area_angle_1, land_radius);
+                scrollPoint2 = scrollPoint2.newpos(unsafe_area_angle_2, land_radius);
+
+                // redraw arcs
+                landpointoverlay.Clear();
+
+                GMapMarkerLand landArea = new GMapMarkerLand(point, land_radius, unsafe_area_angle_1, unsafe_area_angle_2);
+                {
+                    landArea.Scroller1 = new PointLatLng(scrollPoint1.Lat, scrollPoint1.Lng);
+                    landArea.Scroller2 = new PointLatLng(scrollPoint2.Lat, scrollPoint2.Lng);
+                }
+                landpointoverlay.Markers.Add(landArea);
+
             }
             catch (Exception)
             {
@@ -1458,6 +1480,7 @@ namespace MissionPlanner.GCSViews
                             command != (ushort)MAVLink.MAV_CMD.VTOL_TAKEOFF && // doesnt have a position
                             command != (ushort)MAVLink.MAV_CMD.RETURN_TO_LAUNCH &&
                             command != (ushort)MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP && //no position
+                            command != (ushort)MAVLink.MAV_CMD.MAV_CMD_SET_FORBIDDEN_ZONE && //no position
                             command != (ushort)MAVLink.MAV_CMD.CONTINUE_AND_CHANGE_ALT &&
                             command != (ushort)MAVLink.MAV_CMD.DELAY &&
                             command != (ushort)MAVLink.MAV_CMD.GUIDED_ENABLE
@@ -1468,8 +1491,8 @@ namespace MissionPlanner.GCSViews
                             string cell4 = Commands.Rows[a].Cells[Lon.Index].Value.ToString(); // lng
 
                             // land can be 0,0 or a lat,lng
-                            if (command == (ushort)MAVLink.MAV_CMD.LAND && cell3 == "0" && cell4 == "0")
-                                continue;
+                            /*if (command == (ushort)MAVLink.MAV_CMD.LAND && cell3 == "0" && cell4 == "0")
+                                continue;*/
 
                             if (cell4 == "?" || cell3 == "?")
                                 continue;
@@ -1522,12 +1545,19 @@ namespace MissionPlanner.GCSViews
                                 fullpointlist.Add(pointlist[pointlist.Count - 1]);
                                 add_takeoff_polygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), double.Parse(cell2));
                             }
+
+
                             else if (command == (ushort)MAVLink.MAV_CMD.LAND || command == (ushort)MAVLink.MAV_CMD.LAND_AT_TAKEOFF) // Visualize LAND point
                             {
-                                pointlist.Add(new PointLatLngAlt(double.Parse(cell3), double.Parse(cell4), double.Parse(cell2) + gethomealt(double.Parse(cell3), double.Parse(cell4)), "TAKEOFF"));
+                                pointlist.Add(new PointLatLngAlt(double.Parse(cell3), double.Parse(cell4), double.Parse(cell2) + gethomealt(double.Parse(cell3), double.Parse(cell4)), "LAND"));
                                 fullpointlist.Add(pointlist[pointlist.Count - 1]);
-                                add_land_polygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), double.Parse(cell2));
+
+                                double unsafe_area_angle_1 = double.Parse(Commands.Rows[a].Cells[Param2.Index].Value.ToString());
+                                double unsafe_area_angle_2 = double.Parse(Commands.Rows[a].Cells[Param3.Index].Value.ToString());
+
+                                add_land_polygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), double.Parse(cell2), unsafe_area_angle_1, unsafe_area_angle_2);
                             }
+
 
                             else if (command == (ushort)MAVLink.MAV_CMD.SPLINE_WAYPOINT)
                             {
@@ -2145,6 +2175,40 @@ namespace MissionPlanner.GCSViews
                 throw;
             }
 
+
+            // modify cmds here
+            float p1 = 0;
+            float p2 = 0;
+            int wp_id_to_hide = -1;
+            int wp_id_land = -1;
+            int ctr = 0;
+            foreach (Locationwp temp in cmds)
+            {
+                if (temp.id == 88)
+                {
+                    p1 = temp.p1;
+                    p2 = temp.p2;
+                    wp_id_to_hide = ctr;
+                    ctr++;
+                    continue;
+                }
+
+                if (temp.id == (ushort)MAVLink.MAV_CMD.LAND || temp.id == (ushort)MAVLink.MAV_CMD.LAND_AT_TAKEOFF)
+                {
+                    wp_id_land = ctr;
+                }
+                ctr++;
+            }
+            
+            Locationwp l_tmp = cmds[wp_id_land];
+            l_tmp.p2 = p1;
+            l_tmp.p3 = p2;
+
+            cmds.RemoveAt(wp_id_to_hide);
+            cmds.RemoveAt(wp_id_land-1);
+            cmds.Insert(wp_id_land-1, l_tmp);
+            
+
             WPtoScreen(cmds);
         }
 
@@ -2453,7 +2517,21 @@ namespace MissionPlanner.GCSViews
             {
                 var temp = DataViewtoLocationwp(a);
 
-                commands.Add(temp);
+                if(temp.id == (ushort)MAVLink.MAV_CMD.LAND || temp.id == (ushort)MAVLink.MAV_CMD.LAND_AT_TAKEOFF)
+                {
+                    var forbidden_zone_cmd = temp;
+                    forbidden_zone_cmd.id = (ushort)MAVLink.MAV_CMD.MAV_CMD_SET_FORBIDDEN_ZONE;
+                    forbidden_zone_cmd.p1 = temp.p2;
+                    forbidden_zone_cmd.p2 = temp.p3;
+                    forbidden_zone_cmd.p3 = 0;
+                    forbidden_zone_cmd.p4 = 0;
+                    commands.Add(forbidden_zone_cmd); // insert additional cmd
+
+                    temp.p2 = 0;
+                    temp.p3 = 0;
+                    commands.Add(temp); // insert normal LAND cmd
+                }
+                else commands.Add(temp); // Normal case just puch the nav cmd
             }
 
             return commands;
@@ -2531,12 +2609,14 @@ namespace MissionPlanner.GCSViews
                     }
                 }
 
+
+
                 bool use_int = (port.MAV.cs.capabilities & (uint)MAVLink.MAV_PROTOCOL_CAPABILITY.MISSION_INT) > 0;
 
                 // set wp total
                 ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(0, "Set total wps ");
 
-                ushort totalwpcountforupload = (ushort)(Commands.Rows.Count + 1);
+                ushort totalwpcountforupload = (ushort)(Commands.Rows.Count + 2);
 
                 if (port.MAV.apname == MAVLink.MAV_AUTOPILOT.PX4)
                 {
@@ -2726,6 +2806,7 @@ namespace MissionPlanner.GCSViews
 
             int i = Commands.Rows.Count - 1;
             int cmdidx = -1;
+
             foreach (Locationwp temp in cmds)
             {
                 i++;
@@ -2735,6 +2816,7 @@ namespace MissionPlanner.GCSViews
                     break;
                 if (temp.id == 255 && i != 0) // bad record - never loaded any WP's - but have started the board up.
                     break;
+
                 if (cmdidx == 0 && append)
                 {
                     // we dont want to add home again.
@@ -2784,6 +2866,8 @@ namespace MissionPlanner.GCSViews
                         }
                     }
                 }
+
+                
 
                 cell = Commands.Rows[i].Cells[Alt.Index] as DataGridViewTextBoxCell;
                 cell.Value = temp.alt * CurrentState.multiplierdist;
@@ -3332,6 +3416,7 @@ namespace MissionPlanner.GCSViews
 
         // marker
         GMapMarker currentMarker;
+        
         GMapMarker center = new GMarkerGoogle(new PointLatLng(0.0, 0.0), GMarkerGoogleType.none);
 
         // polygons
@@ -3346,6 +3431,7 @@ namespace MissionPlanner.GCSViews
         public static GMapOverlay routesoverlay; // static so can update from gcs
         public static GMapOverlay polygonsoverlay; // where the track is drawn
         public static GMapOverlay airportsoverlay;
+        public static GMapOverlay landpointoverlay; // where landpoint is drawn
         public static GMapOverlay poioverlay = new GMapOverlay("POI"); // poi layer
         GMapOverlay drawnpolygonsoverlay;
         GMapOverlay warningPointsOverlay;
@@ -4171,19 +4257,17 @@ namespace MissionPlanner.GCSViews
             coords1.Lat = point.Lat;
             coords1.Lng = point.Lng;
 
-            // always show on planner view
-            //if (MainV2.ShowAirports)
+            airportsoverlay.Clear();
+            foreach (var item in Airports.getAirports(MainMap.Position))
             {
-                airportsoverlay.Clear();
-                foreach (var item in Airports.getAirports(MainMap.Position))
+                airportsoverlay.Markers.Add(new GMapMarkerAirport(item)
                 {
-                    airportsoverlay.Markers.Add(new GMapMarkerAirport(item)
-                    {
-                        ToolTipText = item.Tag,
-                        ToolTipMode = MarkerTooltipMode.OnMouseOver
-                    });
-                }
+                    ToolTipText = item.Tag,
+                    ToolTipMode = MarkerTooltipMode.OnMouseOver
+                });
             }
+
+            
         }
 
         // center markers on start
@@ -6146,29 +6230,12 @@ namespace MissionPlanner.GCSViews
                 return;
             }
 
-            // take off pitch
-            int topi = 0;
-
-            if (MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduPlane ||
-                MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.Ateryx)
-            {
-                string top = "15";
-
-                if (DialogResult.Cancel == InputBox.Show("Takeoff Pitch", "Please enter your takeoff pitch", ref top))
-                    return;
-
-                if (!int.TryParse(top, out topi))
-                {
-                    MessageBox.Show("Bad Takeoff pitch");
-                    return;
-                }
-            }
 
             selectedrow = Commands.Rows.Add();
 
             Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.TAKEOFF.ToString();
 
-            Commands.Rows[selectedrow].Cells[Param1.Index].Value = topi;
+            Commands.Rows[selectedrow].Cells[Param1.Index].Value = 0; //takeoff pitch
 
             Commands.Rows[selectedrow].Cells[Alt.Index].Value = alti;
 
@@ -7822,7 +7889,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
 
                 case MissionChecker.MissionCheckerResult.LANDING_UNSAFE:
                     {
-                        if (DialogResult.Yes == CustomMessageBox.Show("Landing is unsafe! Mission will be modified, apply modifications?", "Mission Checker", MessageBoxButtons.YesNo))
+                        if (DialogResult.Yes == CustomMessageBox.Show("Mission will be modified, apply modifications?", "Mission Checker", MessageBoxButtons.YesNo))
                         {
                             Commands.Rows.Clear();
                             foreach (var mi in missionChecker.modified_mission) { AddCommand((MAVLink.MAV_CMD)mi.getCommand(), mi.P1, mi.P2, mi.P3, mi.P4, mi.getCoords().Lng, mi.getCoords().Lat, mi.getCoords().Alt); }

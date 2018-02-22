@@ -579,8 +579,10 @@ AOA_SSA = 11020,
         ///<summary> Disable/ Enable HWP Waypoints feature</summary>
         MAV_CMD_DO_DISABLE_HWP = 86,
         ///<summary> Land at the takeoff waypoint </summary>
-        LAND_AT_TAKEOFF = 87,  
-        
+        LAND_AT_TAKEOFF = 87,
+        ///<summary> Mission command for defining the zone where the UAV cannt fly during landing </summary>
+        MAV_CMD_SET_FORBIDDEN_ZONE = 88,
+
         ///<summary> hand control over to an external controller |On / Off (> 0.5f on)| Empty| Empty| Empty| Empty| Empty| Empty|  </summary>
         GUIDED_ENABLE =92, 
     	///<summary> Delay the next navigation command a number of seconds or until a specified time |Delay in seconds (decimal, -1 to enable time-of-day fields)| hour (24h format, UTC, -1 to ignore)| minute (24h format, UTC, -1 to ignore)| second (24h format, UTC)| Empty| Empty| Empty|  </summary>

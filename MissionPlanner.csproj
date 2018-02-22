@@ -261,6 +261,7 @@
     <Compile Include="MagCalib.cs" />
     <Compile Include="Magfitrotation.cs" />
     <Compile Include="MainV2.cs"> <SubType>Control</SubType> </Compile>
+    <Compile Include="Maps\GMapMarkerLand.cs" />
     <Compile Include="MovingBase.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="OpenGLtest.cs" />
     <Compile Include="OpenGLtest2.cs" />

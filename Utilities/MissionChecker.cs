@@ -215,7 +215,7 @@ namespace MissionPlanner.Utilities
                     PointLatLngAlt LTA = get_loiter_coords(defined_mission[i - 1].getCoords(), m_land_point);
                     PointLatLngAlt LWP = get_last_nav_coords(defined_mission[i - 1].getCoords(), m_land_point);
 
-                    modified_mission.Add(new MissionItem((int)MAVLink.MAV_CMD.LOITER_TO_ALT, 0, m_loiter_radius, 0, m_exit_tangent, LTA.Lat, LTA.Lng, LTA.Alt));
+                    modified_mission.Add(new MissionItem((int)MAVLink.MAV_CMD.LOITER_TO_ALT, 0, m_loiter_radius, 0, m_exit_tangent, LTA.Lat, LTA.Lng, m_land_point.Alt));
 
                     //insert last nav waypoint
                     modified_mission.Add(new MissionItem((int)MAVLink.MAV_CMD.WAYPOINT, 0, 0, 0, 0, LWP.Lat, LWP.Lng, m_land_point.Alt));
