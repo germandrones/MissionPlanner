@@ -193,7 +193,7 @@ namespace MissionPlanner.Comms
                     
                     foreach (ManagementObject queryObj in searcher.Get())
                     {
-                        if (queryObj["DeviceID"].ToString().Contains("VID_0403") || queryObj["DeviceID"].ToString().Contains("VID_26AC"))
+                        if (queryObj["DeviceID"].ToString().Contains("VID_0403") || queryObj["DeviceID"].ToString().Contains("VID_26AC") || queryObj["DeviceID"].ToString().Contains("VID_1FFB"))
                         {
                             // this device is supported:
                             string devCaption = queryObj["Caption"].ToString();

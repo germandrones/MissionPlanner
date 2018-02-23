@@ -1277,6 +1277,9 @@ namespace MissionPlanner.GCSViews
 
                 m.ToolTipMode = MarkerTooltipMode.OnMouseOver;
                 m.ToolTipText = "Alt: " + alt.ToString("0");
+
+                
+
                 m.Tag = tag;
 
                 GMapMarkerRect mBorders = new GMapMarkerRect(point);
@@ -1290,23 +1293,12 @@ namespace MissionPlanner.GCSViews
                 objectsoverlay.Markers.Add(mBorders);
 
 
-                // unsafe area controlling stuff on GDI
-                PointLatLngAlt scrollPoint1 = new PointLatLngAlt(lat, lng, alt);
-                PointLatLngAlt scrollPoint2 = new PointLatLngAlt(lat, lng, alt);
-
-                scrollPoint1 = scrollPoint1.newpos(unsafe_area_angle_1, land_radius);
-                scrollPoint2 = scrollPoint2.newpos(unsafe_area_angle_2, land_radius);
-
                 // redraw arcs
                 landpointoverlay.Clear();
-
                 GMapMarkerLand landArea = new GMapMarkerLand(point, land_radius, unsafe_area_angle_1, unsafe_area_angle_2);
-                {
-                    landArea.Scroller1 = new PointLatLng(scrollPoint1.Lat, scrollPoint1.Lng);
-                    landArea.Scroller2 = new PointLatLng(scrollPoint2.Lat, scrollPoint2.Lng);
-                }
+                int wpno = -1;
+                if (int.TryParse(tag, out wpno)) { landArea.wpno = wpno; }
                 landpointoverlay.Markers.Add(landArea);
-
             }
             catch (Exception)
             {
@@ -3990,6 +3982,12 @@ namespace MissionPlanner.GCSViews
 
             MouseDownStart = MainMap.FromLocalToLatLng(e.X, e.Y);
 
+            // check landpoint mouse over
+            foreach (GMapMarkerLand landpoint in landpointoverlay.Markers)
+            {
+                landpoint.scrollerPicker((int)(e.X - MainMap.Width * 0.5f), (int)(e.Y - MainMap.Height * 0.5f)); // using screen coordinates?
+            }
+
             //   Console.WriteLine("MainMap MD");
 
             if (e.Button == MouseButtons.Left && (groupmarkers.Count > 0 || ModifierKeys == Keys.Control))
@@ -4035,11 +4033,49 @@ namespace MissionPlanner.GCSViews
             if (e.Button == MouseButtons.Left && isMouseDown)
             {
                 isMouseDraging = true;
+
+                GMapMarkerLand CurrentLandMarker = null;
+
+                foreach (GMapMarkerLand landpoint in landpointoverlay.Markers) { if(landpoint.scroller1_selected || landpoint.scroller2_selected) { CurrentLandMarker = landpoint; } }
+                
                 if (CurrentRallyPt != null)
                 {
                     PointLatLng pnew = MainMap.FromLocalToLatLng(e.X, e.Y);
-
                     CurrentRallyPt.Position = pnew;
+                }
+                else if (CurrentLandMarker != null)
+                {
+                    PointLatLng pnew = MainMap.FromLocalToLatLng(e.X, e.Y);
+                    GPoint lpCenter = MainMap.FromLatLngToLocal(CurrentLandMarker.Position);
+
+                    if (CurrentLandMarker.scroller1_selected)
+                    {
+                        int distanceX = (int)(lpCenter.X - e.X);
+                        int distanceY = (int)(e.Y - lpCenter.Y);
+
+                        double deg = Math.Atan2(distanceY, distanceX);
+                        double angle = (-deg / (Math.PI / 180.0f));
+                        if (angle < 0) angle += 360;
+                        CurrentLandMarker.UnsafeAngle1 = angle-90;
+                    }
+
+                    if (CurrentLandMarker.scroller2_selected)
+                    {
+                        int distanceX = (int)(lpCenter.X - e.X);
+                        int distanceY = (int)(e.Y - lpCenter.Y);
+
+                        double deg = Math.Atan2(distanceY, distanceX);
+                        double angle = (-deg / (Math.PI / 180.0f));
+                        if (angle < 0) angle += 360;
+                        CurrentLandMarker.UnsafeAngle2 = angle - 90;
+                    }
+
+                    int wpno = CurrentLandMarker.wpno;
+                    if (Commands.Rows[wpno - 1].Cells[Command.Index].Value.ToString().Contains("LAND"))
+                    {
+                        Commands.Rows[wpno - 1].Cells[Param2.Index].Value = CurrentLandMarker.UnsafeAngle1;
+                        Commands.Rows[wpno - 1].Cells[Param3.Index].Value = CurrentLandMarker.UnsafeAngle1;
+                    }
                 }
                 else if (groupmarkers.Count > 0)
                 {
@@ -4119,6 +4155,13 @@ namespace MissionPlanner.GCSViews
                     // update rect and marker pos.
                     if (currentMarker.IsVisible)
                     {
+                        int cmdID = int.Parse(CurentRectMarker.Tag.ToString());
+                        string command = Commands.Rows[cmdID - 1].Cells[Command.Index].Value.ToString();
+
+                        if (command.Contains("LAND"))
+                        {
+                            // its landing point is dragging!
+                        }
                         currentMarker.Position = pnew;
                     }
                     CurentRectMarker.Position = pnew;

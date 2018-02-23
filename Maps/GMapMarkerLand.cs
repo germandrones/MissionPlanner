@@ -12,60 +12,57 @@ namespace MissionPlanner.Maps
     [Serializable]
     public class GMapMarkerLand : GMapMarker
     {
-        public Pen Pen = new Pen(Brushes.White, 2);
+        #region Private Fields
+        const int picker_offset = 20;
 
-        Color? initcolor = null;
-
-        public GMapMarker InnerMarker;
-
-        private int m_wprad = 200; //default
+        public int m_wprad;
         private double m_unsafe_area_angle_1 = 0;
         private double m_unsafe_area_angle_2 = 0;
 
-        private PointLatLng m_scroller1;
-        private PointLatLng m_scroller2;
+        private PointF m_scroller_1;
+        private PointF m_scroller_2;
+        private int m_scroller_radius = 10;
 
-        public PointLatLng Scroller1
+        private double DegToRad(double angle) { return (Math.PI / 180) * angle; }
+
+        #endregion
+
+        #region Public Fields
+        public bool scroller1_selected;
+        public bool scroller2_selected;
+        public int wpno;
+
+        public double UnsafeAngle1
         {
-            get { return m_scroller1; }
-            set { m_scroller1 = value; }
+            get { return m_unsafe_area_angle_1; }
+            set { m_unsafe_area_angle_1 = value; }
         }
 
-        public PointLatLng Scroller2
+        public double UnsafeAngle2
         {
-            get { return m_scroller2; }
-            set { m_scroller2 = value; }
+            get { return m_unsafe_area_angle_2; }
+            set { m_unsafe_area_angle_2 = value; }
         }
+        #endregion
 
-        public Color Color
-        {
-            get { return Pen.Color; }
-            set
-            {
-                if (!initcolor.HasValue) initcolor = value;
-                Pen.Color = value;
-            }
-        }
-
-
+        #region Constructor
         public GMapMarkerLand(PointLatLng p, double radius, double unsafe_area_angle_1, double unsafe_area_angle_2) : base(p)
         {
             m_wprad = (int)radius;
-            m_unsafe_area_angle_1 = unsafe_area_angle_1-90;
-            m_unsafe_area_angle_2 = Math.Abs(m_unsafe_area_angle_1) + (unsafe_area_angle_2 - 90);
-
-            m_unsafe_area_angle_1 = unsafe_area_angle_1 - 90;
-            m_unsafe_area_angle_2 = unsafe_area_angle_2 - m_unsafe_area_angle_1 -90;
-
-            Pen.DashStyle = DashStyle.Solid;
-            Pen.Color = Color.Green;
+            m_unsafe_area_angle_1 = unsafe_area_angle_1;
+            m_unsafe_area_angle_2 = unsafe_area_angle_2;
         }
+        #endregion
 
-        private double DetToRad(double angle)
+        #region Scroller Picker
+        public void scrollerPicker(int x, int y)
         {
-            return (Math.PI / 180) * angle;
+            if (Math.Abs(x - m_scroller_1.X) < picker_offset && Math.Abs(y - m_scroller_1.Y) < picker_offset) { scroller1_selected = true; } else { scroller1_selected = false; }
+            if (Math.Abs(x - m_scroller_2.X) < picker_offset && Math.Abs(y - m_scroller_2.Y) < picker_offset) { scroller2_selected = true; } else { scroller2_selected = false; }
         }
+        #endregion
 
+        #region onRender only visualization
         public override void OnRender(Graphics g)
         {
             base.OnRender(g);
@@ -85,26 +82,29 @@ namespace MissionPlanner.Maps
             int widtharc = (int)Math.Abs(loc.X - LocalPosition.X);
             int heightarc = (int)Math.Abs(loc.X - LocalPosition.X);
 
+            double t_angle1 = m_unsafe_area_angle_1 - 90;
+            double t_angle2 = m_unsafe_area_angle_2 - t_angle1 - 90;
+
             int t_radius = (widtharc / 2);
-            int scroller_radius = 4;
-            int scroller1_x = LocalPosition.X - scroller_radius + (int)(t_radius * Math.Cos(DetToRad(m_unsafe_area_angle_1)));
-            int scroller1_y = LocalPosition.Y - scroller_radius + (int)(t_radius * Math.Sin(DetToRad(m_unsafe_area_angle_1)));
-            int scroller2_x = LocalPosition.X - scroller_radius + (int)(t_radius * Math.Cos(DetToRad(m_unsafe_area_angle_2)));
-            int scroller2_y = LocalPosition.Y - scroller_radius + (int)(t_radius * Math.Sin(DetToRad(m_unsafe_area_angle_2)));
+            m_scroller_1.X = LocalPosition.X - m_scroller_radius + (int)(t_radius * Math.Cos(DegToRad(t_angle1)));
+            m_scroller_1.Y = LocalPosition.Y - m_scroller_radius + (int)(t_radius * Math.Sin(DegToRad(t_angle1)));
+
+            m_scroller_2.X = LocalPosition.X - m_scroller_radius + (int)(t_radius * Math.Cos(DegToRad(t_angle2 + t_angle1)));
+            m_scroller_2.Y = LocalPosition.Y - m_scroller_radius + (int)(t_radius * Math.Sin(DegToRad(t_angle2 + t_angle1)));
+
 
             if (widtharc > 0 && widtharc < 200000000 && Overlay.Control.Zoom > 3)
             {
-                // fill arc green color
+                // fill arc green / red color
                 g.FillPie(new SolidBrush(Color.FromArgb(50, Color.Green)), x, y, widtharc, heightarc, 0, 360);
-
-                // draw unsafe area arc
-                g.FillPie(new SolidBrush(Color.FromArgb(50, Color.Red)), x, y, widtharc, heightarc, (int)(m_unsafe_area_angle_1), (int)(m_unsafe_area_angle_2));
+                g.FillPie(new SolidBrush(Color.FromArgb(50, Color.Red)), x, y, widtharc, heightarc, (int)(t_angle1), (int)(t_angle2));
 
                 //draw two scrollers
-                //g.FillPie(new SolidBrush(Color.FromArgb(250, Color.Red)), scroller1_x, scroller1_y, scroller_radius * 2, scroller_radius * 2, 0, 360);
-                //g.FillPie(new SolidBrush(Color.FromArgb(250, Color.Red)), scroller2_x, scroller2_y, scroller_radius * 2, scroller_radius * 2, 0, 360);
+                g.FillPie(new SolidBrush(Color.FromArgb(250, scroller1_selected ? Color.Blue : Color.Red )), m_scroller_1.X, m_scroller_1.Y, m_scroller_radius * 2, m_scroller_radius * 2, 0, 360);
+                g.FillPie(new SolidBrush(Color.FromArgb(250, scroller2_selected ? Color.Blue : Color.Red )), m_scroller_2.X, m_scroller_2.Y, m_scroller_radius * 2, m_scroller_radius * 2, 0, 360);
 
             }
         }
+        #endregion
     }
 }
