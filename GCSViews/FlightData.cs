@@ -122,6 +122,9 @@ namespace MissionPlanner.GCSViews
         float hwp2_lat, hwp2_lng;
         float hwp3_lat, hwp3_lng;
 
+        public static int m_forbidden_zone_param1 = 0;
+        public static int m_forbidden_zone_param2 = 0;
+
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1373,6 +1376,8 @@ namespace MissionPlanner.GCSViews
         }
 
 
+        
+
         private void update_map()
         {
             updateClearMissionRouteMarkers();
@@ -1387,6 +1392,7 @@ namespace MissionPlanner.GCSViews
             {
                 if (plla.x == 0 || plla.y == 0)
                     continue;
+
 
                 if (plla.command == (ushort)MAVLink.MAV_CMD.DO_SET_ROI)
                 {
@@ -1439,7 +1445,17 @@ namespace MissionPlanner.GCSViews
                     RegeneratePolygonsLanding();
                 }
 
-                addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons);
+                if (plla.command == (ushort)MAVLink.MAV_CMD.LAND || plla.command == (ushort)MAVLink.MAV_CMD.LAND_AT_TAKEOFF)
+                {
+                    // Visualize Landing points correctly
+                    //int hwp_radius = (int)MainV2.comPort.GetParam("HWP_RADIUS");
+                    addpolygonmarkerland(plla.seq.ToString(), plla.y, plla.x, (int)plla.z, 200, m_forbidden_zone_param1, m_forbidden_zone_param2, polygons);                    
+                }
+                else
+                {
+                    // Normal Waypoint
+                    addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons);
+                }
             }
 
             try
@@ -1885,6 +1901,39 @@ namespace MissionPlanner.GCSViews
                 {
                     overlay.Markers.Add(m);
                     overlay.Markers.Add(mBorders);
+                });
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void addpolygonmarkerland(string tag, double lng, double lat, int alt, int hwp_radius, double begin_unsafe_angle, double unsafe_angle_offset, GMapOverlay overlay)
+        {
+            try
+            {
+                PointLatLng point = new PointLatLng(lat, lng);
+                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.blue);
+                
+                m.ToolTipMode = MarkerTooltipMode.Always;
+                m.ToolTipText = tag;
+                m.Tag = tag;
+
+                GMapMarkerRect mBorders = new GMapMarkerRect(point);
+                {
+                    mBorders.InnerMarker = m;
+                    mBorders.Tag = tag;
+                    mBorders.wprad = hwp_radius;
+                    mBorders.Color = Color.LightBlue;
+                }
+
+                GMapMarkerLand landArea = new GMapMarkerLand(point, hwp_radius, begin_unsafe_angle, unsafe_angle_offset);
+                
+                Invoke((MethodInvoker)delegate
+                {
+                    overlay.Markers.Add(m);
+                    overlay.Markers.Add(mBorders);
+                    overlay.Markers.Add(landArea);
                 });
             }
             catch (Exception)

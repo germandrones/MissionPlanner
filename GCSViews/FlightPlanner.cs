@@ -636,6 +636,7 @@ namespace MissionPlanner.GCSViews
             //MainMap.Overlays.Add(top);
 
             objectsoverlay.Markers.Clear();
+            landpointoverlay.Markers.Clear();
 
             // set current marker
             currentMarker = new GMarkerGoogle(MainMap.Position, GMarkerGoogleType.red);
@@ -1278,8 +1279,6 @@ namespace MissionPlanner.GCSViews
                 m.ToolTipMode = MarkerTooltipMode.OnMouseOver;
                 m.ToolTipText = "Alt: " + alt.ToString("0");
 
-                
-
                 m.Tag = tag;
 
                 GMapMarkerRect mBorders = new GMapMarkerRect(point);
@@ -1299,6 +1298,12 @@ namespace MissionPlanner.GCSViews
                 int wpno = -1;
                 if (int.TryParse(tag, out wpno)) { landArea.wpno = wpno; }
                 landpointoverlay.Markers.Add(landArea);
+
+                try{
+                    FlightData.m_forbidden_zone_param1 = (int)unsafe_area_angle_1;
+                    FlightData.m_forbidden_zone_param2 = (int)unsafe_area_angle_2;
+                }
+                catch{ }
             }
             catch (Exception)
             {
@@ -1395,6 +1400,7 @@ namespace MissionPlanner.GCSViews
                 if (objectsoverlay != null) // hasnt been created yet
                 {
                     objectsoverlay.Markers.Clear();
+                    landpointoverlay.Markers.Clear();
                 }
 
                 // setup for centerpoint calc etc.
@@ -1546,6 +1552,8 @@ namespace MissionPlanner.GCSViews
 
                                 double unsafe_area_angle_1 = double.Parse(Commands.Rows[a].Cells[Param2.Index].Value.ToString());
                                 double unsafe_area_angle_2 = double.Parse(Commands.Rows[a].Cells[Param3.Index].Value.ToString());
+
+                                
 
                                 add_land_polygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), double.Parse(cell2), unsafe_area_angle_1, unsafe_area_angle_2);
                             }
@@ -4054,9 +4062,9 @@ namespace MissionPlanner.GCSViews
                         int distanceY = (int)(e.Y - lpCenter.Y);
 
                         double deg = Math.Atan2(distanceY, distanceX);
-                        double angle = (-deg / (Math.PI / 180.0f));
-                        if (angle < 0) angle += 360;
-                        CurrentLandMarker.UnsafeAngle1 = angle-90;
+                        double angle = (-deg / (Math.PI / 180.0f)) - 90;
+                        while (angle < 0) angle += 360;
+                        CurrentLandMarker.StartAngle = angle;
                     }
 
                     if (CurrentLandMarker.scroller2_selected)
@@ -4065,16 +4073,16 @@ namespace MissionPlanner.GCSViews
                         int distanceY = (int)(e.Y - lpCenter.Y);
 
                         double deg = Math.Atan2(distanceY, distanceX);
-                        double angle = (-deg / (Math.PI / 180.0f));
-                        if (angle < 0) angle += 360;
-                        CurrentLandMarker.UnsafeAngle2 = angle - 90;
+                        double angle = (-deg / (Math.PI / 180.0f)) - 90 - CurrentLandMarker.StartAngle;
+                        while(angle < 0) angle += 360;
+                        CurrentLandMarker.AngleOffset = angle;
                     }
 
                     int wpno = CurrentLandMarker.wpno;
                     if (Commands.Rows[wpno - 1].Cells[Command.Index].Value.ToString().Contains("LAND"))
                     {
-                        Commands.Rows[wpno - 1].Cells[Param2.Index].Value = CurrentLandMarker.UnsafeAngle1;
-                        Commands.Rows[wpno - 1].Cells[Param3.Index].Value = CurrentLandMarker.UnsafeAngle1;
+                        Commands.Rows[wpno - 1].Cells[Param2.Index].Value = Math.Floor(CurrentLandMarker.StartAngle);
+                        Commands.Rows[wpno - 1].Cells[Param3.Index].Value = Math.Floor(CurrentLandMarker.AngleOffset);
                     }
                 }
                 else if (groupmarkers.Count > 0)
@@ -4157,10 +4165,9 @@ namespace MissionPlanner.GCSViews
                     {
                         int cmdID = int.Parse(CurentRectMarker.Tag.ToString());
                         string command = Commands.Rows[cmdID - 1].Cells[Command.Index].Value.ToString();
-
                         if (command.Contains("LAND"))
                         {
-                            // its landing point is dragging!
+                            foreach (GMapMarkerLand lm in landpointoverlay.Markers) { if (lm.wpno == cmdID) lm.Position = pnew; }
                         }
                         currentMarker.Position = pnew;
                     }
