@@ -117,7 +117,7 @@ namespace MissionPlanner.GCSViews
 
 
         // HeadWind Waypoints
-        bool  HWP_updated = false;
+        public static bool  HWP_updated = false;
         float hwp1_lat, hwp1_lng;
         float hwp2_lat, hwp2_lng;
         float hwp3_lat, hwp3_lng;
@@ -1442,7 +1442,7 @@ namespace MissionPlanner.GCSViews
                     addpolygonmarkerNoTooltip("HWP2", hwp2_lng, hwp2_lat, 0, Color.Blue, polygons);
                     addpolygonmarkerNoTooltip("HWP3", hwp3_lng, hwp3_lat, 0, Color.Blue, polygons);
 
-                    RegeneratePolygonsLanding();
+                    //RegeneratePolygonsLanding();
                 }
 
                 if (plla.command == (ushort)MAVLink.MAV_CMD.LAND || plla.command == (ushort)MAVLink.MAV_CMD.LAND_AT_TAKEOFF)
@@ -1815,27 +1815,10 @@ namespace MissionPlanner.GCSViews
             try
             {
                 PointLatLng point = new PointLatLng(lat, lng);
-                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.blue_small);
+                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.blue);
                 m.ToolTipMode = MarkerTooltipMode.Never;
                 m.ToolTipText = tag;
                 m.Tag = tag;
-
-                GMapMarkerRect mBorders = new GMapMarkerRect(point);
-                {
-                    mBorders.InnerMarker = m;
-                    try
-                    {
-                        mBorders.wprad = (int)(20 / CurrentState.multiplierdist);
-                    }
-                    catch
-                    {
-                    }
-                    if (color.HasValue)
-                    {
-                        mBorders.Color = color.Value;
-                    }
-                }
-
                 overlay.Markers.Add(m);
             }
             catch (Exception)
@@ -1941,30 +1924,6 @@ namespace MissionPlanner.GCSViews
             }
         }
 
-        void RegeneratePolygonsLanding()
-        {
-            List<PointLatLng> polygonPoints = new List<PointLatLng>();
-
-            polygonPoints.Add(new PointLatLng(hwp1_lat, hwp1_lng));
-            polygonPoints.Add(new PointLatLng(hwp2_lat, hwp2_lng));
-            polygonPoints.Add(new PointLatLng(hwp3_lat, hwp3_lng));
-            var last_wp = MainV2.comPort.MAV.wps[MainV2.comPort.MAV.wps.Count - 1];
-            polygonPoints.Add(new PointLatLng(last_wp.x, last_wp.y));
-
-            GMapRoute landingWay = new GMapRoute("LandingWay");
-            landingWay.Stroke = new Pen(Color.LightBlue, 2);
-
-            foreach(var pp in polygonPoints)
-            {
-                landingWay.Points.Add(pp);
-            }
-
-            Invoke((MethodInvoker)delegate
-            {
-                polygons.Routes.Add(landingWay);
-            });
-        }
-
         /// <summary>
         /// used to redraw the polygon
         /// </summary>
@@ -2001,15 +1960,35 @@ namespace MissionPlanner.GCSViews
             wppath.Stroke = new Pen(Color.Yellow, 4);
             wppath.Stroke.DashStyle = DashStyle.Custom;
 
-            for (int a = 1; a < polygonPoints.Count; a++)
+            for (int a = 1; a < polygonPoints.Count - 1; a++)
             {
                 wppath.Points.Add(polygonPoints[a]);
+            }
+
+            GMapRoute landingWay = new GMapRoute("LandingWay");
+            landingWay.Stroke = !HWP_updated ? new Pen(Color.Yellow, 4) : new Pen(Color.LightBlue, 4);
+            landingWay.Stroke.DashStyle = HWP_updated ? DashStyle.Solid : DashStyle.Custom;
+
+            if (HWP_updated)
+            {
+                // connect waypoints in right direction
+                landingWay.Points.Add(polygonPoints[polygonPoints.Count - 2]);
+                landingWay.Points.Add(new PointLatLng(hwp3_lat, hwp3_lng));
+                landingWay.Points.Add(new PointLatLng(hwp2_lat, hwp2_lng));
+                landingWay.Points.Add(new PointLatLng(hwp1_lat, hwp1_lng));
+                landingWay.Points.Add(polygonPoints[polygonPoints.Count - 1]);
+            }
+            else
+            {
+                landingWay.Points.Add(polygonPoints[polygonPoints.Count - 2]);
+                landingWay.Points.Add(polygonPoints[polygonPoints.Count - 1]);
             }
 
             Invoke((MethodInvoker) delegate
             {
                 polygons.Routes.Add(homeroute);
                 polygons.Routes.Add(wppath);
+                polygons.Routes.Add(landingWay);
             });
         }
 
@@ -4691,70 +4670,7 @@ namespace MissionPlanner.GCSViews
       
 
 
-        // DRAW VWP
-        /*
-        private bool foundMessageStart = false;
-
-        private void VWP_Timer_Tick(object sender, EventArgs e)
-        {
-            // Everytime the message box is refreshed, the function RefreshMissionVWP is called.
-            StringBuilder message = new StringBuilder();
-            MainV2.comPort.MAV.cs.messages.ForEach(x => {
-                message.Insert(0, x + "\r\n");
-
-                if (x == "START" && !foundMessageStart)
-                {
-                    foundMessageStart = true;
-                    //CustomMessageBox.Show("Found Message START");
-                }
-
-                // Look for the first virtual waypoint
-                if (x.StartsWith("VWP1:"))
-                {
-                    // foundVWP1 = true;
-                    string[] msg = x.Split(':');
-                    string[] tokens = msg[1].Split(',');
-                    // CustomMessageBox.Show(msg[1]);
-                    double latitude = Convert.ToDouble(tokens[0]);
-                    double longitude = Convert.ToDouble(tokens[1]);
-                    int altitude = (int)Convert.ToDouble(tokens[2]);
-                    addpolygonmarkerNoTooltip("VWP1", longitude, latitude, altitude, Color.Red, polygons);
-                }
-
-                if (x.StartsWith("VWP2:"))
-                {
-                    // foundVWP1 = true;
-                    string[] msg = x.Split(':');
-                    string[] tokens = msg[1].Split(',');
-                    // CustomMessageBox.Show(msg[1]);
-                    double latitude = Convert.ToDouble(tokens[0]);
-                    double longitude = Convert.ToDouble(tokens[1]);
-                    int altitude = (int)Convert.ToDouble(tokens[2]);
-                    addpolygonmarkerNoTooltip("VWP2", longitude, latitude, altitude, Color.Red, polygons);
-                }
-
-                if (x.StartsWith("VWP3:"))
-                {
-                    // foundVWP1 = true;
-                    string[] msg = x.Split(':');
-                    string[] tokens = msg[1].Split(',');
-                    // CustomMessageBox.Show(msg[1]);
-                    double latitude = Convert.ToDouble(tokens[0]);
-                    double longitude = Convert.ToDouble(tokens[1]);
-                    int altitude = (int)Convert.ToDouble(tokens[2]);
-                    addpolygonmarkerNoTooltip("VWP3", longitude, latitude, altitude, Color.Red, polygons);
-                }
-                try
-                {
-                    RegeneratePolygon();
-                }
-                catch (Exception ex)
-                {
-                    log.Error(ex);
-                    Console.WriteLine("Not able to draw the VWPs:" + ex);
-                }
-            });
-        }*/
+        
 
     }
 }

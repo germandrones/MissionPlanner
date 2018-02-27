@@ -2292,7 +2292,7 @@ namespace MissionPlanner.GCSViews
             #endregion
 
             // check mission on safety
-            doCheckMission();
+            if (!isMissionCorrect()) { return; }
 
             // check for invalid grid data
             for (int a = 0; a < Commands.Rows.Count - 0; a++)
@@ -2332,66 +2332,7 @@ namespace MissionPlanner.GCSViews
                     }
                 }
             }
-
-            #region Collision with ground Detection(SRTM Based)
-
-            // Do we need to define Safety distance?
-
-            PointLatLngAlt collisionPoint = CheckMissionAltitude(pointlist);
-            warningPointsOverlay.Markers.Clear();
-
-            if (collisionPoint != null)
-            {
-                // center viewport position at collision point
-                MainMap.Position = new PointLatLng(collisionPoint.Lat, collisionPoint.Lng);
-
-                // show crash point on map using marker
-                addCollisionPointMarker(collisionPoint.Lng, collisionPoint.Lat);
-
-                DialogResult dialogResult = CustomMessageBox.ShowYesNoIgnoreWarning("Warning: Collision with ground is detected. Show Elevation Graph?\nClick Ignore to upload mission to plane.", "Your Mission is not safe!");
-                switch(dialogResult)
-                {
-                    case DialogResult.Yes:
-                        {
-                            // Show an elevation graph
-                            BUT_showElevationGraph.PerformClick();
-                            return;
-                        }
-                    case DialogResult.No:
-                        {
-                            // back to mission planning                            
-                            return;
-                        }
-
-                    case DialogResult.Ignore:
-                        {
-                            // continue uploading mission, do nothing
-                            break;
-                        }
-                }
-            }
-            #endregion
-
-            #region Safety Altitude check
-            if (TXT_minSafetyAltitude.Text == "") TXT_minSafetyAltitude.Text = (0).ToString();
-            int safetyAltitude = int.Parse(TXT_minSafetyAltitude.Text);
-            if (safetyAltitude > 0)
-            {
-                // perform check the unsafe positions, where the flight altitude is less than safety altitude
-                PointLatLngAlt unsafePoint = CheckMissionAltitude(pointlist, safetyAltitude);
-                if(unsafePoint != null)
-                {
-                    // unsafe poinst were found in mission, show the warning message
-                    if (CustomMessageBox.Show("Unsafe altitude was detected. Please check the elevation graph. \nContinue uploading mission?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No) return;
-                }
-            }
-
-            #endregion
-
-            #region Check TAKEOFF/LAND Minimal Altitude
-            // Walk through all mission? and check the commands?
-            #endregion
-
+            
             #region Saving and Uploading the mission
             ProgressReporterDialogue frmProgressReporter = new ProgressReporterDialogue
             {
@@ -2411,58 +2352,7 @@ namespace MissionPlanner.GCSViews
             #endregion
 
             MainMap.Focus();
-        }
-
-        /// <summary>
-        /// Internal Helper checks mission altitude. Returns collision point coordinate or null if no collision. It uses only User defined Waypoints
-        /// </summary>
-        /// <param name="locs">User definded Waypoints</param>
-        PointLatLngAlt CheckMissionAltitude(List<PointLatLngAlt> locs, int SafetyDistance = 0)
-        {
-            // a return value, collision point.
-            PointLatLngAlt collisionPoint = null;
-
-            // clean mission points
-            List<PointLatLngAlt> planlocs = locs;
-            for (int a = 1; a < planlocs.Count; a++)
-            {
-                if (planlocs[a] == null || planlocs[a].Tag != null && planlocs[a].Tag.Contains("ROI"))
-                {
-                    planlocs.RemoveAt(a);
-                    a--;
-                }
-            }
-
-            const int accuracy = 10; // Predefined constant value, every 10 meters we check if the collision could happen
-
-            for (int p=1; p < planlocs.Count-1; p++)
-            {
-                double distance = (int)planlocs[p + 1].GetDistance(planlocs[p]);
-                int pcount = (int)Math.Abs(distance / accuracy);
-
-                if (pcount > 0)
-                {
-                    PointLatLngAlt delta = planlocs[p + 1] - planlocs[p];
-                    PointLatLngAlt inc = delta / pcount;
-
-                    int i = 0;
-                    do
-                    {
-                        PointLatLngAlt currentPoint = planlocs[p] + (inc * i);
-                        double srtmAltitude = srtm.getAltitude(currentPoint.Lat, currentPoint.Lng).alt;
-                        if(srtmAltitude > currentPoint.Alt - SafetyDistance)
-                        {
-                            //collision point detected!
-                            collisionPoint = currentPoint;
-                            return collisionPoint;
-                        }
-
-                        i++;
-                    } while (i < pcount);
-                }
-            }
-
-            return collisionPoint;
+            FlightData.HWP_updated = false;
         }
 
 
@@ -7920,45 +7810,83 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             writeKML();
         }
 
-        private void doCheckMission()
+        private bool isMissionCorrect()
         {
-            MissionChecker.MissionCheckerResult result = missionChecker.CheckMission(Commands);
-            switch (result)
+            MissionChecker.MissionCheckerResult result;
+            
+            // Create an internal copy of mission at MissionChecker side
+            missionChecker.doStoreOriginalMission(Commands);
+
+            missionChecker.DO_DISABLE_HWP = false; // reset state
+
+            // Check the takeoff and landing points
+            result = missionChecker.doCheckTakeoffLandingSequence();
+            if (result == MissionChecker.MissionCheckerResult.NO_LAND_POINT)
             {
-                case MissionChecker.MissionCheckerResult.NO_LAND_POINT:
-                    {
-                        MessageBox.Show("No LAND point is defined", "Mission Checker", MessageBoxButtons.OK);
-                        break;
-                    }
+                MessageBox.Show("Landing point is missing.", "Mission Checker", MessageBoxButtons.OK);
+                return false; // Can't upload the mission
+            }else if (result == MissionChecker.MissionCheckerResult.NO_TAKEOFF_POINT)
+            {
+                MessageBox.Show("Takeoff point is missing.", "Mission Checker", MessageBoxButtons.OK);
+                return false; // Can't upload the mission
+            }
+            else if (result == MissionChecker.MissionCheckerResult.WRONG_MISSION_SEQUENCE)
+            {
+                MessageBox.Show("Takeoff point defined after landing point, please modify the mission. ", "Mission Checker", MessageBoxButtons.OK);
+                return false; // Can't upload the mission
+            }
 
-                case MissionChecker.MissionCheckerResult.NO_TAKEOFF_POINT:
-                    {
-                        MessageBox.Show("No TAKEOFF point is defined", "Mission Checker", MessageBoxButtons.OK);
-                        break;
-                    }
+            // Check if the landing unsafe
+            result = missionChecker.doCheckLandingDirection();
+            if (result == MissionChecker.MissionCheckerResult.LANDING_CROSING_UNSAFE_AREA)
+            {
+                MessageBox.Show("Landing route is crossing unsafe landing area, please modify the mission.", "Mission Checker", MessageBoxButtons.OK);
+                return false; // Can't upload the mission
+            }
 
-                case MissionChecker.MissionCheckerResult.LANDING_UNSAFE:
-                    {
-                        if (DialogResult.Yes == CustomMessageBox.Show("Mission will be modified, apply modifications?", "Mission Checker", MessageBoxButtons.YesNo))
-                        {
-                            Commands.Rows.Clear();
-                            foreach (var mi in missionChecker.modified_mission) { AddCommand((MAVLink.MAV_CMD)mi.getCommand(), mi.P1, mi.P2, mi.P3, mi.P4, mi.getCoords().Lng, mi.getCoords().Lat, mi.getCoords().Alt); }
-                        }
-                        break;
-                    }
+            // Check mission elevation graph
+            result = missionChecker.doCheckAltitudeSRTM();
+            if (result == MissionChecker.MissionCheckerResult.GROUND_COLLISION_DETECTED)
+            {
+                DialogResult dialogResult = CustomMessageBox.ShowYesNoIgnoreWarning("Please check the elevation graph, mission is unsafe. \n Click Yes to show elevation graph, or Ignore to upload mission", "Mission Checker");
+                switch(dialogResult)
+                {
+                    case DialogResult.Yes: { BUT_showElevationGraph.PerformClick(); return false; } // show graph, don't allow to upload mission
+                    case DialogResult.No: { return false; } // just exit, don't do anything
+                    case DialogResult.Ignore: { break; } // ignore warning, allow to upload the mission
+                }
+            }
 
-                case MissionChecker.MissionCheckerResult.OK:
-                default:
-                    {
-                        // everything is ok!
-                        break;
-                    }
+            // After all tests result should be OK, so check if the mission must be modified
+
+            
+            //missionChecker.DO_DISABLE_HWP = true; // debug line!
+
+            if (!missionChecker.DO_DISABLE_HWP)
+            {
+                // all checks are sucessfully passed, HWP stays Enabled. Allow user upload the mission!
+                missionChecker.doRestoreModifiedMission();
+                Commands.Rows.Clear();
+                foreach (var mitem in missionChecker.defined_mission) { AddCommand((MAVLink.MAV_CMD)mitem.getCommand(), mitem.P1, mitem.P2, mitem.P3, mitem.P4, mitem.getCoords().Lng, mitem.getCoords().Lat, mitem.getCoords().Alt); }
+                return true;
+            }
+            else
+            {
+                // modify the mission!
+                DialogResult dialogResult = MessageBox.Show("Mission will be modified and HWP will be disabled. Click OK to modify or Cancel to proceed without changes.", "Mission Checker", MessageBoxButtons.OKCancel);
+                if(dialogResult == DialogResult.OK) {
+                    // apply modifications
+                    missionChecker.doDisableHWP();
+                    Commands.Rows.Clear();
+                    foreach (var mitem in missionChecker.defined_mission) { AddCommand((MAVLink.MAV_CMD)mitem.getCommand(), mitem.P1, mitem.P2, mitem.P3, mitem.P4, mitem.getCoords().Lng, mitem.getCoords().Lat, mitem.getCoords().Alt); }
+                }
+                return true;
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            doCheckMission();
+            isMissionCorrect();
         }
     }
 }

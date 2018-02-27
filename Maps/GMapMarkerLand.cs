@@ -13,7 +13,7 @@ namespace MissionPlanner.Maps
     public class GMapMarkerLand : GMapMarker
     {
         #region Private Fields
-        const int picker_offset = 20;
+        const int picker_offset = 15;
 
         public int m_wprad;
         private double m_absolute_start_angle = 0;
@@ -21,7 +21,7 @@ namespace MissionPlanner.Maps
 
         private PointF m_scroller_1;
         private PointF m_scroller_2;
-        private int m_scroller_radius = 10;
+        private int m_scroller_radius = 7;
 
         private double DegToRad(double angle) { return (Math.PI / 180) * angle; }
 
@@ -35,13 +35,31 @@ namespace MissionPlanner.Maps
         public double StartAngle
         {
             get { return m_absolute_start_angle; }
-            set { m_absolute_start_angle = value; }
+            set {
+                m_absolute_start_angle = value;
+                if (Overlay != null && Overlay.Control != null)
+                {
+                    if (!Overlay.Control.HoldInvalidation)
+                    {
+                        Overlay.Control.Core.Refresh.Set();
+                    }
+                }
+            }
         }
 
         public double AngleOffset
         {
             get { return m_angle_offset; }
-            set { m_angle_offset = value; }
+            set {
+                m_angle_offset = value;
+                if (Overlay != null && Overlay.Control != null)
+                {
+                    if (!Overlay.Control.HoldInvalidation)
+                    {
+                        Overlay.Control.Core.Refresh.Set();
+                    }
+                }
+            }
         }
         #endregion
 
@@ -59,6 +77,7 @@ namespace MissionPlanner.Maps
         {
             if (Math.Abs(x - m_scroller_1.X) < picker_offset && Math.Abs(y - m_scroller_1.Y) < picker_offset) { scroller1_selected = true; } else { scroller1_selected = false; }
             if (Math.Abs(x - m_scroller_2.X) < picker_offset && Math.Abs(y - m_scroller_2.Y) < picker_offset) { scroller2_selected = true; } else { scroller2_selected = false; }
+            if (scroller1_selected && scroller2_selected) { scroller1_selected = false; }
         }
         #endregion
 
@@ -101,8 +120,8 @@ namespace MissionPlanner.Maps
 
 
                 //draw two scrollers
-                g.FillPie(new SolidBrush(Color.FromArgb(255, scroller1_selected ? Color.Blue : Color.Green )), m_scroller_1.X, m_scroller_1.Y, m_scroller_radius * 2, m_scroller_radius * 2, 0, 360);
-                g.FillPie(new SolidBrush(Color.FromArgb(255, scroller2_selected ? Color.Blue : Color.Green )), m_scroller_2.X, m_scroller_2.Y, m_scroller_radius * 2, m_scroller_radius * 2, 0, 360);
+                g.FillPie(new SolidBrush(Color.FromArgb(255, scroller1_selected ? Color.Blue : Color.LightGreen )), m_scroller_1.X, m_scroller_1.Y, m_scroller_radius * 2, m_scroller_radius * 2, 0, 360);
+                g.FillPie(new SolidBrush(Color.FromArgb(255, scroller2_selected ? Color.Blue : Color.LightGreen)), m_scroller_2.X, m_scroller_2.Y, m_scroller_radius * 2, m_scroller_radius * 2, 0, 360);
 
             }
         }

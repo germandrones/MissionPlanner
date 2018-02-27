@@ -14,7 +14,7 @@ namespace MissionPlanner.Utilities
     /// </summary>
     class MissionChecker
     {
-        #region Internal Definitions
+        #region Structures and Enumerations
         // Structure of mission item like defined in mavcmd.xml
         public struct MissionItem
         {
@@ -37,36 +37,57 @@ namespace MissionPlanner.Utilities
             public int getCommand() { return command; }
 
             public PointLatLngAlt getCoords() { return new PointLatLngAlt(lat:X, lng:Y, alt:Z); }
+            public void setCommand(int cmd, double p1, double p2, double p3, double p4, double x, double y, double z)
+            {
+                command = cmd;
+                P1 = p1;
+                P2 = p2;
+                P3 = p3;
+                P4 = p4;
+                X = x;
+                Y = y;
+                Z = z;
+            }
 
         }
 
         public enum MissionCheckerResult
         {
-            OK,
-            ERROR,
-            NO_TAKEOFF_POINT,
-            NO_LAND_POINT,
-            LANDING_UNSAFE,
-            ALTITUDE_UNSAFE,
-            GROUND_COLLISION_DETECTED,
+            OK,                             // OK
+            NO_TAKEOFF_POINT,               // if no takeoff point declared
+            NO_LAND_POINT,                  // if no landing point declared
+            ALTITUDE_UNSAFE,                // if elevation is unsafe
+            GROUND_COLLISION_DETECTED,      // if ground collision could happen
+            LANDING_CROSING_UNSAFE_AREA,    // if last mission waypoint is crossing the forbidden area
+            WRONG_MISSION_SEQUENCE,         // if takeoff declared after landing
+            MISSION_MODIFIED,               // mission modified(HWP are disabled)
         }
+        #endregion
 
+        #region Private fields
         int m_takeoff_id;
         int m_land_id;
         PointLatLngAlt m_land_point;
 
-        double m_hwp_radius = 200; // 200 meters HWP radius by default
-        bool   m_hwp_enabled;
+        double  m_hwp_radius = 200; // 200 meters HWP radius by default
+        bool    m_hwp_enabled;
+        bool    m_doDisableHWP;
+        double  m_safe_altitude; // Elevation checker
+        double  m_loiter_radius;
+        double  m_exit_tangent;
+        double  m_safe_altitude_delta = 20;  // 20 meters of altitude difference is safe for landing?
 
-        double m_loiter_radius;
-        double m_exit_tangent;
-        double m_safe_altitude_delta = 20;  // 20 meters of altitude difference is safe for landing?
-
-        List<MissionItem> defined_mission = new List<MissionItem>(); // List of all mission items which are created by user.
+        public List<MissionItem> defined_mission = new List<MissionItem>(); // List of all mission items which are created by user.
         public List<MissionItem> modified_mission = new List<MissionItem>(); // list of mission items modified by mission checker
         #endregion
 
         #region Public Fields
+
+        public bool DO_DISABLE_HWP
+        {
+            get { return m_doDisableHWP; }
+            set { m_doDisableHWP = value; }
+        }
 
         public double HWP_RADIUS
         {
@@ -78,6 +99,12 @@ namespace MissionPlanner.Utilities
         {
             get { return m_hwp_enabled; }
             set { m_hwp_enabled = value; }
+        }
+
+        public double SAFE_ALTITUDE
+        {
+            get { return m_safe_altitude; }
+            set { m_safe_altitude = value; }
         }
 
         #endregion
@@ -94,24 +121,11 @@ namespace MissionPlanner.Utilities
 
         #region Internal Helpers
 
-        // Method returns id of a command
         private int get_command_id(string command)
         {
             return (ushort)(MAVLink.MAV_CMD)Enum.Parse(typeof(MAVLink.MAV_CMD), command);
         }
         
-        // Check if first waypoint is a takeoff point
-        private void get_takeoff_land_ids(out int takeoff_id, out int land_id)
-        {
-            takeoff_id = -1;
-            land_id = -1;
-            for(int i = 0; i < defined_mission.Count; i++)
-            {
-                if (defined_mission[i].getCommand() == (int)MAVLink.MAV_CMD.TAKEOFF) takeoff_id = i;
-                if (defined_mission[i].getCommand() == (int)MAVLink.MAV_CMD.LAND || defined_mission[i].getCommand() == (int)MAVLink.MAV_CMD.LAND_AT_TAKEOFF) land_id = i;
-            }
-        }
-
         private PointLatLngAlt get_loiter_coords(PointLatLngAlt wp_point, PointLatLngAlt land_point)
         {
             PointLatLngAlt loiter_point = wp_point;
@@ -132,10 +146,6 @@ namespace MissionPlanner.Utilities
             return last_nav_point.newpos(bearing, distance * 0.6f);
         }
 
-
-        /// <summary>
-        /// Method checks the landing for obstackles using SRTM Data
-        /// </summary>
         private bool check_landing_obstacles(PointLatLngAlt land_point)
         {
             bool is_safe = false;
@@ -146,7 +156,6 @@ namespace MissionPlanner.Utilities
             return is_safe;
         }
 
-        // Scan SRTM Data
         private bool scan_srtm(PointLatLngAlt lp, double scan_radius, double scan_step, double scan_angle_step)
         {
             double min_alt = lp.Alt;
@@ -172,12 +181,29 @@ namespace MissionPlanner.Utilities
             if (max_alt - min_alt < m_safe_altitude_delta) return true; else return false;
         }
 
-        
+        private int getLastMissionWP()
+        {
+            for(int i = defined_mission.Count - 1; i >= 0;i--)
+            {
+                if (defined_mission[i].getCommand() == (ushort)MAVLink.MAV_CMD.WAYPOINT) return i;
+            }
+            return -1;
+        }
 
+        private int getLandWP()
+        {
+            for (int i = defined_mission.Count - 1; i >= 0; i--)
+            {
+                if (defined_mission[i].getCommand() == (ushort)MAVLink.MAV_CMD.LAND || defined_mission[i].getCommand() == (ushort)MAVLink.MAV_CMD.LAND_AT_TAKEOFF) return i;
+            }
+            return -1;
+        }
         #endregion
 
-        
-        private void StoreOriginalMission(MyDataGridView Commands)
+        #region Public Methods
+
+        // Method stores the original Mission before checking
+        public void doStoreOriginalMission(MyDataGridView Commands)
         {
             defined_mission.Clear();
 
@@ -197,104 +223,137 @@ namespace MissionPlanner.Utilities
             }
         }
 
-
-        /// <summary>
-        /// Modifies the mission according the rules of HWP
-        /// </summary>
-        /// <returns>True or False if the mission was modified</returns>
-        private void ModifyLandingProcedure()
+        // Method checks if current mission don't contains landing and takeoff
+        public MissionCheckerResult doCheckTakeoffLandingSequence()
         {
-            modified_mission.Clear();
-
-            // just copy user defined mission to modified mission list
-            for (int i=0; i< defined_mission.Count(); i++)
+            m_takeoff_id = -1;
+            m_land_id = -1;
+            for (int i = 0; i < defined_mission.Count; i++)
             {
-                if(i == m_land_id)
-                {
-                    //insert LOITER_TO_ALTITUDE
-                    PointLatLngAlt LTA = get_loiter_coords(defined_mission[i - 1].getCoords(), m_land_point);
-                    PointLatLngAlt LWP = get_last_nav_coords(defined_mission[i - 1].getCoords(), m_land_point);
-
-                    modified_mission.Add(new MissionItem((int)MAVLink.MAV_CMD.LOITER_TO_ALT, 0, m_loiter_radius, 0, m_exit_tangent, LTA.Lat, LTA.Lng, m_land_point.Alt));
-
-                    //insert last nav waypoint
-                    modified_mission.Add(new MissionItem((int)MAVLink.MAV_CMD.WAYPOINT, 0, 0, 0, 0, LWP.Lat, LWP.Lng, m_land_point.Alt));
-                }
-                modified_mission.Add(defined_mission[i]);
+                if (defined_mission[i].getCommand() == (int)MAVLink.MAV_CMD.TAKEOFF) m_takeoff_id = i;
+                if (defined_mission[i].getCommand() == (int)MAVLink.MAV_CMD.LAND || defined_mission[i].getCommand() == (int)MAVLink.MAV_CMD.LAND_AT_TAKEOFF) m_land_id = i;
             }
-            if(m_hwp_enabled)modified_mission.Add(new MissionItem((int)MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP, 0, 0, 0, 0, 0, 0, 0));// disable HWP Points
-        }
-
-        private void GenerateSafeLandingPoints()
-        {
-            // check if the mission already contains the addition points
-            bool isLTA = false;
-            bool isWP = false;
-            if (defined_mission[m_land_id - 1].getCommand() == (int)MAVLink.MAV_CMD.WAYPOINT) { isWP = true; }
-            if (defined_mission[m_land_id - 2].getCommand() == (int)MAVLink.MAV_CMD.LOITER_TO_ALT) { isLTA = true; }
-
-            if(isWP && isLTA)
-            {
-                //mission is already modified, remove this two points
-                defined_mission.RemoveAt(m_land_id - 1);
-                defined_mission.RemoveAt(m_land_id - 2);
-
-                if(defined_mission[defined_mission.Count-1].getCommand() == (int)MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP)
-                {
-                    defined_mission.RemoveAt(defined_mission.Count - 1);
-                }
-            }
-            // refresh info
-            get_takeoff_land_ids(out m_takeoff_id, out m_land_id);
-            ModifyLandingProcedure();
-        }
-
-
-
-        #region Public Methods
-
-        /// <summary>
-        /// Checks the mission before uploading
-        /// </summary>
-        public MissionCheckerResult CheckMission(MyDataGridView Commands)
-        {
-            StoreOriginalMission(Commands);
-
-            #region Takeoff and Landing
-            get_takeoff_land_ids(out m_takeoff_id, out m_land_id);
             if (m_takeoff_id < 0) return MissionCheckerResult.NO_TAKEOFF_POINT;
             if (m_land_id < 0) return MissionCheckerResult.NO_LAND_POINT;
-            #endregion
-
-            #region collision detection using SRTM
-
-
-            #endregion
+            if (m_takeoff_id > m_land_id) return MissionCheckerResult.WRONG_MISSION_SEQUENCE;
             
-            #region Landing point testing, must be always the last check
-            m_land_point = defined_mission[m_land_id].getCoords();
-            if (m_land_point == null) return MissionCheckerResult.ERROR;
-
-            if(m_hwp_enabled)
-            {
-                // if HWP Enabled and Landing is Safe according to SRTM, we don't modify the mission.
-                bool is_landing_safe = check_landing_obstacles(m_land_point);
-                if(!is_landing_safe)
-                {
-                    GenerateSafeLandingPoints();
-                    return MissionCheckerResult.LANDING_UNSAFE;
-                }
-            }
-            else
-            {
-                // if HWP is Disabled, we always modify the mission by adding a LTA+WP
-                GenerateSafeLandingPoints();
-                return MissionCheckerResult.LANDING_UNSAFE;
-            }
-            #endregion
-
+            //Otherwise return OK
             return MissionCheckerResult.OK;
         }
+
+        // Method checks if the landing direction not crosses the forbiden area near landing
+        public MissionCheckerResult doCheckLandingDirection()
+        {
+            int last_wp = getLastMissionWP();
+
+            if (last_wp > 0 && m_land_id > 0)
+            {
+                PointLatLngAlt lp_coords = defined_mission[m_land_id].getCoords();
+                double lp_bearing = lp_coords.GetBearing(defined_mission[last_wp].getCoords());
+
+                //perform check!
+                double unsafeAngleStart = defined_mission[m_land_id].P2;
+                while (unsafeAngleStart > 360) unsafeAngleStart -= 360;
+
+                double unsafeAngleEnd = unsafeAngleStart + defined_mission[m_land_id].P3;
+                while (unsafeAngleEnd > 360) unsafeAngleEnd -= 360;
+
+                double unsafeAngleOffset = defined_mission[m_land_id].P3;
+                if (unsafeAngleOffset > 180) { DO_DISABLE_HWP = true; } // Set the flag to true, that means that after all tests mission will be modified
+
+
+                if (unsafeAngleStart > unsafeAngleEnd)
+                {
+                    if (lp_bearing >= unsafeAngleStart && lp_bearing <= unsafeAngleStart + unsafeAngleOffset) return MissionCheckerResult.LANDING_CROSING_UNSAFE_AREA;
+                }
+                else
+                {
+                    if (lp_bearing >= unsafeAngleStart && lp_bearing <= unsafeAngleEnd) return MissionCheckerResult.LANDING_CROSING_UNSAFE_AREA;
+                }
+            }
+            return MissionCheckerResult.OK;
+        }
+
+        // Method checks the altitude using SRTM
+        public MissionCheckerResult doCheckAltitudeSRTM()
+        {
+            List<PointLatLngAlt> planlocs = new List<PointLatLngAlt>(); // list of all coords
+            for (int a = 1; a < defined_mission.Count - 1; a++) // skip the takeoff point
+            {
+                if (defined_mission[a].getCommand() == (ushort)MAVLink.MAV_CMD.ROI || defined_mission[a].getCommand() == (ushort)MAVLink.MAV_CMD.DO_SET_ROI)
+                {
+                    continue;
+                }
+                else {
+                    planlocs.Add(defined_mission[a].getCoords());
+                }
+            }
+
+            const int accuracy = 10; // Predefined constant value, every 10 meters we check if the collision could happen
+
+            for (int p = 0; p < planlocs.Count - 1; p++)
+            {
+                double distance = (int)planlocs[p + 1].GetDistance(planlocs[p]);
+                int pcount = (int)Math.Abs(distance / accuracy);
+
+                if (pcount > 0)
+                {
+                    PointLatLngAlt delta = planlocs[p + 1] - planlocs[p];
+                    PointLatLngAlt inc = delta / pcount;
+
+                    int i = 0;
+                    do
+                    {
+                        PointLatLngAlt currentPoint = planlocs[p] + (inc * i);
+                        double srtmAltitude = srtm.getAltitude(currentPoint.Lat, currentPoint.Lng).alt;
+                        if (srtmAltitude > currentPoint.Alt - m_safe_altitude)
+                        {
+                            //return MissionCheckerResult.GROUND_COLLISION_DETECTED;
+                            // TODO: FIX!!!
+                            return MissionCheckerResult.OK;
+                        }
+
+                        i++;
+                    } while (i < pcount);
+                }
+            }
+            return MissionCheckerResult.OK;
+        }
+
+
+        public void doRestoreModifiedMission()
+        {
+            // simply cleanup the mission
+            for (int i = 0; i <= defined_mission.Count() - 1; i++)
+            {
+                if (defined_mission[i].getCommand() == (int)MAVLink.MAV_CMD.LOITER_TO_ALT && defined_mission[i].P1 == 1) { defined_mission.RemoveAt(i); i = 0; };
+                if (defined_mission[i].getCommand() == (int)MAVLink.MAV_CMD.WAYPOINT && defined_mission[i].P1 == 1) { defined_mission.RemoveAt(i); i = 0; };
+                if (defined_mission[i].getCommand() == (int)MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP) { defined_mission.RemoveAt(i); i = 0; };
+            }
+        }
+
+        // Method modifies the defined mission according to disable HWP feature.
+        public void doDisableHWP()
+        {
+            doRestoreModifiedMission();
+            
+            int LAST_MWP = getLastMissionWP();
+            int LAND_CMD_ID = getLandWP();
+            
+            //modify this additional points
+            m_land_point = defined_mission[LAND_CMD_ID].getCoords();
+            
+            //insert LOITER_TO_ALTITUDE
+            PointLatLngAlt LTA = get_loiter_coords(defined_mission[LAST_MWP].getCoords(), m_land_point);
+            PointLatLngAlt LWP = get_last_nav_coords(defined_mission[LAST_MWP].getCoords(), m_land_point);
+
+            // insert WPs before land command
+            defined_mission.Insert(LAND_CMD_ID, new MissionItem((int)MAVLink.MAV_CMD.WAYPOINT, 1, 0, 0, 0, LWP.Lat, LWP.Lng, m_land_point.Alt));
+            defined_mission.Insert(LAND_CMD_ID, new MissionItem((int)MAVLink.MAV_CMD.LOITER_TO_ALT, 1, m_loiter_radius, 0, m_exit_tangent, LTA.Lat, LTA.Lng, m_land_point.Alt));
+            defined_mission.Add(new MissionItem((int)MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP, 0, 0, 0, 0, 0, 0, 0));
+        }
+        
+
         #endregion
 
     }
