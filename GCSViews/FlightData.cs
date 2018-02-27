@@ -121,6 +121,7 @@ namespace MissionPlanner.GCSViews
         float hwp1_lat, hwp1_lng;
         float hwp2_lat, hwp2_lng;
         float hwp3_lat, hwp3_lng;
+        float hwp4_lat, hwp4_lng;
 
         public static int m_forbidden_zone_param1 = 0;
         public static int m_forbidden_zone_param2 = 0;
@@ -1101,6 +1102,9 @@ namespace MissionPlanner.GCSViews
                             hwp3_lat = MainV2.comPort.MAV.cs.hwp3_lat;
                             hwp3_lng = MainV2.comPort.MAV.cs.hwp3_lng;
 
+                            hwp4_lat = MainV2.comPort.MAV.cs.hwp4_lat;
+                            hwp4_lng = MainV2.comPort.MAV.cs.hwp4_lng;
+
                             // Before update Map send an ACK Handshake message to PX4, that we have the message received and parsed
                             if (MainV2.comPort.BaseStream.IsOpen) MainV2.comPort.Send_HWP_Ack();
 
@@ -1441,8 +1445,7 @@ namespace MissionPlanner.GCSViews
                     addpolygonmarkerNoTooltip("HWP1", hwp1_lng, hwp1_lat, 0, Color.Blue, polygons);
                     addpolygonmarkerNoTooltip("HWP2", hwp2_lng, hwp2_lat, 0, Color.Blue, polygons);
                     addpolygonmarkerNoTooltip("HWP3", hwp3_lng, hwp3_lat, 0, Color.Blue, polygons);
-
-                    //RegeneratePolygonsLanding();
+                    if (hwp4_lat != -1 && hwp4_lng != -1) addpolygonmarkerNoTooltip("HWP3", hwp4_lng, hwp4_lat, 0, Color.Blue, polygons);
                 }
 
                 if (plla.command == (ushort)MAVLink.MAV_CMD.LAND || plla.command == (ushort)MAVLink.MAV_CMD.LAND_AT_TAKEOFF)
@@ -1973,6 +1976,7 @@ namespace MissionPlanner.GCSViews
             {
                 // connect waypoints in right direction
                 landingWay.Points.Add(polygonPoints[polygonPoints.Count - 2]);
+                if(hwp4_lat != -1 && hwp4_lng != -1) landingWay.Points.Add(new PointLatLng(hwp4_lat, hwp4_lng));
                 landingWay.Points.Add(new PointLatLng(hwp3_lat, hwp3_lng));
                 landingWay.Points.Add(new PointLatLng(hwp2_lat, hwp2_lng));
                 landingWay.Points.Add(new PointLatLng(hwp1_lat, hwp1_lng));

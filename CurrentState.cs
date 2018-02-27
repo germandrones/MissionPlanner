@@ -656,6 +656,9 @@ namespace MissionPlanner
         public float hwp3_lat { get; set; } = 0;
         public float hwp3_lng { get; set; } = 0;
 
+        public float hwp4_lat { get; set; } = 0;
+        public float hwp4_lng { get; set; } = 0;
+
         public bool gotHWP = false;
         #endregion
 
@@ -1871,7 +1874,10 @@ namespace MissionPlanner
 
                         hwp3_lat = (float)(hwp_points.hwp3_lat * 0.0000001f);
                         hwp3_lng = (float)(hwp_points.hwp3_lng * 0.0000001f);
-                        
+
+                        hwp4_lat = (float)(hwp_points.hwp3_lat * 0.0000001f);
+                        hwp4_lng = (float)(hwp_points.hwp3_lng * 0.0000001f);
+
                         MAV.clearPacket((uint)MAVLink.MAVLINK_MSG_ID.HWP);
                         gotHWP = true; // modify a flag on each receive of HWP
                     }

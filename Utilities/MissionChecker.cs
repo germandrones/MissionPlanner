@@ -70,11 +70,10 @@ namespace MissionPlanner.Utilities
         PointLatLngAlt m_land_point;
 
         double  m_hwp_radius = 200; // 200 meters HWP radius by default
+        double  m_hwp_lradius = 60;
         bool    m_hwp_enabled;
         bool    m_doDisableHWP;
-        double  m_safe_altitude; // Elevation checker
-        double  m_loiter_radius;
-        double  m_exit_tangent;
+        double  m_safe_altitude; // Elevation checker        
         double  m_safe_altitude_delta = 20;  // 20 meters of altitude difference is safe for landing?
 
         public List<MissionItem> defined_mission = new List<MissionItem>(); // List of all mission items which are created by user.
@@ -93,6 +92,12 @@ namespace MissionPlanner.Utilities
         {
             get { return m_hwp_radius; }
             set { m_hwp_radius = value; }
+        }
+
+        public double HWP_LRADIUS
+        {
+            get { return m_hwp_lradius; }
+            set { m_hwp_lradius = value; }
         }
 
         public bool HWP_ENABLED
@@ -133,7 +138,7 @@ namespace MissionPlanner.Utilities
             double bearing = wp_point.GetBearing(land_point);
             double distance = wp_point.GetDistance(land_point);
 
-            return loiter_point.newpos(bearing, distance * 0.3f);
+            return loiter_point.newpos(bearing, distance * 0.5f);
         }
 
         private PointLatLngAlt get_last_nav_coords(PointLatLngAlt wp_point, PointLatLngAlt land_point)
@@ -143,7 +148,7 @@ namespace MissionPlanner.Utilities
             double bearing = wp_point.GetBearing(land_point);
             double distance = wp_point.GetDistance(land_point);
 
-            return last_nav_point.newpos(bearing, distance * 0.6f);
+            return last_nav_point.newpos(bearing, distance * (0.3f/0.4f));
         }
 
         private bool check_landing_obstacles(PointLatLngAlt land_point)
@@ -349,7 +354,7 @@ namespace MissionPlanner.Utilities
 
             // insert WPs before land command
             defined_mission.Insert(LAND_CMD_ID, new MissionItem((int)MAVLink.MAV_CMD.WAYPOINT, 1, 0, 0, 0, LWP.Lat, LWP.Lng, m_land_point.Alt));
-            defined_mission.Insert(LAND_CMD_ID, new MissionItem((int)MAVLink.MAV_CMD.LOITER_TO_ALT, 1, m_loiter_radius, 0, m_exit_tangent, LTA.Lat, LTA.Lng, m_land_point.Alt));
+            defined_mission.Insert(LAND_CMD_ID, new MissionItem((int)MAVLink.MAV_CMD.LOITER_TO_ALT, 1, m_hwp_lradius, 0, 1, LTA.Lat, LTA.Lng, m_land_point.Alt));
             defined_mission.Add(new MissionItem((int)MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP, 0, 0, 0, 0, 0, 0, 0));
         }
         

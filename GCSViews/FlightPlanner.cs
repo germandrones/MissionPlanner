@@ -2849,6 +2849,8 @@ namespace MissionPlanner.GCSViews
                     missionChecker.HWP_RADIUS = hwp_radius;
                 }
 
+                if (param.ContainsKey("HWP_LRADIUS")) { missionChecker.HWP_LRADIUS = param["HWP_LRADIUS"]; }
+
                 if (param.ContainsKey("HWP_ENABLED"))
                 {
                     hwp_enabled = param["HWP_ENABLED"] > 0 ? true : false;
@@ -2856,7 +2858,7 @@ namespace MissionPlanner.GCSViews
                 }
 
 
-                    if (param.ContainsKey("WPNAV_RADIUS"))
+                if (param.ContainsKey("WPNAV_RADIUS"))
                 {
                     TXT_WPRad.Text = (((double)param["WPNAV_RADIUS"] * CurrentState.multiplierdist / 100.0)).ToString();
                 }
@@ -7817,10 +7819,10 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             // Create an internal copy of mission at MissionChecker side
             missionChecker.doStoreOriginalMission(Commands);
 
-            missionChecker.DO_DISABLE_HWP = false; // reset state
+            missionChecker.DO_DISABLE_HWP = hwp_enabled ? false : true; 
 
-            // Check the takeoff and landing points
-            result = missionChecker.doCheckTakeoffLandingSequence();
+             // Check the takeoff and landing points
+             result = missionChecker.doCheckTakeoffLandingSequence();
             if (result == MissionChecker.MissionCheckerResult.NO_LAND_POINT)
             {
                 MessageBox.Show("Landing point is missing.", "Mission Checker", MessageBoxButtons.OK);
@@ -7857,9 +7859,6 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 }
             }
 
-            // After all tests result should be OK, so check if the mission must be modified
-
-            
             //missionChecker.DO_DISABLE_HWP = true; // debug line!
 
             if (!missionChecker.DO_DISABLE_HWP)
