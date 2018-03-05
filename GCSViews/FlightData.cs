@@ -121,7 +121,7 @@ namespace MissionPlanner.GCSViews
         float hwp1_lat, hwp1_lng;
         float hwp2_lat, hwp2_lng;
         float hwp3_lat, hwp3_lng;
-        float hwp4_lat, hwp4_lng;
+        float hwp4_lat = -1, hwp4_lng = -1;
 
         public static int m_forbidden_zone_param1 = 0;
         public static int m_forbidden_zone_param2 = 0;
@@ -1325,9 +1325,7 @@ namespace MissionPlanner.GCSViews
                             // draw guide mode point for only main mav
                             if (MainV2.comPort.MAV.cs.mode.ToLower() == "guided" && MainV2.comPort.MAV.GuidedMode.x != 0)
                             {
-                                addpolygonmarker("Guided Mode", MainV2.comPort.MAV.GuidedMode.y,
-                                    MainV2.comPort.MAV.GuidedMode.x, (int)MainV2.comPort.MAV.GuidedMode.z, Color.Blue,
-                                    routes);
+                                addpolygonmarker("Guided Mode", MainV2.comPort.MAV.GuidedMode.y, MainV2.comPort.MAV.GuidedMode.x, (int)MainV2.comPort.MAV.GuidedMode.z, Color.Blue, routes, (int)MainV2.comPort.MAV.param["WP_RADIUS"].Value);
                             }
 
                             // draw all icons for all connected mavs
@@ -1439,35 +1437,47 @@ namespace MissionPlanner.GCSViews
                 {
                 }
 
+                int hwp_lradius = 60;
+                int hwp_wpradius = 30;
+                int wp_radius = 30;
+                try
+                {
+                    hwp_lradius = (int)MainV2.comPort.MAV.param["HWP_LRADIUS"].Value;
+                    hwp_wpradius = (int)MainV2.comPort.MAV.param["HWP_WPRADIUS"].Value;
+                    wp_radius = (int)MainV2.comPort.MAV.param["WP_RADIUS"].Value;
+                }
+                catch { }
+
                 // HWP Points received?
                 if (HWP_updated)
                 {
-                    addpolygonmarkerNoTooltip("HWP1", hwp1_lng, hwp1_lat, 0, Color.Blue, polygons);
-                    addpolygonmarkerNoTooltip("HWP2", hwp2_lng, hwp2_lat, 0, Color.Blue, polygons);
-                    addpolygonmarkerNoTooltip("HWP3", hwp3_lng, hwp3_lat, 0, Color.Blue, polygons);
-                    if (hwp4_lat != -1 && hwp4_lng != -1) addpolygonmarkerNoTooltip("HWP3", hwp4_lng, hwp4_lat, 0, Color.Blue, polygons);
+                    addpolygonmarkerNoTooltip("HWP1", hwp1_lng, hwp1_lat, 0, Color.Blue, polygons, hwp_wpradius);
+                    addpolygonmarkerNoTooltip("HWP2", hwp2_lng, hwp2_lat, 0, Color.Blue, polygons, hwp_wpradius);
+                    addpolygonmarkerNoTooltip("HWP3", hwp3_lng, hwp3_lat, 0, Color.Blue, polygons, hwp_lradius);
+                    if (hwp4_lat != -1 && hwp4_lng != -1) addpolygonmarkerNoTooltip("HWP4", hwp4_lng, hwp4_lat, 0, Color.Blue, polygons, hwp_wpradius);
+                }
+
+                if(plla.command == (ushort)MAVLink.MAV_CMD.MAV_CMD_SET_FORBIDDEN_ZONE)
+                {
+                    // parse forbidden angle here
+                    m_forbidden_zone_param1 = (int)plla.param1;
+                    m_forbidden_zone_param2 = (int)plla.param2;
                 }
 
                 if (plla.command == (ushort)MAVLink.MAV_CMD.LAND || plla.command == (ushort)MAVLink.MAV_CMD.LAND_AT_TAKEOFF)
                 {
-                    // Visualize Landing points correctly
-                    //int hwp_radius = (int)MainV2.comPort.GetParam("HWP_RADIUS");
-                    addpolygonmarkerland(plla.seq.ToString(), plla.y, plla.x, (int)plla.z, 200, m_forbidden_zone_param1, m_forbidden_zone_param2, polygons);                    
+                    int hwp_radius = 200;
+                    hwp_radius = (hwp_lradius * 2) + (hwp_wpradius * 4);
+                    addpolygonmarkerland(plla.seq.ToString(), plla.y, plla.x, (int)plla.z, hwp_radius, m_forbidden_zone_param1, m_forbidden_zone_param2, polygons);                    
                 }
                 else
                 {
                     // Normal Waypoint
-                    addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons);
+                    if(plla.command == (ushort)MAVLink.MAV_CMD.LOITER_TO_ALT)
+                        addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons, hwp_lradius);
+                    else
+                        addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons, wp_radius);
                 }
-            }
-
-            try
-            {
-                //dist = (float)new PointLatLngAlt(home.x, home.y).GetDistance(new PointLatLngAlt(lastplla.x, lastplla.y));
-                // distanceBar1.AddWPDist(dist);
-            }
-            catch
-            {
             }
 
             travdist -= MainV2.comPort.MAV.cs.wp_dist;
@@ -1813,16 +1823,30 @@ namespace MissionPlanner.GCSViews
 
 
         // This function is just copy-and-paste of the addpolygonmarker, but without showing the tooltip on the virtual waypoints
-        private void addpolygonmarkerNoTooltip(string tag, double lng, double lat, int alt, Color? color, GMapOverlay overlay)
+        private void addpolygonmarkerNoTooltip(string tag, double lng, double lat, int alt, Color? color, GMapOverlay overlay, int wp_radius)
         {
             try
             {
                 PointLatLng point = new PointLatLng(lat, lng);
                 GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.blue);
+
                 m.ToolTipMode = MarkerTooltipMode.Never;
                 m.ToolTipText = tag;
                 m.Tag = tag;
-                overlay.Markers.Add(m);
+
+                GMapMarkerRect mBorders = new GMapMarkerRect(point);
+                {
+                    mBorders.InnerMarker = m;
+                    mBorders.Tag = tag;
+                    mBorders.wprad = wp_radius;
+                    mBorders.Color = Color.LightBlue;
+                }
+
+                Invoke((MethodInvoker)delegate
+                {
+                    overlay.Markers.Add(m);
+                    //overlay.Markers.Add(mBorders);
+                });
             }
             catch (Exception)
             {
@@ -1830,7 +1854,7 @@ namespace MissionPlanner.GCSViews
         }
 
 
-        private void addpolygonmarker(string tag, double lng, double lat, int alt, Color? color, GMapOverlay overlay)
+        private void addpolygonmarker(string tag, double lng, double lat, int alt, Color? color, GMapOverlay overlay, int wp_radius)
         {
             try
             {
@@ -1845,8 +1869,7 @@ namespace MissionPlanner.GCSViews
                     mBorders.InnerMarker = m;
                     try
                     {
-                        mBorders.wprad =
-                            (int) (Settings.Instance.GetFloat("TXT_WPRad")/CurrentState.multiplierdist);
+                        mBorders.wprad = wp_radius;// (int) (Settings.Instance.GetFloat("TXT_WPRad")/CurrentState.multiplierdist);
                     }
                     catch
                     {

@@ -204,7 +204,7 @@ public partial class MAVLink
 		new message_info(218, "GOPRO_SET_REQUEST", 17, 7, 7, typeof( mavlink_gopro_set_request_t )),
 		new message_info(219, "GOPRO_SET_RESPONSE", 162, 2, 2, typeof( mavlink_gopro_set_response_t )),
 		new message_info(226, "RPM", 207, 8, 8, typeof( mavlink_rpm_t )),
-        new message_info(238, "HWP", 98, 24, 24, typeof( mavlink_hwp_t )), // HWP Message definition
+        new message_info(238, "HWP", 180, 32, 32, typeof( mavlink_hwp_t )), // HWP Message definition
         new message_info(230, "ESTIMATOR_STATUS", 163, 42, 42, typeof( mavlink_estimator_status_t )),
 		new message_info(231, "WIND_COV", 105, 40, 40, typeof( mavlink_wind_cov_t )),
 		new message_info(232, "GPS_INPUT", 151, 63, 63, typeof( mavlink_gps_input_t )),
@@ -3733,7 +3733,7 @@ AOA_SSA = 11020,
     
     };
 
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 24)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 32)]
     ///<summary> Head Wind Waypoints</summary>
     public struct mavlink_hwp_t
     {
@@ -3743,6 +3743,8 @@ AOA_SSA = 11020,
         public int hwp2_lng;
         public int hwp3_lat;
         public int hwp3_lng;
+        public int hwp4_lat;
+        public int hwp4_lng;
     };
 
 

@@ -69,9 +69,11 @@ namespace MissionPlanner.Utilities
         int m_land_id;
         PointLatLngAlt m_land_point;
 
-        double  m_hwp_radius = 200; // 200 meters HWP radius by default
-        double  m_hwp_lradius = 60;
+        int     m_hwp_radius; // 200 meters HWP radius by default
+        int     m_hwp_lradius;
+        int     m_hwp_wpradius;
         bool    m_hwp_enabled;
+
         bool    m_doDisableHWP;
         double  m_safe_altitude; // Elevation checker        
         double  m_safe_altitude_delta = 20;  // 20 meters of altitude difference is safe for landing?
@@ -88,13 +90,19 @@ namespace MissionPlanner.Utilities
             set { m_doDisableHWP = value; }
         }
 
-        public double HWP_RADIUS
+        public int HWP_RADIUS
         {
             get { return m_hwp_radius; }
             set { m_hwp_radius = value; }
         }
 
-        public double HWP_LRADIUS
+        public int HWP_WPRADIUS
+        {
+            get { return m_hwp_wpradius; }
+            set { m_hwp_wpradius = value; }
+        }
+
+        public int HWP_LRADIUS
         {
             get { return m_hwp_lradius; }
             set { m_hwp_lradius = value; }
@@ -138,7 +146,7 @@ namespace MissionPlanner.Utilities
             double bearing = wp_point.GetBearing(land_point);
             double distance = wp_point.GetDistance(land_point);
 
-            return loiter_point.newpos(bearing, distance * 0.5f);
+            return loiter_point.newpos(bearing, distance * 0.25f);
         }
 
         private PointLatLngAlt get_last_nav_coords(PointLatLngAlt wp_point, PointLatLngAlt land_point)
@@ -148,7 +156,7 @@ namespace MissionPlanner.Utilities
             double bearing = wp_point.GetBearing(land_point);
             double distance = wp_point.GetDistance(land_point);
 
-            return last_nav_point.newpos(bearing, distance * (0.3f/0.4f));
+            return last_nav_point.newpos(bearing, distance * 0.5f);
         }
 
         private bool check_landing_obstacles(PointLatLngAlt land_point)
@@ -241,7 +249,10 @@ namespace MissionPlanner.Utilities
             if (m_takeoff_id < 0) return MissionCheckerResult.NO_TAKEOFF_POINT;
             if (m_land_id < 0) return MissionCheckerResult.NO_LAND_POINT;
             if (m_takeoff_id > m_land_id) return MissionCheckerResult.WRONG_MISSION_SEQUENCE;
-            
+
+            double unsafeAngleOffset = defined_mission[m_land_id].P3;
+            if (unsafeAngleOffset > 180) { DO_DISABLE_HWP = true; } // Set the flag to true, that means that after all tests mission will be modified
+
             //Otherwise return OK
             return MissionCheckerResult.OK;
         }
@@ -250,7 +261,7 @@ namespace MissionPlanner.Utilities
         public MissionCheckerResult doCheckLandingDirection()
         {
             int last_wp = getLastMissionWP();
-
+            m_land_id = getLandWP();
             if (last_wp > 0 && m_land_id > 0)
             {
                 PointLatLngAlt lp_coords = defined_mission[m_land_id].getCoords();
@@ -264,9 +275,7 @@ namespace MissionPlanner.Utilities
                 while (unsafeAngleEnd > 360) unsafeAngleEnd -= 360;
 
                 double unsafeAngleOffset = defined_mission[m_land_id].P3;
-                if (unsafeAngleOffset > 180) { DO_DISABLE_HWP = true; } // Set the flag to true, that means that after all tests mission will be modified
-
-
+                
                 if (unsafeAngleStart > unsafeAngleEnd)
                 {
                     if (lp_bearing >= unsafeAngleStart && lp_bearing <= unsafeAngleStart + unsafeAngleOffset) return MissionCheckerResult.LANDING_CROSING_UNSAFE_AREA;
@@ -338,7 +347,7 @@ namespace MissionPlanner.Utilities
         }
 
         // Method modifies the defined mission according to disable HWP feature.
-        public void doDisableHWP()
+        public bool doDisableHWP()
         {
             doRestoreModifiedMission();
             
@@ -356,6 +365,10 @@ namespace MissionPlanner.Utilities
             defined_mission.Insert(LAND_CMD_ID, new MissionItem((int)MAVLink.MAV_CMD.WAYPOINT, 1, 0, 0, 0, LWP.Lat, LWP.Lng, m_land_point.Alt));
             defined_mission.Insert(LAND_CMD_ID, new MissionItem((int)MAVLink.MAV_CMD.LOITER_TO_ALT, 1, m_hwp_lradius, 0, 1, LTA.Lat, LTA.Lng, m_land_point.Alt));
             defined_mission.Add(new MissionItem((int)MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP, 0, 0, 0, 0, 0, 0, 0));
+
+            // if LTA radius and LWP are crossing, return false.
+            if (LTA.GetDistance(LWP) < m_hwp_lradius + m_hwp_wpradius) return false;
+            return true;
         }
         
 

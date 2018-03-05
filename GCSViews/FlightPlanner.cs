@@ -53,9 +53,6 @@ namespace MissionPlanner.GCSViews
         bool polygongridmode;
         bool splinemode;
 
-        bool hwp_enabled = false;   // by default is disabled
-        double hwp_radius = 200.0f; // default HWP radius value        
-
         MissionChecker missionChecker = new MissionChecker();
 
         altmode currentaltmode = altmode.Relative;
@@ -121,7 +118,7 @@ namespace MissionPlanner.GCSViews
             {
                 return;
             }
-
+            
             // dragging a WP
             if (pointno == "H")
             {
@@ -1221,16 +1218,36 @@ namespace MissionPlanner.GCSViews
                         m.selected = true;
                 }
 
-                //MissionPlanner.GMapMarkerRectWPRad mBorders = new MissionPlanner.GMapMarkerRectWPRad(point, (int)float.Parse(TXT_WPRad.Text), MainMap);
+                int wp_radius = 0;
+                if (Commands.Rows[wpno - 1].Cells[Command.Index].Value.ToString().Contains("LOITER_TO_ALT"))
+                {
+                    wp_radius = (int)(float.Parse(Commands.Rows[wpno - 1].Cells[Param2.Index].Value.ToString()) / CurrentState.multiplierdist);
+                }
+                else
+                {
+                    wp_radius = (int)(float.Parse(TXT_WPRad.Text) / CurrentState.multiplierdist);
+                }
+
+
+                Color borderColor = color.HasValue ? color.Value : Color.White; //default color is white
+                if (Commands.Rows[wpno - 1].Cells[Command.Index].Value.ToString().Contains("LOITER_TO_ALT") || Commands.Rows[wpno - 1].Cells[Command.Index].Value.ToString().Contains("WAYPOINT"))
+                {
+                    if (Commands.Rows[wpno - 1].Cells[Param1.Index].Value.ToString() == "1")
+                    {
+                        borderColor = Color.DarkGray;// change border color
+                    }
+                }
+
+
                 GMapMarkerRect mBorders = new GMapMarkerRect(point);
                 {
                     mBorders.InnerMarker = m;
                     mBorders.Tag = tag;
-                    mBorders.wprad = (int)(float.Parse(TXT_WPRad.Text) / CurrentState.multiplierdist);
-                    if (color.HasValue)
+                    if (wpno > 0)
                     {
-                        mBorders.Color = color.Value;
+                        mBorders.wprad = wp_radius;
                     }
+                    mBorders.Color = borderColor;
                 }
 
                 objectsoverlay.Markers.Add(m);
@@ -1270,11 +1287,17 @@ namespace MissionPlanner.GCSViews
 
         private void add_land_polygonmarker(string tag, double lng, double lat, double alt, double unsafe_area_angle_1, double unsafe_area_angle_2)
         {
+            // try to parse values here or set them to default
+            try { missionChecker.HWP_LRADIUS = (int)MainV2.comPort.MAV.param["HWP_LRADIUS"].Value; } catch { missionChecker.HWP_LRADIUS = 60; }
+            try { missionChecker.HWP_ENABLED = (int)MainV2.comPort.MAV.param["HWP_ENABLED"].Value == 1 ? true : false; } catch { missionChecker.HWP_ENABLED = true; }
+            try { missionChecker.HWP_WPRADIUS = (int)MainV2.comPort.MAV.param["HWP_WPRADIUS"].Value; } catch { missionChecker.HWP_WPRADIUS = 30; }
+
+            missionChecker.HWP_RADIUS = (missionChecker.HWP_LRADIUS * 2) + (missionChecker.HWP_WPRADIUS * 4);
+
             try
             {
                 PointLatLng point = new PointLatLng(lat, lng);
                 GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.blue);
-                int land_radius = (int)(hwp_radius);
 
                 m.ToolTipMode = MarkerTooltipMode.OnMouseOver;
                 m.ToolTipText = "Alt: " + alt.ToString("0");
@@ -1285,25 +1308,18 @@ namespace MissionPlanner.GCSViews
                 {
                     mBorders.InnerMarker = m;
                     mBorders.Tag = tag;
-                    mBorders.wprad = land_radius;
+                    mBorders.wprad = missionChecker.HWP_RADIUS;
                     mBorders.Color = Color.LightBlue;
                 }
                 objectsoverlay.Markers.Add(m);
                 objectsoverlay.Markers.Add(mBorders);
 
-
                 // redraw arcs
                 landpointoverlay.Clear();
-                GMapMarkerLand landArea = new GMapMarkerLand(point, land_radius, unsafe_area_angle_1, unsafe_area_angle_2);
+                GMapMarkerLand landArea = new GMapMarkerLand(point, missionChecker.HWP_RADIUS, unsafe_area_angle_1, unsafe_area_angle_2);
                 int wpno = -1;
                 if (int.TryParse(tag, out wpno)) { landArea.wpno = wpno; }
                 landpointoverlay.Markers.Add(landArea);
-
-                try{
-                    FlightData.m_forbidden_zone_param1 = (int)unsafe_area_angle_1;
-                    FlightData.m_forbidden_zone_param2 = (int)unsafe_area_angle_2;
-                }
-                catch{ }
             }
             catch (Exception)
             {
@@ -1553,11 +1569,8 @@ namespace MissionPlanner.GCSViews
                                 double unsafe_area_angle_1 = double.Parse(Commands.Rows[a].Cells[Param2.Index].Value.ToString());
                                 double unsafe_area_angle_2 = double.Parse(Commands.Rows[a].Cells[Param3.Index].Value.ToString());
 
-                                
-
                                 add_land_polygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), double.Parse(cell2), unsafe_area_angle_1, unsafe_area_angle_2);
                             }
-
 
                             else if (command == (ushort)MAVLink.MAV_CMD.SPLINE_WAYPOINT)
                             {
@@ -2843,21 +2856,6 @@ namespace MissionPlanner.GCSViews
                     TXT_WPRad.Text = (((double)param["WP_RADIUS"] * CurrentState.multiplierdist)).ToString();
                 }
 
-                if (param.ContainsKey("HWP_RADIUS"))
-                {
-                    hwp_radius = param["HWP_RADIUS"];
-                    missionChecker.HWP_RADIUS = hwp_radius;
-                }
-
-                if (param.ContainsKey("HWP_LRADIUS")) { missionChecker.HWP_LRADIUS = param["HWP_LRADIUS"]; }
-
-                if (param.ContainsKey("HWP_ENABLED"))
-                {
-                    hwp_enabled = param["HWP_ENABLED"] > 0 ? true : false;
-                    missionChecker.HWP_ENABLED = hwp_enabled;
-                }
-
-
                 if (param.ContainsKey("WPNAV_RADIUS"))
                 {
                     TXT_WPRad.Text = (((double)param["WPNAV_RADIUS"] * CurrentState.multiplierdist / 100.0)).ToString();
@@ -3906,6 +3904,21 @@ namespace MissionPlanner.GCSViews
 
                 if (currentMarker.IsVisible)
                 {
+                    try
+                    {
+                        int wpno = -1;
+                        if (int.TryParse(CurentRectMarker.Tag.ToString(), out wpno))
+                        {
+                            string command = Commands.Rows[wpno - 1].Cells[Command.Index].Value.ToString();
+                            if (command.Contains("LOITER_TO_ALT") || command.Contains("WAYPOINT") && Commands.Rows[wpno - 1].Cells[Param1.Index].Value.ToString() == "1")
+                            {
+                                isMouseDown = false;
+                                isMouseDraging = false;
+                                return;
+                            }
+                        }
+                    }
+                    catch { }
                     currentMarker.Position = MainMap.FromLocalToLatLng(e.X, e.Y);
                 }
             }
@@ -4057,6 +4070,7 @@ namespace MissionPlanner.GCSViews
                     {
                         int cmdID = int.Parse(CurentRectMarker.Tag.ToString());
                         string command = Commands.Rows[cmdID - 1].Cells[Command.Index].Value.ToString();
+
                         if (command.Contains("LAND"))
                         {
                             foreach (GMapMarkerLand lm in landpointoverlay.Markers) { if (lm.wpno == cmdID) lm.Position = pnew; }
@@ -6150,7 +6164,7 @@ namespace MissionPlanner.GCSViews
         private void takeoffToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Get the Altitude on clicked point
-            string alt = "25";
+            string alt = "50";
 
             if (DialogResult.Cancel == InputBox.Show("Altitude", "Please enter your takeoff altitude", ref alt)) return;
 
@@ -7745,6 +7759,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             {
                 if (do_insert) { selectedrow++; Commands.Rows.Insert(selectedrow, 1); } else { selectedrow = Commands.Rows.Add(); }
                 Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.WAYPOINT.ToString();
+                Commands.Rows[selectedrow].Cells[Param1.Index].Value = 0x02;
                 ChangeColumnHeader(MAVLink.MAV_CMD.WAYPOINT.ToString());
                 
                 float d = Radius;
@@ -7760,7 +7775,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                     Math.Cos(d / R) - Math.Sin(plla_right_lat_rad) * Math.Sin(lat2));
                 PointLatLng pll = new PointLatLng(lat2 * MathHelper.rad2deg, lon2 * MathHelper.rad2deg);
 
-                setfromMap(pll.Lat, pll.Lng, (int)float.Parse(TXT_DefaultAlt.Text));
+                setfromMap(pll.Lat, pll.Lng, (int)float.Parse(TXT_DefaultAlt.Text), p1: 0x02);
             }
             #endregion
 
@@ -7776,6 +7791,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 if (ctr == 0 || ctr > Points) { ctr++; continue; } else { ctr++; }
                 if (do_insert) { selectedrow++; Commands.Rows.Insert(selectedrow, 1); } else { selectedrow = Commands.Rows.Add(); }
                 Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.WAYPOINT.ToString();
+                Commands.Rows[selectedrow].Cells[Param1.Index].Value = 0x02;
                 ChangeColumnHeader(MAVLink.MAV_CMD.WAYPOINT.ToString());
 
                 float d = Radius;
@@ -7792,7 +7808,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                     Math.Cos(d / R) - Math.Sin(plla_left_lat_rad) * Math.Sin(lat2));
 
                 PointLatLng pll = new PointLatLng(lat2 * MathHelper.rad2deg, lon2 * MathHelper.rad2deg);
-                setfromMap(pll.Lat, pll.Lng, (int)float.Parse(TXT_DefaultAlt.Text));
+                setfromMap(pll.Lat, pll.Lng, (int)float.Parse(TXT_DefaultAlt.Text), p1: 0x02);
             }
             #endregion
 
@@ -7819,10 +7835,10 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             // Create an internal copy of mission at MissionChecker side
             missionChecker.doStoreOriginalMission(Commands);
 
-            missionChecker.DO_DISABLE_HWP = hwp_enabled ? false : true; 
+            missionChecker.DO_DISABLE_HWP = missionChecker.HWP_ENABLED ? false : true; 
 
              // Check the takeoff and landing points
-             result = missionChecker.doCheckTakeoffLandingSequence();
+            result = missionChecker.doCheckTakeoffLandingSequence();
             if (result == MissionChecker.MissionCheckerResult.NO_LAND_POINT)
             {
                 MessageBox.Show("Landing point is missing.", "Mission Checker", MessageBoxButtons.OK);
@@ -7835,14 +7851,6 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             else if (result == MissionChecker.MissionCheckerResult.WRONG_MISSION_SEQUENCE)
             {
                 MessageBox.Show("Takeoff point defined after landing point, please modify the mission. ", "Mission Checker", MessageBoxButtons.OK);
-                return false; // Can't upload the mission
-            }
-
-            // Check if the landing unsafe
-            result = missionChecker.doCheckLandingDirection();
-            if (result == MissionChecker.MissionCheckerResult.LANDING_CROSING_UNSAFE_AREA)
-            {
-                MessageBox.Show("Landing route is crossing unsafe landing area, please modify the mission.", "Mission Checker", MessageBoxButtons.OK);
                 return false; // Can't upload the mission
             }
 
@@ -7867,7 +7875,6 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 missionChecker.doRestoreModifiedMission();
                 Commands.Rows.Clear();
                 foreach (var mitem in missionChecker.defined_mission) { AddCommand((MAVLink.MAV_CMD)mitem.getCommand(), mitem.P1, mitem.P2, mitem.P3, mitem.P4, mitem.getCoords().Lng, mitem.getCoords().Lat, mitem.getCoords().Alt); }
-                return true;
             }
             else
             {
@@ -7875,17 +7882,53 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 DialogResult dialogResult = MessageBox.Show("Mission will be modified and HWP will be disabled. Click OK to modify or Cancel to proceed without changes.", "Mission Checker", MessageBoxButtons.OKCancel);
                 if(dialogResult == DialogResult.OK) {
                     // apply modifications
-                    missionChecker.doDisableHWP();
+                    bool safeDistance = missionChecker.doDisableHWP();
                     Commands.Rows.Clear();
                     foreach (var mitem in missionChecker.defined_mission) { AddCommand((MAVLink.MAV_CMD)mitem.getCommand(), mitem.P1, mitem.P2, mitem.P3, mitem.P4, mitem.getCoords().Lng, mitem.getCoords().Lat, mitem.getCoords().Alt); }
+
+                    // notify the user that the distance is not safe
+                    if (!safeDistance)
+                    {
+                        MessageBox.Show("Distance between last mission waypoint and landing point is not safe enough.", "Mission Checker advise", MessageBoxButtons.OK);
+                    }
                 }
-                return true;
             }
+
+            // Check if the landing unsafe
+            result = missionChecker.doCheckLandingDirection();
+            if (result == MissionChecker.MissionCheckerResult.LANDING_CROSING_UNSAFE_AREA)
+            {
+                MessageBox.Show("Landing route is crossing unsafe landing area, please modify the mission.", "Mission Checker", MessageBoxButtons.OK);
+                return false; // Can't upload the mission
+            }
+
+            //All test are passed without interruption?
+            return true;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            isMissionCorrect();
+            MAVLinkInterface port = MainV2.comPort;
+            Locationwp temp = new Locationwp();
+            temp.Set(0, 0, 0, 16);
+            temp.p1 = 0x02;
+
+            bool use_int = true;
+            MAVLink.MAV_FRAME frame = MAVLink.MAV_FRAME.GLOBAL_RELATIVE_ALT;
+
+            MAVLink.MAV_MISSION_RESULT ans = port.setWP(temp, (ushort)(0), frame, 0, 1, use_int);
+
+            // we timed out while uploading wps/ command wasnt replaced/ command wasnt added
+            if (ans == MAVLink.MAV_MISSION_RESULT.MAV_MISSION_ERROR)
+            {
+                MessageBox.Show("error");
+            }
+            
+            if (ans != MAVLink.MAV_MISSION_RESULT.MAV_MISSION_ACCEPTED)
+            {
+                MessageBox.Show("ok");
+                return;
+            }
         }
     }
 }
