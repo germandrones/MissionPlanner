@@ -2188,41 +2188,48 @@ namespace MissionPlanner.GCSViews
                 throw;
             }
 
+            // Hide commands from user. Commands for internal use for example:MAV_CMD_SET_FORBIDDEN_ZONE 
+            cmds = HideCommands(cmds);
 
-            // modify cmds here
-            float p1 = 0;
-            float p2 = 0;
-            int wp_id_to_hide = -1;
-            int wp_id_land = -1;
-            int ctr = 0;
+            WPtoScreen(cmds);
+        }
+
+        private List<Locationwp> HideCommands(List<Locationwp> cmds)
+        {
+            float forbidden_zone_p1 = 0;
+            float forbidden_zone_p2 = 0;
+
+            //remove the FZ
             foreach (Locationwp temp in cmds)
             {
-                if (temp.id == 88)
+                if (temp.id == (ushort)MAVLink.MAV_CMD.MAV_CMD_SET_FORBIDDEN_ZONE)
                 {
-                    p1 = temp.p1;
-                    p2 = temp.p2;
-                    wp_id_to_hide = ctr;
-                    ctr++;
-                    continue;
+                    forbidden_zone_p1 = temp.p1;
+                    forbidden_zone_p2 = temp.p2;
+                    // forbidden zone is found, params are stored, delete it from cmds
+                    cmds.Remove(temp);
+                    break;
                 }
+            }
+
+            // loop for modifications
+            List<Locationwp> ret = new List<Locationwp>();
+            foreach (Locationwp temp in cmds)
+            {
 
                 if (temp.id == (ushort)MAVLink.MAV_CMD.LAND || temp.id == (ushort)MAVLink.MAV_CMD.LAND_AT_TAKEOFF)
                 {
-                    wp_id_land = ctr;
+                    Locationwp l_tmp = temp;
+                    l_tmp.p2 = forbidden_zone_p1;
+                    l_tmp.p3 = forbidden_zone_p2;
+                    ret.Add(l_tmp);
+                    continue;
                 }
-                ctr++;
+
+                ret.Add(temp); // normaly copy an item
             }
-            
-            Locationwp l_tmp = cmds[wp_id_land];
-            l_tmp.p2 = p1;
-            l_tmp.p3 = p2;
 
-            cmds.RemoveAt(wp_id_to_hide);
-            cmds.RemoveAt(wp_id_land-1);
-            cmds.Insert(wp_id_land-1, l_tmp);
-            
-
-            WPtoScreen(cmds);
+            return ret;
         }
 
         public void WPtoScreen(List<Locationwp> cmds, bool withrally = true)
@@ -2420,6 +2427,7 @@ namespace MissionPlanner.GCSViews
             {
                 var temp = DataViewtoLocationwp(a);
 
+                // allways add a hidden command forbidden zone
                 if(temp.id == (ushort)MAVLink.MAV_CMD.LAND || temp.id == (ushort)MAVLink.MAV_CMD.LAND_AT_TAKEOFF)
                 {
                     var forbidden_zone_cmd = temp;
@@ -7759,7 +7767,6 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             {
                 if (do_insert) { selectedrow++; Commands.Rows.Insert(selectedrow, 1); } else { selectedrow = Commands.Rows.Add(); }
                 Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.WAYPOINT.ToString();
-                Commands.Rows[selectedrow].Cells[Param1.Index].Value = 0x02;
                 ChangeColumnHeader(MAVLink.MAV_CMD.WAYPOINT.ToString());
                 
                 float d = Radius;
@@ -7775,7 +7782,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                     Math.Cos(d / R) - Math.Sin(plla_right_lat_rad) * Math.Sin(lat2));
                 PointLatLng pll = new PointLatLng(lat2 * MathHelper.rad2deg, lon2 * MathHelper.rad2deg);
 
-                setfromMap(pll.Lat, pll.Lng, (int)float.Parse(TXT_DefaultAlt.Text), p1: 0x02);
+                setfromMap(pll.Lat, pll.Lng, (int)float.Parse(TXT_DefaultAlt.Text));
             }
             #endregion
 
@@ -7791,7 +7798,6 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 if (ctr == 0 || ctr > Points) { ctr++; continue; } else { ctr++; }
                 if (do_insert) { selectedrow++; Commands.Rows.Insert(selectedrow, 1); } else { selectedrow = Commands.Rows.Add(); }
                 Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.WAYPOINT.ToString();
-                Commands.Rows[selectedrow].Cells[Param1.Index].Value = 0x02;
                 ChangeColumnHeader(MAVLink.MAV_CMD.WAYPOINT.ToString());
 
                 float d = Radius;
@@ -7808,7 +7814,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                     Math.Cos(d / R) - Math.Sin(plla_left_lat_rad) * Math.Sin(lat2));
 
                 PointLatLng pll = new PointLatLng(lat2 * MathHelper.rad2deg, lon2 * MathHelper.rad2deg);
-                setfromMap(pll.Lat, pll.Lng, (int)float.Parse(TXT_DefaultAlt.Text), p1: 0x02);
+                setfromMap(pll.Lat, pll.Lng, (int)float.Parse(TXT_DefaultAlt.Text));
             }
             #endregion
 

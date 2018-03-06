@@ -739,13 +739,14 @@ Please check the following
                     packet[4] = (byte)MAV_COMPONENT.MAV_COMP_ID_MISSIONPLANNER;
                     packet[5] = (byte)messageType;
 
+
                     i = 6;
                     foreach (byte b in data)
                     {
                         packet[i] = b;
                         i++;
                     }
-
+                    
                     ushort checksum = MavlinkCRC.crc_calculate(packet, packet[1] + 6);
 
                     checksum = MavlinkCRC.crc_accumulate(MAVLINK_MESSAGE_INFOS.GetMessageInfo((uint)messageType).crc, checksum);
