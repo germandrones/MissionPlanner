@@ -1119,6 +1119,21 @@ Please check the following
         }
         */
 
+        // Method send Request to gather all information about GD
+        public void getAutopilotInformation()
+        {
+            try
+            {
+                MAVLink.mavlink_log_info_t packet = new MAVLink.mavlink_log_info_t();
+                packet.id = 0;
+                MainV2.comPort.sendPacket(packet, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
+            }
+            catch
+            {
+                
+            }
+        }
+
         public void getParamList(bool force_params_reading = false)
         {
             log.InfoFormat("getParamList {0} {1}", sysidcurrent, compidcurrent);

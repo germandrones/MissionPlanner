@@ -1342,6 +1342,9 @@ namespace MissionPlanner
                     return;
                 }
 
+
+                if (Settings.isDevMode) comPort.getAutopilotInformation(); // request data only in dev mode
+
                 comPort.getParamList();
 
                 _connectionControl.UpdateSysIDS();

@@ -204,12 +204,16 @@ public partial class MAVLink
 		new message_info(218, "GOPRO_SET_REQUEST", 17, 7, 7, typeof( mavlink_gopro_set_request_t )),
 		new message_info(219, "GOPRO_SET_RESPONSE", 162, 2, 2, typeof( mavlink_gopro_set_response_t )),
 		new message_info(226, "RPM", 207, 8, 8, typeof( mavlink_rpm_t )),
-        new message_info(238, "HWP", 180, 32, 32, typeof( mavlink_hwp_t )), // HWP Message definition
+        
+
+        new message_info(239, "LOG_INFO_REQUEST", 185, 42, 42, typeof( mavlink_log_info_t )),
+
         new message_info(230, "ESTIMATOR_STATUS", 163, 42, 42, typeof( mavlink_estimator_status_t )),
 		new message_info(231, "WIND_COV", 105, 40, 40, typeof( mavlink_wind_cov_t )),
 		new message_info(232, "GPS_INPUT", 151, 63, 63, typeof( mavlink_gps_input_t )),
 		new message_info(233, "GPS_RTCM_DATA", 35, 182, 182, typeof( mavlink_gps_rtcm_data_t )),
 		new message_info(234, "HIGH_LATENCY", 150, 40, 40, typeof( mavlink_high_latency_t )),
+        new message_info(238, "HWP", 180, 32, 32, typeof( mavlink_hwp_t )), // HWP Message definition
         new message_info(241, "VIBRATION", 90, 32, 32, typeof( mavlink_vibration_t )),
 		new message_info(242, "HOME_POSITION", 104, 52, 52, typeof( mavlink_home_position_t )),
 		new message_info(243, "SET_HOME_POSITION", 85, 53, 53, typeof( mavlink_set_home_position_t )),
@@ -457,6 +461,7 @@ GOPRO_SET_REQUEST = 218,
 GOPRO_SET_RESPONSE = 219,
 RPM = 226,
 HWP = 238, // HWP Message
+LOG_INFO_REQUEST = 239,
 ESTIMATOR_STATUS = 230,
 WIND_COV = 231,
 GPS_INPUT = 232,
@@ -3732,6 +3737,16 @@ AOA_SSA = 11020,
         public  float rpm2;
     
     };
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 2)]
+    ///<summary> Head Wind Waypoints</summary>
+    public struct mavlink_log_info_t
+    {
+        public UInt16 id;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 40)]
+        public char[] gitHash;
+    };
+        
 
     [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 32)]
     ///<summary> Head Wind Waypoints</summary>

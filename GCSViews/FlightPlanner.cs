@@ -7912,29 +7912,5 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             return true;
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            MAVLinkInterface port = MainV2.comPort;
-            Locationwp temp = new Locationwp();
-            temp.Set(0, 0, 0, 16);
-            temp.p1 = 0x02;
-
-            bool use_int = true;
-            MAVLink.MAV_FRAME frame = MAVLink.MAV_FRAME.GLOBAL_RELATIVE_ALT;
-
-            MAVLink.MAV_MISSION_RESULT ans = port.setWP(temp, (ushort)(0), frame, 0, 1, use_int);
-
-            // we timed out while uploading wps/ command wasnt replaced/ command wasnt added
-            if (ans == MAVLink.MAV_MISSION_RESULT.MAV_MISSION_ERROR)
-            {
-                MessageBox.Show("error");
-            }
-            
-            if (ans != MAVLink.MAV_MISSION_RESULT.MAV_MISSION_ACCEPTED)
-            {
-                MessageBox.Show("ok");
-                return;
-            }
-        }
     }
 }
