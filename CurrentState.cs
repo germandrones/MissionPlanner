@@ -1875,8 +1875,8 @@ namespace MissionPlanner
                         hwp3_lat = (float)(hwp_points.hwp3_lat * 0.0000001f);
                         hwp3_lng = (float)(hwp_points.hwp3_lng * 0.0000001f);
 
-                        hwp4_lat = (float)(hwp_points.hwp3_lat * 0.0000001f);
-                        hwp4_lng = (float)(hwp_points.hwp3_lng * 0.0000001f);
+                        hwp4_lat = (float)(hwp_points.hwp4_lat * 0.0000001f);
+                        hwp4_lng = (float)(hwp_points.hwp4_lng * 0.0000001f);
 
                         MAV.clearPacket((uint)MAVLink.MAVLINK_MSG_ID.HWP);
                         gotHWP = true; // modify a flag on each receive of HWP
