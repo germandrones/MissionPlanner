@@ -1378,6 +1378,8 @@
       <field type="int32_t" name="hwp2_lng">HWP2 Lng</field>
       <field type="int32_t" name="hwp3_lat">HWP3 Lat</field>
       <field type="int32_t" name="hwp3_lng">HWP3 Lng</field>
+      <field type="int32_t" name="hwp4_lat">HWP4 Lat</field>
+      <field type="int32_t" name="hwp4_lng">HWP4 Lng</field>
     </message>
 
     <message name="LOG_INFO_REQUEST" id="239">

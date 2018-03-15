@@ -1124,7 +1124,7 @@ Please check the following
         {
             try
             {
-                MAVLink.mavlink_log_info_t packet = new MAVLink.mavlink_log_info_t();
+                mavlink_log_info_t packet = new mavlink_log_info_t();
                 packet.id = 0;
                 MainV2.comPort.sendPacket(packet, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
             }

@@ -121,7 +121,7 @@ namespace MissionPlanner.GCSViews
         float hwp1_lat, hwp1_lng;
         float hwp2_lat, hwp2_lng;
         float hwp3_lat, hwp3_lng;
-        float hwp4_lat = -1, hwp4_lng = -1;
+        float hwp4_lat, hwp4_lng;
 
         public static int m_forbidden_zone_param1 = 0;
         public static int m_forbidden_zone_param2 = 0;
@@ -1454,7 +1454,10 @@ namespace MissionPlanner.GCSViews
                     addpolygonmarkerNoTooltip("HWP1", hwp1_lng, hwp1_lat, 0, Color.Blue, polygons, hwp_wpradius);
                     addpolygonmarkerNoTooltip("HWP2", hwp2_lng, hwp2_lat, 0, Color.Blue, polygons, hwp_wpradius);
                     addpolygonmarkerNoTooltip("HWP3", hwp3_lng, hwp3_lat, 0, Color.Blue, polygons, hwp_lradius);
-                    if (hwp4_lat != -1 && hwp4_lng != -1) addpolygonmarkerNoTooltip("HWP4", hwp4_lng, hwp4_lat, 0, Color.Blue, polygons, hwp_wpradius);
+                    if (hwp4_lat != -1 && hwp4_lng != -1)
+                    {
+                        addpolygonmarkerNoTooltip("HWP4", hwp4_lng, hwp4_lat, 0, Color.Blue, polygons, hwp_wpradius);
+                    }
                 }
 
                 if(plla.command == (ushort)MAVLink.MAV_CMD.MAV_CMD_SET_FORBIDDEN_ZONE)
@@ -1466,17 +1469,15 @@ namespace MissionPlanner.GCSViews
 
                 if (plla.command == (ushort)MAVLink.MAV_CMD.LAND || plla.command == (ushort)MAVLink.MAV_CMD.LAND_AT_TAKEOFF)
                 {
+                    // landing point
                     int hwp_radius = 200;
                     hwp_radius = (hwp_lradius * 2) + (hwp_wpradius * 4);
-                    addpolygonmarkerland(plla.seq.ToString(), plla.y, plla.x, (int)plla.z, hwp_radius, m_forbidden_zone_param1, m_forbidden_zone_param2, polygons);                    
+                    addpolygonmarkerland(plla.seq.ToString(), plla.y, plla.x, (int)plla.z, hwp_radius, m_forbidden_zone_param1, m_forbidden_zone_param2, polygons);
                 }
                 else
                 {
-                    // Normal Waypoint
-                    if(plla.command == (ushort)MAVLink.MAV_CMD.LOITER_TO_ALT)
-                        addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons, hwp_lradius);
-                    else
-                        addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons, wp_radius);
+                    // normal point
+                    addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons, wp_radius);
                 }
             }
 
@@ -1830,7 +1831,7 @@ namespace MissionPlanner.GCSViews
                 PointLatLng point = new PointLatLng(lat, lng);
                 GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.blue);
 
-                m.ToolTipMode = MarkerTooltipMode.Never;
+                m.ToolTipMode = MarkerTooltipMode.OnMouseOver;
                 m.ToolTipText = tag;
                 m.Tag = tag;
 
@@ -1999,10 +2000,16 @@ namespace MissionPlanner.GCSViews
             {
                 // connect waypoints in right direction
                 landingWay.Points.Add(polygonPoints[polygonPoints.Count - 2]);
-                if(hwp4_lat != -1 && hwp4_lng != -1) landingWay.Points.Add(new PointLatLng(hwp4_lat, hwp4_lng));
+
+                if (hwp4_lat != -1 && hwp4_lng != -1)
+                {
+                    landingWay.Points.Add(new PointLatLng(hwp4_lat, hwp4_lng));
+                }
+
                 landingWay.Points.Add(new PointLatLng(hwp3_lat, hwp3_lng));
                 landingWay.Points.Add(new PointLatLng(hwp2_lat, hwp2_lng));
                 landingWay.Points.Add(new PointLatLng(hwp1_lat, hwp1_lng));
+
                 landingWay.Points.Add(polygonPoints[polygonPoints.Count - 1]);
             }
             else

@@ -2212,6 +2212,9 @@ namespace MissionPlanner.GCSViews
                 }
             }
 
+            FlightData.m_forbidden_zone_param1 = (int)forbidden_zone_p1;
+            FlightData.m_forbidden_zone_param2 = (int)forbidden_zone_p2;
+
             // loop for modifications
             List<Locationwp> ret = new List<Locationwp>();
             foreach (Locationwp temp in cmds)
