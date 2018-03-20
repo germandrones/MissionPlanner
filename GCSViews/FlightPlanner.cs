@@ -1292,7 +1292,7 @@ namespace MissionPlanner.GCSViews
             try { missionChecker.HWP_ENABLED = (int)MainV2.comPort.MAV.param["HWP_ENABLED"].Value == 1 ? true : false; } catch { missionChecker.HWP_ENABLED = true; }
             try { missionChecker.HWP_WPRADIUS = (int)MainV2.comPort.MAV.param["HWP_WPRADIUS"].Value; } catch { missionChecker.HWP_WPRADIUS = 30; }
 
-            missionChecker.HWP_RADIUS = (missionChecker.HWP_LRADIUS * 2) + (missionChecker.HWP_WPRADIUS * 4);
+            missionChecker.HWP_RADIUS = (missionChecker.HWP_LRADIUS * 2) + (missionChecker.HWP_WPRADIUS * 6);
 
             try
             {
@@ -4079,13 +4079,17 @@ namespace MissionPlanner.GCSViews
                     // update rect and marker pos.
                     if (currentMarker.IsVisible)
                     {
-                        int cmdID = int.Parse(CurentRectMarker.Tag.ToString());
-                        string command = Commands.Rows[cmdID - 1].Cells[Command.Index].Value.ToString();
-
-                        if (command.Contains("LAND"))
+                        try
                         {
-                            foreach (GMapMarkerLand lm in landpointoverlay.Markers) { if (lm.wpno == cmdID) lm.Position = pnew; }
+                            int cmdID = int.Parse(CurentRectMarker.Tag.ToString());
+                            string command = Commands.Rows[cmdID - 1].Cells[Command.Index].Value.ToString();
+
+                            if (command.Contains("LAND"))
+                            {
+                                foreach (GMapMarkerLand lm in landpointoverlay.Markers) { if (lm.wpno == cmdID) lm.Position = pnew; }
+                            }
                         }
+                        catch { }
                         currentMarker.Position = pnew;
                     }
                     CurentRectMarker.Position = pnew;
@@ -4737,6 +4741,13 @@ namespace MissionPlanner.GCSViews
 
             selectedrow = 0;
             quickadd = false;
+
+            //clear also polygons
+            polygongridmode = false;
+            if (drawnpolygon == null) return;
+            drawnpolygon.Points.Clear();
+            drawnpolygonsoverlay.Markers.Clear();
+
             writeKML();
         }
 
@@ -7915,5 +7926,18 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             return true;
         }
 
+        private void BTN_Poly_WP_mode_Click(object sender, EventArgs e)
+        {
+            if (polygongridmode)
+            {
+                polygongridmode = false;
+                BTN_Poly_WP_mode.Text = "Polygon Mode";
+            }
+            else
+            {
+                polygongridmode = true;
+                BTN_Poly_WP_mode.Text = "Waypoint Mode";
+            }
+        }
     }
 }

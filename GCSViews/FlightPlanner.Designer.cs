@@ -132,6 +132,7 @@ namespace MissionPlanner.GCSViews
             this.splitter2 = new BSE.Windows.Forms.Splitter();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.BTN_Poly_WP_mode = new MissionPlanner.Controls.MyButton();
             this.BUT_showElevationGraph = new MissionPlanner.Controls.MyButton();
             this.lbl_wpfile = new System.Windows.Forms.Label();
             this.BUT_savePoly = new MissionPlanner.Controls.MyButton();
@@ -825,6 +826,7 @@ namespace MissionPlanner.GCSViews
             // 
             // panel4
             // 
+            this.panel4.Controls.Add(this.BTN_Poly_WP_mode);
             this.panel4.Controls.Add(this.BUT_showElevationGraph);
             this.panel4.Controls.Add(this.lbl_wpfile);
             this.panel4.Controls.Add(this.BUT_savePoly);
@@ -837,6 +839,13 @@ namespace MissionPlanner.GCSViews
             this.panel4.Controls.Add(this.BUT_createPoly);
             resources.ApplyResources(this.panel4, "panel4");
             this.panel4.Name = "panel4";
+            // 
+            // BTN_Poly_WP_mode
+            // 
+            resources.ApplyResources(this.BTN_Poly_WP_mode, "BTN_Poly_WP_mode");
+            this.BTN_Poly_WP_mode.Name = "BTN_Poly_WP_mode";
+            this.BTN_Poly_WP_mode.UseVisualStyleBackColor = true;
+            this.BTN_Poly_WP_mode.Click += new System.EventHandler(this.BTN_Poly_WP_mode_Click);
             // 
             // BUT_showElevationGraph
             // 
@@ -1747,5 +1756,6 @@ namespace MissionPlanner.GCSViews
         private System.Windows.Forms.ToolStripMenuItem create8ShapeSurveyToolStripMenuItem;
         private System.Windows.Forms.Label DebugMsg;
         private System.Windows.Forms.ToolStripMenuItem createCircleSurveyToolStripMenuItem1;
+        private MyButton BTN_Poly_WP_mode;
     }
 }

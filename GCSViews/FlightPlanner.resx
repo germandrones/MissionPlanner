@@ -337,7 +337,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_write.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 235</value>
+    <value>4, 264</value>
   </data>
   <data name="BUT_write.Size" type="System.Drawing.Size, System.Drawing">
     <value>114, 23</value>
@@ -358,13 +358,13 @@
     <value>panel4</value>
   </data>
   <data name="&gt;&gt;BUT_write.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="BUT_read.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="BUT_read.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 207</value>
+    <value>4, 236</value>
   </data>
   <data name="BUT_read.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 23</value>
@@ -385,7 +385,7 @@
     <value>panel4</value>
   </data>
   <data name="&gt;&gt;BUT_read.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1583,11 +1583,35 @@
   <data name="&gt;&gt;splitter2.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="BTN_Poly_WP_mode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 66</value>
+  </data>
+  <data name="BTN_Poly_WP_mode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>102, 19</value>
+  </data>
+  <data name="BTN_Poly_WP_mode.TabIndex" type="System.Int32, mscorlib">
+    <value>51</value>
+  </data>
+  <data name="BTN_Poly_WP_mode.Text" xml:space="preserve">
+    <value>Polygon Mode</value>
+  </data>
+  <data name="&gt;&gt;BTN_Poly_WP_mode.Name" xml:space="preserve">
+    <value>BTN_Poly_WP_mode</value>
+  </data>
+  <data name="&gt;&gt;BTN_Poly_WP_mode.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BTN_Poly_WP_mode.Parent" xml:space="preserve">
+    <value>panel4</value>
+  </data>
+  <data name="&gt;&gt;BTN_Poly_WP_mode.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="BUT_showElevationGraph.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="BUT_showElevationGraph.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 282</value>
+    <value>9, 311</value>
   </data>
   <data name="BUT_showElevationGraph.Size" type="System.Drawing.Size, System.Drawing">
     <value>103, 18</value>
@@ -1608,7 +1632,7 @@
     <value>panel4</value>
   </data>
   <data name="&gt;&gt;BUT_showElevationGraph.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="lbl_wpfile.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1617,7 +1641,7 @@
     <value>NoControl</value>
   </data>
   <data name="lbl_wpfile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>32, 303</value>
+    <value>33, 332</value>
   </data>
   <data name="lbl_wpfile.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 13</value>
@@ -1641,13 +1665,13 @@
     <value>panel4</value>
   </data>
   <data name="&gt;&gt;lbl_wpfile.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="BUT_savePoly.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="BUT_savePoly.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 167</value>
+    <value>3, 196</value>
   </data>
   <data name="BUT_savePoly.Size" type="System.Drawing.Size, System.Drawing">
     <value>114, 23</value>
@@ -1668,13 +1692,13 @@
     <value>panel4</value>
   </data>
   <data name="&gt;&gt;BUT_savePoly.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="BUT_loadPoly.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="BUT_loadPoly.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 138</value>
+    <value>4, 167</value>
   </data>
   <data name="BUT_loadPoly.Size" type="System.Drawing.Size, System.Drawing">
     <value>114, 23</value>
@@ -1695,7 +1719,7 @@
     <value>panel4</value>
   </data>
   <data name="&gt;&gt;BUT_loadPoly.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="BUT_planAutoGrid.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1722,13 +1746,13 @@
     <value>panel4</value>
   </data>
   <data name="&gt;&gt;BUT_planAutoGrid.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="BUT_saveWPFile.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="BUT_saveWPFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 99</value>
+    <value>2, 128</value>
   </data>
   <data name="BUT_saveWPFile.Size" type="System.Drawing.Size, System.Drawing">
     <value>114, 23</value>
@@ -1749,13 +1773,13 @@
     <value>panel4</value>
   </data>
   <data name="&gt;&gt;BUT_saveWPFile.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="BUT_loadwpfile.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="BUT_loadwpfile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 70</value>
+    <value>2, 99</value>
   </data>
   <data name="BUT_loadwpfile.Size" type="System.Drawing.Size, System.Drawing">
     <value>114, 23</value>
@@ -1776,7 +1800,7 @@
     <value>panel4</value>
   </data>
   <data name="&gt;&gt;BUT_loadwpfile.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="BUT_createPoly.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1803,7 +1827,7 @@
     <value>panel4</value>
   </data>
   <data name="&gt;&gt;BUT_createPoly.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="panel4.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
@@ -2555,6 +2579,9 @@
   <data name="switchDockingToolStripMenuItem.Text" xml:space="preserve">
     <value>Switch Docking</value>
   </data>
+  <data name="switchDockingToolStripMenuItem.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="setHomeHereToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>166, 22</value>
   </data>
@@ -2562,7 +2589,7 @@
     <value>Set Home Here</value>
   </data>
   <data name="contextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 494</value>
+    <value>167, 516</value>
   </data>
   <data name="&gt;&gt;contextMenuStrip1.Name" xml:space="preserve">
     <value>contextMenuStrip1</value>

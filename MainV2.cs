@@ -1459,8 +1459,7 @@ namespace MissionPlanner
 
         private void MenuConnect_Click(object sender, EventArgs e)
         {
-            comPort.giveComport = false;
-
+            comPort.giveComport = false;            
             log.Info("MenuConnect Start");
 
             // sanity check

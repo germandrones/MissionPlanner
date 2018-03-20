@@ -141,22 +141,14 @@ namespace MissionPlanner.Utilities
         
         private PointLatLngAlt get_loiter_coords(PointLatLngAlt wp_point, PointLatLngAlt land_point)
         {
-            PointLatLngAlt loiter_point = wp_point;
-
-            double bearing = wp_point.GetBearing(land_point);
-            double distance = wp_point.GetDistance(land_point);
-
-            return loiter_point.newpos(bearing, distance * 0.25f);
+            double bearing = land_point.GetBearing(wp_point);
+            return land_point.newpos(bearing, m_hwp_radius);
         }
 
-        private PointLatLngAlt get_last_nav_coords(PointLatLngAlt wp_point, PointLatLngAlt land_point)
+        private PointLatLngAlt get_last_nav_coords(PointLatLngAlt lta_point, PointLatLngAlt land_point)
         {
-            PointLatLngAlt last_nav_point = wp_point;
-
-            double bearing = wp_point.GetBearing(land_point);
-            double distance = wp_point.GetDistance(land_point);
-
-            return last_nav_point.newpos(bearing, distance * 0.5f);
+            double bearing = land_point.GetBearing(lta_point);
+            return land_point.newpos(bearing, m_hwp_radius * 0.4f);
         }
 
         private bool check_landing_obstacles(PointLatLngAlt land_point)
@@ -359,7 +351,7 @@ namespace MissionPlanner.Utilities
             
             //insert LOITER_TO_ALTITUDE
             PointLatLngAlt LTA = get_loiter_coords(defined_mission[LAST_MWP].getCoords(), m_land_point);
-            PointLatLngAlt LWP = get_last_nav_coords(defined_mission[LAST_MWP].getCoords(), m_land_point);
+            PointLatLngAlt LWP = get_last_nav_coords(LTA, m_land_point);
 
             // insert WPs before land command
             defined_mission.Insert(LAND_CMD_ID, new MissionItem((int)MAVLink.MAV_CMD.WAYPOINT, 1, 0, 0, 0, LWP.Lat, LWP.Lng, m_land_point.Alt));
