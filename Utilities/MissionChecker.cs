@@ -60,7 +60,7 @@ namespace MissionPlanner.Utilities
             GROUND_COLLISION_DETECTED,      // if ground collision could happen
             LANDING_CROSING_UNSAFE_AREA,    // if last mission waypoint is crossing the forbidden area
             WRONG_MISSION_SEQUENCE,         // if takeoff declared after landing
-            MISSION_MODIFIED,               // mission modified(HWP are disabled)
+            DISTANCE_UNSAFE,                // distance between last mission wp and landing point is unsafe
         }
         #endregion
 
@@ -210,6 +210,9 @@ namespace MissionPlanner.Utilities
         // Method stores the original Mission before checking
         public void doStoreOriginalMission(MyDataGridView Commands)
         {
+            m_takeoff_id = -1;
+            m_land_id = -1;
+
             defined_mission.Clear();
 
             foreach (DataGridViewRow Command in Commands.Rows)
@@ -224,6 +227,10 @@ namespace MissionPlanner.Utilities
                 double y = double.Parse(Command.Cells[6].Value.ToString()); //
                 double z = double.Parse(Command.Cells[7].Value.ToString()); //
 
+                // check also takeoff and landing points:
+                if (cmd_id == (int)MAVLink.MAV_CMD.TAKEOFF) m_takeoff_id = defined_mission.Count();
+                if (cmd_id == (int)MAVLink.MAV_CMD.LAND || cmd_id == (int)MAVLink.MAV_CMD.LAND_AT_TAKEOFF) m_land_id = defined_mission.Count();
+
                 defined_mission.Add(new MissionItem(cmd_id, p1, p2, p3, p4, x, y, z));
             }
         }
@@ -231,13 +238,6 @@ namespace MissionPlanner.Utilities
         // Method checks if current mission don't contains landing and takeoff
         public MissionCheckerResult doCheckTakeoffLandingSequence()
         {
-            m_takeoff_id = -1;
-            m_land_id = -1;
-            for (int i = 0; i < defined_mission.Count; i++)
-            {
-                if (defined_mission[i].getCommand() == (int)MAVLink.MAV_CMD.TAKEOFF) m_takeoff_id = i;
-                if (defined_mission[i].getCommand() == (int)MAVLink.MAV_CMD.LAND || defined_mission[i].getCommand() == (int)MAVLink.MAV_CMD.LAND_AT_TAKEOFF) m_land_id = i;
-            }
             if (m_takeoff_id < 0) return MissionCheckerResult.NO_TAKEOFF_POINT;
             if (m_land_id < 0) return MissionCheckerResult.NO_LAND_POINT;
             if (m_takeoff_id > m_land_id) return MissionCheckerResult.WRONG_MISSION_SEQUENCE;
@@ -339,7 +339,7 @@ namespace MissionPlanner.Utilities
         }
 
         // Method modifies the defined mission according to disable HWP feature.
-        public bool doDisableHWP()
+        public MissionCheckerResult doDisableHWP()
         {
             doRestoreModifiedMission();
             
@@ -359,8 +359,8 @@ namespace MissionPlanner.Utilities
             defined_mission.Add(new MissionItem((int)MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP, 0, 0, 0, 0, 0, 0, 0));
 
             // if LTA radius and LWP are crossing, return false.
-            if (LTA.GetDistance(LWP) < m_hwp_lradius + m_hwp_wpradius) return false;
-            return true;
+            if (LTA.GetDistance(LWP) < m_hwp_lradius + m_hwp_wpradius) return MissionCheckerResult.DISTANCE_UNSAFE;
+            return MissionCheckerResult.OK;
         }
         
 

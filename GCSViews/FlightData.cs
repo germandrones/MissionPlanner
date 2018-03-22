@@ -1477,7 +1477,14 @@ namespace MissionPlanner.GCSViews
                 else
                 {
                     // normal point
-                    addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons, wp_radius);
+                    if (plla.command == (ushort)MAVLink.MAV_CMD.TAKEOFF)
+                    {
+                        addpolygonmarkerblue(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons, wp_radius);
+                    }
+                    else
+                    {
+                        addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons, wp_radius);
+                    }
                 }
             }
 
@@ -1868,13 +1875,6 @@ namespace MissionPlanner.GCSViews
                 GMapMarkerRect mBorders = new GMapMarkerRect(point);
                 {
                     mBorders.InnerMarker = m;
-                    try
-                    {
-                        mBorders.wprad = wp_radius;// (int) (Settings.Instance.GetFloat("TXT_WPRad")/CurrentState.multiplierdist);
-                    }
-                    catch
-                    {
-                    }
                     if (color.HasValue)
                     {
                         mBorders.Color = color.Value;
@@ -1882,6 +1882,36 @@ namespace MissionPlanner.GCSViews
                 }
 
                 Invoke((MethodInvoker) delegate
+                {
+                    overlay.Markers.Add(m);
+                    overlay.Markers.Add(mBorders);
+                });
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void addpolygonmarkerblue(string tag, double lng, double lat, int alt, Color? color, GMapOverlay overlay, int wp_radius)
+        {
+            try
+            {
+                PointLatLng point = new PointLatLng(lat, lng);
+                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.blue);
+                m.ToolTipMode = MarkerTooltipMode.Always;
+                m.ToolTipText = tag;
+                m.Tag = tag;
+
+                GMapMarkerRect mBorders = new GMapMarkerRect(point);
+                {
+                    mBorders.InnerMarker = m;
+                    if (color.HasValue)
+                    {
+                        mBorders.Color = color.Value;
+                    }
+                }
+
+                Invoke((MethodInvoker)delegate
                 {
                     overlay.Markers.Add(m);
                     overlay.Markers.Add(mBorders);

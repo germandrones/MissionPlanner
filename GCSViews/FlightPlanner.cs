@@ -54,6 +54,7 @@ namespace MissionPlanner.GCSViews
         bool splinemode;
 
         MissionChecker missionChecker = new MissionChecker();
+        MissionChecker.MissionCheckerResult mCheckerResult;
 
         altmode currentaltmode = altmode.Relative;
 
@@ -2315,7 +2316,61 @@ namespace MissionPlanner.GCSViews
             #endregion
 
             // check mission on safety
-            if (!isMissionCorrect()) { return; }
+
+            ProgressReporterDialogue checkerReporter = new ProgressReporterDialogue
+            {
+                StartPosition = FormStartPosition.CenterScreen,
+                Text = "Mission Checker Progress"
+            };
+
+            checkerReporter.DoWork += isMissionCorrect;
+            checkerReporter.UpdateProgressAndStatus(-1, "Checking Mission");
+            ThemeManager.ApplyThemeTo(checkerReporter);
+            checkerReporter.RunBackgroundOperationAsync();
+            checkerReporter.Dispose();
+
+            // Show warning message if needed
+            switch(mCheckerResult)
+            {
+                case MissionChecker.MissionCheckerResult.NO_LAND_POINT:
+                    {
+                        MessageBox.Show("Landing point is missing.", "Mission Checker", MessageBoxButtons.OK);
+                        break;
+                    }
+                case MissionChecker.MissionCheckerResult.NO_TAKEOFF_POINT:
+                    {
+                        MessageBox.Show("Takeoff point is missing.", "Mission Checker", MessageBoxButtons.OK);
+                        break;
+                    }
+                case MissionChecker.MissionCheckerResult.WRONG_MISSION_SEQUENCE:
+                    {
+                        MessageBox.Show("Takeoff point defined after landing point, please modify the mission. ", "Mission Checker", MessageBoxButtons.OK);
+                        break;
+                    }
+                case MissionChecker.MissionCheckerResult.DISTANCE_UNSAFE:
+                    {
+                        MessageBox.Show("Distance between last mission waypoint and landing point is not safe enough.", "Mission Checker", MessageBoxButtons.OK);
+                        break;
+                    }
+                case MissionChecker.MissionCheckerResult.LANDING_CROSING_UNSAFE_AREA:
+                    {
+                        MessageBox.Show("Landing route is crossing unsafe landing area, please modify the mission.", "Mission Checker", MessageBoxButtons.OK);
+                        break;
+                    }
+            }
+
+            if (mCheckerResult == MissionChecker.MissionCheckerResult.OK)
+            {
+                if (missionChecker.DO_DISABLE_HWP || missionChecker.defined_mission.Count != Commands.RowCount)
+                {
+                    Commands.Rows.Clear();
+                    foreach (var mitem in missionChecker.defined_mission) { AddCommand((MAVLink.MAV_CMD)mitem.getCommand(), mitem.P1, mitem.P2, mitem.P3, mitem.P4, mitem.getCoords().Lng, mitem.getCoords().Lat, mitem.getCoords().Alt); }
+                }
+            }
+            else
+            {
+                return;
+            }
 
             // check for invalid grid data
             for (int a = 0; a < Commands.Rows.Count - 0; a++)
@@ -6090,6 +6145,18 @@ namespace MissionPlanner.GCSViews
 
         private void landToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // Get the Altitude on clicked point
+            string alt = "50";
+
+            if (DialogResult.Cancel == InputBox.Show("Altitude", "Please enter your landing altitude", ref alt)) return;
+            int alti = -1;
+            if (!int.TryParse(alt, out alti))
+            {
+                MessageBox.Show("Bad Alt");
+                return;
+            }
+
+
             selectedrow = Commands.Rows.Add();
 
             Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.LAND.ToString();
@@ -6098,7 +6165,7 @@ namespace MissionPlanner.GCSViews
 
             ChangeColumnHeader(MAVLink.MAV_CMD.LAND.ToString());
 
-            setfromMap(MouseDownEnd.Lat, MouseDownEnd.Lng, int.Parse(TXT_minLandingAltitude.Text));
+            setfromMap(MouseDownEnd.Lat, MouseDownEnd.Lng, alti);
 
             writeKML();
         }
@@ -7848,34 +7915,24 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             writeKML();
         }
 
-        private bool isMissionCorrect()
+        void isMissionCorrect(object sender, ProgressWorkerEventArgs e, object passdata = null)
         {
-            MissionChecker.MissionCheckerResult result;
-            
             // Create an internal copy of mission at MissionChecker side
+            mCheckerResult = MissionChecker.MissionCheckerResult.OK;
+            
+
+            ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(0, "Preparing...");
             missionChecker.doStoreOriginalMission(Commands);
+            missionChecker.DO_DISABLE_HWP = missionChecker.HWP_ENABLED ? false : true;
 
-            missionChecker.DO_DISABLE_HWP = missionChecker.HWP_ENABLED ? false : true; 
 
-             // Check the takeoff and landing points
-            result = missionChecker.doCheckTakeoffLandingSequence();
-            if (result == MissionChecker.MissionCheckerResult.NO_LAND_POINT)
-            {
-                MessageBox.Show("Landing point is missing.", "Mission Checker", MessageBoxButtons.OK);
-                return false; // Can't upload the mission
-            }else if (result == MissionChecker.MissionCheckerResult.NO_TAKEOFF_POINT)
-            {
-                MessageBox.Show("Takeoff point is missing.", "Mission Checker", MessageBoxButtons.OK);
-                return false; // Can't upload the mission
-            }
-            else if (result == MissionChecker.MissionCheckerResult.WRONG_MISSION_SEQUENCE)
-            {
-                MessageBox.Show("Takeoff point defined after landing point, please modify the mission. ", "Mission Checker", MessageBoxButtons.OK);
-                return false; // Can't upload the mission
-            }
+            ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(50, "Checking takeoff/landing sequence...");
+            mCheckerResult = missionChecker.doCheckTakeoffLandingSequence();
+            if (mCheckerResult != MissionChecker.MissionCheckerResult.OK) return;
 
+          
             // Check mission elevation graph
-            result = missionChecker.doCheckAltitudeSRTM();
+            /*result = missionChecker.doCheckAltitudeSRTM();
             if (result == MissionChecker.MissionCheckerResult.GROUND_COLLISION_DETECTED)
             {
                 DialogResult dialogResult = CustomMessageBox.ShowYesNoIgnoreWarning("Please check the elevation graph, mission is unsafe. \n Click Yes to show elevation graph, or Ignore to upload mission", "Mission Checker");
@@ -7885,45 +7942,24 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                     case DialogResult.No: { return false; } // just exit, don't do anything
                     case DialogResult.Ignore: { break; } // ignore warning, allow to upload the mission
                 }
-            }
+            }*/
 
-            //missionChecker.DO_DISABLE_HWP = true; // debug line!
 
+            ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(60, "Checking headwind landing sequence...");
             if (!missionChecker.DO_DISABLE_HWP)
             {
-                // all checks are sucessfully passed, HWP stays Enabled. Allow user upload the mission!
                 missionChecker.doRestoreModifiedMission();
-                Commands.Rows.Clear();
-                foreach (var mitem in missionChecker.defined_mission) { AddCommand((MAVLink.MAV_CMD)mitem.getCommand(), mitem.P1, mitem.P2, mitem.P3, mitem.P4, mitem.getCoords().Lng, mitem.getCoords().Lat, mitem.getCoords().Alt); }
             }
             else
             {
-                // modify the mission!
-                DialogResult dialogResult = MessageBox.Show("Mission will be modified and HWP will be disabled. Click OK to modify or Cancel to proceed without changes.", "Mission Checker", MessageBoxButtons.OKCancel);
-                if(dialogResult == DialogResult.OK) {
-                    // apply modifications
-                    bool safeDistance = missionChecker.doDisableHWP();
-                    Commands.Rows.Clear();
-                    foreach (var mitem in missionChecker.defined_mission) { AddCommand((MAVLink.MAV_CMD)mitem.getCommand(), mitem.P1, mitem.P2, mitem.P3, mitem.P4, mitem.getCoords().Lng, mitem.getCoords().Lat, mitem.getCoords().Alt); }
-
-                    // notify the user that the distance is not safe
-                    if (!safeDistance)
-                    {
-                        MessageBox.Show("Distance between last mission waypoint and landing point is not safe enough.", "Mission Checker advise", MessageBoxButtons.OK);
-                    }
-                }
+                ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(75, "Modifying mission...");
+                mCheckerResult = missionChecker.doDisableHWP();
             }
+            if (mCheckerResult != MissionChecker.MissionCheckerResult.OK) return;
 
-            // Check if the landing unsafe
-            result = missionChecker.doCheckLandingDirection();
-            if (result == MissionChecker.MissionCheckerResult.LANDING_CROSING_UNSAFE_AREA)
-            {
-                MessageBox.Show("Landing route is crossing unsafe landing area, please modify the mission.", "Mission Checker", MessageBoxButtons.OK);
-                return false; // Can't upload the mission
-            }
-
-            //All test are passed without interruption?
-            return true;
+            ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(90, "Checking landing direction...");
+            mCheckerResult = missionChecker.doCheckLandingDirection();
+            if (mCheckerResult != MissionChecker.MissionCheckerResult.OK) return;
         }
 
         private void BTN_Poly_WP_mode_Click(object sender, EventArgs e)
