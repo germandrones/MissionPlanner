@@ -1471,15 +1471,15 @@ namespace MissionPlanner.GCSViews
                 {
                     // landing point
                     int hwp_radius = 200;
-                    hwp_radius = (hwp_lradius * 2) + (hwp_wpradius * 4);
-                    addpolygonmarkerland(plla.seq.ToString(), plla.y, plla.x, (int)plla.z, hwp_radius, m_forbidden_zone_param1, m_forbidden_zone_param2, polygons);
+                    hwp_radius = (hwp_lradius * 2) + (hwp_wpradius * 6);
+                    addpolygonmarkerland("Land", plla.y, plla.x, (int)plla.z, hwp_radius, m_forbidden_zone_param1, m_forbidden_zone_param2, polygons);
                 }
                 else
                 {
                     // normal point
                     if (plla.command == (ushort)MAVLink.MAV_CMD.TAKEOFF)
                     {
-                        addpolygonmarkerblue(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons, wp_radius);
+                        addpolygonmarkerblue("Takeoff", plla.y, plla.x, (int)plla.z, Color.White, polygons, wp_radius);
                     }
                     else
                     {
@@ -1838,7 +1838,7 @@ namespace MissionPlanner.GCSViews
                 PointLatLng point = new PointLatLng(lat, lng);
                 GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.blue);
 
-                m.ToolTipMode = MarkerTooltipMode.OnMouseOver;
+                m.ToolTipMode = MarkerTooltipMode.Always;
                 m.ToolTipText = tag;
                 m.Tag = tag;
 

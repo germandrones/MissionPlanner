@@ -1230,7 +1230,7 @@ namespace MissionPlanner.GCSViews
                 }
 
 
-                Color borderColor = color.HasValue ? color.Value : Color.White; //default color is white
+                Color borderColor = color.HasValue ? color.Value : Color.DarkGray;
                 if (Commands.Rows[wpno - 1].Cells[Command.Index].Value.ToString().Contains("LOITER_TO_ALT") || Commands.Rows[wpno - 1].Cells[Command.Index].Value.ToString().Contains("WAYPOINT"))
                 {
                     if (Commands.Rows[wpno - 1].Cells[Param1.Index].Value.ToString() == "1")
@@ -7528,7 +7528,9 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
 
         private void currentPositionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AddWPToMap(MainV2.comPort.MAV.cs.lat, MainV2.comPort.MAV.cs.lng, (int)MainV2.comPort.MAV.cs.alt);
+            // put here mouse coords
+            int alt = int.Parse(TXT_DefaultAlt.Text); // use default altitude
+            AddWPToMap(MouseDownEnd.Lat, MouseDownEnd.Lng, alt);
         }
 
         private void surveyGridToolStripMenuItem_Click(object sender, EventArgs e)
@@ -7536,6 +7538,8 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             GridPlugin grid = new GridPlugin();
             grid.Host = new PluginHost();
             grid.but_Click(sender, e);
+            polygongridmode = false;
+            polyicon.IsSelected = false;
         }
 
         private void BUT_loadPoly_Click(object sender, EventArgs e)
@@ -7962,18 +7966,5 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             if (mCheckerResult != MissionChecker.MissionCheckerResult.OK) return;
         }
 
-        private void BTN_Poly_WP_mode_Click(object sender, EventArgs e)
-        {
-            if (polygongridmode)
-            {
-                polygongridmode = false;
-                BTN_Poly_WP_mode.Text = "Polygon Mode";
-            }
-            else
-            {
-                polygongridmode = true;
-                BTN_Poly_WP_mode.Text = "Waypoint Mode";
-            }
-        }
     }
 }
