@@ -289,7 +289,7 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="tableLayoutPanelQuick.ColumnCount" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <metadata name="contextMenuStripQuickView.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>696, 57</value>
@@ -316,16 +316,22 @@
     <value>Fill</value>
   </data>
   <data name="quickView6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>175, 145</value>
+    <value>269, 3</value>
   </data>
   <data name="quickView6.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>100, 27</value>
   </data>
   <data name="quickView6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>166, 67</value>
+    <value>128, 136</value>
   </data>
   <data name="quickView6.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
+  </data>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>617, 17</value>
+  </metadata>
+  <data name="quickView6.ToolTip" xml:space="preserve">
+    <value>Double Click me to change</value>
   </data>
   <data name="&gt;&gt;quickView6.Name" xml:space="preserve">
     <value>quickView6</value>
@@ -349,7 +355,7 @@
     <value>100, 27</value>
   </data>
   <data name="quickView5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>166, 67</value>
+    <value>127, 137</value>
   </data>
   <data name="quickView5.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -370,13 +376,13 @@
     <value>Fill</value>
   </data>
   <data name="quickView4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>175, 74</value>
+    <value>269, 145</value>
   </data>
   <data name="quickView4.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>100, 27</value>
   </data>
   <data name="quickView4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>166, 65</value>
+    <value>128, 137</value>
   </data>
   <data name="quickView4.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -397,13 +403,13 @@
     <value>Fill</value>
   </data>
   <data name="quickView3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 74</value>
+    <value>136, 145</value>
   </data>
   <data name="quickView3.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>100, 27</value>
   </data>
   <data name="quickView3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>166, 65</value>
+    <value>127, 137</value>
   </data>
   <data name="quickView3.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -424,13 +430,13 @@
     <value>Fill</value>
   </data>
   <data name="quickView2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>175, 3</value>
+    <value>136, 3</value>
   </data>
   <data name="quickView2.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>100, 27</value>
   </data>
   <data name="quickView2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>166, 65</value>
+    <value>127, 136</value>
   </data>
   <data name="quickView2.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -457,14 +463,11 @@
     <value>100, 27</value>
   </data>
   <data name="quickView1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>166, 65</value>
+    <value>127, 136</value>
   </data>
   <data name="quickView1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>617, 17</value>
-  </metadata>
   <data name="quickView1.ToolTip" xml:space="preserve">
     <value>Double Click me to change</value>
   </data>
@@ -487,7 +490,7 @@
     <value>0, 0</value>
   </data>
   <data name="tableLayoutPanelQuick.RowCount" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="tableLayoutPanelQuick.Size" type="System.Drawing.Size, System.Drawing">
     <value>344, 215</value>
@@ -508,7 +511,7 @@
     <value>0</value>
   </data>
   <data name="tableLayoutPanelQuick.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="quickView6" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="quickView5" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="quickView4" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="quickView3" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="quickView2" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="quickView1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,33,33333,Percent,33,33333,Percent,33,33333" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="quickView6" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="quickView5" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="quickView4" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="quickView3" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="quickView2" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="quickView1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33,33333,Percent,33,33333,Percent,33,33333" /&gt;&lt;Rows Styles="Percent,50,Percent,50,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="&gt;&gt;splitContainer2.Panel1.Name" xml:space="preserve">
     <value>splitContainer2.Panel1</value>
@@ -2926,7 +2929,7 @@
     <value>zg1</value>
   </data>
   <data name="&gt;&gt;zg1.Type" xml:space="preserve">
-    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.5.30094, Culture=neutral, PublicKeyToken=null</value>
+    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.5.28140, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;zg1.Parent" xml:space="preserve">
     <value>splitContainer1.Panel1</value>

@@ -475,6 +475,10 @@ namespace MissionPlanner.GCSViews
             if (CB_tuning.Checked)
                 ZedGraphTimer.Start();
 
+            hud1.altunit = CurrentState.DistanceUnit;
+            hud1.speedunit = CurrentState.SpeedUnit;
+            hud1.distunit = CurrentState.DistanceUnit;
+
             if (MainV2.MONO)
             {
                 if (!hud1.Visible)
@@ -1166,7 +1170,7 @@ namespace MissionPlanner.GCSViews
                         updateClearRoutesMarkers();
 
                         // add this after the mav icons are drawn
-                        if (MainV2.comPort.MAV.cs.MovingBase != null)
+                        if (MainV2.comPort.MAV.cs.MovingBase != null && MainV2.comPort.MAV.cs.MovingBase == PointLatLngAlt.Zero)
                         {
                             addMissionRouteMarker(new GMarkerGoogle(currentloc, GMarkerGoogleType.blue_dot)
                             {
@@ -4641,8 +4645,6 @@ namespace MissionPlanner.GCSViews
 
         private void setQuickViewRowsCols(string cols, string rows)
         {
-            
-
             tableLayoutPanelQuick.ColumnCount = int.Parse(cols);
             tableLayoutPanelQuick.RowCount = int.Parse(rows);
 
@@ -4666,6 +4668,7 @@ namespace MissionPlanner.GCSViews
                 QV.ContextMenuStrip = contextMenuStripQuickView;
                 QV.Dock = DockStyle.Fill;
                 QV.numberColor = GetColor();
+                QV.BorderStyle = BorderStyle.FixedSingle;
                 QV.number = 0;
 
                 tableLayoutPanelQuick.Controls.Add(QV);

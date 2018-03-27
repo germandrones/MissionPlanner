@@ -30,10 +30,8 @@
             this.tabQuick = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanelQuick = new System.Windows.Forms.TableLayoutPanel();
-            this.quickView6 = new MissionPlanner.Controls.QuickView();
             this.contextMenuStripQuickView = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.setViewCountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.quickView5 = new MissionPlanner.Controls.QuickView();
             this.quickView4 = new MissionPlanner.Controls.QuickView();
             this.quickView3 = new MissionPlanner.Controls.QuickView();
             this.quickView2 = new MissionPlanner.Controls.QuickView();
@@ -148,6 +146,8 @@
             this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.Messagetabtimer = new System.Windows.Forms.Timer(this.components);
+            this.quickView5 = new MissionPlanner.Controls.QuickView();
+            this.quickView6 = new MissionPlanner.Controls.QuickView();
             this.bindingSourceHud = new System.Windows.Forms.BindingSource(this.components);
             this.bindingSourceQuickTab = new System.Windows.Forms.BindingSource(this.components);
             this.modifyandSetLoiterRad = new MissionPlanner.Controls.ModifyandSet();
@@ -247,6 +247,7 @@
             // 
             this.hud1.airspeed = 0F;
             this.hud1.alt = 0F;
+            this.hud1.altunit = null;
             this.hud1.AOA = 0F;
             this.hud1.BackColor = System.Drawing.Color.Black;
             this.hud1.batterylevel = 0F;
@@ -300,6 +301,7 @@
             this.hud1.datetime = new System.DateTime(((long)(0)));
             this.hud1.displayAOASSA = false;
             this.hud1.disttowp = 0F;
+            this.hud1.distunit = null;
             resources.ApplyResources(this.hud1, "hud1");
             this.hud1.ekfstatus = 0F;
             this.hud1.failsafe = false;
@@ -325,6 +327,7 @@
             this.hud1.pitch = 0F;
             this.hud1.roll = 0F;
             this.hud1.Russian = false;
+            this.hud1.speedunit = null;
             this.hud1.SSA = 0F;
             this.hud1.status = false;
             this.hud1.streamjpg = null;
@@ -477,25 +480,13 @@
             // tableLayoutPanelQuick
             // 
             resources.ApplyResources(this.tableLayoutPanelQuick, "tableLayoutPanelQuick");
-            this.tableLayoutPanelQuick.Controls.Add(this.quickView6, 1, 2);
-            this.tableLayoutPanelQuick.Controls.Add(this.quickView5, 0, 2);
+            this.tableLayoutPanelQuick.Controls.Add(this.quickView6, 3, 0);
+            this.tableLayoutPanelQuick.Controls.Add(this.quickView5, 0, 1);
             this.tableLayoutPanelQuick.Controls.Add(this.quickView4, 1, 1);
             this.tableLayoutPanelQuick.Controls.Add(this.quickView3, 0, 1);
             this.tableLayoutPanelQuick.Controls.Add(this.quickView2, 1, 0);
             this.tableLayoutPanelQuick.Controls.Add(this.quickView1, 0, 0);
             this.tableLayoutPanelQuick.Name = "tableLayoutPanelQuick";
-            // 
-            // quickView6
-            // 
-            this.quickView6.ContextMenuStrip = this.contextMenuStripQuickView;
-            this.quickView6.DataBindings.Add(new System.Windows.Forms.Binding("number", this.bindingSourceQuickTab, "DistToHome", true));
-            this.quickView6.desc = "DistToMAV";
-            resources.ApplyResources(this.quickView6, "quickView6");
-            this.quickView6.Name = "quickView6";
-            this.quickView6.number = 0D;
-            this.quickView6.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(95)))), ((int)(((byte)(154)))));
-            this.quickView6.numberformat = "0.00";
-            this.quickView6.DoubleClick += new System.EventHandler(this.quickView_DoubleClick);
             // 
             // contextMenuStripQuickView
             // 
@@ -510,20 +501,9 @@
             resources.ApplyResources(this.setViewCountToolStripMenuItem, "setViewCountToolStripMenuItem");
             this.setViewCountToolStripMenuItem.Click += new System.EventHandler(this.setViewCountToolStripMenuItem_Click);
             // 
-            // quickView5
-            // 
-            this.quickView5.ContextMenuStrip = this.contextMenuStripQuickView;
-            this.quickView5.DataBindings.Add(new System.Windows.Forms.Binding("number", this.bindingSourceQuickTab, "verticalspeed", true));
-            this.quickView5.desc = "verticalspeed";
-            resources.ApplyResources(this.quickView5, "quickView5");
-            this.quickView5.Name = "quickView5";
-            this.quickView5.number = 0D;
-            this.quickView5.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(95)))), ((int)(((byte)(154)))));
-            this.quickView5.numberformat = "0.00";
-            this.quickView5.DoubleClick += new System.EventHandler(this.quickView_DoubleClick);
-            // 
             // quickView4
             // 
+            this.quickView4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.quickView4.ContextMenuStrip = this.contextMenuStripQuickView;
             this.quickView4.DataBindings.Add(new System.Windows.Forms.Binding("number", this.bindingSourceQuickTab, "yaw", true));
             this.quickView4.desc = "yaw";
@@ -536,6 +516,7 @@
             // 
             // quickView3
             // 
+            this.quickView3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.quickView3.ContextMenuStrip = this.contextMenuStripQuickView;
             this.quickView3.DataBindings.Add(new System.Windows.Forms.Binding("number", this.bindingSourceQuickTab, "wp_dist", true));
             this.quickView3.desc = "wp_dist";
@@ -548,6 +529,7 @@
             // 
             // quickView2
             // 
+            this.quickView2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.quickView2.ContextMenuStrip = this.contextMenuStripQuickView;
             this.quickView2.DataBindings.Add(new System.Windows.Forms.Binding("number", this.bindingSourceQuickTab, "groundspeed", true));
             this.quickView2.desc = "groundspeed";
@@ -560,6 +542,7 @@
             // 
             // quickView1
             // 
+            this.quickView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.quickView1.ContextMenuStrip = this.contextMenuStripQuickView;
             this.quickView1.DataBindings.Add(new System.Windows.Forms.Binding("number", this.bindingSourceQuickTab, "alt", true));
             this.quickView1.desc = "alt";
@@ -1828,7 +1811,7 @@
             this.windDir1.BackColor = System.Drawing.Color.Transparent;
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Direction", this.bindingSource1, "wind_dir", true, System.Windows.Forms.DataSourceUpdateMode.Never));
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Speed", this.bindingSource1, "wind_vel", true, System.Windows.Forms.DataSourceUpdateMode.Never));
-            this.windDir1.Direction = 180D;
+            this.windDir1.Direction = 360D;
             resources.ApplyResources(this.windDir1, "windDir1");
             this.windDir1.Name = "windDir1";
             this.windDir1.Speed = 0D;
@@ -2035,6 +2018,33 @@
             // 
             this.Messagetabtimer.Interval = 200;
             this.Messagetabtimer.Tick += new System.EventHandler(this.Messagetabtimer_Tick);
+            // 
+            // quickView5
+            // 
+            this.quickView5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.quickView5.ContextMenuStrip = this.contextMenuStripQuickView;
+            this.quickView5.DataBindings.Add(new System.Windows.Forms.Binding("number", this.bindingSourceQuickTab, "groundspeed", true));
+            this.quickView5.desc = "groundspeed";
+            resources.ApplyResources(this.quickView5, "quickView5");
+            this.quickView5.Name = "quickView5";
+            this.quickView5.number = 0D;
+            this.quickView5.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(95)))), ((int)(((byte)(154)))));
+            this.quickView5.numberformat = "0.00";
+            this.quickView5.DoubleClick += new System.EventHandler(this.quickView_DoubleClick);
+            // 
+            // quickView6
+            // 
+            this.quickView6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.quickView6.ContextMenuStrip = this.contextMenuStripQuickView;
+            this.quickView6.DataBindings.Add(new System.Windows.Forms.Binding("number", this.bindingSourceQuickTab, "alt", true));
+            this.quickView6.desc = "alt";
+            resources.ApplyResources(this.quickView6, "quickView6");
+            this.quickView6.Name = "quickView6";
+            this.quickView6.number = 0D;
+            this.quickView6.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(95)))), ((int)(((byte)(154)))));
+            this.quickView6.numberformat = "0.00";
+            this.toolTip1.SetToolTip(this.quickView6, resources.GetString("quickView6.ToolTip"));
+            this.quickView6.DoubleClick += new System.EventHandler(this.quickView_DoubleClick);
             // 
             // bindingSourceHud
             // 
@@ -2414,12 +2424,12 @@
         public System.Windows.Forms.TabPage tabQuick;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelQuick;
-        private Controls.QuickView quickView6;
-        private Controls.QuickView quickView5;
         private Controls.QuickView quickView4;
         private Controls.QuickView quickView3;
         private Controls.QuickView quickView2;
         private Controls.QuickView quickView1;
         private System.Windows.Forms.TextBox txt_messagebox;
+        private Controls.QuickView quickView6;
+        private Controls.QuickView quickView5;
     }
 }

@@ -325,7 +325,6 @@ namespace MissionPlanner.Utilities
             return MissionCheckerResult.OK;
         }
 
-
         public void doRestoreModifiedMission()
         {
             int landingPointIndex = -1;
@@ -362,7 +361,6 @@ namespace MissionPlanner.Utilities
 
             return;
         }
-
 
         // Method modifies the defined mission according to disable HWP feature.
         public MissionCheckerResult doDisableHWP()

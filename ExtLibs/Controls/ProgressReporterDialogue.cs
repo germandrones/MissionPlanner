@@ -27,7 +27,7 @@ namespace MissionPlanner.Controls
 
         public bool Running = false;
 
-  
+
         // This is the event that will be raised on the BG thread
         public event DoWorkEventHandler DoWork;
 

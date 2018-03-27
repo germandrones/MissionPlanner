@@ -485,7 +485,7 @@ namespace MissionPlanner
 
             Form splash = Program.Splash;
 
-            splash.Refresh();
+            splash?.Refresh();
 
             Application.DoEvents();
 
@@ -559,7 +559,7 @@ namespace MissionPlanner
             }
             // ** Done
 
-            splash.Refresh();
+            splash?.Refresh();
             Application.DoEvents();
 
             // load last saved connection settings
@@ -625,8 +625,13 @@ namespace MissionPlanner
                 changelanguage(CultureInfoEx.GetCultureInfo(Settings.Instance["language"]));
             }
 
-            this.Text = splash.Text;
-            titlebar = splash.Text;
+            
+            if (splash != null)
+            {
+                this.Text = splash?.Text;
+                titlebar = splash?.Text;
+            }
+
 
             if (!MONO) // windows only
             {
@@ -2721,7 +2726,7 @@ namespace MissionPlanner
 
             this.ResumeLayout();
 
-            Program.Splash.Close();
+            Program.Splash?.Close();
 
             log.Info("appload time");
             MissionPlanner.Utilities.Tracking.AddTiming("AppLoad", "Load Time",

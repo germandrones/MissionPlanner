@@ -170,6 +170,18 @@ namespace MissionPlanner
         [DisplayText("Sat Count")]
         public float satcount { get; set; }
 
+        [DisplayText("Horizontal Accuracy")]
+        public float gpsh_acc { get; private set; }
+
+        [DisplayText("Vertical Accuracy")]
+        public float gpsv_acc { get; private set; }
+
+        [DisplayText("Velocity Accuracy")]
+        public float gpsvel_acc { get; private set; }
+
+        [DisplayText("Heading Accuracy")]
+        public float gpshdg_acc { get; private set; }
+
         [DisplayText("Latitude2 (dd)")]
         public double lat2 { get; set; }
 
