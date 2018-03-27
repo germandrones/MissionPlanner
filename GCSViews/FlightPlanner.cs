@@ -4722,6 +4722,7 @@ namespace MissionPlanner.GCSViews
             }
 
             polygongridmode = true;
+            polyicon.IsSelected = true;
 
             List<PointLatLng> polygonPoints = new List<PointLatLng>();
             if (drawnpolygonsoverlay.Polygons.Count == 0)
@@ -4741,8 +4742,11 @@ namespace MissionPlanner.GCSViews
             if (drawnpolygon.Points.Count == 0)
             {
                 // first polygon point, set this first point in the middle of map viewport
-                drawnpolygon.Points.Add(new PointLatLng(MainMap.Position.Lat, MainMap.Position.Lng));
-                addpolygonmarkergrid(drawnpolygon.Points.Count.ToString(), MainMap.Position.Lng, MainMap.Position.Lat, 0);
+                //drawnpolygon.Points.Add(new PointLatLng(MainMap.Position.Lat, MainMap.Position.Lng));
+                //addpolygonmarkergrid(drawnpolygon.Points.Count.ToString(), MainMap.Position.Lng, MainMap.Position.Lat, 0);
+
+                drawnpolygon.Points.Add(new PointLatLng(MouseDownStart.Lat, MouseDownStart.Lng));
+                addpolygonmarkergrid(drawnpolygon.Points.Count.ToString(), MouseDownStart.Lng, MouseDownStart.Lat, 0);
             }
             else
             {
@@ -4799,6 +4803,7 @@ namespace MissionPlanner.GCSViews
 
             //clear also polygons
             polygongridmode = false;
+            polyicon.IsSelected = false;
             if (drawnpolygon == null) return;
             drawnpolygon.Points.Clear();
             drawnpolygonsoverlay.Markers.Clear();
