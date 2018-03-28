@@ -751,8 +751,7 @@ namespace MissionPlanner.Controls
 
         private static readonly SolidBrush SolidBrush = new SolidBrush(Color.FromArgb(0x55, 0xff, 0xff, 0xff));
 
-        private static readonly SolidBrush SlightlyTransparentWhiteBrush =
-            new SolidBrush(Color.FromArgb(220, 255, 255, 255));
+        private static readonly SolidBrush SlightlyTransparentWhiteBrush = new SolidBrush(Color.FromArgb(220, 255, 255, 255));
 
         private static readonly SolidBrush AltGroundBrush = new SolidBrush(Color.FromArgb(100, Color.BurlyWood));
 
@@ -792,8 +791,7 @@ namespace MissionPlanner.Controls
 
         private DateTime starttime = DateTime.MinValue;
 
-        private System.ComponentModel.ComponentResourceManager resources =
-            new System.ComponentModel.ComponentResourceManager(typeof(HUD));
+        private System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HUD));
 
 
 
@@ -1744,13 +1742,15 @@ namespace MissionPlanner.Controls
                 // draw sky
                 if (bgon == true)
                 {
-                    RectangleF bg = new RectangleF(-halfwidth * 2, -halfheight * 2, this.Width * 2,
-                        halfheight * 2 + pitchoffset);
+                    RectangleF bg = new RectangleF(-halfwidth * 2, -halfheight * 2, this.Width * 2, halfheight * 2 + pitchoffset);
 
                     if (bg.Height != 0)
                     {
-                        using (LinearGradientBrush linearBrush = new LinearGradientBrush(
-                            bg, Color.Blue, Color.LightBlue, LinearGradientMode.Vertical))
+                        /*using (LinearGradientBrush linearBrush = new LinearGradientBrush(bg, Color.Blue, Color.LightBlue, LinearGradientMode.Vertical))
+                        {
+                            graphicsObject.FillRectangle(linearBrush, bg);
+                        }*/
+                        using (LinearGradientBrush linearBrush = new LinearGradientBrush(bg, Color.FromArgb(0x65, 0x97, 0xb8), Color.FromArgb(0x59, 0x86, 0xa9), LinearGradientMode.Vertical))
                         {
                             graphicsObject.FillRectangle(linearBrush, bg);
                         }
@@ -1761,18 +1761,18 @@ namespace MissionPlanner.Controls
 
                     if (bg.Height != 0)
                     {
-                        using (
-                            LinearGradientBrush linearBrush = new LinearGradientBrush(
-                                bg, Color.FromArgb(0x9b, 0xb8, 0x24), Color.FromArgb(0x41, 0x4f, 0x07),
-                                LinearGradientMode.Vertical))
+                        /*using ( LinearGradientBrush linearBrush = new LinearGradientBrush( bg, Color.FromArgb(0x9b, 0xb8, 0x24), Color.FromArgb(0x41, 0x4f, 0x07), LinearGradientMode.Vertical))
+                        {
+                            graphicsObject.FillRectangle(linearBrush, bg);
+                        }*/
+                        using (LinearGradientBrush linearBrush = new LinearGradientBrush(bg, Color.FromArgb(0x6d, 0x46, 0x21), Color.FromArgb(0x84, 0x52, 0x20), LinearGradientMode.Vertical))
                         {
                             graphicsObject.FillRectangle(linearBrush, bg);
                         }
                     }
 
                     //draw centerline
-                    graphicsObject.DrawLine(this._whitePen, -halfwidth * 2, pitchoffset + 0, halfwidth * 2,
-                        pitchoffset + 0);
+                    graphicsObject.DrawLine(this._whitePen, -halfwidth * 2, pitchoffset + 0, halfwidth * 2, pitchoffset + 0);
                 }
 
                 graphicsObject.ResetTransform();

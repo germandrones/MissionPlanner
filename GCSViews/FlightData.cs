@@ -1382,7 +1382,8 @@ namespace MissionPlanner.GCSViews
         }
 
 
-        
+
+        public static List<MAVLink.mavlink_mission_item_t> missionItems = new List<MAVLink.mavlink_mission_item_t>();
 
         private void update_map()
         {
@@ -1394,17 +1395,35 @@ namespace MissionPlanner.GCSViews
             MAVLink.mavlink_mission_item_t lastplla = new MAVLink.mavlink_mission_item_t();
             MAVLink.mavlink_mission_item_t home = new MAVLink.mavlink_mission_item_t();
 
-            foreach (MAVLink.mavlink_mission_item_t plla in MainV2.comPort.MAV.wps.Values)
+            #region HWP Visualization
+            int hwp_lradius = 60;
+            int hwp_wpradius = 30;
+            int wp_radius = 30;
+            try
             {
-                if (plla.x == 0 || plla.y == 0)
-                    continue;
+                hwp_lradius = (int)MainV2.comPort.MAV.param["HWP_LRADIUS"].Value;
+                hwp_wpradius = (int)MainV2.comPort.MAV.param["HWP_WPRADIUS"].Value;
+                wp_radius = (int)MainV2.comPort.MAV.param["WP_RADIUS"].Value;
+            }
+            catch { }
 
-
-                if (plla.command == (ushort)MAVLink.MAV_CMD.DO_SET_ROI)
+            // HWP Points received?
+            if (HWP_updated)
+            {
+                addpolygonmarkerNoTooltip("HWP1", hwp1_lng, hwp1_lat, 0, Color.Blue, polygons, hwp_wpradius);
+                addpolygonmarkerNoTooltip("HWP2", hwp2_lng, hwp2_lat, 0, Color.Blue, polygons, hwp_wpradius);
+                addpolygonmarkerNoTooltip("HWP3", hwp3_lng, hwp3_lat, 0, Color.Blue, polygons, hwp_lradius);
+                if (hwp4_lat != -1 && hwp4_lng != -1)
                 {
-                    addpolygonmarkerred(plla.seq.ToString(), plla.y, plla.x, (int)plla.z, Color.Red, routes);
-                    continue;
+                    addpolygonmarkerNoTooltip("HWP4", hwp4_lng, hwp4_lat, 0, Color.Blue, polygons, hwp_wpradius);
                 }
+            }
+            #endregion
+
+            foreach (MAVLink.mavlink_mission_item_t plla in missionItems)
+            {
+                if (plla.x == 0 || plla.y == 0) continue;
+
 
                 string tag = plla.seq.ToString();
 
@@ -1423,64 +1442,64 @@ namespace MissionPlanner.GCSViews
 
                 try
                 {
-                    dist =
-                        (float)
-                            new PointLatLngAlt(plla.x, plla.y).GetDistance(new PointLatLngAlt(
-                                lastplla.x, lastplla.y));
-
+                    dist = (float) new PointLatLngAlt(plla.x, plla.y).GetDistance(new PointLatLngAlt(lastplla.x, lastplla.y));
                     distanceBar1.AddWPDist(dist);
-
-                    if (plla.seq <= MainV2.comPort.MAV.cs.wpno)
-                    {
-                        travdist += dist;
-                    }
-
+                    if (plla.seq <= MainV2.comPort.MAV.cs.wpno) { travdist += dist; }
                     lastplla = plla;
-                }
-                catch
-                {
-                }
-
-                int hwp_lradius = 60;
-                int hwp_wpradius = 30;
-                int wp_radius = 30;
-                try
-                {
-                    hwp_lradius = (int)MainV2.comPort.MAV.param["HWP_LRADIUS"].Value;
-                    hwp_wpradius = (int)MainV2.comPort.MAV.param["HWP_WPRADIUS"].Value;
-                    wp_radius = (int)MainV2.comPort.MAV.param["WP_RADIUS"].Value;
                 }
                 catch { }
 
-                // HWP Points received?
-                if (HWP_updated)
+
+                switch(plla.command)
                 {
-                    addpolygonmarkerNoTooltip("HWP1", hwp1_lng, hwp1_lat, 0, Color.Blue, polygons, hwp_wpradius);
-                    addpolygonmarkerNoTooltip("HWP2", hwp2_lng, hwp2_lat, 0, Color.Blue, polygons, hwp_wpradius);
-                    addpolygonmarkerNoTooltip("HWP3", hwp3_lng, hwp3_lat, 0, Color.Blue, polygons, hwp_lradius);
-                    if (hwp4_lat != -1 && hwp4_lng != -1)
-                    {
-                        addpolygonmarkerNoTooltip("HWP4", hwp4_lng, hwp4_lat, 0, Color.Blue, polygons, hwp_wpradius);
-                    }
+                    case (ushort)MAVLink.MAV_CMD.DO_SET_ROI:
+                        {
+                            addpolygonmarkerred("ROI", plla.y, plla.x, (int)plla.z, Color.Red, routes);
+                            break;
+                        }
+                    case (ushort)MAVLink.MAV_CMD.MAV_CMD_SET_FORBIDDEN_ZONE:
+                        {
+                            m_forbidden_zone_param1 = (int)plla.param1;
+                            m_forbidden_zone_param2 = (int)plla.param2;
+                            break;
+                        }
+
+                    case (ushort)MAVLink.MAV_CMD.LAND:
+                    case (ushort)MAVLink.MAV_CMD.LAND_AT_TAKEOFF:
+                        {
+                            int hwp_radius = (hwp_lradius * 2) + (hwp_wpradius * 6);
+                            addpolygonmarkerland("Land", plla.y, plla.x, (int)plla.z, hwp_radius, m_forbidden_zone_param1, m_forbidden_zone_param2, polygons);
+                            break;
+                        }
+
+                    case (ushort)MAVLink.MAV_CMD.TAKEOFF:
+                        {
+                            addpolygonmarkerblue("Takeoff", plla.y, plla.x, (int)plla.z, Color.White, polygons, wp_radius);
+                            break;
+                        }
+
+                    default:
+                        {
+                            addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons, wp_radius);
+                            break;
+                        }
+
                 }
 
+                /*
                 if(plla.command == (ushort)MAVLink.MAV_CMD.MAV_CMD_SET_FORBIDDEN_ZONE)
                 {
-                    // parse forbidden angle here
                     m_forbidden_zone_param1 = (int)plla.param1;
                     m_forbidden_zone_param2 = (int)plla.param2;
                 }
 
                 if (plla.command == (ushort)MAVLink.MAV_CMD.LAND || plla.command == (ushort)MAVLink.MAV_CMD.LAND_AT_TAKEOFF)
                 {
-                    // landing point
-                    int hwp_radius = 200;
-                    hwp_radius = (hwp_lradius * 2) + (hwp_wpradius * 6);
+                    int hwp_radius = (hwp_lradius * 2) + (hwp_wpradius * 6);
                     addpolygonmarkerland("Land", plla.y, plla.x, (int)plla.z, hwp_radius, m_forbidden_zone_param1, m_forbidden_zone_param2, polygons);
                 }
                 else
                 {
-                    // normal point
                     if (plla.command == (ushort)MAVLink.MAV_CMD.TAKEOFF)
                     {
                         addpolygonmarkerblue("Takeoff", plla.y, plla.x, (int)plla.z, Color.White, polygons, wp_radius);
@@ -1489,20 +1508,15 @@ namespace MissionPlanner.GCSViews
                     {
                         addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons, wp_radius);
                     }
-                }
+                }*/
             }
 
             travdist -= MainV2.comPort.MAV.cs.wp_dist;
 
-            if (MainV2.comPort.MAV.cs.mode.ToUpper() == "AUTO")
-                distanceBar1.traveleddist = travdist;
+            if (MainV2.comPort.MAV.cs.mode.ToUpper() == "AUTO") distanceBar1.traveleddist = travdist;
 
             RegeneratePolygon();
-
-            // update rally points
-
             rallypointoverlay.Markers.Clear();
-
             foreach (var mark in MainV2.comPort.MAV.rallypoints.Values)
             {
                 rallypointoverlay.Markers.Add(new GMapMarkerRallyPt(mark));

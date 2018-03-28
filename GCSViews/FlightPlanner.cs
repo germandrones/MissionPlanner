@@ -1212,34 +1212,19 @@ namespace MissionPlanner.GCSViews
                 m.Tag = tag;
 
                 int wpno = -1;
+                int wp_radius = (int)(float.Parse(TXT_WPRad.Text) / CurrentState.multiplierdist);
+
                 if (int.TryParse(tag, out wpno))
                 {
                     // preselect groupmarker
-                    if (groupmarkers.Contains(wpno))
-                        m.selected = true;
-                }
-
-                int wp_radius = 0;
-                if (Commands.Rows[wpno - 1].Cells[Command.Index].Value.ToString().Contains("LOITER_TO_ALT"))
-                {
-                    wp_radius = (int)(float.Parse(Commands.Rows[wpno - 1].Cells[Param2.Index].Value.ToString()) / CurrentState.multiplierdist);
-                }
-                else
-                {
-                    wp_radius = (int)(float.Parse(TXT_WPRad.Text) / CurrentState.multiplierdist);
-                }
-
-
-                Color borderColor = color.HasValue ? color.Value : Color.DarkGray;
-                if (Commands.Rows[wpno - 1].Cells[Command.Index].Value.ToString().Contains("LOITER_TO_ALT") || Commands.Rows[wpno - 1].Cells[Command.Index].Value.ToString().Contains("WAYPOINT"))
-                {
-                    if (Commands.Rows[wpno - 1].Cells[Param1.Index].Value.ToString() == "1")
+                    if (groupmarkers.Contains(wpno)) m.selected = true;
+                    if (Commands.Rows[wpno - 1].Cells[Command.Index].Value.ToString().Contains("LOITER_TO_ALT"))
                     {
-                        borderColor = Color.DarkGray;// change border color
+                        wp_radius = (int)(float.Parse(Commands.Rows[wpno - 1].Cells[Param2.Index].Value.ToString()) / CurrentState.multiplierdist);
                     }
                 }
 
-
+                Color borderColor = color.HasValue ? color.Value : Color.DarkGray;
                 GMapMarkerRect mBorders = new GMapMarkerRect(point);
                 {
                     mBorders.InnerMarker = m;
@@ -2132,7 +2117,6 @@ namespace MissionPlanner.GCSViews
         void getWPs(object sender, ProgressWorkerEventArgs e, object passdata = null)
         {
             List<Locationwp> cmds = new List<Locationwp>();
-
             try
             {
                 MAVLinkInterface port = MainV2.comPort;
@@ -2176,6 +2160,7 @@ namespace MissionPlanner.GCSViews
                     log.Info("Getting WP" + a);
                     ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(a * 100 / cmdcount, "Getting WP " + a);
                     cmds.Add(port.getWP(a));
+
                 }
 
                 port.setWPACK();
@@ -2183,6 +2168,8 @@ namespace MissionPlanner.GCSViews
                 ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(100, "Done");
 
                 log.Info("Done");
+
+                
             }
             catch
             {
@@ -2191,6 +2178,25 @@ namespace MissionPlanner.GCSViews
 
             // Hide commands from user. Commands for internal use for example:MAV_CMD_SET_FORBIDDEN_ZONE 
             cmds = HideCommands(cmds);
+
+            // refresh commands in flight data view
+            FlightData.missionItems.Clear();
+            ushort cmd_ctr = 0;
+            foreach (var cmd in cmds)
+            {
+                // send them to flight data tab
+                MAVLink.mavlink_mission_item_t mitem = new MAVLink.mavlink_mission_item_t();
+                mitem.x = (float)cmd.lat;
+                mitem.y = (float)cmd.lng;
+                mitem.z = cmd.alt;
+                mitem.param1 = cmd.p1;
+                mitem.param2 = cmd.p2;
+                mitem.param3 = cmd.p3;
+                mitem.param4 = cmd.p4;
+                mitem.command = cmd.id;
+                mitem.seq = cmd_ctr++;
+                FlightData.missionItems.Add(mitem);
+            }
 
             WPtoScreen(cmds);
         }
@@ -2363,8 +2369,21 @@ namespace MissionPlanner.GCSViews
             {
                 if (missionChecker.DO_DISABLE_HWP || missionChecker.defined_mission.Count != Commands.RowCount)
                 {
-                    Commands.Rows.Clear();
-                    foreach (var mitem in missionChecker.defined_mission) { AddCommand((MAVLink.MAV_CMD)mitem.getCommand(), mitem.P1, mitem.P2, mitem.P3, mitem.P4, mitem.getCoords().Lng, mitem.getCoords().Lat, mitem.getCoords().Alt); }
+                    DialogResult result = MessageBox.Show("Headwind Waypoints will be deactivated and Mission will be modified automatically.\nClick Yes to allow this modifications, or No to continue uploading.", "Mission Checker", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
+                    {
+                        Commands.Rows.Clear();
+                        foreach (var mitem in missionChecker.defined_mission) { AddCommand((MAVLink.MAV_CMD)mitem.getCommand(), mitem.P1, mitem.P2, mitem.P3, mitem.P4, mitem.getCoords().Lng, mitem.getCoords().Lat, mitem.getCoords().Alt); }
+                    }
+                    else
+                    {
+                        // check last mission command if disable hwp command found, and insert it to our mission
+                        /*var mitem = missionChecker.defined_mission[missionChecker.defined_mission.Count - 1];
+                        if (mitem.getCommand() == (int)MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP)
+                        {
+                            AddCommand((MAVLink.MAV_CMD)mitem.getCommand(), mitem.P1, mitem.P2, mitem.P3, mitem.P4, mitem.getCoords().Lng, mitem.getCoords().Lat, mitem.getCoords().Alt);
+                        }*/
+                    }
                 }
             }
             else
@@ -2412,12 +2431,6 @@ namespace MissionPlanner.GCSViews
             }
             
             #region Saving and Uploading the mission
-            /*ProgressReporterDialogue frmProgressReporter = new ProgressReporterDialogue
-            {
-                StartPosition = FormStartPosition.CenterScreen,
-                Text = "Sending WP's"
-            };*/
-
             IProgressReporterDialogue frmProgressReporter = new ProgressReporterDialogue
             {
                 StartPosition = FormStartPosition.CenterScreen,
@@ -2486,7 +2499,7 @@ namespace MissionPlanner.GCSViews
 
         List<Locationwp> GetCommandList()
         {
-            List<Locationwp> commands = new List<Locationwp>();
+            List<Locationwp> commands = new List<Locationwp>();            
 
             for (int a = 0; a < Commands.Rows.Count - 0; a++)
             {
@@ -2507,7 +2520,7 @@ namespace MissionPlanner.GCSViews
                     temp.p3 = 0;
                     commands.Add(temp); // insert normal LAND cmd
                 }
-                else commands.Add(temp); // Normal case just puch the nav cmd
+                else commands.Add(temp); // Normal case just puch the nav cmd               
             }
 
             return commands;
@@ -2806,6 +2819,26 @@ namespace MissionPlanner.GCSViews
             var commandlist = GetCommandList();
             commandlist.Insert(0, home);
 
+
+            // send items to flight data tab
+            FlightData.missionItems.Clear();
+            ushort cmd_ctr = 0;
+            foreach (var cmd in commandlist)
+            {
+                MAVLink.mavlink_mission_item_t mitem = new MAVLink.mavlink_mission_item_t();
+                mitem.x = (float)cmd.lat;
+                mitem.y = (float)cmd.lng;
+                mitem.z = cmd.alt;
+                mitem.param1 = cmd.p1;
+                mitem.param2 = cmd.p2;
+                mitem.param3 = cmd.p3;
+                mitem.param4 = cmd.p4;
+                mitem.command = cmd.id;
+                mitem.seq = cmd_ctr++;
+                FlightData.missionItems.Add(mitem);
+            }
+
+
             var totalwpcountforupload = (ushort)(commandlist.Count);
             MainV2.comPort.setWPTotal(totalwpcountforupload);
 
@@ -2928,8 +2961,7 @@ namespace MissionPlanner.GCSViews
 
                 req.seq = (ushort)a;
 
-                ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(a * 100 / Commands.Rows.Count,
-                    "Setting WP " + a);
+                ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(a * 100 / Commands.Rows.Count, "Setting WP " + a);                
                 Console.WriteLine("WP no " + a);
 
                 MainV2.comPort.sendPacket(req, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
@@ -2939,6 +2971,19 @@ namespace MissionPlanner.GCSViews
             MainV2.comPort.UnSubscribeToPacketType(sub2);
 
             MainV2.comPort.setWPACK();
+
+            ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(95, "Setting params");
+
+            MainV2.comPort.setParam("WP_RADIUS", float.Parse(TXT_WPRad.Text) / CurrentState.multiplierdist);
+            MainV2.comPort.setParam("WPNAV_RADIUS", float.Parse(TXT_WPRad.Text) / CurrentState.multiplierdist * 100.0);
+
+            try
+            {
+                MainV2.comPort.setParam(new[] { "LOITER_RAD", "WP_LOITER_RAD" }, float.Parse(TXT_loiterrad.Text) / CurrentState.multiplierdist);
+            }
+            catch { }
+
+            ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(100, "Done.");
         }
 
         /// <summary>
@@ -6344,7 +6389,7 @@ namespace MissionPlanner.GCSViews
             // Get the Altitude on clicked point
             string alt = "50";
 
-            if (DialogResult.Cancel == InputBox.Show("Altitude", "Please enter your landing altitude", ref alt)) return;
+            if (DialogResult.Cancel == InputBox.Show("Altitude", "Please enter your landing altitude (meters):", ref alt)) return;
             int alti = -1;
             if (!int.TryParse(alt, out alti))
             {
@@ -6451,7 +6496,7 @@ namespace MissionPlanner.GCSViews
             // Get the Altitude on clicked point
             string alt = "50";
 
-            if (DialogResult.Cancel == InputBox.Show("Altitude", "Please enter your takeoff altitude", ref alt)) return;
+            if (DialogResult.Cancel == InputBox.Show("Altitude", "Please enter your takeoff altitude (meters):", ref alt)) return;
 
             int alti = -1;
 
