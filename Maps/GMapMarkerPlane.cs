@@ -88,7 +88,8 @@ namespace MissionPlanner.Maps
             catch
             {
             }
-            g.DrawImageUnscaled(icon, icon.Width/-2, icon.Height/-2);
+            // added a small offset 12px to center the heading
+            g.DrawImageUnscaled(icon, icon.Width/-2 - 12, icon.Height/-2);
 
             g.Transform = temp;
         }
