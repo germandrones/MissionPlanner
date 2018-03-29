@@ -74,7 +74,7 @@ namespace MissionPlanner.GCSViews
         CurveItem list10curve;
 
         internal static GMapOverlay tfrpolygons;
-        public static GMapOverlay kmlpolygons;
+        public static   GMapOverlay kmlpolygons;
         internal static GMapOverlay geofence;
         internal static GMapOverlay rallypointoverlay;
         internal static GMapOverlay photosoverlay;
@@ -1422,15 +1422,13 @@ namespace MissionPlanner.GCSViews
 
             foreach (MAVLink.mavlink_mission_item_t plla in missionItems)
             {
-                if (plla.x == 0 || plla.y == 0) continue;
-
-
                 string tag = plla.seq.ToString();
 
                 if (plla.seq == 0 && plla.current != 2)
                 {
                     tag = "Home";
                     home = plla;
+                    continue;
                 }
 
                 if (plla.current == 2)
@@ -1454,7 +1452,7 @@ namespace MissionPlanner.GCSViews
                 {
                     case (ushort)MAVLink.MAV_CMD.DO_SET_ROI:
                         {
-                            addpolygonmarkerred("ROI", plla.y, plla.x, (int)plla.z, Color.Red, routes);
+                            addpolygonmarkerred("ROI", plla.y, plla.x, (int)plla.z, Color.Red, poioverlay);
                             break;
                         }
                     case (ushort)MAVLink.MAV_CMD.MAV_CMD_SET_FORBIDDEN_ZONE:
@@ -1478,37 +1476,33 @@ namespace MissionPlanner.GCSViews
                             break;
                         }
 
+                    case (ushort)MAVLink.MAV_CMD.LOITER_TO_ALT:
+                        {
+                            addpolygonmarker("LTA", plla.y, plla.x, (int)plla.z, Color.Gray, polygons, (int)plla.param2);
+                            break;
+                        }
+
+                    case (ushort)MAVLink.MAV_CMD.DO_JUMP:
+                        {
+                            int wpno = (int)plla.param1;
+                            //int repeat = (int)plla.param2;
+
+                            List<PointLatLngAlt> list = new List<PointLatLngAlt>();
+                            for (int no = wpno; no <= plla.seq; no++)
+                            {                                    
+                                addpolygonmarker("", missionItems[no].y, missionItems[no].x, (int)missionItems[no].z, Color.White, polygons, 0);
+                            }
+                            
+                            break;
+                        }
+
                     default:
                         {
-                            addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons, wp_radius);
+                            addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons, 0);
                             break;
                         }
 
                 }
-
-                /*
-                if(plla.command == (ushort)MAVLink.MAV_CMD.MAV_CMD_SET_FORBIDDEN_ZONE)
-                {
-                    m_forbidden_zone_param1 = (int)plla.param1;
-                    m_forbidden_zone_param2 = (int)plla.param2;
-                }
-
-                if (plla.command == (ushort)MAVLink.MAV_CMD.LAND || plla.command == (ushort)MAVLink.MAV_CMD.LAND_AT_TAKEOFF)
-                {
-                    int hwp_radius = (hwp_lradius * 2) + (hwp_wpradius * 6);
-                    addpolygonmarkerland("Land", plla.y, plla.x, (int)plla.z, hwp_radius, m_forbidden_zone_param1, m_forbidden_zone_param2, polygons);
-                }
-                else
-                {
-                    if (plla.command == (ushort)MAVLink.MAV_CMD.TAKEOFF)
-                    {
-                        addpolygonmarkerblue("Takeoff", plla.y, plla.x, (int)plla.z, Color.White, polygons, wp_radius);
-                    }
-                    else
-                    {
-                        addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons, wp_radius);
-                    }
-                }*/
             }
 
             travdist -= MainV2.comPort.MAV.cs.wp_dist;
@@ -1516,6 +1510,7 @@ namespace MissionPlanner.GCSViews
             if (MainV2.comPort.MAV.cs.mode.ToUpper() == "AUTO") distanceBar1.traveleddist = travdist;
 
             RegeneratePolygon();
+
             rallypointoverlay.Markers.Clear();
             foreach (var mark in MainV2.comPort.MAV.rallypoints.Values)
             {
@@ -1879,7 +1874,6 @@ namespace MissionPlanner.GCSViews
             }
         }
 
-
         private void addpolygonmarker(string tag, double lng, double lat, int alt, Color? color, GMapOverlay overlay, int wp_radius)
         {
             try
@@ -1897,6 +1891,7 @@ namespace MissionPlanner.GCSViews
                     {
                         mBorders.Color = color.Value;
                     }
+                    mBorders.wprad = wp_radius;
                 }
 
                 Invoke((MethodInvoker) delegate
@@ -2006,8 +2001,7 @@ namespace MissionPlanner.GCSViews
         {
             List<PointLatLng> polygonPoints = new List<PointLatLng>();
 
-            if (routes == null)
-                return;
+            if (routes == null) return;
 
             foreach (GMapMarker m in polygons.Markers)
             {
@@ -2018,21 +2012,18 @@ namespace MissionPlanner.GCSViews
                 }
             }
 
-            if (polygonPoints.Count < 2)
-                return;
+            if (polygonPoints.Count < 2) return;
 
             GMapRoute homeroute = new GMapRoute("homepath");
-            homeroute.Stroke = new Pen(Color.Yellow, 2);
+            homeroute.Stroke = new Pen(Color.Orange, 2);
             homeroute.Stroke.DashStyle = DashStyle.Dash;
-            // add first point past home
             homeroute.Points.Add(polygonPoints[1]);
-            // add home location
             homeroute.Points.Add(polygonPoints[0]);
-            // add last point
             homeroute.Points.Add(polygonPoints[polygonPoints.Count - 1]);
 
+
             GMapRoute wppath = new GMapRoute("wp path");
-            wppath.Stroke = new Pen(Color.Yellow, 4);
+            wppath.Stroke = new Pen(Color.Orange, 3);
             wppath.Stroke.DashStyle = DashStyle.Custom;
 
             for (int a = 1; a < polygonPoints.Count - 1; a++)
@@ -2041,7 +2032,7 @@ namespace MissionPlanner.GCSViews
             }
 
             GMapRoute landingWay = new GMapRoute("LandingWay");
-            landingWay.Stroke = !HWP_updated ? new Pen(Color.Yellow, 4) : new Pen(Color.LightBlue, 4);
+            landingWay.Stroke = !HWP_updated ? new Pen(Color.Orange, 3) : new Pen(Color.LightBlue, 3);
             landingWay.Stroke.DashStyle = HWP_updated ? DashStyle.Solid : DashStyle.Custom;
 
             if (HWP_updated)
