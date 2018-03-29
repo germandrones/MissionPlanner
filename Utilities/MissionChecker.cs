@@ -366,10 +366,15 @@ namespace MissionPlanner.Utilities
         public MissionCheckerResult doDisableHWP()
         {
             doRestoreModifiedMission();
-            
+
             int LAST_MWP = getLastMissionWP();
             int LAND_CMD_ID = getLandWP();
-            
+
+            bool distUnsafe = false;
+            //if distance between last mwp and landing point is less than hwp radius
+            double distance = defined_mission[LAND_CMD_ID].getCoords().GetDistance(defined_mission[LAST_MWP].getCoords());
+            if (distance <= m_hwp_radius) distUnsafe = true; 
+
             //modify this additional points
             m_land_point = defined_mission[LAND_CMD_ID].getCoords();
             
@@ -382,6 +387,8 @@ namespace MissionPlanner.Utilities
             defined_mission.Insert(LAND_CMD_ID, new MissionItem((int)MAVLink.MAV_CMD.LOITER_TO_ALT, 0, m_hwp_lradius, 0, 1, LTA.Lat, LTA.Lng, m_land_point.Alt));
             defined_mission.Add(new MissionItem((int)MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP, 0, 0, 0, 0, 0, 0, 0));
 
+            
+            
             // if LTA radius and LWP are crossing, return false.
             if (LTA.GetDistance(LWP) < m_hwp_lradius + m_hwp_wpradius) return MissionCheckerResult.DISTANCE_UNSAFE;
             return MissionCheckerResult.OK;

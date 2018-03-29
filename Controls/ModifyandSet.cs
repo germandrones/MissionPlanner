@@ -68,5 +68,43 @@ namespace MissionPlanner.Controls
             if (ValueChanged != null)
                 ValueChanged(sender, e);
         }
+
+        /*
+        protected override void OnCreateControl()
+        {
+            NumericUpDown.Width = (int)(this.Width * 0.25f);
+            NumericUpDown.Height = Button.Height;
+            Button.Width = (int)(this.Width * 0.7f);
+            Button.Dock = DockStyle.Right;
+        }
+        */
+        
+        [System.ComponentModel.Browsable(true)]
+        public int ButtonWidth
+        {
+            get { return this.Button.Width; }
+            set { this.Button.Width = value; }
+        }
+
+        [System.ComponentModel.Browsable(true)]
+        public int NumericWidth
+        {
+            get { return this.NumericUpDown.Width; }
+            set { this.NumericUpDown.Width = value; }
+        }
+
+        [System.ComponentModel.Browsable(true)]
+        public int ButtonHeight
+        {
+            get { return this.Button.Height; }
+            set { this.Button.Height = value; }
+        }
+
+        [System.ComponentModel.Browsable(true)]
+        public int NumericHeight
+        {
+            get { return this.NumericUpDown.Height; }
+            set { this.NumericUpDown.Height = value; }
+        }
     }
 }

@@ -316,13 +316,13 @@
     <value>Fill</value>
   </data>
   <data name="quickView6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>269, 3</value>
+    <value>231, 3</value>
   </data>
   <data name="quickView6.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>100, 27</value>
   </data>
   <data name="quickView6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>128, 136</value>
+    <value>110, 101</value>
   </data>
   <data name="quickView6.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -349,13 +349,13 @@
     <value>Fill</value>
   </data>
   <data name="quickView5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 145</value>
+    <value>3, 110</value>
   </data>
   <data name="quickView5.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>100, 27</value>
   </data>
   <data name="quickView5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>127, 137</value>
+    <value>108, 102</value>
   </data>
   <data name="quickView5.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -376,13 +376,13 @@
     <value>Fill</value>
   </data>
   <data name="quickView4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>269, 145</value>
+    <value>231, 110</value>
   </data>
   <data name="quickView4.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>100, 27</value>
   </data>
   <data name="quickView4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>128, 137</value>
+    <value>110, 102</value>
   </data>
   <data name="quickView4.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -403,13 +403,13 @@
     <value>Fill</value>
   </data>
   <data name="quickView3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>136, 145</value>
+    <value>117, 110</value>
   </data>
   <data name="quickView3.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>100, 27</value>
   </data>
   <data name="quickView3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>127, 137</value>
+    <value>108, 102</value>
   </data>
   <data name="quickView3.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -430,13 +430,13 @@
     <value>Fill</value>
   </data>
   <data name="quickView2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>136, 3</value>
+    <value>117, 3</value>
   </data>
   <data name="quickView2.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>100, 27</value>
   </data>
   <data name="quickView2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>127, 136</value>
+    <value>108, 101</value>
   </data>
   <data name="quickView2.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -463,7 +463,7 @@
     <value>100, 27</value>
   </data>
   <data name="quickView1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>127, 136</value>
+    <value>108, 101</value>
   </data>
   <data name="quickView1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -616,13 +616,13 @@
     <value>0</value>
   </data>
   <data name="modifyandSetLoiterRad.Location" type="System.Drawing.Point, System.Drawing">
-    <value>276, 64</value>
+    <value>157, 64</value>
   </data>
   <data name="modifyandSetLoiterRad.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="modifyandSetLoiterRad.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 29</value>
+    <value>181, 20</value>
   </data>
   <data name="modifyandSetLoiterRad.TabIndex" type="System.Int32, mscorlib">
     <value>87</value>
@@ -643,7 +643,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_abortland.Location" type="System.Drawing.Point, System.Drawing">
-    <value>275, 122</value>
+    <value>285, 370</value>
   </data>
   <data name="BUT_abortland.Size" type="System.Drawing.Size, System.Drawing">
     <value>69, 23</value>
@@ -673,7 +673,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_resumemis.Location" type="System.Drawing.Point, System.Drawing">
-    <value>200, 122</value>
+    <value>210, 370</value>
   </data>
   <data name="BUT_resumemis.Size" type="System.Drawing.Size, System.Drawing">
     <value>69, 23</value>
@@ -697,7 +697,7 @@
     <value>2</value>
   </data>
   <data name="CMB_mountmode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 93</value>
+    <value>14, 341</value>
   </data>
   <data name="CMB_mountmode.Size" type="System.Drawing.Size, System.Drawing">
     <value>76, 21</value>
@@ -721,7 +721,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_mountmode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>86, 93</value>
+    <value>96, 341</value>
   </data>
   <data name="BUT_mountmode.Size" type="System.Drawing.Size, System.Drawing">
     <value>55, 23</value>
@@ -754,7 +754,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_ARM.Location" type="System.Drawing.Point, System.Drawing">
-    <value>200, 93</value>
+    <value>210, 341</value>
   </data>
   <data name="BUT_ARM.Size" type="System.Drawing.Size, System.Drawing">
     <value>69, 23</value>
@@ -784,7 +784,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_joystick.Location" type="System.Drawing.Point, System.Drawing">
-    <value>147, 93</value>
+    <value>157, 341</value>
   </data>
   <data name="BUT_joystick.Size" type="System.Drawing.Size, System.Drawing">
     <value>49, 23</value>
@@ -814,10 +814,10 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_quickmanual.Location" type="System.Drawing.Point, System.Drawing">
-    <value>147, 35</value>
+    <value>107, 64</value>
   </data>
   <data name="BUT_quickmanual.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 23</value>
+    <value>47, 20</value>
   </data>
   <data name="BUT_quickmanual.TabIndex" type="System.Int32, mscorlib">
     <value>76</value>
@@ -844,7 +844,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_quickrtl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>147, 64</value>
+    <value>157, 312</value>
   </data>
   <data name="BUT_quickrtl.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 23</value>
@@ -874,7 +874,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_quickauto.Location" type="System.Drawing.Point, System.Drawing">
-    <value>147, 7</value>
+    <value>104, 370</value>
   </data>
   <data name="BUT_quickauto.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 23</value>
@@ -904,7 +904,7 @@
     <value>0 (Home)</value>
   </data>
   <data name="CMB_setwp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 35</value>
+    <value>14, 283</value>
   </data>
   <data name="CMB_setwp.Size" type="System.Drawing.Size, System.Drawing">
     <value>76, 21</value>
@@ -928,7 +928,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_setwp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>86, 35</value>
+    <value>96, 283</value>
   </data>
   <data name="BUT_setwp.Size" type="System.Drawing.Size, System.Drawing">
     <value>55, 23</value>
@@ -955,7 +955,7 @@
     <value>11</value>
   </data>
   <data name="CMB_modes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 64</value>
+    <value>14, 312</value>
   </data>
   <data name="CMB_modes.Size" type="System.Drawing.Size, System.Drawing">
     <value>76, 21</value>
@@ -979,7 +979,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_setmode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>86, 64</value>
+    <value>96, 312</value>
   </data>
   <data name="BUT_setmode.Size" type="System.Drawing.Size, System.Drawing">
     <value>55, 23</value>
@@ -1009,7 +1009,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_clear_track.Location" type="System.Drawing.Point, System.Drawing">
-    <value>275, 93</value>
+    <value>285, 341</value>
   </data>
   <data name="BUT_clear_track.Size" type="System.Drawing.Size, System.Drawing">
     <value>72, 23</value>
@@ -1036,7 +1036,7 @@
     <value>14</value>
   </data>
   <data name="CMB_action.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 7</value>
+    <value>14, 255</value>
   </data>
   <data name="CMB_action.Size" type="System.Drawing.Size, System.Drawing">
     <value>76, 21</value>
@@ -1060,7 +1060,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_Homealt.Location" type="System.Drawing.Point, System.Drawing">
-    <value>200, 7</value>
+    <value>157, 370</value>
   </data>
   <data name="BUT_Homealt.Size" type="System.Drawing.Size, System.Drawing">
     <value>69, 23</value>
@@ -1090,7 +1090,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_RAWSensor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>200, 64</value>
+    <value>210, 312</value>
   </data>
   <data name="BUT_RAWSensor.Size" type="System.Drawing.Size, System.Drawing">
     <value>69, 23</value>
@@ -1120,7 +1120,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUTrestartmission.Location" type="System.Drawing.Point, System.Drawing">
-    <value>200, 35</value>
+    <value>210, 283</value>
   </data>
   <data name="BUTrestartmission.Size" type="System.Drawing.Size, System.Drawing">
     <value>69, 23</value>
@@ -1150,7 +1150,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUTactiondo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>86, 7</value>
+    <value>96, 255</value>
   </data>
   <data name="BUTactiondo.Size" type="System.Drawing.Size, System.Drawing">
     <value>55, 23</value>
@@ -1177,13 +1177,13 @@
     <value>19</value>
   </data>
   <data name="modifyandSetSpeed.Location" type="System.Drawing.Point, System.Drawing">
-    <value>275, 7</value>
+    <value>157, 35</value>
   </data>
   <data name="modifyandSetSpeed.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="modifyandSetSpeed.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 29</value>
+    <value>181, 20</value>
   </data>
   <data name="modifyandSetSpeed.TabIndex" type="System.Int32, mscorlib">
     <value>81</value>
@@ -1201,13 +1201,13 @@
     <value>20</value>
   </data>
   <data name="modifyandSetAlt.Location" type="System.Drawing.Point, System.Drawing">
-    <value>275, 35</value>
+    <value>157, 6</value>
   </data>
   <data name="modifyandSetAlt.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="modifyandSetAlt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 29</value>
+    <value>181, 20</value>
   </data>
   <data name="modifyandSetAlt.TabIndex" type="System.Int32, mscorlib">
     <value>80</value>
@@ -1453,7 +1453,7 @@
     <value>Microsoft Sans Serif, 9pt</value>
   </data>
   <data name="Gheading.Location" type="System.Drawing.Point, System.Drawing">
-    <value>303, 7</value>
+    <value>3, 107</value>
   </data>
   <data name="Gheading.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -1483,7 +1483,7 @@
     <value>Microsoft Sans Serif, 9pt</value>
   </data>
   <data name="Galt.Location" type="System.Drawing.Point, System.Drawing">
-    <value>203, 7</value>
+    <value>103, 107</value>
   </data>
   <data name="Galt.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -3139,7 +3139,7 @@
     <value>NoControl</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>332, 565</value>
+    <value>334, 573</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 13</value>
@@ -3172,7 +3172,7 @@
     <value>NoControl</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>245, 565</value>
+    <value>247, 573</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>81, 13</value>
@@ -3205,7 +3205,7 @@
     <value>NoControl</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>135, 565</value>
+    <value>137, 573</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>104, 13</value>
@@ -3238,7 +3238,7 @@
     <value>NoControl</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>45, 565</value>
+    <value>47, 573</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 13</value>
@@ -3268,7 +3268,7 @@
     <value>NoControl</value>
   </data>
   <data name="lbl_hdop.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-1, 547</value>
+    <value>1, 555</value>
   </data>
   <data name="lbl_hdop.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 12</value>
@@ -3301,7 +3301,7 @@
     <value>NoControl</value>
   </data>
   <data name="lbl_sats.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-1, 566</value>
+    <value>1, 574</value>
   </data>
   <data name="lbl_sats.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 12</value>
@@ -3691,7 +3691,7 @@
     <value>True</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>85</value>
+    <value>81</value>
   </metadata>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>

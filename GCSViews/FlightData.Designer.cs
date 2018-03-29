@@ -30,8 +30,10 @@
             this.tabQuick = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanelQuick = new System.Windows.Forms.TableLayoutPanel();
+            this.quickView6 = new MissionPlanner.Controls.QuickView();
             this.contextMenuStripQuickView = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.setViewCountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.quickView5 = new MissionPlanner.Controls.QuickView();
             this.quickView4 = new MissionPlanner.Controls.QuickView();
             this.quickView3 = new MissionPlanner.Controls.QuickView();
             this.quickView2 = new MissionPlanner.Controls.QuickView();
@@ -146,8 +148,6 @@
             this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.Messagetabtimer = new System.Windows.Forms.Timer(this.components);
-            this.quickView5 = new MissionPlanner.Controls.QuickView();
-            this.quickView6 = new MissionPlanner.Controls.QuickView();
             this.bindingSourceHud = new System.Windows.Forms.BindingSource(this.components);
             this.bindingSourceQuickTab = new System.Windows.Forms.BindingSource(this.components);
             this.modifyandSetLoiterRad = new MissionPlanner.Controls.ModifyandSet();
@@ -488,6 +488,20 @@
             this.tableLayoutPanelQuick.Controls.Add(this.quickView1, 0, 0);
             this.tableLayoutPanelQuick.Name = "tableLayoutPanelQuick";
             // 
+            // quickView6
+            // 
+            this.quickView6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.quickView6.ContextMenuStrip = this.contextMenuStripQuickView;
+            this.quickView6.DataBindings.Add(new System.Windows.Forms.Binding("number", this.bindingSourceQuickTab, "alt", true));
+            this.quickView6.desc = "alt";
+            resources.ApplyResources(this.quickView6, "quickView6");
+            this.quickView6.Name = "quickView6";
+            this.quickView6.number = 0D;
+            this.quickView6.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(95)))), ((int)(((byte)(154)))));
+            this.quickView6.numberformat = "0.00";
+            this.toolTip1.SetToolTip(this.quickView6, resources.GetString("quickView6.ToolTip"));
+            this.quickView6.DoubleClick += new System.EventHandler(this.quickView_DoubleClick);
+            // 
             // contextMenuStripQuickView
             // 
             this.contextMenuStripQuickView.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -500,6 +514,19 @@
             this.setViewCountToolStripMenuItem.Name = "setViewCountToolStripMenuItem";
             resources.ApplyResources(this.setViewCountToolStripMenuItem, "setViewCountToolStripMenuItem");
             this.setViewCountToolStripMenuItem.Click += new System.EventHandler(this.setViewCountToolStripMenuItem_Click);
+            // 
+            // quickView5
+            // 
+            this.quickView5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.quickView5.ContextMenuStrip = this.contextMenuStripQuickView;
+            this.quickView5.DataBindings.Add(new System.Windows.Forms.Binding("number", this.bindingSourceQuickTab, "groundspeed", true));
+            this.quickView5.desc = "groundspeed";
+            resources.ApplyResources(this.quickView5, "quickView5");
+            this.quickView5.Name = "quickView5";
+            this.quickView5.number = 0D;
+            this.quickView5.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(95)))), ((int)(((byte)(154)))));
+            this.quickView5.numberformat = "0.00";
+            this.quickView5.DoubleClick += new System.EventHandler(this.quickView_DoubleClick);
             // 
             // quickView4
             // 
@@ -1811,7 +1838,7 @@
             this.windDir1.BackColor = System.Drawing.Color.Transparent;
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Direction", this.bindingSource1, "wind_dir", true, System.Windows.Forms.DataSourceUpdateMode.Never));
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Speed", this.bindingSource1, "wind_vel", true, System.Windows.Forms.DataSourceUpdateMode.Never));
-            this.windDir1.Direction = 360D;
+            this.windDir1.Direction = 180D;
             resources.ApplyResources(this.windDir1, "windDir1");
             this.windDir1.Name = "windDir1";
             this.windDir1.Speed = 0D;
@@ -1819,6 +1846,7 @@
             // label6
             // 
             resources.ApplyResources(this.label6, "label6");
+            this.label6.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.label6.ForeColor = System.Drawing.Color.White;
             this.label6.Name = "label6";
             this.label6.Tag = "custom";
@@ -1826,6 +1854,7 @@
             // label5
             // 
             resources.ApplyResources(this.label5, "label5");
+            this.label5.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.label5.ForeColor = System.Drawing.Color.Green;
             this.label5.Name = "label5";
             this.label5.Tag = "custom";
@@ -1833,6 +1862,7 @@
             // label3
             // 
             resources.ApplyResources(this.label3, "label3");
+            this.label3.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.label3.Name = "label3";
             this.label3.Tag = "custom";
@@ -1840,6 +1870,7 @@
             // label4
             // 
             resources.ApplyResources(this.label4, "label4");
+            this.label4.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.label4.ForeColor = System.Drawing.Color.Red;
             this.label4.Name = "label4";
             this.label4.Tag = "custom";
@@ -2019,33 +2050,6 @@
             this.Messagetabtimer.Interval = 200;
             this.Messagetabtimer.Tick += new System.EventHandler(this.Messagetabtimer_Tick);
             // 
-            // quickView5
-            // 
-            this.quickView5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.quickView5.ContextMenuStrip = this.contextMenuStripQuickView;
-            this.quickView5.DataBindings.Add(new System.Windows.Forms.Binding("number", this.bindingSourceQuickTab, "groundspeed", true));
-            this.quickView5.desc = "groundspeed";
-            resources.ApplyResources(this.quickView5, "quickView5");
-            this.quickView5.Name = "quickView5";
-            this.quickView5.number = 0D;
-            this.quickView5.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(95)))), ((int)(((byte)(154)))));
-            this.quickView5.numberformat = "0.00";
-            this.quickView5.DoubleClick += new System.EventHandler(this.quickView_DoubleClick);
-            // 
-            // quickView6
-            // 
-            this.quickView6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.quickView6.ContextMenuStrip = this.contextMenuStripQuickView;
-            this.quickView6.DataBindings.Add(new System.Windows.Forms.Binding("number", this.bindingSourceQuickTab, "alt", true));
-            this.quickView6.desc = "alt";
-            resources.ApplyResources(this.quickView6, "quickView6");
-            this.quickView6.Name = "quickView6";
-            this.quickView6.number = 0D;
-            this.quickView6.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(95)))), ((int)(((byte)(154)))));
-            this.quickView6.numberformat = "0.00";
-            this.toolTip1.SetToolTip(this.quickView6, resources.GetString("quickView6.ToolTip"));
-            this.quickView6.DoubleClick += new System.EventHandler(this.quickView_DoubleClick);
-            // 
             // bindingSourceHud
             // 
             this.bindingSourceHud.DataSource = typeof(MissionPlanner.CurrentState);
@@ -2056,7 +2060,9 @@
             // 
             // modifyandSetLoiterRad
             // 
-            this.modifyandSetLoiterRad.ButtonText = "Set Loiter Rad";
+            this.modifyandSetLoiterRad.ButtonHeight = 20;
+            this.modifyandSetLoiterRad.ButtonText = "Set Loiter Radius(m)";
+            this.modifyandSetLoiterRad.ButtonWidth = 126;
             resources.ApplyResources(this.modifyandSetLoiterRad, "modifyandSetLoiterRad");
             this.modifyandSetLoiterRad.Maximum = new decimal(new int[] {
             10000,
@@ -2069,6 +2075,8 @@
             0,
             -2147483648});
             this.modifyandSetLoiterRad.Name = "modifyandSetLoiterRad";
+            this.modifyandSetLoiterRad.NumericHeight = 20;
+            this.modifyandSetLoiterRad.NumericWidth = 45;
             this.modifyandSetLoiterRad.Value = new decimal(new int[] {
             100,
             0,
@@ -2078,7 +2086,9 @@
             // 
             // modifyandSetSpeed
             // 
-            this.modifyandSetSpeed.ButtonText = "Change Speed";
+            this.modifyandSetSpeed.ButtonHeight = 20;
+            this.modifyandSetSpeed.ButtonText = "Set Max Airspeed(m/s)";
+            this.modifyandSetSpeed.ButtonWidth = 126;
             resources.ApplyResources(this.modifyandSetSpeed, "modifyandSetSpeed");
             this.modifyandSetSpeed.Maximum = new decimal(new int[] {
             1000,
@@ -2091,6 +2101,8 @@
             0,
             0});
             this.modifyandSetSpeed.Name = "modifyandSetSpeed";
+            this.modifyandSetSpeed.NumericHeight = 20;
+            this.modifyandSetSpeed.NumericWidth = 45;
             this.modifyandSetSpeed.Value = new decimal(new int[] {
             100,
             0,
@@ -2101,7 +2113,9 @@
             // 
             // modifyandSetAlt
             // 
-            this.modifyandSetAlt.ButtonText = "Change Alt";
+            this.modifyandSetAlt.ButtonHeight = 20;
+            this.modifyandSetAlt.ButtonText = "Set Altitude(m)";
+            this.modifyandSetAlt.ButtonWidth = 126;
             resources.ApplyResources(this.modifyandSetAlt, "modifyandSetAlt");
             this.modifyandSetAlt.Maximum = new decimal(new int[] {
             1000,
@@ -2114,6 +2128,8 @@
             0,
             0});
             this.modifyandSetAlt.Name = "modifyandSetAlt";
+            this.modifyandSetAlt.NumericHeight = 20;
+            this.modifyandSetAlt.NumericWidth = 45;
             this.modifyandSetAlt.Value = new decimal(new int[] {
             100,
             0,

@@ -262,7 +262,6 @@ namespace MissionPlanner.GCSViews
 
 
             List<string> list = new List<string>();
-
             {
                 list.Add("LOITER_UNLIM");
                 list.Add("RETURN_TO_LAUNCH");
@@ -270,8 +269,6 @@ namespace MissionPlanner.GCSViews
                 list.Add("MISSION_START");
                 list.Add("PREFLIGHT_REBOOT_SHUTDOWN");
                 list.Add("Trigger Camera NOW");
-                //DO_SET_SERVO
-                //DO_REPEAT_SERVO
             }
 
 
@@ -336,6 +333,12 @@ namespace MissionPlanner.GCSViews
                 Gspeed.MaxValue = gspeedMax;
             }
 
+
+            /*
+            modifyandSetSpeed.NumericUpDown.Width = (int)(modifyandSetSpeed.Width * 0.25f);
+            modifyandSetSpeed.Button.Width = (int)(modifyandSetSpeed.Width * 0.7f);
+            modifyandSetSpeed.Button.Dock = DockStyle.Right;
+            */
             MainV2.comPort.ParamListChanged += FlightData_ParentChanged;
 
         }
@@ -1420,8 +1423,11 @@ namespace MissionPlanner.GCSViews
             }
             #endregion
 
+            var wps = MainV2.comPort.MAV.wps.Values.ToList();
+            if (wps.Count() > 0) missionItems = wps; //wps is highpriority
+
             foreach (MAVLink.mavlink_mission_item_t plla in missionItems)
-            {
+            {                
                 string tag = plla.seq.ToString();
 
                 if (plla.seq == 0 && plla.current != 2)
@@ -1478,18 +1484,29 @@ namespace MissionPlanner.GCSViews
 
                     case (ushort)MAVLink.MAV_CMD.LOITER_TO_ALT:
                         {
-                            addpolygonmarker("LTA", plla.y, plla.x, (int)plla.z, Color.Gray, polygons, (int)plla.param2);
+                            addpolygonmarker("LTA", plla.y, plla.x, (int)plla.z, Color.Gray, polygons, (int)plla.param2, toolTipVisible: true);
+                            break;
+                        }
+                        
+                    case (ushort)MAVLink.MAV_CMD.LAST:
+                    case (ushort)MAVLink.MAV_CMD.VTOL_TAKEOFF:
+                    case (ushort)MAVLink.MAV_CMD.RETURN_TO_LAUNCH:
+                    case (ushort)MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP:
+                    case (ushort)MAVLink.MAV_CMD.CONTINUE_AND_CHANGE_ALT:
+                    case (ushort)MAVLink.MAV_CMD.DELAY:
+                    case (ushort)MAVLink.MAV_CMD.DO_SET_CAM_TRIGG_DIST:
+                    case (ushort)MAVLink.MAV_CMD.GUIDED_ENABLE:
+                        {
+                            // do nothing
                             break;
                         }
 
                     case (ushort)MAVLink.MAV_CMD.DO_JUMP:
                         {
-                            int wpno = (int)plla.param1;
-                            //int repeat = (int)plla.param2;
-
-                            List<PointLatLngAlt> list = new List<PointLatLngAlt>();
-                            for (int no = wpno; no <= plla.seq; no++)
-                            {                                    
+                            int wpno = (int)plla.param1;                            
+                            for (int no = wpno; no < plla.seq; no++)
+                            {
+                                if (missionItems[no].command == (ushort)MAVLink.MAV_CMD.DO_JUMP) continue;
                                 addpolygonmarker("", missionItems[no].y, missionItems[no].x, (int)missionItems[no].z, Color.White, polygons, 0);
                             }
                             
@@ -1874,13 +1891,13 @@ namespace MissionPlanner.GCSViews
             }
         }
 
-        private void addpolygonmarker(string tag, double lng, double lat, int alt, Color? color, GMapOverlay overlay, int wp_radius)
+        private void addpolygonmarker(string tag, double lng, double lat, int alt, Color? color, GMapOverlay overlay, int wp_radius, bool toolTipVisible = false)
         {
             try
             {
                 PointLatLng point = new PointLatLng(lat, lng);
                 GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.green);
-                m.ToolTipMode = MarkerTooltipMode.Always;
+                m.ToolTipMode = toolTipVisible ? MarkerTooltipMode.Always : MarkerTooltipMode.OnMouseOver;
                 m.ToolTipText = tag;
                 m.Tag = tag;
 

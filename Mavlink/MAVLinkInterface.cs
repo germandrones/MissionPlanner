@@ -1440,6 +1440,7 @@ Please check the following
                         // we hit the last param - lets escape eq total = 176 index = 0-175
                         if (par.param_index == (param_total - 1))
                             start = DateTime.MinValue;
+
                     }
 
                     if (buffer.msgid == (byte) MAVLINK_MSG_ID.STATUSTEXT)
