@@ -166,7 +166,7 @@ namespace MissionPlanner
             TXT_headinghold.Text = (Math.Round(NUM_angle.Value)).ToString();
 
             if (plugin.Host.cs.firmware == MainV2.Firmwares.ArduPlane)
-                NUM_UpDownFlySpeed.Value = (decimal) (12*CurrentState.multiplierspeed);
+                NUM_UpDownFlySpeed.Value = (decimal) (16*CurrentState.multiplierspeed);
 
             map.MapScaleInfoEnabled = true;
             map.ScalePen = new Pen(Color.Orange);

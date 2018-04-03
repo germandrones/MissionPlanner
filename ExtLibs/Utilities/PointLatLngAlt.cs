@@ -337,6 +337,11 @@ namespace MissionPlanner.Utilities
                 return 0;
             }
         }
+
+        public bool isEmpty()
+        {
+            return (Lat + Lng + Alt) == 0 ? true : false;
+        }
     }
 
 }

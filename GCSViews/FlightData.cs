@@ -118,13 +118,12 @@ namespace MissionPlanner.GCSViews
 
         // HeadWind Waypoints
         public static bool  HWP_updated = false;
-        float hwp1_lat, hwp1_lng;
-        float hwp2_lat, hwp2_lng;
-        float hwp3_lat, hwp3_lng;
-        float hwp4_lat, hwp4_lng;
+        Locationwp hwp1, hwp2, hwp3, hwp4;
 
         public static int m_forbidden_zone_param1 = 0;
         public static int m_forbidden_zone_param2 = 0;
+
+        PointLatLngAlt gotohereMarker;
 
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1100,17 +1099,17 @@ namespace MissionPlanner.GCSViews
                             HWP_updated = true;
 
                             //refresh the HWPs
-                            hwp1_lat = MainV2.comPort.MAV.cs.hwp1_lat;
-                            hwp1_lng = MainV2.comPort.MAV.cs.hwp1_lng;
+                            hwp1.lat = MainV2.comPort.MAV.cs.hwp1_lat;
+                            hwp1.lng = MainV2.comPort.MAV.cs.hwp1_lng;
 
-                            hwp2_lat = MainV2.comPort.MAV.cs.hwp2_lat;
-                            hwp2_lng = MainV2.comPort.MAV.cs.hwp2_lng;
+                            hwp2.lat = MainV2.comPort.MAV.cs.hwp2_lat;
+                            hwp2.lng = MainV2.comPort.MAV.cs.hwp2_lng;
 
-                            hwp3_lat = MainV2.comPort.MAV.cs.hwp3_lat;
-                            hwp3_lng = MainV2.comPort.MAV.cs.hwp3_lng;
+                            hwp3.lat = MainV2.comPort.MAV.cs.hwp3_lat;
+                            hwp3.lng = MainV2.comPort.MAV.cs.hwp3_lng;
 
-                            hwp4_lat = MainV2.comPort.MAV.cs.hwp4_lat;
-                            hwp4_lng = MainV2.comPort.MAV.cs.hwp4_lng;
+                            hwp4.lat = MainV2.comPort.MAV.cs.hwp4_lat;
+                            hwp4.lng = MainV2.comPort.MAV.cs.hwp4_lng;
 
                             // Before update Map send an ACK Handshake message to PX4, that we have the message received and parsed
                             if (MainV2.comPort.BaseStream.IsOpen) MainV2.comPort.Send_HWP_Ack();
@@ -1386,7 +1385,7 @@ namespace MissionPlanner.GCSViews
 
 
 
-        public static List<MAVLink.mavlink_mission_item_t> missionItems = new List<MAVLink.mavlink_mission_item_t>();
+        //public static List<MAVLink.mavlink_mission_item_t> missionItems = new List<MAVLink.mavlink_mission_item_t>();
 
         private void update_map()
         {
@@ -1413,20 +1412,26 @@ namespace MissionPlanner.GCSViews
             // HWP Points received?
             if (HWP_updated)
             {
-                addpolygonmarkerNoTooltip("HWP1", hwp1_lng, hwp1_lat, 0, Color.Blue, polygons, hwp_wpradius);
-                addpolygonmarkerNoTooltip("HWP2", hwp2_lng, hwp2_lat, 0, Color.Blue, polygons, hwp_wpradius);
-                addpolygonmarkerNoTooltip("HWP3", hwp3_lng, hwp3_lat, 0, Color.Blue, polygons, hwp_lradius);
-                if (hwp4_lat != -1 && hwp4_lng != -1)
+                addpolygonmarkerNoTooltip("HWP1", hwp1.lng, hwp1.lat, 0, Color.Blue, polygons, hwp_wpradius);
+                addpolygonmarkerNoTooltip("HWP2", hwp2.lng, hwp2.lat, 0, Color.Blue, polygons, hwp_wpradius);
+                addpolygonmarkerNoTooltip("HWP3", hwp3.lng, hwp3.lat, 0, Color.Blue, polygons, hwp_lradius);
+                if (hwp4.lat != -1 && hwp4.lng != -1)
                 {
-                    addpolygonmarkerNoTooltip("HWP4", hwp4_lng, hwp4_lat, 0, Color.Blue, polygons, hwp_wpradius);
+                    addpolygonmarkerNoTooltip("HWP4", hwp4.lng, hwp4.lat, 0, Color.Blue, polygons, hwp_wpradius);
                 }
             }
             #endregion
 
-            var wps = MainV2.comPort.MAV.wps.Values.ToList();
-            if (wps.Count() > 0) missionItems = wps; //wps is highpriority
+            // visualize guided mode marker            
+            if (gotohereMarker != null) {
+                int gotohereRadius = int.Parse(modifyandSetLoiterRad.Value.ToString());
+                addpolygonmarkerCustom("Fly Here", gotohereMarker.Lng, gotohereMarker.Lat, (int)gotohereMarker.Alt, Color.Lime, GMarkerGoogleType.arrow, poioverlay, gotohereRadius);
+            }
 
-            foreach (MAVLink.mavlink_mission_item_t plla in missionItems)
+            var wps = MainV2.comPort.MAV.wps.Values.ToList();
+            //if (wps.Count() > 0) missionItems = wps; //wps is highpriority
+
+            foreach (MAVLink.mavlink_mission_item_t plla in wps)
             {                
                 string tag = plla.seq.ToString();
 
@@ -1506,8 +1511,8 @@ namespace MissionPlanner.GCSViews
                             int wpno = (int)plla.param1;                            
                             for (int no = wpno; no < plla.seq; no++)
                             {
-                                if (missionItems[no].command == (ushort)MAVLink.MAV_CMD.DO_JUMP) continue;
-                                addpolygonmarker("", missionItems[no].y, missionItems[no].x, (int)missionItems[no].z, Color.White, polygons, 0);
+                                if (wps[no].command == (ushort)MAVLink.MAV_CMD.DO_JUMP) continue;
+                                addpolygonmarker("", wps[no].y, wps[no].x, (int)wps[no].z, Color.White, polygons, 0);
                             }
                             
                             break;
@@ -1646,6 +1651,7 @@ namespace MissionPlanner.GCSViews
                 polygons.Routes.Clear();
                 polygons.Markers.Clear();
                 routes.Markers.Clear();
+                poioverlay.Markers.Clear();
             });
         }
 
@@ -1891,6 +1897,38 @@ namespace MissionPlanner.GCSViews
             }
         }
 
+
+        // This function is just copy-and-paste of the addpolygonmarker, but without showing the tooltip on the virtual waypoints
+        private void addpolygonmarkerCustom(string tag, double lng, double lat, int alt, Color? color, GMarkerGoogleType type, GMapOverlay overlay, int wp_radius)
+        {
+            try
+            {
+                PointLatLng point = new PointLatLng(lat, lng);
+                GMarkerGoogle m = new GMarkerGoogle(point, type);
+
+                m.ToolTipMode = MarkerTooltipMode.Always;
+                m.ToolTipText = tag;
+                m.Tag = tag;
+
+                GMapMarkerRect mBorders = new GMapMarkerRect(point);
+                {
+                    mBorders.InnerMarker = m;
+                    mBorders.Tag = tag;
+                    mBorders.wprad = wp_radius;
+                    mBorders.Color = color.HasValue ? color.Value : Color.White;
+                }
+
+                Invoke((MethodInvoker)delegate
+                {
+                    overlay.Markers.Add(m);
+                    overlay.Markers.Add(mBorders);
+                });
+            }
+            catch (Exception)
+            {
+            }
+        }
+
         private void addpolygonmarker(string tag, double lng, double lat, int alt, Color? color, GMapOverlay overlay, int wp_radius, bool toolTipVisible = false)
         {
             try
@@ -2057,14 +2095,14 @@ namespace MissionPlanner.GCSViews
                 // connect waypoints in right direction
                 landingWay.Points.Add(polygonPoints[polygonPoints.Count - 2]);
 
-                if (hwp4_lat != -1 && hwp4_lng != -1)
+                if (hwp4.lat != -1 && hwp4.lng != -1)
                 {
-                    landingWay.Points.Add(new PointLatLng(hwp4_lat, hwp4_lng));
+                    landingWay.Points.Add(new PointLatLng(hwp4.lat, hwp4.lng));
                 }
 
-                landingWay.Points.Add(new PointLatLng(hwp3_lat, hwp3_lng));
-                landingWay.Points.Add(new PointLatLng(hwp2_lat, hwp2_lng));
-                landingWay.Points.Add(new PointLatLng(hwp1_lat, hwp1_lng));
+                landingWay.Points.Add(new PointLatLng(hwp3.lat, hwp3.lng));
+                landingWay.Points.Add(new PointLatLng(hwp2.lat, hwp2.lng));
+                landingWay.Points.Add(new PointLatLng(hwp1.lat, hwp1.lng));
 
                 landingWay.Points.Add(polygonPoints[polygonPoints.Count - 1]);
             }
@@ -2083,6 +2121,7 @@ namespace MissionPlanner.GCSViews
         }
 
         GMapOverlay polygons;
+        GMapOverlay additionalMarkers;
         GMapOverlay routes;
         GMapRoute route;
 
@@ -2340,6 +2379,8 @@ namespace MissionPlanner.GCSViews
             gotohere.lat = (MouseDownStart.Lat);
             gotohere.lng = (MouseDownStart.Lng);
 
+            gotohereMarker = new PointLatLngAlt(gotohere);
+
             try
             {
                 MainV2.comPort.setGuidedModeWP(gotohere);
@@ -2349,6 +2390,8 @@ namespace MissionPlanner.GCSViews
                 MainV2.comPort.giveComport = false;
                 CustomMessageBox.Show(Strings.CommandFailed + ex.Message, Strings.ERROR);
             }
+
+            update_map();
         }
 
         private void Zoomlevel_ValueChanged(object sender, EventArgs e)
@@ -2459,9 +2502,7 @@ namespace MissionPlanner.GCSViews
 
             try
             {
-                if (MainV2.comPort.MAV.param.ContainsKey("LOITER_RAD"))
-                    modifyandSetLoiterRad.Value =
-                        (decimal) ((float) MainV2.comPort.MAV.param["LOITER_RAD"]*CurrentState.multiplierdist);
+                if (MainV2.comPort.MAV.param.ContainsKey("LOITER_RAD")) modifyandSetLoiterRad.Value = (decimal) ((float) MainV2.comPort.MAV.param["LOITER_RAD"]*CurrentState.multiplierdist);
             }
             catch
             {
@@ -2778,6 +2819,22 @@ namespace MissionPlanner.GCSViews
 
         private void BUT_quickmanual_Click(object sender, EventArgs e)
         {
+            // Set loiter radius
+            int newrad = (int)modifyandSetLoiterRad.Value;
+
+            if (newrad < 50) {
+                if (MessageBox.Show("Loiter Radius is less than 50 meters. Continue?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No) { return; }
+            }
+
+            try
+            {
+                MainV2.comPort.setParam(new[] { "LOITER_RAD", "WP_LOITER_RAD" }, newrad / CurrentState.multiplierdist);
+            }
+            catch
+            {
+                CustomMessageBox.Show(Strings.ErrorCommunicating, Strings.ERROR);
+            }
+
             try
             {
                 ((Button) sender).Enabled = false;
@@ -4714,6 +4771,42 @@ namespace MissionPlanner.GCSViews
         }
 
         Random random = new Random();
+
+        private void BTN_ActionTriggerCamNow_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                MainV2.comPort.setDigicamControl(true);
+                return;
+            }
+            catch
+            {
+                CustomMessageBox.Show(Strings.CommandFailed, Strings.ERROR);
+                return;
+            }
+        }
+
+        private void BTN_ActionLoiterUnlim_Click(object sender, EventArgs e)
+        {
+            if (CustomMessageBox.Show("Are you sure you want to do start loitering?", "Action", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                try
+                {
+                    ((Button)sender).Enabled = false;
+
+                    int param1 = 0;
+                    int param3 = 1;
+
+                    MainV2.comPort.doCommand((MAVLink.MAV_CMD)Enum.Parse(typeof(MAVLink.MAV_CMD), "LOITER_UNLIM"), param1, 0, param3, 0, 0, 0, 0);
+                }
+                catch
+                {
+                    CustomMessageBox.Show(Strings.CommandFailed, Strings.ERROR);
+                }
+                ((Button)sender).Enabled = true;
+            }
+        }
+
         private Process gst;
 
         Color GetColor()

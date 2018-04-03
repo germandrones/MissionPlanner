@@ -2149,7 +2149,7 @@ namespace MissionPlanner.GCSViews
                 throw;
             }
 
-            shareMissionWithFlighDataView(cmds);
+            //shareMissionWithFlighDataView(cmds);
             
             // Hide commands from user. Commands for internal use for example:MAV_CMD_SET_FORBIDDEN_ZONE 
             cmds = HideCommands(cmds);
@@ -2158,7 +2158,7 @@ namespace MissionPlanner.GCSViews
         }
 
         // Method shares the data to flight dataview
-        private void shareMissionWithFlighDataView(List<Locationwp> cmds)
+        /*private void shareMissionWithFlighDataView(List<Locationwp> cmds)
         {
             // refresh commands in flight data view
             FlightData.missionItems.Clear();
@@ -2178,7 +2178,7 @@ namespace MissionPlanner.GCSViews
                 mitem.seq = cmd_ctr++;
                 FlightData.missionItems.Add(mitem);
             }
-        }
+        }*/
 
         private List<Locationwp> HideCommands(List<Locationwp> cmds)
         {
@@ -2416,8 +2416,8 @@ namespace MissionPlanner.GCSViews
                 Text = "Sending WP's"
             };
 
-            frmProgressReporter.DoWork += saveWPsFast;
-            //frmProgressReporter.DoWork += saveWPs;
+            //frmProgressReporter.DoWork += saveWPsFast; // Not tested yet, please ignore
+            frmProgressReporter.DoWork += saveWPs;
             frmProgressReporter.UpdateProgressAndStatus(-1, "Sending WP's");
 
             ThemeManager.ApplyThemeTo(frmProgressReporter);
@@ -2719,7 +2719,7 @@ namespace MissionPlanner.GCSViews
                     }
                 }
 
-                shareMissionWithFlighDataView(commandlist);
+                //shareMissionWithFlighDataView(commandlist);
 
                 port.setWPACK();
 
@@ -2801,7 +2801,7 @@ namespace MissionPlanner.GCSViews
             var commandlist = GetCommandList();
             commandlist.Insert(0, home);
 
-            shareMissionWithFlighDataView(commandlist);
+            //shareMissionWithFlighDataView(commandlist);
 
             var totalwpcountforupload = (ushort)(commandlist.Count);
             MainV2.comPort.setWPTotal(totalwpcountforupload);
