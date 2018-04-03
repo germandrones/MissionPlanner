@@ -328,37 +328,21 @@ namespace MissionPlanner.Utilities
         public void doRestoreModifiedMission()
         {
             int landingPointIndex = -1;
-            int doDisableHWPIndex = -1;
-            int doLoiterToAltIndex = -1;
-            int lastWaypointIndex = -1;
-
-            // LAND / LAND_AT_TAKEOFF
             landingPointIndex = getLandWP();
             if (landingPointIndex < 0) return;
-            
-            // LOITER_TO_ALT
-            for (int i = defined_mission.Count() - 1; i > 0; i--)
-            {                
-                if (defined_mission[i].getCommand() == (int)MAVLink.MAV_CMD.LOITER_TO_ALT){ doLoiterToAltIndex = i; break; }
-            }
-            if (doLoiterToAltIndex < 0) return;
 
-            // WAYPOINT
-            for (int i = doLoiterToAltIndex; i < landingPointIndex; i++)
+            //find and delete DO_DISABLE_HWP command
+            for (int i = defined_mission.Count() - 1; i > landingPointIndex; i--)
             {
-                if (defined_mission[i].getCommand() == (int)MAVLink.MAV_CMD.WAYPOINT) lastWaypointIndex = i;
+                if (defined_mission[i].getCommand() == (int)MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP) defined_mission.RemoveAt(i);
             }
-            if (lastWaypointIndex < 0) return;
 
-            // DO_DISABLE_HWP
-            if (defined_mission[defined_mission.Count() - 1].getCommand() == (int)MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP) { doDisableHWPIndex = defined_mission.Count() - 1; }
-            if (doDisableHWPIndex < 0) return;
-
-            // Apply modifications
-            MissionItem land = defined_mission[landingPointIndex];
-            defined_mission.RemoveRange(doLoiterToAltIndex, defined_mission.Count() - doLoiterToAltIndex);
-            defined_mission.Add(land);            
-
+            //check for landing sequence
+            if(defined_mission[landingPointIndex-1].getCommand() == (int)MAVLink.MAV_CMD.WAYPOINT && defined_mission[landingPointIndex - 2].getCommand() == (int)MAVLink.MAV_CMD.LOITER_TO_ALT)
+            {
+                defined_mission.RemoveRange(landingPointIndex - 2, 2);
+            }
+            
             return;
         }
 
@@ -379,7 +363,7 @@ namespace MissionPlanner.Utilities
             m_land_point = defined_mission[LAND_CMD_ID].getCoords();
             
             //insert LOITER_TO_ALTITUDE
-            PointLatLngAlt LTA = get_loiter_coords(defined_mission[LAST_MWP].getCoords(), m_land_point);
+            PointLatLngAlt LTA = distUnsafe ? defined_mission[LAST_MWP].getCoords() : get_loiter_coords(defined_mission[LAST_MWP].getCoords(), m_land_point);
             PointLatLngAlt LWP = get_last_nav_coords(LTA, m_land_point);
 
             // insert WPs before land command
@@ -390,7 +374,7 @@ namespace MissionPlanner.Utilities
             
             
             // if LTA radius and LWP are crossing, return false.
-            if (LTA.GetDistance(LWP) < m_hwp_lradius + m_hwp_wpradius) return MissionCheckerResult.DISTANCE_UNSAFE;
+            //if (LTA.GetDistance(LWP) < m_hwp_lradius + m_hwp_wpradius) return MissionCheckerResult.DISTANCE_UNSAFE;
             return MissionCheckerResult.OK;
         }
         

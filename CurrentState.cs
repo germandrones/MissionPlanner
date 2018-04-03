@@ -716,7 +716,7 @@ namespace MissionPlanner
             set
             {
                 if (_battery_voltage == 0) _battery_voltage = value;
-                _battery_voltage = value*0.4f + _battery_voltage*0.6f;
+                _battery_voltage = value*0.4f + _battery_voltage*0.6f;                
             }
         }
 
@@ -1999,6 +1999,11 @@ namespace MissionPlanner
                                 messageHigh = Strings.BadGPSHealth;
                                 messageHighTime = DateTime.Now;
                             }
+                        }
+                        else if(battery_voltage < 27.50f) // Show battery low warning
+                        {
+                            messageHigh = "Battery voltage low";
+                            messageHighTime = DateTime.Now;
                         }
                         else if (!sensors_health.gyro && sensors_enabled.gyro && sensors_present.gyro)
                         {
