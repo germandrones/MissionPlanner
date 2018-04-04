@@ -2316,12 +2316,7 @@ namespace MissionPlanner.GCSViews
 
             // Show warning message if needed
             switch(mCheckerResult)
-            {
-                case MissionChecker.MissionCheckerResult.NO_LAND_POINT:
-                    {
-                        MessageBox.Show("Landing point is missing.", "Mission Checker", MessageBoxButtons.OK);
-                        break;
-                    }
+            {                
                 case MissionChecker.MissionCheckerResult.NO_TAKEOFF_POINT:
                     {
                         MessageBox.Show("Takeoff point is missing.", "Mission Checker", MessageBoxButtons.OK);
@@ -2353,15 +2348,6 @@ namespace MissionPlanner.GCSViews
                     {
                         Commands.Rows.Clear();
                         foreach (var mitem in missionChecker.defined_mission) { AddCommand((MAVLink.MAV_CMD)mitem.getCommand(), mitem.P1, mitem.P2, mitem.P3, mitem.P4, mitem.getCoords().Lng, mitem.getCoords().Lat, mitem.getCoords().Alt); }
-                    }
-                    else
-                    {
-                        // check last mission command if disable hwp command found, and insert it to our mission
-                        /*var mitem = missionChecker.defined_mission[missionChecker.defined_mission.Count - 1];
-                        if (mitem.getCommand() == (int)MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP)
-                        {
-                            AddCommand((MAVLink.MAV_CMD)mitem.getCommand(), mitem.P1, mitem.P2, mitem.P3, mitem.P4, mitem.getCoords().Lng, mitem.getCoords().Lat, mitem.getCoords().Alt);
-                        }*/
                     }
                 }
             }
@@ -8112,17 +8098,23 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             // Create an internal copy of mission at MissionChecker side
             mCheckerResult = MissionChecker.MissionCheckerResult.OK;
             
-
+            
+            // Save original mission
             ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(0, "Preparing...");
             missionChecker.doStoreOriginalMission(Commands);
             missionChecker.DO_DISABLE_HWP = missionChecker.HWP_ENABLED ? false : true;
 
-
+            
+            // Check if landing and takeoff are present
             ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(50, "Checking takeoff/landing sequence...");
             mCheckerResult = missionChecker.doCheckTakeoffLandingSequence();
-            if (mCheckerResult != MissionChecker.MissionCheckerResult.OK) return;
+            if (mCheckerResult == MissionChecker.MissionCheckerResult.NO_LAND_POINT)
+            {
+                missionChecker.DO_DISABLE_HWP = false;
+                if (MessageBox.Show("No landing point is defined. Land at actual Takeoff coordinates will used. \nOk - to proceed uploading mission", "Mission Checker", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
+            }
 
-          
+            #region SRTM Collision detection
             // Check mission elevation graph
             /*result = missionChecker.doCheckAltitudeSRTM();
             if (result == MissionChecker.MissionCheckerResult.GROUND_COLLISION_DETECTED)
@@ -8135,9 +8127,15 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                     case DialogResult.Ignore: { break; } // ignore warning, allow to upload the mission
                 }
             }*/
+            #endregion
+
+            // Check landing direction(if crossing unsafe area)
+            ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(60, "Checking landing direction...");
+            mCheckerResult = missionChecker.doCheckLandingDirection();
+            if (mCheckerResult != MissionChecker.MissionCheckerResult.OK) return;
 
 
-            ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(60, "Checking headwind landing sequence...");
+            ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(90, "Checking headwind landing sequence...");
             if (!missionChecker.DO_DISABLE_HWP)
             {
                 missionChecker.doRestoreModifiedMission();
@@ -8147,10 +8145,6 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(75, "Modifying mission...");
                 mCheckerResult = missionChecker.doDisableHWP();
             }
-            if (mCheckerResult != MissionChecker.MissionCheckerResult.OK) return;
-
-            ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(90, "Checking landing direction...");
-            mCheckerResult = missionChecker.doCheckLandingDirection();
             if (mCheckerResult != MissionChecker.MissionCheckerResult.OK) return;
         }
 
