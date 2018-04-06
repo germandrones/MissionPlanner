@@ -47,11 +47,12 @@ namespace MissionPlanner.GCSViews
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         int selectedrow;
         int m_selectedPoint = -1; // default value initializing
-        public bool quickadd;
-        bool isonline = true;
+        public bool quickadd;        
         bool sethome;
         bool polygongridmode;
         bool splinemode;
+
+        double forbidden_zone_p1 = 0, forbidden_zone_p2 = 0;
 
         MissionChecker missionChecker = new MissionChecker();
         MissionChecker.MissionCheckerResult mCheckerResult;
@@ -925,7 +926,6 @@ namespace MissionPlanner.GCSViews
             catch (Exception)
             {
                 // here if dns failed
-                isonline = false;
             }
 
             updateCMDParams();
@@ -1464,6 +1464,15 @@ namespace MissionPlanner.GCSViews
                 long temp = Stopwatch.GetTimestamp();
 
                 string lookat = "";
+
+                bool landing_point_exists = false;
+                // check if landing point is already defined
+                for (int a = Commands.Rows.Count - 1; a > 0 ; a--)
+                {
+                    if (Commands.Rows[a].Cells[Command.Index].Value.ToString().Contains("LAND")) landing_point_exists = true;
+                }
+
+
                 for (int a = 0; a < Commands.Rows.Count - 0; a++)
                 {
                     try
@@ -1538,16 +1547,26 @@ namespace MissionPlanner.GCSViews
                                     {
                                         pointlist.Add(new PointLatLngAlt(double.Parse(cell3), double.Parse(cell4), double.Parse(cell2) + gethomealt(double.Parse(cell3), double.Parse(cell4)), "TAKEOFF"));
                                         fullpointlist.Add(pointlist[pointlist.Count - 1]);
-                                        add_takeoff_polygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), double.Parse(cell2));
+                                        if (landing_point_exists)
+                                            add_takeoff_polygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), double.Parse(cell2));
+                                        else
+                                            add_land_polygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), double.Parse(cell2), forbidden_zone_p1, forbidden_zone_p2);
+
+                                        //refresh in table
+                                        Commands.Rows[a].Cells[Param2.Index].Value = forbidden_zone_p1.ToString();
+                                        Commands.Rows[a].Cells[Param3.Index].Value = forbidden_zone_p2.ToString();
                                         break;
                                     }
 
                                 case (ushort)MAVLink.MAV_CMD.LAND:
-                                case (ushort)MAVLink.MAV_CMD.LAND_AT_TAKEOFF:
                                     {
                                         pointlist.Add(new PointLatLngAlt(double.Parse(cell3), double.Parse(cell4), double.Parse(cell2) + gethomealt(double.Parse(cell3), double.Parse(cell4)), "LAND"));
                                         fullpointlist.Add(pointlist[pointlist.Count - 1]);
-                                        add_land_polygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), double.Parse(cell2), int.Parse(cell_p2), int.Parse(cell_p3));
+                                        add_land_polygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), double.Parse(cell2), forbidden_zone_p1, forbidden_zone_p2);
+
+                                        //refresh in table
+                                        Commands.Rows[a].Cells[Param2.Index].Value = forbidden_zone_p1.ToString();
+                                        Commands.Rows[a].Cells[Param3.Index].Value = forbidden_zone_p2.ToString();
                                         break;
                                     }
 
@@ -2157,33 +2176,10 @@ namespace MissionPlanner.GCSViews
             WPtoScreen(cmds);
         }
 
-        // Method shares the data to flight dataview
-        /*private void shareMissionWithFlighDataView(List<Locationwp> cmds)
-        {
-            // refresh commands in flight data view
-            FlightData.missionItems.Clear();
-            ushort cmd_ctr = 0;
-            foreach (var cmd in cmds)
-            {
-                // send them to flight data tab
-                MAVLink.mavlink_mission_item_t mitem = new MAVLink.mavlink_mission_item_t();
-                mitem.x = (float)cmd.lat;
-                mitem.y = (float)cmd.lng;
-                mitem.z = cmd.alt;
-                mitem.param1 = cmd.p1;
-                mitem.param2 = cmd.p2;
-                mitem.param3 = cmd.p3;
-                mitem.param4 = cmd.p4;
-                mitem.command = cmd.id;
-                mitem.seq = cmd_ctr++;
-                FlightData.missionItems.Add(mitem);
-            }
-        }*/
-
         private List<Locationwp> HideCommands(List<Locationwp> cmds)
         {
-            float forbidden_zone_p1 = 0;
-            float forbidden_zone_p2 = 0;
+            forbidden_zone_p1 = 0;
+            forbidden_zone_p2 = 0;
 
             //remove the FZ
             foreach (Locationwp temp in cmds)
@@ -2201,24 +2197,7 @@ namespace MissionPlanner.GCSViews
             FlightData.m_forbidden_zone_param1 = (int)forbidden_zone_p1;
             FlightData.m_forbidden_zone_param2 = (int)forbidden_zone_p2;
 
-            // loop for modifications
-            List<Locationwp> ret = new List<Locationwp>();
-            foreach (Locationwp temp in cmds)
-            {
-
-                if (temp.id == (ushort)MAVLink.MAV_CMD.LAND || temp.id == (ushort)MAVLink.MAV_CMD.LAND_AT_TAKEOFF)
-                {
-                    Locationwp l_tmp = temp;
-                    l_tmp.p2 = forbidden_zone_p1;
-                    l_tmp.p3 = forbidden_zone_p2;
-                    ret.Add(l_tmp);
-                    continue;
-                }
-
-                ret.Add(temp); // normaly copy an item
-            }
-
-            return ret;
+            return cmds;
         }
 
         public void WPtoScreen(List<Locationwp> cmds, bool withrally = true)
@@ -2430,15 +2409,7 @@ namespace MissionPlanner.GCSViews
                 }
                 else
                 {
-                    if (Commands.Rows[a].Cells[Command.Index].Value.ToString().Contains("LAND_AT_TAKEOFF"))
-                    {
-                        // rewrite the LAND_AT_TAKEOFF as LAND command
-                        temp.id = (ushort)MAVLink.MAV_CMD.LAND;
-                    }
-                    else
-                    {
-                        temp.id = (ushort)Enum.Parse(typeof(MAVLink.MAV_CMD), Commands.Rows[a].Cells[Command.Index].Value.ToString(), false);
-                    }
+                    temp.id = (ushort)Enum.Parse(typeof(MAVLink.MAV_CMD), Commands.Rows[a].Cells[Command.Index].Value.ToString(), false);
                 }
                 temp.p1 = float.Parse(Commands.Rows[a].Cells[Param1.Index].Value.ToString());
 
@@ -2466,27 +2437,19 @@ namespace MissionPlanner.GCSViews
         {
             List<Locationwp> commands = new List<Locationwp>();            
 
+            // 1. push all commands to the list
             for (int a = 0; a < Commands.Rows.Count - 0; a++)
             {
                 var temp = DataViewtoLocationwp(a);
-
-                // allways add a hidden command forbidden zone
-                if(temp.id == (ushort)MAVLink.MAV_CMD.LAND || temp.id == (ushort)MAVLink.MAV_CMD.LAND_AT_TAKEOFF)
-                {
-                    var forbidden_zone_cmd = temp;
-                    forbidden_zone_cmd.id = (ushort)MAVLink.MAV_CMD.MAV_CMD_SET_FORBIDDEN_ZONE;
-                    forbidden_zone_cmd.p1 = temp.p2;
-                    forbidden_zone_cmd.p2 = temp.p3;
-                    forbidden_zone_cmd.p3 = 0;
-                    forbidden_zone_cmd.p4 = 0;
-                    commands.Add(forbidden_zone_cmd); // insert additional cmd
-
-                    temp.p2 = 0;
-                    temp.p3 = 0;
-                    commands.Add(temp); // insert normal LAND cmd
-                }
-                else commands.Add(temp); // Normal case just puch the nav cmd               
+                commands.Add(temp);
             }
+
+            // 2. just add new hidden cmd forbidden area
+            Locationwp forbidden_area_cmd = new Locationwp();
+            forbidden_area_cmd.id = (ushort)MAVLink.MAV_CMD.MAV_CMD_SET_FORBIDDEN_ZONE;
+            forbidden_area_cmd.p1 = (float)forbidden_zone_p1;
+            forbidden_area_cmd.p2 = (float)forbidden_zone_p2;
+            commands.Add(forbidden_area_cmd);
 
             return commands;
         }
@@ -3020,8 +2983,6 @@ namespace MissionPlanner.GCSViews
                     }
                 }
 
-                
-
                 cell = Commands.Rows[i].Cells[Alt.Index] as DataGridViewTextBoxCell;
                 cell.Value = temp.alt * CurrentState.multiplierdist;
                 cell = Commands.Rows[i].Cells[Lat.Index] as DataGridViewTextBoxCell;
@@ -3031,12 +2992,28 @@ namespace MissionPlanner.GCSViews
 
                 cell = Commands.Rows[i].Cells[Param1.Index] as DataGridViewTextBoxCell;
                 cell.Value = temp.p1;
-                cell = Commands.Rows[i].Cells[Param2.Index] as DataGridViewTextBoxCell;
-                cell.Value = temp.p2;
-                cell = Commands.Rows[i].Cells[Param3.Index] as DataGridViewTextBoxCell;
-                cell.Value = temp.p3;
+
+                if (temp.id == (ushort)MAVLink.MAV_CMD.TAKEOFF || temp.id == (ushort)MAVLink.MAV_CMD.LAND)
+                {
+                    // special case
+                    cell = Commands.Rows[i].Cells[Param2.Index] as DataGridViewTextBoxCell;
+                    cell.Value = forbidden_zone_p1;
+                    cell = Commands.Rows[i].Cells[Param3.Index] as DataGridViewTextBoxCell;
+                    cell.Value = forbidden_zone_p2;
+                }
+                else
+                {
+                    // normal command
+                    cell = Commands.Rows[i].Cells[Param2.Index] as DataGridViewTextBoxCell;
+                    cell.Value = temp.p2;
+                    cell = Commands.Rows[i].Cells[Param3.Index] as DataGridViewTextBoxCell;
+                    cell.Value = temp.p3;
+                }
+
                 cell = Commands.Rows[i].Cells[Param4.Index] as DataGridViewTextBoxCell;
                 cell.Value = temp.p4;
+
+                
 
                 // convert to utm/other
                 convertFromGeographic(temp.lat, temp.lng);
@@ -4219,10 +4196,13 @@ namespace MissionPlanner.GCSViews
                     }
 
                     int wpno = CurrentLandMarker.wpno;
-                    if (Commands.Rows[wpno - 1].Cells[Command.Index].Value.ToString().Contains("LAND"))
+                    if (Commands.Rows[wpno - 1].Cells[Command.Index].Value.ToString().Contains("LAND") || Commands.Rows[wpno - 1].Cells[Command.Index].Value.ToString().Contains("TAKEOFF"))
                     {
-                        Commands.Rows[wpno - 1].Cells[Param2.Index].Value = Math.Floor(CurrentLandMarker.StartAngle);
-                        Commands.Rows[wpno - 1].Cells[Param3.Index].Value = Math.Floor(CurrentLandMarker.AngleOffset);
+                        forbidden_zone_p1 = Math.Floor(CurrentLandMarker.StartAngle);
+                        forbidden_zone_p2 = Math.Floor(CurrentLandMarker.AngleOffset);
+
+                        Commands.Rows[wpno - 1].Cells[Param2.Index].Value = forbidden_zone_p1;
+                        Commands.Rows[wpno - 1].Cells[Param3.Index].Value = forbidden_zone_p2;
                     }
                 }
                 else if (groupmarkers.Count > 0)
@@ -4509,39 +4489,7 @@ namespace MissionPlanner.GCSViews
                 ((ComboBox)e.Control).BackColor = Color.FromArgb(0x43, 0x44, 0x45);
                 Debug.WriteLine("Setting event handle");
             }
-        }
-
-
-        private void modify_landing_point()
-        {
-            // 1. find TAKEOFF coords
-            PointLatLngAlt takeoff = null;
-
-            foreach(DataGridViewRow Command in Commands.Rows)
-            {
-                if (Command.Cells[0].Value.ToString() == "TAKEOFF")
-                {
-                    double lat = double.Parse(Command.Cells[Lat.Index].Value.ToString());
-                    double lng = double.Parse(Command.Cells[Lon.Index].Value.ToString());
-                    double alt = double.Parse(Command.Cells[Alt.Index].Value.ToString());
-                    takeoff = new PointLatLngAlt(lat, lng, alt);
-                }
-            }
-
-            if(takeoff != null)
-            {
-                Commands.Rows[selectedrow].Cells[Lat.Index].Value = takeoff.Lat.ToString();
-                Commands.Rows[selectedrow].Cells[Lon.Index].Value = takeoff.Lng.ToString();
-                Commands.Rows[selectedrow].Cells[Alt.Index].Value = takeoff.Alt.ToString();
-            }
-            else
-            {
-                MessageBox.Show("No TAKEOFF POINT Exists!");
-            }
-
-            
-        }
-
+        }        
         
         void Commands_SelectionChangeCommitted(object sender, EventArgs e)
         {
@@ -4550,9 +4498,6 @@ namespace MissionPlanner.GCSViews
             ChangeColumnHeader(((ComboBox)sender).Text);
             try
             {
-                // current command is modified?
-                if (((ComboBox)sender).Text == "LAND_AT_TAKEOFF") { modify_landing_point(); }
-
                 // default takeoff to non 0 alt
                 if (((ComboBox)sender).Text == "TAKEOFF")
                 {
@@ -4976,6 +4921,9 @@ namespace MissionPlanner.GCSViews
             if (drawnpolygon == null) return;
             drawnpolygon.Points.Clear();
             drawnpolygonsoverlay.Markers.Clear();
+
+            forbidden_zone_p1 = 0;
+            forbidden_zone_p2 = 0;
 
             writeKML();
         }
@@ -8111,7 +8059,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             if (mCheckerResult == MissionChecker.MissionCheckerResult.NO_LAND_POINT)
             {
                 missionChecker.DO_DISABLE_HWP = false;
-                if (MessageBox.Show("No landing point is defined. Land at actual Takeoff coordinates will used. \nOk - to proceed uploading mission", "Mission Checker", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
+                //if (MessageBox.Show("No landing point is defined. Land at actual Takeoff coordinates will used. \nOk - to proceed uploading mission", "Mission Checker", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
             }
 
             #region SRTM Collision detection

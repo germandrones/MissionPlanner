@@ -163,7 +163,7 @@ namespace MissionPlanner.Utilities
         {
             for (int i = defined_mission.Count - 1; i >= 0; i--)
             {
-                if (defined_mission[i].getCommand() == (ushort)MAVLink.MAV_CMD.LAND || defined_mission[i].getCommand() == (ushort)MAVLink.MAV_CMD.LAND_AT_TAKEOFF) return i;
+                if (defined_mission[i].getCommand() == (ushort)MAVLink.MAV_CMD.LAND) return i;
             }
             return -1;
         }
@@ -193,7 +193,7 @@ namespace MissionPlanner.Utilities
 
                 // check also takeoff and landing points:
                 if (cmd_id == (int)MAVLink.MAV_CMD.TAKEOFF) m_takeoff_id = defined_mission.Count();
-                if (cmd_id == (int)MAVLink.MAV_CMD.LAND || cmd_id == (int)MAVLink.MAV_CMD.LAND_AT_TAKEOFF) m_land_id = defined_mission.Count();
+                if (cmd_id == (int)MAVLink.MAV_CMD.LAND) m_land_id = defined_mission.Count();
 
                 defined_mission.Add(new MissionItem(cmd_id, p1, p2, p3, p4, x, y, z));
             }

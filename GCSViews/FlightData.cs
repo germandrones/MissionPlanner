@@ -1429,7 +1429,12 @@ namespace MissionPlanner.GCSViews
             }
 
             var wps = MainV2.comPort.MAV.wps.Values.ToList();
-            //if (wps.Count() > 0) missionItems = wps; //wps is highpriority
+
+            bool landing_point_exists = false;
+            foreach (MAVLink.mavlink_mission_item_t plla in wps)
+            {
+                if (plla.command == (ushort)MAVLink.MAV_CMD.LAND) landing_point_exists = true;
+            }
 
             foreach (MAVLink.mavlink_mission_item_t plla in wps)
             {                
@@ -1474,7 +1479,6 @@ namespace MissionPlanner.GCSViews
                         }
 
                     case (ushort)MAVLink.MAV_CMD.LAND:
-                    case (ushort)MAVLink.MAV_CMD.LAND_AT_TAKEOFF:
                         {
                             int hwp_radius = (hwp_lradius * 2) + (hwp_wpradius * 6);
                             addpolygonmarkerland("Land", plla.y, plla.x, (int)plla.z, hwp_radius, m_forbidden_zone_param1, m_forbidden_zone_param2, polygons);
@@ -1483,7 +1487,15 @@ namespace MissionPlanner.GCSViews
 
                     case (ushort)MAVLink.MAV_CMD.TAKEOFF:
                         {
-                            addpolygonmarkerblue("Takeoff", plla.y, plla.x, (int)plla.z, Color.White, polygons, wp_radius);
+                            if (landing_point_exists)
+                            {
+                                addpolygonmarkerblue("Takeoff", plla.y, plla.x, (int)plla.z, Color.White, polygons, wp_radius);
+                            }
+                            else
+                            {
+                                int hwp_radius = (hwp_lradius * 2) + (hwp_wpradius * 6);
+                                addpolygonmarkerland("Takeoff", plla.y, plla.x, (int)plla.z, hwp_radius, m_forbidden_zone_param1, m_forbidden_zone_param2, polygons);
+                            }
                             break;
                         }
 

@@ -793,17 +793,7 @@
         <param index="5">Empy</param>
         <param index="6">Empy</param>
         <param index="7">Empy</param>
-      </entry>
-      <entry value="87" name="MAV_CMD_LAND_AT_TAKEOFF">
-        <description>Land at the takeoff waypoint</description>
-        <param index="1">Latitude</param>
-        <param index="2">Longitude</param>
-        <param index="3">Altitude</param>
-        <param index="4">Empy</param>
-        <param index="5">Empy</param>
-        <param index="6">Empy</param>
-        <param index="7">Empy</param>
-      </entry>  
+      </entry>      
       <entry value="88" name="MAV_CMD_SET_FORBIDDEN_ZONE">
         <description>Mission command for defining the zone where the UAV cannt fly during landing</description>
         <param index="1">Beginning of sector (in centidegrees)</param>
