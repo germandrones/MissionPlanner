@@ -1295,18 +1295,21 @@ namespace MissionPlanner.GCSViews
                 {
                     mBorders.InnerMarker = m;
                     mBorders.Tag = tag;
-                    mBorders.wprad = missionChecker.HWP_RADIUS;
+                    mBorders.wprad = missionChecker.HWP_ENABLED ? missionChecker.HWP_RADIUS : (int)(float.Parse(TXT_WPRad.Text) / CurrentState.multiplierdist); // how to visualize landing radius
                     mBorders.Color = Color.LightBlue;
                 }
                 objectsoverlay.Markers.Add(m);
                 objectsoverlay.Markers.Add(mBorders);
 
-                // redraw arcs
-                landpointoverlay.Clear();
-                GMapMarkerLand landArea = new GMapMarkerLand(point, missionChecker.HWP_RADIUS, unsafe_area_angle_1, unsafe_area_angle_2);
-                int wpno = -1;
-                if (int.TryParse(tag, out wpno)) { landArea.wpno = wpno; }
-                landpointoverlay.Markers.Add(landArea);
+                if (missionChecker.HWP_ENABLED)
+                {
+                    // redraw arcs
+                    landpointoverlay.Clear();
+                    GMapMarkerLand landArea = new GMapMarkerLand(point, missionChecker.HWP_RADIUS, unsafe_area_angle_1, unsafe_area_angle_2);
+                    int wpno = -1;
+                    if (int.TryParse(tag, out wpno)) { landArea.wpno = wpno; }
+                    landpointoverlay.Markers.Add(landArea);
+                }
             }
             catch (Exception)
             {
@@ -2320,7 +2323,14 @@ namespace MissionPlanner.GCSViews
 
             if (mCheckerResult == MissionChecker.MissionCheckerResult.OK)
             {
-                if (missionChecker.DO_DISABLE_HWP || missionChecker.defined_mission.Count != Commands.RowCount)
+                /*Disable HWPs generating if needed*/
+                int disableHWP_CMD_ID = missionChecker.getDoDisableHWPCommandID();
+                if (disableHWP_CMD_ID > 0) { Commands.Rows.RemoveAt(disableHWP_CMD_ID); }
+                if (missionChecker.DO_DISABLE_HWP) { AddCommand(MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP, 0, 0, 0, 0, 0, 0, 0); }
+
+
+
+                /*if (missionChecker.DO_DISABLE_HWP || missionChecker.defined_mission.Count != Commands.RowCount)
                 {
                     DialogResult result = MessageBox.Show("Headwind Waypoints will be deactivated and Mission will be modified automatically.\nClick Yes to allow this modifications, or No to continue uploading.", "Mission Checker", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
@@ -2328,7 +2338,7 @@ namespace MissionPlanner.GCSViews
                         Commands.Rows.Clear();
                         foreach (var mitem in missionChecker.defined_mission) { AddCommand((MAVLink.MAV_CMD)mitem.getCommand(), mitem.P1, mitem.P2, mitem.P3, mitem.P4, mitem.getCoords().Lng, mitem.getCoords().Lat, mitem.getCoords().Alt); }
                     }
-                }
+                }*/
             }
             else
             {
@@ -3440,6 +3450,11 @@ namespace MissionPlanner.GCSViews
                         temp.p2 = (float)(double.Parse(items[5], new CultureInfo("en-US")));
                         temp.p3 = (float)(double.Parse(items[6], new CultureInfo("en-US")));
                         temp.p4 = (float)(double.Parse(items[7], new CultureInfo("en-US")));
+
+                        if (temp.id == (ushort)MAVLink.MAV_CMD.LAND || temp.id == (ushort)MAVLink.MAV_CMD.TAKEOFF) {
+                            forbidden_zone_p1 = temp.p2;
+                            forbidden_zone_p2 = temp.p3;
+                        }
 
                         cmds.Add(temp);
 
@@ -8053,37 +8068,18 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             missionChecker.DO_DISABLE_HWP = missionChecker.HWP_ENABLED ? false : true;
 
             
-            // Check if landing and takeoff are present
+            // Check mission sequence. It's allowed to upload mission without landing point.
             ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(50, "Checking takeoff/landing sequence...");
-            mCheckerResult = missionChecker.doCheckTakeoffLandingSequence();
-            if (mCheckerResult == MissionChecker.MissionCheckerResult.NO_LAND_POINT)
-            {
-                missionChecker.DO_DISABLE_HWP = false;
-                //if (MessageBox.Show("No landing point is defined. Land at actual Takeoff coordinates will used. \nOk - to proceed uploading mission", "Mission Checker", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
-            }
+            mCheckerResult = missionChecker.doCheckMissionSequence();
+            if (mCheckerResult != MissionChecker.MissionCheckerResult.OK) return;
 
-            #region SRTM Collision detection
-            // Check mission elevation graph
-            /*result = missionChecker.doCheckAltitudeSRTM();
-            if (result == MissionChecker.MissionCheckerResult.GROUND_COLLISION_DETECTED)
-            {
-                DialogResult dialogResult = CustomMessageBox.ShowYesNoIgnoreWarning("Please check the elevation graph, mission is unsafe. \n Click Yes to show elevation graph, or Ignore to upload mission", "Mission Checker");
-                switch(dialogResult)
-                {
-                    case DialogResult.Yes: { BUT_showElevationGraph.PerformClick(); return false; } // show graph, don't allow to upload mission
-                    case DialogResult.No: { return false; } // just exit, don't do anything
-                    case DialogResult.Ignore: { break; } // ignore warning, allow to upload the mission
-                }
-            }*/
-            #endregion
-
+            
             // Check landing direction(if crossing unsafe area)
             ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(60, "Checking landing direction...");
             mCheckerResult = missionChecker.doCheckLandingDirection();
             if (mCheckerResult != MissionChecker.MissionCheckerResult.OK) return;
 
-
-            ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(90, "Checking headwind landing sequence...");
+            /*((ProgressReporterDialogue)sender).UpdateProgressAndStatus(90, "Checking headwind landing sequence...");
             if (!missionChecker.DO_DISABLE_HWP)
             {
                 missionChecker.doRestoreModifiedMission();
@@ -8094,6 +8090,9 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 mCheckerResult = missionChecker.doDisableHWP();
             }
             if (mCheckerResult != MissionChecker.MissionCheckerResult.OK) return;
+            */
+
+            // all checks passed.
         }
 
     }

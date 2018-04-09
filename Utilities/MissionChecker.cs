@@ -55,7 +55,6 @@ namespace MissionPlanner.Utilities
         {
             OK,                             // OK
             NO_TAKEOFF_POINT,               // if no takeoff point declared
-            NO_LAND_POINT,                  // if no landing point declared
             ALTITUDE_UNSAFE,                // if elevation is unsafe
             GROUND_COLLISION_DETECTED,      // if ground collision could happen
             LANDING_CROSING_UNSAFE_AREA,    // if last mission waypoint is crossing the forbidden area
@@ -199,12 +198,16 @@ namespace MissionPlanner.Utilities
             }
         }
 
-        // Method checks if current mission don't contains landing and takeoff
-        public MissionCheckerResult doCheckTakeoffLandingSequence()
+        // Method checks if current mission sequence is correct
+        public MissionCheckerResult doCheckMissionSequence()
         {
             if (m_takeoff_id < 0) return MissionCheckerResult.NO_TAKEOFF_POINT;
-            if (m_land_id < 0) return MissionCheckerResult.NO_LAND_POINT;            
-            if (m_takeoff_id > m_land_id && m_land_id > 0) return MissionCheckerResult.WRONG_MISSION_SEQUENCE;
+            
+            // if landing point is defined and landing is before takeoff:
+            if (m_land_id > 0 && m_takeoff_id > m_land_id) return MissionCheckerResult.WRONG_MISSION_SEQUENCE;
+
+            // if landing point is not defined, use takeoff point:
+            if (m_land_id < 0) { m_land_id = m_takeoff_id; }
 
             double unsafeAngleOffset = defined_mission[m_land_id].P3;
             if (unsafeAngleOffset > 180) { DO_DISABLE_HWP = true; } // Set the flag to true, that means that after all tests mission will be modified
@@ -217,9 +220,10 @@ namespace MissionPlanner.Utilities
         public MissionCheckerResult doCheckLandingDirection()
         {
             int last_wp = getLastMissionWP();
-            if (m_land_id < 0) { m_land_id = getLandWP(); }
 
-            if (last_wp > 0 && m_land_id > 0)
+
+            // check direction between last mission waypoint and landing(takeoff) point including forbidden area sector.
+            if (last_wp > 0 && m_land_id >= 0)
             {
                 PointLatLngAlt lp_coords = defined_mission[m_land_id].getCoords();
                 double lp_bearing = lp_coords.GetBearing(defined_mission[last_wp].getCoords());
@@ -291,6 +295,16 @@ namespace MissionPlanner.Utilities
             return MissionCheckerResult.OK;
         }
 
+
+        public int getDoDisableHWPCommandID()
+        {
+            for (int i = defined_mission.Count() - 1; i > 0; i--)
+            {
+                if (defined_mission[i].getCommand() == (int)MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP) return i;
+            }
+            return -1;
+        }
+
         public void doRestoreModifiedMission()
         {
             int landingPointIndex = -1;
@@ -319,6 +333,8 @@ namespace MissionPlanner.Utilities
 
             int LAST_MWP = getLastMissionWP();
             int LAND_CMD_ID = getLandWP();
+
+            if (LAND_CMD_ID < 0) { LAND_CMD_ID = m_takeoff_id; } // use takeoff point
 
             bool distUnsafe = false;
             //if distance between last mwp and landing point is less than hwp radius

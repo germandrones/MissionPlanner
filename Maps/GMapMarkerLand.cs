@@ -115,7 +115,7 @@ namespace MissionPlanner.Maps
             if (widtharc > 0 && widtharc < 200000000 && Overlay.Control.Zoom > 3)
             {
                 // fill arc green / red color
-                g.FillPie(new SolidBrush(Color.FromArgb(30, Color.Green)), x, y, widtharc, heightarc, 0, 360);
+                //g.FillPie(new SolidBrush(Color.FromArgb(30, Color.Green)), x, y, widtharc, heightarc, 0, 360);
                 g.FillPie(new SolidBrush(Color.FromArgb(70, Color.Red)), x, y, widtharc, heightarc, (int)(t_angle1), (int)(t_angle2));
 
 
