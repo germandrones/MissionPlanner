@@ -245,11 +245,13 @@ namespace MissionPlanner.Utilities
                 {
                     if (lp_bearing >= unsafeAngleStart && lp_bearing <= unsafeAngleEnd) return MissionCheckerResult.LANDING_CROSING_UNSAFE_AREA;
                 }
+
+
             }
             return MissionCheckerResult.OK;
         }
 
-        // Method checks the altitude using SRTM
+        // Method checks the altitude using SRTM, but very slow... todo parallel for()?
         public MissionCheckerResult doCheckAltitudeSRTM()
         {
             List<PointLatLngAlt> planlocs = new List<PointLatLngAlt>(); // list of all coords

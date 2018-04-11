@@ -583,8 +583,7 @@ AOA_SSA = 11020,
         
         ///<summary> Disable/ Enable HWP Waypoints feature</summary>
         MAV_CMD_DO_DISABLE_HWP = 86,
-        ///<summary> Land at the takeoff waypoint </summary>
-        LAND_AT_TAKEOFF = 87,
+        
         ///<summary> Mission command for defining the zone where the UAV cannt fly during landing </summary>
         MAV_CMD_SET_FORBIDDEN_ZONE = 88,
 

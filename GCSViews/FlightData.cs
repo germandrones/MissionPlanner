@@ -1397,10 +1397,11 @@ namespace MissionPlanner.GCSViews
             MAVLink.mavlink_mission_item_t lastplla = new MAVLink.mavlink_mission_item_t();
             MAVLink.mavlink_mission_item_t home = new MAVLink.mavlink_mission_item_t();
 
-            #region HWP Visualization
+            #region HWP_data
             int hwp_lradius = 60;
             int hwp_wpradius = 30;
             int wp_radius = 30;
+
             try
             {
                 hwp_lradius = (int)MainV2.comPort.MAV.param["HWP_LRADIUS"].Value;
@@ -1408,18 +1409,6 @@ namespace MissionPlanner.GCSViews
                 wp_radius = (int)MainV2.comPort.MAV.param["WP_RADIUS"].Value;
             }
             catch { }
-
-            // HWP Points received?
-            if (HWP_updated)
-            {
-                addpolygonmarkerNoTooltip("HWP1", hwp1.lng, hwp1.lat, 0, Color.Blue, polygons, hwp_wpradius);
-                addpolygonmarkerNoTooltip("HWP2", hwp2.lng, hwp2.lat, 0, Color.Blue, polygons, hwp_wpradius);
-                addpolygonmarkerNoTooltip("HWP3", hwp3.lng, hwp3.lat, 0, Color.Blue, polygons, hwp_lradius);
-                if (hwp4.lat != -1 && hwp4.lng != -1)
-                {
-                    addpolygonmarkerNoTooltip("HWP4", hwp4.lng, hwp4.lat, 0, Color.Blue, polygons, hwp_wpradius);
-                }
-            }
             #endregion
 
             // visualize guided mode marker            
@@ -1538,6 +1527,16 @@ namespace MissionPlanner.GCSViews
 
                 }
             }
+
+            #region HWP Visualization if received(Order: HWP4->HWP1!)
+            if (HWP_updated)
+            {
+                if (hwp4.lat != -1 && hwp4.lng != -1) { addpolygonmarkerNoTooltip("HWP4", hwp4.lng, hwp4.lat, 0, Color.Blue, polygons, hwp_wpradius); }
+                addpolygonmarkerNoTooltip("HWP3", hwp3.lng, hwp3.lat, 0, Color.Blue, polygons, hwp_lradius);
+                addpolygonmarkerNoTooltip("HWP2", hwp2.lng, hwp2.lat, 0, Color.Blue, polygons, hwp_wpradius);
+                addpolygonmarkerNoTooltip("HWP1", hwp1.lng, hwp1.lat, 0, Color.Blue, polygons, hwp_wpradius);
+            }
+            #endregion
 
             travdist -= MainV2.comPort.MAV.cs.wp_dist;
 
@@ -1884,7 +1883,7 @@ namespace MissionPlanner.GCSViews
             try
             {
                 PointLatLng point = new PointLatLng(lat, lng);
-                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.blue);
+                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.blue_small);
 
                 m.ToolTipMode = MarkerTooltipMode.Always;
                 m.ToolTipText = tag;
@@ -2072,7 +2071,7 @@ namespace MissionPlanner.GCSViews
 
             foreach (GMapMarker m in polygons.Markers)
             {
-                if (m is GMapMarkerRect)
+                if (m is GMapMarkerRect || (m is GMarkerGoogle && m.ToolTipText.Contains("HWP")))
                 {
                     m.Tag = polygonPoints.Count;
                     polygonPoints.Add(m.Position);
@@ -2092,43 +2091,15 @@ namespace MissionPlanner.GCSViews
             GMapRoute wppath = new GMapRoute("wp path");
             wppath.Stroke = new Pen(Color.Orange, 3);
             wppath.Stroke.DashStyle = DashStyle.Custom;
-
-            for (int a = 1; a < polygonPoints.Count - 1; a++)
+            for (int a = 1; a < polygonPoints.Count; a++)
             {
                 wppath.Points.Add(polygonPoints[a]);
-            }
-
-            GMapRoute landingWay = new GMapRoute("LandingWay");
-            landingWay.Stroke = !HWP_updated ? new Pen(Color.Orange, 3) : new Pen(Color.LightBlue, 3);
-            landingWay.Stroke.DashStyle = HWP_updated ? DashStyle.Solid : DashStyle.Custom;
-
-            if (HWP_updated)
-            {
-                // connect waypoints in right direction
-                landingWay.Points.Add(polygonPoints[polygonPoints.Count - 2]);
-
-                if (hwp4.lat != -1 && hwp4.lng != -1)
-                {
-                    landingWay.Points.Add(new PointLatLng(hwp4.lat, hwp4.lng));
-                }
-
-                landingWay.Points.Add(new PointLatLng(hwp3.lat, hwp3.lng));
-                landingWay.Points.Add(new PointLatLng(hwp2.lat, hwp2.lng));
-                landingWay.Points.Add(new PointLatLng(hwp1.lat, hwp1.lng));
-
-                landingWay.Points.Add(polygonPoints[polygonPoints.Count - 1]);
-            }
-            else
-            {
-                landingWay.Points.Add(polygonPoints[polygonPoints.Count - 2]);
-                landingWay.Points.Add(polygonPoints[polygonPoints.Count - 1]);
             }
 
             Invoke((MethodInvoker) delegate
             {
                 polygons.Routes.Add(homeroute);
                 polygons.Routes.Add(wppath);
-                polygons.Routes.Add(landingWay);
             });
         }
 
