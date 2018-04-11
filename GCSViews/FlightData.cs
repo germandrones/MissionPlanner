@@ -1385,7 +1385,13 @@ namespace MissionPlanner.GCSViews
 
 
 
-        //public static List<MAVLink.mavlink_mission_item_t> missionItems = new List<MAVLink.mavlink_mission_item_t>();
+        private void addHeadWindMarkers(int hwp_wpradius, int hwp_lradius)
+        {
+            if (hwp4.lat != -1 && hwp4.lng != -1) { addpolygonmarkerNoTooltip("HWP4", hwp4.lng, hwp4.lat, 0, Color.Blue, polygons, hwp_wpradius); }
+            addpolygonmarkerNoTooltip("HWP3", hwp3.lng, hwp3.lat, 0, Color.Blue, polygons, hwp_lradius);
+            addpolygonmarkerNoTooltip("HWP2", hwp2.lng, hwp2.lat, 0, Color.Blue, polygons, hwp_wpradius);
+            addpolygonmarkerNoTooltip("HWP1", hwp1.lng, hwp1.lat, 0, Color.Blue, polygons, hwp_wpradius);
+        }
 
         private void update_map()
         {
@@ -1469,6 +1475,8 @@ namespace MissionPlanner.GCSViews
 
                     case (ushort)MAVLink.MAV_CMD.LAND:
                         {
+                            //add hwps before landing
+                            if (HWP_updated && wps.Count > 2 && landing_point_exists) addHeadWindMarkers(hwp_wpradius, hwp_lradius);
                             int hwp_radius = (hwp_lradius * 2) + (hwp_wpradius * 6);
                             addpolygonmarkerland("Land", plla.y, plla.x, (int)plla.z, hwp_radius, m_forbidden_zone_param1, m_forbidden_zone_param2, polygons);
                             break;
@@ -1529,13 +1537,7 @@ namespace MissionPlanner.GCSViews
             }
 
             #region HWP Visualization if received(Order: HWP4->HWP1!)
-            if (HWP_updated)
-            {
-                if (hwp4.lat != -1 && hwp4.lng != -1) { addpolygonmarkerNoTooltip("HWP4", hwp4.lng, hwp4.lat, 0, Color.Blue, polygons, hwp_wpradius); }
-                addpolygonmarkerNoTooltip("HWP3", hwp3.lng, hwp3.lat, 0, Color.Blue, polygons, hwp_lradius);
-                addpolygonmarkerNoTooltip("HWP2", hwp2.lng, hwp2.lat, 0, Color.Blue, polygons, hwp_wpradius);
-                addpolygonmarkerNoTooltip("HWP1", hwp1.lng, hwp1.lat, 0, Color.Blue, polygons, hwp_wpradius);
-            }
+            if (HWP_updated && wps.Count > 2 && !landing_point_exists) addHeadWindMarkers(hwp_wpradius, hwp_lradius);
             #endregion
 
             travdist -= MainV2.comPort.MAV.cs.wp_dist;
@@ -1663,6 +1665,7 @@ namespace MissionPlanner.GCSViews
                 polygons.Markers.Clear();
                 routes.Markers.Clear();
                 poioverlay.Markers.Clear();
+                
             });
         }
 
@@ -2553,6 +2556,7 @@ namespace MissionPlanner.GCSViews
                 DialogResult result = fd.ShowDialog();
                 string file = fd.FileName;
                 LoadLogFile(file);
+                HWP_updated = false;
             }
         }
 
