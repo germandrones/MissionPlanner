@@ -2,7 +2,6 @@
   "profiles": {
     "MissionPlanner": {
       "commandName": "Project",
-      "commandLineArgs": "-dev",
       "workingDirectory": "$(TargetDir)"
     }
   }

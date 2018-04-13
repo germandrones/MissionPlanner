@@ -109,7 +109,7 @@ namespace MissionPlanner.Utilities
             //flight Data view
             displayAnenometer = true;
             displayQuickTab = true;
-            displayPreFlightTab = true;
+            displayPreFlightTab = false;
             displayAdvActionsTab = true;
             displaySimpleActionsTab = false;
             displayGaugesTab = false;
@@ -117,7 +117,7 @@ namespace MissionPlanner.Utilities
             displayServoTab = false;
             displayScriptsTab = false;
             displayTelemetryTab = true;
-            displayDataflashTab = true;
+            displayDataflashTab = false;
             displayMessagesTab = false;
 
             //flight plan
@@ -222,7 +222,7 @@ namespace MissionPlanner.Utilities
                 //flight Data view
                 displayAnenometer = true,
                 displayQuickTab = true,
-                displayPreFlightTab = true,
+                displayPreFlightTab = false,
                 displayAdvActionsTab = true,
                 displaySimpleActionsTab = false,
                 displayGaugesTab = false,
@@ -230,7 +230,7 @@ namespace MissionPlanner.Utilities
                 displayServoTab = false,
                 displayScriptsTab = false,
                 displayTelemetryTab = true,
-                displayDataflashTab = true,
+                displayDataflashTab = false,
                 displayMessagesTab = false,
 
                 //flight plan
@@ -304,7 +304,7 @@ namespace MissionPlanner.Utilities
                 //flight Data view
                 displayAnenometer = true,
                 displayQuickTab = true,
-                displayPreFlightTab = true,
+                displayPreFlightTab = false,
                 displayAdvActionsTab = true,
                 displaySimpleActionsTab = false,
                 displayGaugesTab = false,

@@ -369,6 +369,7 @@ namespace MissionPlanner
                 {
                     t.TabPages.Remove(FlightData.tabQuick);
                 }
+
                 if (DisplayConfiguration.displayPreFlightTab && !t.TabPages.Contains(FlightData.tabPagePreFlight))
                 {
                     t.TabPages.Add(FlightData.tabPagePreFlight);
@@ -377,6 +378,7 @@ namespace MissionPlanner
                 {
                     t.TabPages.Remove(FlightData.tabPagePreFlight);
                 }
+
                 if (DisplayConfiguration.displayAdvActionsTab && !t.TabPages.Contains(FlightData.tabActions))
                 {
                     t.TabPages.Add(FlightData.tabActions);
@@ -393,6 +395,7 @@ namespace MissionPlanner
                 {
                     t.TabPages.Remove(FlightData.tabActionsSimple);
                 }
+                
                 if (DisplayConfiguration.displayGaugesTab && !t.TabPages.Contains(FlightData.tabGauges))
                 {
                     t.TabPages.Add(FlightData.tabGauges);
@@ -401,6 +404,7 @@ namespace MissionPlanner
                 {
                     t.TabPages.Remove(FlightData.tabGauges);
                 }
+
                 if (DisplayConfiguration.displayStatusTab && !t.TabPages.Contains(FlightData.tabStatus))
                 {
                     t.TabPages.Add(FlightData.tabStatus);
@@ -417,6 +421,7 @@ namespace MissionPlanner
                 {
                     t.TabPages.Remove(FlightData.tabServo);
                 }
+
                 if (DisplayConfiguration.displayScriptsTab && !t.TabPages.Contains(FlightData.tabScripts))
                 {
                     t.TabPages.Add(FlightData.tabScripts);
@@ -425,6 +430,7 @@ namespace MissionPlanner
                 {
                     t.TabPages.Remove(FlightData.tabScripts);
                 }
+
                 if (DisplayConfiguration.displayTelemetryTab && !t.TabPages.Contains(FlightData.tabTLogs))
                 {
                     t.TabPages.Add(FlightData.tabTLogs);
