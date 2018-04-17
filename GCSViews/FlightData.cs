@@ -1504,12 +1504,27 @@ namespace MissionPlanner.GCSViews
                         
                     case (ushort)MAVLink.MAV_CMD.LAST:
                     case (ushort)MAVLink.MAV_CMD.VTOL_TAKEOFF:
+                    case (ushort)MAVLink.MAV_CMD.VTOL_LAND:
+                    case (ushort)MAVLink.MAV_CMD.DO_GUIDED_LIMITS:
+                    case (ushort)MAVLink.MAV_CMD.CONDITION_DELAY:
+                    case (ushort)MAVLink.MAV_CMD.CONDITION_CHANGE_ALT:
+                    case (ushort)MAVLink.MAV_CMD.CONDITION_DISTANCE:
+                    case (ushort)MAVLink.MAV_CMD.CONDITION_YAW:
+                    case (ushort)MAVLink.MAV_CMD.DO_CHANGE_SPEED:
+                    case (ushort)MAVLink.MAV_CMD.DO_CHANGE_ALTITUDE:
+                    case (ushort)MAVLink.MAV_CMD.DO_GRIPPER:
+                    case (ushort)MAVLink.MAV_CMD.DO_PARACHUTE:
+                    case (ushort)MAVLink.MAV_CMD.DO_SET_RELAY:
+                    case (ushort)MAVLink.MAV_CMD.DO_REPEAT_RELAY:
+                    case (ushort)MAVLink.MAV_CMD.DO_REPEAT_SERVO:
+                    case (ushort)MAVLink.MAV_CMD.DO_MOUNT_CONTROL:
                     case (ushort)MAVLink.MAV_CMD.RETURN_TO_LAUNCH:
                     case (ushort)MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP:
                     case (ushort)MAVLink.MAV_CMD.CONTINUE_AND_CHANGE_ALT:
                     case (ushort)MAVLink.MAV_CMD.DELAY:
                     case (ushort)MAVLink.MAV_CMD.DO_SET_CAM_TRIGG_DIST:
                     case (ushort)MAVLink.MAV_CMD.GUIDED_ENABLE:
+                    case (ushort)MAVLink.MAV_CMD.DO_SET_SERVO:
                         {
                             // do nothing
                             break;
@@ -1529,6 +1544,7 @@ namespace MissionPlanner.GCSViews
 
                     default:
                         {
+                            if(plla.y != 0 && plla.x != 0)
                             addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons, 0);
                             break;
                         }
