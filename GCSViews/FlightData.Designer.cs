@@ -38,18 +38,15 @@
             this.tabControlactions = new System.Windows.Forms.TabControl();
             this.tabQuick = new System.Windows.Forms.TabPage();
             this.tabActions = new System.Windows.Forms.TabPage();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.BUT_quickmanual = new MissionPlanner.Controls.MyButton();
             this.BUT_joystick = new MissionPlanner.Controls.MyButton();
             this.BTN_ActionTriggerCamNow = new MissionPlanner.Controls.MyButton();
-            this.BTN_ActionLoiterUnlim = new MissionPlanner.Controls.MyButton();
-            this.BUT_quickrtl = new MissionPlanner.Controls.MyButton();
-            this.BUT_quickmanual = new MissionPlanner.Controls.MyButton();
             this.BUT_resumemis = new MissionPlanner.Controls.MyButton();
-            this.CMB_setwp = new System.Windows.Forms.ComboBox();
-            this.BUT_setwp = new MissionPlanner.Controls.MyButton();
+            this.BUT_quickrtl = new MissionPlanner.Controls.MyButton();
             this.actions_group1 = new System.Windows.Forms.GroupBox();
             this.BUTrestartmission = new MissionPlanner.Controls.MyButton();
             this.BUT_quickauto = new MissionPlanner.Controls.MyButton();
+            this.BTN_ActionLoiterUnlim = new MissionPlanner.Controls.MyButton();
             this.BUT_abortland = new MissionPlanner.Controls.MyButton();
             this.BUT_Homealt = new MissionPlanner.Controls.MyButton();
             this.BUT_clear_track = new MissionPlanner.Controls.MyButton();
@@ -61,6 +58,8 @@
             this.BUT_setmode = new MissionPlanner.Controls.MyButton();
             this.BUT_RAWSensor = new MissionPlanner.Controls.MyButton();
             this.CMB_modes = new System.Windows.Forms.ComboBox();
+            this.BUT_setwp = new MissionPlanner.Controls.MyButton();
+            this.CMB_setwp = new System.Windows.Forms.ComboBox();
             this.tabActionsSimple = new System.Windows.Forms.TabPage();
             this.myButton1 = new MissionPlanner.Controls.MyButton();
             this.myButton2 = new MissionPlanner.Controls.MyButton();
@@ -154,9 +153,9 @@
             this.Messagetabtimer = new System.Windows.Forms.Timer(this.components);
             this.bindingSourceHud = new System.Windows.Forms.BindingSource(this.components);
             this.bindingSourceQuickTab = new System.Windows.Forms.BindingSource(this.components);
-            this.modifyandSetSpeed = new MissionPlanner.Controls.ModifyandSet();
-            this.modifyandSetAlt = new MissionPlanner.Controls.ModifyandSet();
             this.modifyandSetLoiterRad = new MissionPlanner.Controls.ModifyandSet();
+            this.modifyandSetAlt = new MissionPlanner.Controls.ModifyandSet();
+            this.modifyandSetSpeed = new MissionPlanner.Controls.ModifyandSet();
             this.checkListControl1 = new MissionPlanner.Controls.PreFlight.CheckListControl();
             this.servoOptions1 = new MissionPlanner.Controls.ServoOptions();
             this.servoOptions2 = new MissionPlanner.Controls.ServoOptions();
@@ -190,7 +189,6 @@
             this.tabControlactions.SuspendLayout();
             this.tabQuick.SuspendLayout();
             this.tabActions.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.actions_group1.SuspendLayout();
             this.tabActionsSimple.SuspendLayout();
             this.tabPagePreFlight.SuspendLayout();
@@ -585,34 +583,31 @@
             // 
             // tabActions
             // 
-            this.tabActions.Controls.Add(this.groupBox1);
+            this.tabActions.Controls.Add(this.modifyandSetLoiterRad);
+            this.tabActions.Controls.Add(this.BUT_quickmanual);
+            this.tabActions.Controls.Add(this.modifyandSetAlt);
+            this.tabActions.Controls.Add(this.modifyandSetSpeed);
+            this.tabActions.Controls.Add(this.BUT_joystick);
+            this.tabActions.Controls.Add(this.BTN_ActionTriggerCamNow);
+            this.tabActions.Controls.Add(this.BUT_resumemis);
+            this.tabActions.Controls.Add(this.BUT_quickrtl);
             this.tabActions.Controls.Add(this.actions_group1);
+            this.tabActions.Controls.Add(this.BUT_setwp);
+            this.tabActions.Controls.Add(this.CMB_setwp);
             resources.ApplyResources(this.tabActions, "tabActions");
             this.tabActions.Name = "tabActions";
             this.tabActions.UseVisualStyleBackColor = true;
             // 
-            // groupBox1
+            // BUT_quickmanual
             // 
-            this.groupBox1.Controls.Add(this.BUT_joystick);
-            this.groupBox1.Controls.Add(this.modifyandSetSpeed);
-            this.groupBox1.Controls.Add(this.BTN_ActionTriggerCamNow);
-            this.groupBox1.Controls.Add(this.modifyandSetAlt);
-            this.groupBox1.Controls.Add(this.BTN_ActionLoiterUnlim);
-            this.groupBox1.Controls.Add(this.modifyandSetLoiterRad);
-            this.groupBox1.Controls.Add(this.BUT_quickrtl);
-            this.groupBox1.Controls.Add(this.BUT_quickmanual);
-            this.groupBox1.Controls.Add(this.BUT_resumemis);
-            this.groupBox1.Controls.Add(this.CMB_setwp);
-            this.groupBox1.Controls.Add(this.BUT_setwp);
-            resources.ApplyResources(this.groupBox1, "groupBox1");
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.TabStop = false;
+            resources.ApplyResources(this.BUT_quickmanual, "BUT_quickmanual");
+            this.BUT_quickmanual.Name = "BUT_quickmanual";
+            this.toolTip1.SetToolTip(this.BUT_quickmanual, resources.GetString("BUT_quickmanual.ToolTip"));
+            this.BUT_quickmanual.UseVisualStyleBackColor = true;
+            this.BUT_quickmanual.Click += new System.EventHandler(this.BUT_quickmanual_Click);
             // 
             // BUT_joystick
             // 
-            this.BUT_joystick.ColorMouseDown = System.Drawing.Color.Empty;
-            this.BUT_joystick.ColorMouseOver = System.Drawing.Color.Empty;
-            this.BUT_joystick.ColorNotEnabled = System.Drawing.Color.Empty;
             resources.ApplyResources(this.BUT_joystick, "BUT_joystick");
             this.BUT_joystick.Name = "BUT_joystick";
             this.toolTip1.SetToolTip(this.BUT_joystick, resources.GetString("BUT_joystick.ToolTip"));
@@ -626,70 +621,26 @@
             this.BTN_ActionTriggerCamNow.UseVisualStyleBackColor = true;
             this.BTN_ActionTriggerCamNow.Click += new System.EventHandler(this.BTN_ActionTriggerCamNow_Click);
             // 
-            // BTN_ActionLoiterUnlim
+            // BUT_resumemis
             // 
-            resources.ApplyResources(this.BTN_ActionLoiterUnlim, "BTN_ActionLoiterUnlim");
-            this.BTN_ActionLoiterUnlim.Name = "BTN_ActionLoiterUnlim";
-            this.BTN_ActionLoiterUnlim.UseVisualStyleBackColor = true;
-            this.BTN_ActionLoiterUnlim.Click += new System.EventHandler(this.BTN_ActionLoiterUnlim_Click);
+            resources.ApplyResources(this.BUT_resumemis, "BUT_resumemis");
+            this.BUT_resumemis.Name = "BUT_resumemis";
+            this.BUT_resumemis.UseVisualStyleBackColor = true;
+            this.BUT_resumemis.Click += new System.EventHandler(this.BUT_resumemis_Click);
             // 
             // BUT_quickrtl
             // 
-            this.BUT_quickrtl.ColorMouseDown = System.Drawing.Color.Empty;
-            this.BUT_quickrtl.ColorMouseOver = System.Drawing.Color.Empty;
-            this.BUT_quickrtl.ColorNotEnabled = System.Drawing.Color.Empty;
             resources.ApplyResources(this.BUT_quickrtl, "BUT_quickrtl");
             this.BUT_quickrtl.Name = "BUT_quickrtl";
             this.toolTip1.SetToolTip(this.BUT_quickrtl, resources.GetString("BUT_quickrtl.ToolTip"));
             this.BUT_quickrtl.UseVisualStyleBackColor = true;
             this.BUT_quickrtl.Click += new System.EventHandler(this.BUT_quickrtl_Click);
             // 
-            // BUT_quickmanual
-            // 
-            this.BUT_quickmanual.ColorMouseDown = System.Drawing.Color.Empty;
-            this.BUT_quickmanual.ColorMouseOver = System.Drawing.Color.Empty;
-            this.BUT_quickmanual.ColorNotEnabled = System.Drawing.Color.Empty;
-            resources.ApplyResources(this.BUT_quickmanual, "BUT_quickmanual");
-            this.BUT_quickmanual.Name = "BUT_quickmanual";
-            this.toolTip1.SetToolTip(this.BUT_quickmanual, resources.GetString("BUT_quickmanual.ToolTip"));
-            this.BUT_quickmanual.UseVisualStyleBackColor = true;
-            this.BUT_quickmanual.Click += new System.EventHandler(this.BUT_quickmanual_Click);
-            // 
-            // BUT_resumemis
-            // 
-            this.BUT_resumemis.ColorMouseDown = System.Drawing.Color.Empty;
-            this.BUT_resumemis.ColorMouseOver = System.Drawing.Color.Empty;
-            this.BUT_resumemis.ColorNotEnabled = System.Drawing.Color.Empty;
-            resources.ApplyResources(this.BUT_resumemis, "BUT_resumemis");
-            this.BUT_resumemis.Name = "BUT_resumemis";
-            this.BUT_resumemis.UseVisualStyleBackColor = true;
-            this.BUT_resumemis.Click += new System.EventHandler(this.BUT_resumemis_Click);
-            // 
-            // CMB_setwp
-            // 
-            this.CMB_setwp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.CMB_setwp.FormattingEnabled = true;
-            this.CMB_setwp.Items.AddRange(new object[] {
-            resources.GetString("CMB_setwp.Items")});
-            resources.ApplyResources(this.CMB_setwp, "CMB_setwp");
-            this.CMB_setwp.Name = "CMB_setwp";
-            this.CMB_setwp.Click += new System.EventHandler(this.CMB_setwp_Click);
-            // 
-            // BUT_setwp
-            // 
-            this.BUT_setwp.ColorMouseDown = System.Drawing.Color.Empty;
-            this.BUT_setwp.ColorMouseOver = System.Drawing.Color.Empty;
-            this.BUT_setwp.ColorNotEnabled = System.Drawing.Color.Empty;
-            resources.ApplyResources(this.BUT_setwp, "BUT_setwp");
-            this.BUT_setwp.Name = "BUT_setwp";
-            this.toolTip1.SetToolTip(this.BUT_setwp, resources.GetString("BUT_setwp.ToolTip"));
-            this.BUT_setwp.UseVisualStyleBackColor = true;
-            this.BUT_setwp.Click += new System.EventHandler(this.BUT_setwp_Click);
-            // 
             // actions_group1
             // 
             this.actions_group1.Controls.Add(this.BUTrestartmission);
             this.actions_group1.Controls.Add(this.BUT_quickauto);
+            this.actions_group1.Controls.Add(this.BTN_ActionLoiterUnlim);
             this.actions_group1.Controls.Add(this.BUT_abortland);
             this.actions_group1.Controls.Add(this.BUT_Homealt);
             this.actions_group1.Controls.Add(this.BUT_clear_track);
@@ -726,6 +677,13 @@
             this.toolTip1.SetToolTip(this.BUT_quickauto, resources.GetString("BUT_quickauto.ToolTip"));
             this.BUT_quickauto.UseVisualStyleBackColor = true;
             this.BUT_quickauto.Click += new System.EventHandler(this.BUT_quickauto_Click);
+            // 
+            // BTN_ActionLoiterUnlim
+            // 
+            resources.ApplyResources(this.BTN_ActionLoiterUnlim, "BTN_ActionLoiterUnlim");
+            this.BTN_ActionLoiterUnlim.Name = "BTN_ActionLoiterUnlim";
+            this.BTN_ActionLoiterUnlim.UseVisualStyleBackColor = true;
+            this.BTN_ActionLoiterUnlim.Click += new System.EventHandler(this.BTN_ActionLoiterUnlim_Click);
             // 
             // BUT_abortland
             // 
@@ -837,6 +795,24 @@
             resources.ApplyResources(this.CMB_modes, "CMB_modes");
             this.CMB_modes.Name = "CMB_modes";
             this.CMB_modes.Click += new System.EventHandler(this.CMB_modes_Click);
+            // 
+            // BUT_setwp
+            // 
+            resources.ApplyResources(this.BUT_setwp, "BUT_setwp");
+            this.BUT_setwp.Name = "BUT_setwp";
+            this.toolTip1.SetToolTip(this.BUT_setwp, resources.GetString("BUT_setwp.ToolTip"));
+            this.BUT_setwp.UseVisualStyleBackColor = true;
+            this.BUT_setwp.Click += new System.EventHandler(this.BUT_setwp_Click);
+            // 
+            // CMB_setwp
+            // 
+            this.CMB_setwp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CMB_setwp.FormattingEnabled = true;
+            this.CMB_setwp.Items.AddRange(new object[] {
+            resources.GetString("CMB_setwp.Items")});
+            resources.ApplyResources(this.CMB_setwp, "CMB_setwp");
+            this.CMB_setwp.Name = "CMB_setwp";
+            this.CMB_setwp.Click += new System.EventHandler(this.CMB_setwp_Click);
             // 
             // tabActionsSimple
             // 
@@ -2097,31 +2073,31 @@
             // 
             this.bindingSourceQuickTab.DataSource = typeof(MissionPlanner.CurrentState);
             // 
-            // modifyandSetSpeed
+            // modifyandSetLoiterRad
             // 
-            this.modifyandSetSpeed.ButtonHeight = 20;
-            this.modifyandSetSpeed.ButtonText = "Set Max Airspeed(m/s)";
-            this.modifyandSetSpeed.ButtonWidth = 126;
-            resources.ApplyResources(this.modifyandSetSpeed, "modifyandSetSpeed");
-            this.modifyandSetSpeed.Maximum = new decimal(new int[] {
-            1000,
+            this.modifyandSetLoiterRad.ButtonHeight = 20;
+            this.modifyandSetLoiterRad.ButtonText = "Set Loiter Radius(m)";
+            this.modifyandSetLoiterRad.ButtonWidth = 126;
+            resources.ApplyResources(this.modifyandSetLoiterRad, "modifyandSetLoiterRad");
+            this.modifyandSetLoiterRad.Maximum = new decimal(new int[] {
+            10000,
             0,
             0,
             0});
-            this.modifyandSetSpeed.Minimum = new decimal(new int[] {
+            this.modifyandSetLoiterRad.Minimum = new decimal(new int[] {
+            10000,
             0,
             0,
-            0,
-            0});
-            this.modifyandSetSpeed.Name = "modifyandSetSpeed";
-            this.modifyandSetSpeed.NumericHeight = 20;
-            this.modifyandSetSpeed.NumericWidth = 45;
-            this.modifyandSetSpeed.Value = new decimal(new int[] {
+            -2147483648});
+            this.modifyandSetLoiterRad.Name = "modifyandSetLoiterRad";
+            this.modifyandSetLoiterRad.NumericHeight = 20;
+            this.modifyandSetLoiterRad.NumericWidth = 45;
+            this.modifyandSetLoiterRad.Value = new decimal(new int[] {
             100,
             0,
             0,
             0});
-            this.modifyandSetSpeed.Click += new System.EventHandler(this.modifyandSetSpeed_Click);
+            this.modifyandSetLoiterRad.Click += new System.EventHandler(this.modifyandSetLoiterRad_Click);
             // 
             // modifyandSetAlt
             // 
@@ -2149,31 +2125,31 @@
             0});
             this.modifyandSetAlt.Click += new System.EventHandler(this.modifyandSetAlt_Click);
             // 
-            // modifyandSetLoiterRad
+            // modifyandSetSpeed
             // 
-            this.modifyandSetLoiterRad.ButtonHeight = 20;
-            this.modifyandSetLoiterRad.ButtonText = "Set Loiter Radius(m)";
-            this.modifyandSetLoiterRad.ButtonWidth = 126;
-            resources.ApplyResources(this.modifyandSetLoiterRad, "modifyandSetLoiterRad");
-            this.modifyandSetLoiterRad.Maximum = new decimal(new int[] {
-            10000,
+            this.modifyandSetSpeed.ButtonHeight = 20;
+            this.modifyandSetSpeed.ButtonText = "Set Max Airspeed(m/s)";
+            this.modifyandSetSpeed.ButtonWidth = 126;
+            resources.ApplyResources(this.modifyandSetSpeed, "modifyandSetSpeed");
+            this.modifyandSetSpeed.Maximum = new decimal(new int[] {
+            1000,
             0,
             0,
             0});
-            this.modifyandSetLoiterRad.Minimum = new decimal(new int[] {
-            10000,
+            this.modifyandSetSpeed.Minimum = new decimal(new int[] {
             0,
             0,
-            -2147483648});
-            this.modifyandSetLoiterRad.Name = "modifyandSetLoiterRad";
-            this.modifyandSetLoiterRad.NumericHeight = 20;
-            this.modifyandSetLoiterRad.NumericWidth = 45;
-            this.modifyandSetLoiterRad.Value = new decimal(new int[] {
+            0,
+            0});
+            this.modifyandSetSpeed.Name = "modifyandSetSpeed";
+            this.modifyandSetSpeed.NumericHeight = 20;
+            this.modifyandSetSpeed.NumericWidth = 45;
+            this.modifyandSetSpeed.Value = new decimal(new int[] {
             100,
             0,
             0,
             0});
-            this.modifyandSetLoiterRad.Click += new System.EventHandler(this.modifyandSetLoiterRad_Click);
+            this.modifyandSetSpeed.Click += new System.EventHandler(this.modifyandSetSpeed_Click);
             // 
             // checkListControl1
             // 
@@ -2289,7 +2265,6 @@
             this.tabControlactions.ResumeLayout(false);
             this.tabQuick.ResumeLayout(false);
             this.tabActions.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
             this.actions_group1.ResumeLayout(false);
             this.tabActionsSimple.ResumeLayout(false);
             this.tabPagePreFlight.ResumeLayout(false);
@@ -2484,7 +2459,6 @@
         private Controls.ModifyandSet modifyandSetSpeed;
         private Controls.ModifyandSet modifyandSetAlt;
         private Controls.ModifyandSet modifyandSetLoiterRad;
-        private System.Windows.Forms.GroupBox groupBox1;
         private Controls.MyButton BUT_quickmanual;
         private Controls.MyButton BUT_quickrtl;
         private System.Windows.Forms.ComboBox CMB_setwp;
