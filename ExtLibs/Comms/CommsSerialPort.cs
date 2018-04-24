@@ -12,6 +12,7 @@ using System.Threading;
 
 using log4net;
 using System.Management;
+using System.Runtime;
 
 namespace MissionPlanner.Comms
 {
@@ -135,7 +136,7 @@ namespace MissionPlanner.Comms
             Console.WriteLine("toggleDTR done " + this.IsOpen);
         }
 
-        public new static string[] GetPortNames()
+        public new static string[] GetPortNames(bool showAll = false)
         {
             // prevent hammering
             lock (locker)
@@ -189,21 +190,22 @@ namespace MissionPlanner.Comms
                     // UPD: GDMP-9                     
                     #region find all FTDI
                     ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PnPEntity  WHERE Caption like '%(COM%'");
-                    List<string> ftdi_ports = new List<string>();
-                    
-                    foreach (ManagementObject queryObj in searcher.Get())
+
+                    if(showAll) // in dev mode return all ports
                     {
+                        foreach (string p in ports) { allPorts.Add(p); }
+                        return allPorts.ToArray();
+                    }
+
+                    foreach (ManagementObject queryObj in searcher.Get())
+                    {                        
                         if (queryObj["DeviceID"].ToString().Contains("VID_0403") || queryObj["DeviceID"].ToString().Contains("VID_26AC") || queryObj["DeviceID"].ToString().Contains("VID_1FFB"))
                         {
                             // this device is supported:
                             string devCaption = queryObj["Caption"].ToString();
                             foreach (string p in ports)
                             {
-                                if (devCaption.Contains(p))
-                                {
-                                    ftdi_ports.Add(p);
-                                    allPorts.Add(p);
-                                }
+                                if (devCaption.Contains(p)) { allPorts.Add(p); }
                             }
                         }
                     }
@@ -214,8 +216,6 @@ namespace MissionPlanner.Comms
                 }
                 catch { }
 
-                // TODO: Do we need it anymore?:
-                //if (ports != null) allPorts.AddRange(ports);
                 return allPorts.ToArray();
             }
         }
