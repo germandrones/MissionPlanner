@@ -1489,6 +1489,7 @@ namespace MissionPlanner.GCSViews
                             command != (ushort)MAVLink.MAV_CMD.RETURN_TO_LAUNCH &&
                             command != (ushort)MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP && //no position
                             command != (ushort)MAVLink.MAV_CMD.MAV_CMD_SET_FORBIDDEN_ZONE && //no position
+                            command != (ushort)MAVLink.MAV_CMD.LIMIT_BANK_ANGLE &&
                             command != (ushort)MAVLink.MAV_CMD.CONTINUE_AND_CHANGE_ALT &&
                             command != (ushort)MAVLink.MAV_CMD.DELAY &&
                             command != (ushort)MAVLink.MAV_CMD.GUIDED_ENABLE
