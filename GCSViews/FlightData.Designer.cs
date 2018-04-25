@@ -125,7 +125,6 @@
             this.setEKFHomeHereToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.takeOffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.onOffCameraOverlapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.altitudeAngelSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.but_disablejoystick = new MissionPlanner.Controls.MyButton();
             this.windDir1 = new MissionPlanner.Controls.WindDir();
             this.label6 = new System.Windows.Forms.Label();
@@ -171,6 +170,7 @@
             this.bindingSourceGaugesTab = new System.Windows.Forms.BindingSource(this.components);
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.bindingSourceStatusTab = new System.Windows.Forms.BindingSource(this.components);
+            this.landHereToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -585,15 +585,16 @@
             // 
             this.tabActions.Controls.Add(this.modifyandSetLoiterRad);
             this.tabActions.Controls.Add(this.BUT_quickmanual);
-            this.tabActions.Controls.Add(this.modifyandSetAlt);
-            this.tabActions.Controls.Add(this.modifyandSetSpeed);
             this.tabActions.Controls.Add(this.BUT_joystick);
             this.tabActions.Controls.Add(this.BTN_ActionTriggerCamNow);
             this.tabActions.Controls.Add(this.BUT_resumemis);
+            this.tabActions.Controls.Add(this.BUT_clear_track);
             this.tabActions.Controls.Add(this.BUT_quickrtl);
             this.tabActions.Controls.Add(this.actions_group1);
             this.tabActions.Controls.Add(this.BUT_setwp);
             this.tabActions.Controls.Add(this.CMB_setwp);
+            this.tabActions.Controls.Add(this.modifyandSetAlt);
+            this.tabActions.Controls.Add(this.modifyandSetSpeed);
             resources.ApplyResources(this.tabActions, "tabActions");
             this.tabActions.Name = "tabActions";
             this.tabActions.UseVisualStyleBackColor = true;
@@ -643,7 +644,6 @@
             this.actions_group1.Controls.Add(this.BTN_ActionLoiterUnlim);
             this.actions_group1.Controls.Add(this.BUT_abortland);
             this.actions_group1.Controls.Add(this.BUT_Homealt);
-            this.actions_group1.Controls.Add(this.BUT_clear_track);
             this.actions_group1.Controls.Add(this.CMB_mountmode);
             this.actions_group1.Controls.Add(this.BUTactiondo);
             this.actions_group1.Controls.Add(this.BUT_mountmode);
@@ -709,9 +709,6 @@
             // 
             // BUT_clear_track
             // 
-            this.BUT_clear_track.ColorMouseDown = System.Drawing.Color.Empty;
-            this.BUT_clear_track.ColorMouseOver = System.Drawing.Color.Empty;
-            this.BUT_clear_track.ColorNotEnabled = System.Drawing.Color.Empty;
             resources.ApplyResources(this.BUT_clear_track, "BUT_clear_track");
             this.BUT_clear_track.Name = "BUT_clear_track";
             this.toolTip1.SetToolTip(this.BUT_clear_track, resources.GetString("BUT_clear_track.ToolTip"));
@@ -1716,6 +1713,7 @@
             // 
             this.contextMenuStripMap.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.goHereToolStripMenuItem,
+            this.landHereToolStripMenuItem,
             this.flyToHereAltToolStripMenuItem,
             this.addPoiToolStripMenuItem,
             this.pointCameraHereToolStripMenuItem,
@@ -1724,8 +1722,7 @@
             this.flightPlannerToolStripMenuItem,
             this.setHomeHereToolStripMenuItem,
             this.takeOffToolStripMenuItem,
-            this.onOffCameraOverlapToolStripMenuItem,
-            this.altitudeAngelSettingsToolStripMenuItem});
+            this.onOffCameraOverlapToolStripMenuItem});
             this.contextMenuStripMap.Name = "contextMenuStrip1";
             resources.ApplyResources(this.contextMenuStripMap, "contextMenuStripMap");
             // 
@@ -1819,11 +1816,6 @@
             this.onOffCameraOverlapToolStripMenuItem.Name = "onOffCameraOverlapToolStripMenuItem";
             resources.ApplyResources(this.onOffCameraOverlapToolStripMenuItem, "onOffCameraOverlapToolStripMenuItem");
             this.onOffCameraOverlapToolStripMenuItem.Click += new System.EventHandler(this.onOffCameraOverlapToolStripMenuItem_Click);
-            // 
-            // altitudeAngelSettingsToolStripMenuItem
-            // 
-            this.altitudeAngelSettingsToolStripMenuItem.Name = "altitudeAngelSettingsToolStripMenuItem";
-            resources.ApplyResources(this.altitudeAngelSettingsToolStripMenuItem, "altitudeAngelSettingsToolStripMenuItem");
             // 
             // but_disablejoystick
             // 
@@ -2236,6 +2228,12 @@
             // 
             this.bindingSourceStatusTab.DataSource = typeof(MissionPlanner.CurrentState);
             // 
+            // landHereToolStripMenuItem
+            // 
+            this.landHereToolStripMenuItem.Name = "landHereToolStripMenuItem";
+            resources.ApplyResources(this.landHereToolStripMenuItem, "landHereToolStripMenuItem");
+            this.landHereToolStripMenuItem.Click += new System.EventHandler(this.landHereToolStripMenuItem_Click);
+            // 
             // FlightData
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -2440,7 +2438,6 @@
         private System.Windows.Forms.ToolStripMenuItem loadFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem PointCameraCoordsToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem onOffCameraOverlapToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem altitudeAngelSettingsToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripQuickView;
         private System.Windows.Forms.ToolStripMenuItem setViewCountToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setGStreamerSourceToolStripMenuItem;
@@ -2465,5 +2462,6 @@
         private Controls.MyButton BUT_setwp;
         private Controls.MyButton BTN_ActionTriggerCamNow;
         private Controls.MyButton BTN_ActionLoiterUnlim;
+        private System.Windows.Forms.ToolStripMenuItem landHereToolStripMenuItem;
     }
 }

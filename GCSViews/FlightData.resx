@@ -657,54 +657,6 @@
   <data name="&gt;&gt;BUT_quickmanual.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="modifyandSetAlt.Location" type="System.Drawing.Point, System.Drawing">
-    <value>157, 32</value>
-  </data>
-  <data name="modifyandSetAlt.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="modifyandSetAlt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 20</value>
-  </data>
-  <data name="modifyandSetAlt.TabIndex" type="System.Int32, mscorlib">
-    <value>89</value>
-  </data>
-  <data name="&gt;&gt;modifyandSetAlt.Name" xml:space="preserve">
-    <value>modifyandSetAlt</value>
-  </data>
-  <data name="&gt;&gt;modifyandSetAlt.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.ModifyandSet, MissionPlanner, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;modifyandSetAlt.Parent" xml:space="preserve">
-    <value>tabActions</value>
-  </data>
-  <data name="&gt;&gt;modifyandSetAlt.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="modifyandSetSpeed.Location" type="System.Drawing.Point, System.Drawing">
-    <value>157, 58</value>
-  </data>
-  <data name="modifyandSetSpeed.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="modifyandSetSpeed.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 20</value>
-  </data>
-  <data name="modifyandSetSpeed.TabIndex" type="System.Int32, mscorlib">
-    <value>90</value>
-  </data>
-  <data name="&gt;&gt;modifyandSetSpeed.Name" xml:space="preserve">
-    <value>modifyandSetSpeed</value>
-  </data>
-  <data name="&gt;&gt;modifyandSetSpeed.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.ModifyandSet, MissionPlanner, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;modifyandSetSpeed.Parent" xml:space="preserve">
-    <value>tabActions</value>
-  </data>
-  <data name="&gt;&gt;modifyandSetSpeed.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="BUT_joystick.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -733,7 +685,7 @@
     <value>tabActions</value>
   </data>
   <data name="&gt;&gt;BUT_joystick.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>2</value>
   </data>
   <data name="BTN_ActionTriggerCamNow.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -760,7 +712,7 @@
     <value>tabActions</value>
   </data>
   <data name="&gt;&gt;BTN_ActionTriggerCamNow.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>3</value>
   </data>
   <data name="BUT_resumemis.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -787,7 +739,37 @@
     <value>tabActions</value>
   </data>
   <data name="&gt;&gt;BUT_resumemis.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>4</value>
+  </data>
+  <data name="BUT_clear_track.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BUT_clear_track.Location" type="System.Drawing.Point, System.Drawing">
+    <value>226, 151</value>
+  </data>
+  <data name="BUT_clear_track.Size" type="System.Drawing.Size, System.Drawing">
+    <value>102, 23</value>
+  </data>
+  <data name="BUT_clear_track.TabIndex" type="System.Int32, mscorlib">
+    <value>52</value>
+  </data>
+  <data name="BUT_clear_track.Text" xml:space="preserve">
+    <value>Clear Track</value>
+  </data>
+  <data name="BUT_clear_track.ToolTip" xml:space="preserve">
+    <value>Clear the recorded path on the map</value>
+  </data>
+  <data name="&gt;&gt;BUT_clear_track.Name" xml:space="preserve">
+    <value>BUT_clear_track</value>
+  </data>
+  <data name="&gt;&gt;BUT_clear_track.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BUT_clear_track.Parent" xml:space="preserve">
+    <value>tabActions</value>
+  </data>
+  <data name="&gt;&gt;BUT_clear_track.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="BUT_quickrtl.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -817,7 +799,7 @@
     <value>tabActions</value>
   </data>
   <data name="&gt;&gt;BUT_quickrtl.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="BUTrestartmission.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -966,36 +948,6 @@
   <data name="&gt;&gt;BUT_Homealt.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="BUT_clear_track.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BUT_clear_track.Location" type="System.Drawing.Point, System.Drawing">
-    <value>263, 18</value>
-  </data>
-  <data name="BUT_clear_track.Size" type="System.Drawing.Size, System.Drawing">
-    <value>78, 23</value>
-  </data>
-  <data name="BUT_clear_track.TabIndex" type="System.Int32, mscorlib">
-    <value>52</value>
-  </data>
-  <data name="BUT_clear_track.Text" xml:space="preserve">
-    <value>Clear Track</value>
-  </data>
-  <data name="BUT_clear_track.ToolTip" xml:space="preserve">
-    <value>Clear the recorded path on the map</value>
-  </data>
-  <data name="&gt;&gt;BUT_clear_track.Name" xml:space="preserve">
-    <value>BUT_clear_track</value>
-  </data>
-  <data name="&gt;&gt;BUT_clear_track.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;BUT_clear_track.Parent" xml:space="preserve">
-    <value>actions_group1</value>
-  </data>
-  <data name="&gt;&gt;BUT_clear_track.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="CMB_mountmode.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 100</value>
   </data>
@@ -1015,7 +967,7 @@
     <value>actions_group1</value>
   </data>
   <data name="&gt;&gt;CMB_mountmode.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="BUTactiondo.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1045,7 +997,7 @@
     <value>actions_group1</value>
   </data>
   <data name="&gt;&gt;BUTactiondo.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="BUT_mountmode.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1075,7 +1027,7 @@
     <value>actions_group1</value>
   </data>
   <data name="&gt;&gt;BUT_mountmode.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="CMB_action.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 45</value>
@@ -1096,7 +1048,7 @@
     <value>actions_group1</value>
   </data>
   <data name="&gt;&gt;CMB_action.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>8</value>
   </data>
   <data name="BUT_ARM.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
@@ -1129,7 +1081,7 @@
     <value>actions_group1</value>
   </data>
   <data name="&gt;&gt;BUT_ARM.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>9</value>
   </data>
   <data name="BUT_setmode.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1159,7 +1111,7 @@
     <value>actions_group1</value>
   </data>
   <data name="&gt;&gt;BUT_setmode.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>10</value>
   </data>
   <data name="BUT_RAWSensor.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1189,7 +1141,7 @@
     <value>actions_group1</value>
   </data>
   <data name="&gt;&gt;BUT_RAWSensor.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>11</value>
   </data>
   <data name="CMB_modes.Location" type="System.Drawing.Point, System.Drawing">
     <value>8, 73</value>
@@ -1210,7 +1162,7 @@
     <value>actions_group1</value>
   </data>
   <data name="&gt;&gt;CMB_modes.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>12</value>
   </data>
   <data name="actions_group1.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 206</value>
@@ -1224,6 +1176,9 @@
   <data name="actions_group1.Text" xml:space="preserve">
     <value>Change Parameters</value>
   </data>
+  <data name="actions_group1.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="&gt;&gt;actions_group1.Name" xml:space="preserve">
     <value>actions_group1</value>
   </data>
@@ -1234,7 +1189,7 @@
     <value>tabActions</value>
   </data>
   <data name="&gt;&gt;actions_group1.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="BUT_setwp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1264,7 +1219,7 @@
     <value>tabActions</value>
   </data>
   <data name="&gt;&gt;BUT_setwp.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>8</value>
   </data>
   <data name="CMB_setwp.Items" xml:space="preserve">
     <value>0 (Home)</value>
@@ -1288,7 +1243,55 @@
     <value>tabActions</value>
   </data>
   <data name="&gt;&gt;CMB_setwp.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="modifyandSetAlt.Location" type="System.Drawing.Point, System.Drawing">
+    <value>157, 32</value>
+  </data>
+  <data name="modifyandSetAlt.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="modifyandSetAlt.Size" type="System.Drawing.Size, System.Drawing">
+    <value>176, 20</value>
+  </data>
+  <data name="modifyandSetAlt.TabIndex" type="System.Int32, mscorlib">
+    <value>89</value>
+  </data>
+  <data name="&gt;&gt;modifyandSetAlt.Name" xml:space="preserve">
+    <value>modifyandSetAlt</value>
+  </data>
+  <data name="&gt;&gt;modifyandSetAlt.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.ModifyandSet, MissionPlanner, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;modifyandSetAlt.Parent" xml:space="preserve">
+    <value>tabActions</value>
+  </data>
+  <data name="&gt;&gt;modifyandSetAlt.ZOrder" xml:space="preserve">
     <value>10</value>
+  </data>
+  <data name="modifyandSetSpeed.Location" type="System.Drawing.Point, System.Drawing">
+    <value>157, 58</value>
+  </data>
+  <data name="modifyandSetSpeed.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="modifyandSetSpeed.Size" type="System.Drawing.Size, System.Drawing">
+    <value>176, 20</value>
+  </data>
+  <data name="modifyandSetSpeed.TabIndex" type="System.Int32, mscorlib">
+    <value>90</value>
+  </data>
+  <data name="&gt;&gt;modifyandSetSpeed.Name" xml:space="preserve">
+    <value>modifyandSetSpeed</value>
+  </data>
+  <data name="&gt;&gt;modifyandSetSpeed.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.ModifyandSet, MissionPlanner, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;modifyandSetSpeed.Parent" xml:space="preserve">
+    <value>tabActions</value>
+  </data>
+  <data name="&gt;&gt;modifyandSetSpeed.ZOrder" xml:space="preserve">
+    <value>11</value>
   </data>
   <data name="tabActions.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 40</value>
@@ -3030,6 +3033,12 @@
   <data name="goHereToolStripMenuItem.Text" xml:space="preserve">
     <value>Fly To Here</value>
   </data>
+  <data name="landHereToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>188, 22</value>
+  </data>
+  <data name="landHereToolStripMenuItem.Text" xml:space="preserve">
+    <value>Land Here</value>
+  </data>
   <data name="flyToHereAltToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>188, 22</value>
   </data>
@@ -3108,11 +3117,8 @@
   <data name="onOffCameraOverlapToolStripMenuItem.Text" xml:space="preserve">
     <value>Camera Overlap</value>
   </data>
-  <data name="altitudeAngelSettingsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>188, 22</value>
-  </data>
   <data name="contextMenuStripMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>189, 246</value>
+    <value>189, 268</value>
   </data>
   <data name="&gt;&gt;contextMenuStripMap.Name" xml:space="preserve">
     <value>contextMenuStripMap</value>
@@ -3942,12 +3948,6 @@
   <data name="&gt;&gt;onOffCameraOverlapToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;altitudeAngelSettingsToolStripMenuItem.Name" xml:space="preserve">
-    <value>altitudeAngelSettingsToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;altitudeAngelSettingsToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;customizeToolStripMenuItem.Name" xml:space="preserve">
     <value>customizeToolStripMenuItem</value>
   </data>
@@ -4025,6 +4025,12 @@
   </data>
   <data name="&gt;&gt;bindingSourceStatusTab.Type" xml:space="preserve">
     <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;landHereToolStripMenuItem.Name" xml:space="preserve">
+    <value>landHereToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;landHereToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FlightData</value>

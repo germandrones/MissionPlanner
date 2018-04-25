@@ -1089,7 +1089,7 @@ namespace MissionPlanner.GCSViews
                     }
 
                     // update map
-                    if (tracklast.AddSeconds(1.2) < DateTime.Now)
+                    if (tracklast.AddSeconds(0.3) < DateTime.Now)
                     {
 
                         // Check if HWP points are already generated and received
@@ -4324,7 +4324,9 @@ namespace MissionPlanner.GCSViews
                 if (MainV2.comPort.BaseStream.IsOpen)
                 {
                     string lastAutoWP = MainV2.comPort.MAV.cs.lastautowp.ToString();
-                    int lastAutoWP_int = int.Parse(lastAutoWP);                    
+                    if (lastAutoWP == "-1") lastAutoWP = "1";
+                    int lastAutoWP_int = int.Parse(lastAutoWP);
+                    
 
                     string resumeToWP = "";
                     if (InputBox.Show("Resume at", "Resume mission at waypoint#", ref resumeToWP) == DialogResult.OK)
@@ -4729,6 +4731,144 @@ namespace MissionPlanner.GCSViews
         }
 
         private Process gst;
+
+
+        private void recreateMission()
+        {
+            var wps = MainV2.comPort.MAV.wps.Values.ToList();
+            foreach (MAVLink.mavlink_mission_item_t plla in wps)
+            {
+                if (plla.command == (ushort)MAVLink.MAV_CMD.LAND) { }
+            }
+
+        }
+
+        private void landHereToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            #region preCheck
+            if (!MainV2.comPort.BaseStream.IsOpen)
+            {
+                CustomMessageBox.Show(Strings.PleaseConnect, Strings.ERROR);
+                return;
+            }
+
+            if (MouseDownStart.Lat == 0 || MouseDownStart.Lng == 0)
+            {
+                CustomMessageBox.Show(Strings.BadCoords, Strings.ERROR);
+                return;
+            }
+
+            string alt = "50";
+            if (DialogResult.Cancel == InputBox.Show("Altitude", "Please enter your landing altitude (meters):", ref alt)) return;
+
+            int alti = -1;
+            if (!int.TryParse(alt, out alti))
+            {
+                MessageBox.Show("Bad Alt");
+                return;
+            }
+            #endregion
+
+            Locationwp landhere = new Locationwp();
+            landhere.id = (ushort)MAVLink.MAV_CMD.LAND;
+            landhere.alt = alti;
+            landhere.lat = (MouseDownStart.Lat);
+            landhere.lng = (MouseDownStart.Lng);
+
+            PointLatLngAlt landhereloc = new PointLatLngAlt(landhere.lat, landhere.lng, landhere.alt);
+            PointLatLngAlt planeloc = new PointLatLngAlt(lat: MainV2.comPort.MAV.cs.lat, lng: MainV2.comPort.MAV.cs.lng, alt: MainV2.comPort.MAV.cs.alt);
+            double landing_bearing = landhereloc.GetBearing(new PointLatLngAlt(planeloc.Lat, planeloc.Lng, planeloc.Alt));
+
+            PointLatLngAlt LTA_point = landhereloc.newpos(landing_bearing, 120); // 100 meters distance where UAV is loitering to altitude
+            PointLatLngAlt LWP1_point = landhereloc.newpos(landing_bearing, 60);  // 30 meters distance where UAV does transition
+            PointLatLngAlt LWP2_point = landhereloc.newpos(landing_bearing, 30);  // 30 meters distance where UAV does transition
+
+
+            // get all
+            List<Locationwp> cmds = new List<Locationwp>();
+            var wpcount = MainV2.comPort.getWPCount();
+
+            ushort doSkipID = 0;
+            bool landFound = false;
+            for (ushort a = 0; a < wpcount; a++)
+            {
+                var wpdata = MainV2.comPort.getWP(a);
+                if (wpdata.id == (ushort)MAVLink.MAV_CMD.WAYPOINT && a == 0) { cmds.Add(wpdata); continue; } // home position waypoint
+                if (wpdata.id == (ushort)MAVLink.MAV_CMD.TAKEOFF) { cmds.Add(wpdata); continue; } // Takeoff point
+                if (wpdata.id == (ushort)MAVLink.MAV_CMD.MAV_CMD_SET_FORBIDDEN_ZONE) { cmds.Add(wpdata); continue; } // no-land zone
+
+                if (wpdata.id == (ushort)MAVLink.MAV_CMD.LAND)
+                {                                        
+                    landFound = true;
+
+                    // add planelocation point
+                    Locationwp PLA = new Locationwp();
+                    PLA.id = (ushort)MAVLink.MAV_CMD.WAYPOINT;
+                    PLA.lat = planeloc.Lat;
+                    PLA.lng = planeloc.Lng;
+                    PLA.alt = (float)planeloc.Alt;
+                    PLA.options = wpdata.options;
+                    cmds.Add(PLA);
+                    doSkipID = (ushort)cmds.Count;
+
+                    // add LTA point
+                    Locationwp LTA = new Locationwp();
+                    LTA.id = (ushort)MAVLink.MAV_CMD.LOITER_TO_ALT;
+                    LTA.lat = LTA_point.Lat;
+                    LTA.lng = LTA_point.Lng;
+                    LTA.alt = alti;
+                    LTA.options = wpdata.options;
+                    cmds.Add(LTA);
+
+                    //add last waypoint 1
+                    Locationwp LWP1 = new Locationwp();
+                    LWP1.id = (ushort)MAVLink.MAV_CMD.WAYPOINT;
+                    LWP1.lat = LWP1_point.Lat;
+                    LWP1.lng = LWP1_point.Lng;
+                    LWP1.alt = alti;
+                    LWP1.options = wpdata.options;
+                    cmds.Add(LWP1);
+
+                    //add last waypoint
+                    Locationwp LWP2 = new Locationwp();
+                    LWP2.id = (ushort)MAVLink.MAV_CMD.WAYPOINT;
+                    LWP2.lat = LWP2_point.Lat;
+                    LWP2.lng = LWP2_point.Lng;
+                    LWP2.alt = alti;
+                    LWP2.options = wpdata.options;
+                    cmds.Add(LWP2);
+
+                    landhere.options = wpdata.options;
+                    //add landing point
+                    cmds.Add(landhere);
+                }                
+            }
+
+            if (landFound)
+            {
+                //reupload mission only if land found
+                ushort wpno = 0;
+                MainV2.comPort.setWPTotal((ushort)(cmds.Count));
+
+                // add our do commands
+                foreach (var loc in cmds)
+                {
+                    MAVLink.MAV_MISSION_RESULT ans = MainV2.comPort.setWP(loc, wpno, (MAVLink.MAV_FRAME)(loc.options));
+                    if (ans != MAVLink.MAV_MISSION_RESULT.MAV_MISSION_ACCEPTED)
+                    {
+                        CustomMessageBox.Show("Upload wps failed " + Enum.Parse(typeof(MAVLink.MAV_CMD), loc.id.ToString()) + " " + Enum.Parse(typeof(MAVLink.MAV_MISSION_RESULT), ans.ToString()));
+                        return;
+                    }
+                    wpno++;
+                }
+
+                MainV2.comPort.setWPACK();
+                FlightPlanner.instance.BUT_read_Click(this, null);
+                MainV2.comPort.setWPCurrent(doSkipID);
+            }
+        }
+
+
 
         Color GetColor()
         {
