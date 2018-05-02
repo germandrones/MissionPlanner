@@ -4746,6 +4746,8 @@ namespace MissionPlanner.GCSViews
 
         private void landHereToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            HWP_updated = false; // clean HWPs
+
             #region preCheck
             if (!MainV2.comPort.BaseStream.IsOpen)
             {
@@ -4770,46 +4772,33 @@ namespace MissionPlanner.GCSViews
             }
             #endregion
 
-            Locationwp landhere = new Locationwp();
-            landhere.id = (ushort)MAVLink.MAV_CMD.LAND;
-            landhere.alt = alti;
-            landhere.lat = (MouseDownStart.Lat);
-            landhere.lng = (MouseDownStart.Lng);
+            #region preCalc
+            Locationwp landHere = new Locationwp();
+            landHere.id = (ushort)MAVLink.MAV_CMD.LAND;
+            landHere.alt = alti;
+            landHere.lat = (MouseDownStart.Lat);
+            landHere.lng = (MouseDownStart.Lng);
+            landHere.options = 3; //relative altitude
 
-            PointLatLngAlt landhereloc = new PointLatLngAlt(landhere.lat, landhere.lng, landhere.alt);
             PointLatLngAlt planeloc = new PointLatLngAlt(lat: MainV2.comPort.MAV.cs.lat, lng: MainV2.comPort.MAV.cs.lng, alt: MainV2.comPort.MAV.cs.alt);
+            PointLatLngAlt landhereloc = new PointLatLngAlt(landHere.lat, landHere.lng, landHere.alt);
             double landing_bearing = landhereloc.GetBearing(new PointLatLngAlt(planeloc.Lat, planeloc.Lng, planeloc.Alt));
 
-            PointLatLngAlt LTA_point = landhereloc.newpos(landing_bearing, 120); // 100 meters distance where UAV is loitering to altitude
-            PointLatLngAlt LWP1_point = landhereloc.newpos(landing_bearing, 60);  // 60 meters distance where UAV does transition
-            PointLatLngAlt LWP2_point = landhereloc.newpos(landing_bearing, 30);  // 30 meters distance where UAV does transition
+            int hwp_lradius = 120;
+            int hwp_wpradius = 60;
+            int wp_radius = 60;
 
+            PointLatLngAlt LTA_point = landhereloc.newpos(landing_bearing, hwp_lradius); // 100 meters distance where UAV is loitering to altitude
+            PointLatLngAlt LWP1_point = landhereloc.newpos(landing_bearing, hwp_wpradius);  // 60 meters distance where UAV does transition
+            PointLatLngAlt LWP2_point = landhereloc.newpos(landing_bearing, wp_radius);  // 30 meters distance where UAV does transition
 
-            // get all
-            List<Locationwp> cmds = new List<Locationwp>();
-            var wpcount = MainV2.comPort.getWPCount();
-
-            ushort doSkipID = 0;
-            for (ushort a = 0; a < wpcount; a++)
-            {
-                var wpdata = MainV2.comPort.getWP(a);
-                cmds.Add(wpdata);
-                if (wpdata.id == (ushort)MAVLink.MAV_CMD.TAKEOFF)
-                {
-                    break;
-                }
-            }
-
-            #region landing sequence definition
-            // add planelocation point
+            // planelocation point
             Locationwp PLA = new Locationwp();
             PLA.id = (ushort)MAVLink.MAV_CMD.WAYPOINT;
             PLA.lat = planeloc.Lat;
             PLA.lng = planeloc.Lng;
             PLA.alt = (float)planeloc.Alt;
             PLA.options = 3; // Relative Alt
-            cmds.Add(PLA);
-            doSkipID = (ushort)cmds.Count;
 
             // add LTA point
             Locationwp LTA = new Locationwp();
@@ -4818,7 +4807,6 @@ namespace MissionPlanner.GCSViews
             LTA.lng = LTA_point.Lng;
             LTA.alt = alti;
             LTA.options = 3;
-            cmds.Add(LTA);
 
             //add last waypoint 1
             Locationwp LWP1 = new Locationwp();
@@ -4827,7 +4815,6 @@ namespace MissionPlanner.GCSViews
             LWP1.lng = LWP1_point.Lng;
             LWP1.alt = alti;
             LWP1.options = 3;
-            cmds.Add(LWP1);
 
             //add last waypoint
             Locationwp LWP2 = new Locationwp();
@@ -4836,39 +4823,43 @@ namespace MissionPlanner.GCSViews
             LWP2.lng = LWP2_point.Lng;
             LWP2.alt = alti;
             LWP2.options = 3;
-            cmds.Add(LWP2);
-
-            //before land add forbidden zone cmd
-            Locationwp FBZ = new Locationwp();
-            FBZ.id = (ushort)MAVLink.MAV_CMD.MAV_CMD_SET_FORBIDDEN_ZONE;
-            FBZ.p1 = m_forbidden_zone_param1;
-            FBZ.p2 = m_forbidden_zone_param2;
-            cmds.Add(FBZ);
-
-            // add landing point
-            landhere.options = 3;
-            cmds.Add(landhere);
             #endregion
 
-
+            ushort doSkipID = 0;
+            List<Locationwp> cmds = new List<Locationwp>();
+            var wps = MainV2.comPort.MAV.wps.Values.ToList();
+            foreach(var wp in wps)
+            {
+                cmds.Add(wp);
+                if (wp.command == (ushort)MAVLink.MAV_CMD.TAKEOFF)
+                {                                        
+                    cmds.Add(PLA);      //plane location
+                    doSkipID = (ushort)cmds.Count; // ID of command where to skip in auto mode
+                    cmds.Add(LTA);      //LTA location
+                    cmds.Add(LWP1);     //pre-last waypoint location
+                    cmds.Add(LWP2);     //last waypoint location
+                    cmds.Add(landHere); //landing point where mouse clicked
+                    break;
+                }
+            }
+            
             //reupload mission only if land found
             ushort wpno = 0;
             MainV2.comPort.setWPTotal((ushort)(cmds.Count));
 
             // add our do commands
             foreach (var loc in cmds)
-            {
+            {                
                 MAVLink.MAV_MISSION_RESULT ans = MainV2.comPort.setWP(loc, wpno, (MAVLink.MAV_FRAME)(loc.options));
                 if (ans != MAVLink.MAV_MISSION_RESULT.MAV_MISSION_ACCEPTED)
                 {
-                    CustomMessageBox.Show("Upload wps failed " + Enum.Parse(typeof(MAVLink.MAV_CMD), loc.id.ToString()) + " " + Enum.Parse(typeof(MAVLink.MAV_MISSION_RESULT), ans.ToString()));
+                    CustomMessageBox.Show("Upload wps failed " + wpno.ToString() + Enum.Parse(typeof(MAVLink.MAV_CMD), loc.id.ToString()) + " " + Enum.Parse(typeof(MAVLink.MAV_MISSION_RESULT), ans.ToString()));
                     return;
                 }
                 wpno++;
             }
 
             MainV2.comPort.setWPACK();
-            FlightPlanner.instance.BUT_read_Click(this, null);
             MainV2.comPort.setWPCurrent(doSkipID);
         }
 

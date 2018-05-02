@@ -53,7 +53,8 @@ namespace LibVLC.NET
     private static extern bool SetDllDirectory(string lpPathName);
 
     //==========================================================================
-    [DllImport("kernel32", SetLastError = true)]
+    //[DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
     private static extern IntPtr LoadLibrary(string lpFileName);
 
     //==========================================================================
@@ -400,7 +401,8 @@ namespace LibVLC.NET
               string program_files_path1 =
                   Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "VideoLAN", "VLC");
 
-              foreach(string directory in
+
+              foreach (string directory in
                   new string[]
                   {
                       executing_assembly_path,

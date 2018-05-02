@@ -104,7 +104,7 @@ namespace MissionPlanner.Utilities
             //MainV2 buttons
             displaySimulation = false;
             displayTerminal = false;
-            displayHelp = true;
+            displayHelp = false;
 
             //flight Data view
             displayAnenometer = true;
@@ -217,7 +217,7 @@ namespace MissionPlanner.Utilities
                 //MainV2 buttons
                 displaySimulation = false,
                 displayTerminal = false,
-                displayHelp = true,
+                displayHelp = false,
 
                 //flight Data view
                 displayAnenometer = true,
@@ -299,7 +299,7 @@ namespace MissionPlanner.Utilities
                 //MainV2 buttons
                 displaySimulation = true,
                 displayTerminal = true,
-                displayHelp = true,
+                displayHelp = false,
 
                 //flight Data view
                 displayAnenometer = true,

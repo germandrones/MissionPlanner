@@ -64,7 +64,16 @@
       <X></X>
       <Y></Y>
       <Z></Z>
-    </RETURN_TO_LAUNCH>        
+    </RETURN_TO_LAUNCH>
+    <MAV_CMD_DO_DISABLE_HWP>
+      <P1>Status</P1>
+      <P2></P2>
+      <P3></P3>
+      <P4></P4>
+      <X></X>
+      <Y></Y>
+      <Z></Z>
+    </MAV_CMD_DO_DISABLE_HWP>
     <LAND>
       <P1>Abort Alt</P1>
       <P2>Unsafe Angle 1</P2>

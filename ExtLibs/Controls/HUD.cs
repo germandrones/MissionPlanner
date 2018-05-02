@@ -1712,7 +1712,7 @@ namespace MissionPlanner.Controls
                 }
 
 
-                int fontsize = this.Height / 30; // = 10
+                int fontsize = this.Height / 40; // = 10
                 int fontoffset = fontsize - 10;
 
                 float every5deg = -this.Height / 65;
@@ -2226,7 +2226,7 @@ namespace MissionPlanner.Controls
 
                     graphicsObject.DrawPolygon(this._blackPen, arrow);
                     graphicsObject.FillPolygon(Brushes.Black, arrow);
-                    drawstring((speed).ToString("0") + speedunit, font, 10, (SolidBrush)Brushes.AliceBlue, 0, -9);
+                    drawstring((speed).ToString("0") + speedunit, font, 8, (SolidBrush)Brushes.AliceBlue, 0, -9);
 
                     graphicsObject.ResetTransform();
 
@@ -2407,7 +2407,7 @@ namespace MissionPlanner.Controls
                     graphicsObject.ResetTransform();
                     graphicsObject.TranslateTransform(0, this.Height / 2);
 
-                    drawstring(((int)_alt).ToString("0 ") + altunit, font, 10, (SolidBrush)Brushes.AliceBlue,
+                    drawstring(((int)_alt).ToString("0 ") + altunit, font, 8, (SolidBrush)Brushes.AliceBlue,
                         scrollbg.Left + 10, -9);
                     graphicsObject.ResetTransform();
 
@@ -2621,7 +2621,7 @@ namespace MissionPlanner.Controls
                 {
                     //if ((armedtimer.AddSeconds(8) > DateTime.Now))
                     {
-                        drawstring(HUDT.DISARMED, font, fontsize + 10, (SolidBrush)Brushes.Red, -85,
+                        drawstring(HUDT.DISARMED, font, fontsize + 10, (SolidBrush)Brushes.Green, -65,
                             halfheight / -3);
                         statuslast = status;
                     }

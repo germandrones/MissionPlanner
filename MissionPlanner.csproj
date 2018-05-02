@@ -148,6 +148,7 @@
     <ProjectReference Include="ExtLibs\LibVLC.NET\LibVLC.NET.csproj">
       <Project>{bb06dff7-4f41-4b9d-a3c3-3b6d2b8702b6}</Project>
       <Name>LibVLC.NET</Name>
+      <Private>true</Private>
     </ProjectReference>
     <ProjectReference Include="ExtLibs\ManagedNativeWifi.Simple\ManagedNativeWifi.Simple.csproj">
       <Project>{cce510f7-1da6-40f2-8921-b86ed41bb85e}</Project>
