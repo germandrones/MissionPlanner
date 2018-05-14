@@ -1162,7 +1162,7 @@ namespace MissionPlanner.GCSViews
 
 
                         // update programed wp course
-                        if (waypoints.AddSeconds(5) < DateTime.Now)
+                        if (waypoints.AddSeconds(1) < DateTime.Now)
                         {
                             update_map();
                             
@@ -4863,7 +4863,24 @@ namespace MissionPlanner.GCSViews
             MainV2.comPort.setWPCurrent(doSkipID);
         }
 
+        private void setVLCStreamSourceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var render = new vlcrender();
 
+            var url = render.playurl;
+            if (InputBox.Show("enter url", "enter url", ref url) == DialogResult.OK)
+            {
+                render.playurl = url;
+                try
+                {
+                    render.Start();
+                }
+                catch (Exception ex)
+                {
+                    CustomMessageBox.Show(ex.ToString(), Strings.ERROR);
+                }
+            }
+        }
 
         Color GetColor()
         {

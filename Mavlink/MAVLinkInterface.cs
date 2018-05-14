@@ -2423,11 +2423,11 @@ Please check the following
             Locationwp loc = new Locationwp();
 
             DateTime start = DateTime.Now;
-            int retrys = 5;
+            int retrys = 30;
 
             while (true)
             {
-                if (!(start.AddMilliseconds(3500) > DateTime.Now)) // apm times out after 5000ms
+                if (!(start.AddMilliseconds(500) > DateTime.Now)) // apm times out after 5000ms
                 {
                     if (retrys > 0)
                     {
@@ -2682,11 +2682,11 @@ Please check the following
             generatePacket((byte) MAVLINK_MSG_ID.MISSION_COUNT, req);
 
             DateTime start = DateTime.Now;
-            int retrys = 3;
+            int retrys = 30;
 
             while (true)
             {
-                if (!(start.AddMilliseconds(700) > DateTime.Now))
+                if (!(start.AddMilliseconds(500) > DateTime.Now))
                 {
                     if (retrys > 0)
                     {
@@ -2905,11 +2905,11 @@ Please check the following
 
 
             DateTime start = DateTime.Now;
-            int retrys = 10;
+            int retrys = 30;
 
             while (true)
             {
-                if (!(start.AddMilliseconds(400) > DateTime.Now))
+                if (!(start.AddMilliseconds(1500) > DateTime.Now))
                 {
                     if (retrys > 0)
                     {
@@ -3009,11 +3009,11 @@ Please check the following
             generatePacket((byte)MAVLINK_MSG_ID.MISSION_ITEM_INT, req);
 
             DateTime start = DateTime.Now;
-            int retrys = 10;
+            int retrys = 30;
 
             while (true)
             {
-                if (!(start.AddMilliseconds(400) > DateTime.Now))
+                if (!(start.AddMilliseconds(1500) > DateTime.Now))
                 {
                     if (retrys > 0)
                     {

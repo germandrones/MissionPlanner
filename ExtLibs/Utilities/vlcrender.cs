@@ -27,7 +27,7 @@ namespace MissionPlanner.Utilities
             remove { _onNewImage -= value; }
         }
 
-        public string playurl = "rtsp://192.168.1.253:554/Streaming/Channels/1";
+        public string playurl = "rtp://225.1.2.3:11024";
 
         public void Start(int forceWidth = 0, int forceHeight = 0)
         {
