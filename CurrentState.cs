@@ -674,6 +674,8 @@ namespace MissionPlanner
         public bool gotHWP = false;
         #endregion
 
+        //Colibri data structure
+        public MAVLink.mavlink_v2_extension_t ColibriData;
 
         public float targetaltd100
         {
@@ -1901,6 +1903,15 @@ namespace MissionPlanner
                         MAV.clearPacket((uint)MAVLink.MAVLINK_MSG_ID.HWP);
                         gotHWP = true; // modify a flag on each receive of HWP
                     }
+
+
+                    //Colibri status messsage feedback
+                    mavLinkMessage = MAV.getPacket((uint)MAVLink.MAVLINK_MSG_ID.V2_EXTENSION);
+                    if(mavLinkMessage != null)
+                    {
+                        ColibriData = mavLinkMessage.ToStructure<MAVLink.mavlink_v2_extension_t>();                                                
+                    }
+
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.HEARTBEAT);
                     if (mavLinkMessage != null)

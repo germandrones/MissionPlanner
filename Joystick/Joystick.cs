@@ -658,6 +658,11 @@ namespace MissionPlanner.Joystick
             }
         }
 
+        long map(long x, long in_min, long in_max, long out_min, long out_max)
+        {
+            return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+        }
+
         /// <summary>
         /// Updates the rcoverride values and controls the mode changes
         /// </summary>
@@ -702,7 +707,37 @@ namespace MissionPlanner.Joystick
                         }
                     }
 
-                    if (elevons)
+                    short roll = pickchannel(1, JoyChannels[1].axis, false, JoyChannels[1].expo);
+                    short pitch = pickchannel(2, JoyChannels[2].axis, false, JoyChannels[2].expo);
+
+                    if (roll > 1550)
+                    {
+                        float speed = map(roll, 1000, 1500, 5, 0);
+                        MainV2.mav_proto.roll_pos+=speed;                        
+                    }
+                    else if(roll < 1450)
+                    {
+                        float speed = map(roll, 1500, 2000, 0, 5);
+                        MainV2.mav_proto.roll_pos-=speed;
+                    }
+
+
+                    if (pitch > 1550)
+                    {
+                        float speed = map(pitch, 1000, 1500, 5, 0);
+                        MainV2.mav_proto.pitch_pos += speed;
+                    }
+                    else if (pitch < 1450)
+                    {
+                        float speed = map(pitch, 1500, 2000, 0, 5);
+                        MainV2.mav_proto.pitch_pos -= speed;
+                    }
+
+                    
+                    MainV2.mav_proto.MavlinkUpdatePosMode(MainV2.mav_proto.pitch_pos, MainV2.mav_proto.roll_pos);
+
+
+                    /*if (elevons)
                     {
                         //g.channel_roll.set_pwm(BOOL_TO_SIGN(g.reverse_elevons) * (BOOL_TO_SIGN(g.reverse_ch2_elevon) * int(ch2_temp - elevon2_trim) - BOOL_TO_SIGN(g.reverse_ch1_elevon) * int(ch1_temp - elevon1_trim)) / 2 + 1500);
                         //g.channel_pitch.set_pwm(                                 (BOOL_TO_SIGN(g.reverse_ch2_elevon) * int(ch2_temp - elevon2_trim) + BOOL_TO_SIGN(g.reverse_ch1_elevon) * int(ch1_temp - elevon1_trim)) / 2 + 1500);
@@ -710,15 +745,12 @@ namespace MissionPlanner.Joystick
                         short pitch = pickchannel(2, JoyChannels[2].axis, false, JoyChannels[2].expo);
 
                         if (getJoystickAxis(1) != Joystick.joystickaxis.None)
-                            MainV2.comPort.MAV.cs.rcoverridech1 =
-                                (short)
-                                    (BOOL_TO_SIGN(JoyChannels[1].reverse)*((int) (pitch - 1500) - (int) (roll - 1500))/2 +
-                                     1500);
+                            MainV2.comPort.MAV.cs.rcoverridech1 = (short) (BOOL_TO_SIGN(JoyChannels[1].reverse)*((int) (pitch - 1500) - (int) (roll - 1500))/2 + 1500);
+
                         if (getJoystickAxis(2) != Joystick.joystickaxis.None)
-                            MainV2.comPort.MAV.cs.rcoverridech2 =
-                                (short)
-                                    (BOOL_TO_SIGN(JoyChannels[2].reverse)*((int) (pitch - 1500) + (int) (roll - 1500))/2 +
-                                     1500);
+                            MainV2.comPort.MAV.cs.rcoverridech2 = (short) (BOOL_TO_SIGN(JoyChannels[2].reverse)*((int) (pitch - 1500) + (int) (roll - 1500))/2 + 1500);
+
+                        //mav_proto.MavlinkUpdatePosMode(pitch_pos, roll_pos);
                     }
                     else
                     {
@@ -730,8 +762,9 @@ namespace MissionPlanner.Joystick
                             MainV2.comPort.MAV.cs.rcoverridech2 = pickchannel(2, JoyChannels[2].axis,
                                 JoyChannels[2].reverse, JoyChannels[2].expo);
                                 //(ushort)(((int)state.Y / 65.535) + 1000);
-                    }
-                    if (getJoystickAxis(3) != Joystick.joystickaxis.None)
+                    }*/
+
+                    /*if (getJoystickAxis(3) != Joystick.joystickaxis.None)
                         MainV2.comPort.MAV.cs.rcoverridech3 = pickchannel(3, JoyChannels[3].axis, JoyChannels[3].reverse,
                             JoyChannels[3].expo); //(ushort)(1000 - ((int)slider[0] / 65.535) + 1000);
                     if (getJoystickAxis(4) != Joystick.joystickaxis.None)
@@ -749,20 +782,17 @@ namespace MissionPlanner.Joystick
                             JoyChannels[7].expo);
                     if (getJoystickAxis(8) != Joystick.joystickaxis.None)
                         MainV2.comPort.MAV.cs.rcoverridech8 = pickchannel(8, JoyChannels[8].axis, JoyChannels[8].reverse,
-                            JoyChannels[8].expo);
+                            JoyChannels[8].expo);*/
 
                     // disable button actions when not connected.
-                    if (MainV2.comPort.BaseStream.IsOpen)
-                        DoJoystickButtonFunction();
-
-                    //Console.WriteLine("{0} {1} {2} {3}", MainV2.comPort.MAV.cs.rcoverridech1, MainV2.comPort.MAV.cs.rcoverridech2, MainV2.comPort.MAV.cs.rcoverridech3, MainV2.comPort.MAV.cs.rcoverridech4);
+                    //if (MainV2.comPort.BaseStream.IsOpen) DoJoystickButtonFunction();
+                    
                 }
                 catch (SharpDX.SharpDXException ex)
                 {
                     log.Error(ex);
-                    clearRCOverride();
-                    MainV2.instance.Invoke((System.Action)
-                        delegate { CustomMessageBox.Show("Lost Joystick", "Lost Joystick"); });
+                    //clearRCOverride();
+                    MainV2.instance.Invoke((System.Action) delegate { CustomMessageBox.Show("Lost Joystick", "Lost Joystick"); });
                     return;
                 }
                 catch (Exception ex)

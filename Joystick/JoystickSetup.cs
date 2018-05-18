@@ -256,14 +256,14 @@ namespace MissionPlanner.Joystick
 
                     MainV2.joystick.elevons = CHK_elevons.Checked;
 
-                    MainV2.comPort.MAV.cs.rcoverridech1 = joy.getValueForChannel(1, CMB_joysticks.Text);
-                    MainV2.comPort.MAV.cs.rcoverridech2 = joy.getValueForChannel(2, CMB_joysticks.Text);
-                    MainV2.comPort.MAV.cs.rcoverridech3 = joy.getValueForChannel(3, CMB_joysticks.Text);
-                    MainV2.comPort.MAV.cs.rcoverridech4 = joy.getValueForChannel(4, CMB_joysticks.Text);
-                    MainV2.comPort.MAV.cs.rcoverridech5 = joy.getValueForChannel(5, CMB_joysticks.Text);
-                    MainV2.comPort.MAV.cs.rcoverridech6 = joy.getValueForChannel(6, CMB_joysticks.Text);
-                    MainV2.comPort.MAV.cs.rcoverridech7 = joy.getValueForChannel(7, CMB_joysticks.Text);
-                    MainV2.comPort.MAV.cs.rcoverridech8 = joy.getValueForChannel(8, CMB_joysticks.Text);
+                        MainV2.comPort.MAV.cs.rcoverridech1 = joy.getValueForChannel(1, CMB_joysticks.Text);
+                        MainV2.comPort.MAV.cs.rcoverridech2 = joy.getValueForChannel(2, CMB_joysticks.Text);
+                        MainV2.comPort.MAV.cs.rcoverridech3 = joy.getValueForChannel(3, CMB_joysticks.Text);
+                        MainV2.comPort.MAV.cs.rcoverridech4 = joy.getValueForChannel(4, CMB_joysticks.Text);
+                        MainV2.comPort.MAV.cs.rcoverridech5 = joy.getValueForChannel(5, CMB_joysticks.Text);
+                        MainV2.comPort.MAV.cs.rcoverridech6 = joy.getValueForChannel(6, CMB_joysticks.Text);
+                        MainV2.comPort.MAV.cs.rcoverridech7 = joy.getValueForChannel(7, CMB_joysticks.Text);
+                        MainV2.comPort.MAV.cs.rcoverridech8 = joy.getValueForChannel(8, CMB_joysticks.Text);
 
                     //Console.WriteLine(DateTime.Now.Millisecond + " end ");
                 }
@@ -282,15 +282,14 @@ namespace MissionPlanner.Joystick
             catch
             {
             }
-
-            progressBarRoll.Value = MainV2.comPort.MAV.cs.rcoverridech1;
-            progressBarPith.Value = MainV2.comPort.MAV.cs.rcoverridech2;
-            progressBarThrottle.Value = MainV2.comPort.MAV.cs.rcoverridech3;
-            progressBarRudder.Value = MainV2.comPort.MAV.cs.rcoverridech4;
-            ProgressBarCH5.Value = MainV2.comPort.MAV.cs.rcoverridech5;
-            ProgressBarCH6.Value = MainV2.comPort.MAV.cs.rcoverridech6;
-            ProgressBarCH7.Value = MainV2.comPort.MAV.cs.rcoverridech7;
-            ProgressBarCH8.Value = MainV2.comPort.MAV.cs.rcoverridech8;
+                progressBarRoll.Value = MainV2.comPort.MAV.cs.rcoverridech1;
+                progressBarPith.Value = MainV2.comPort.MAV.cs.rcoverridech2;
+                progressBarThrottle.Value = MainV2.comPort.MAV.cs.rcoverridech3;
+                progressBarRudder.Value = MainV2.comPort.MAV.cs.rcoverridech4;
+                ProgressBarCH5.Value = MainV2.comPort.MAV.cs.rcoverridech5;
+                ProgressBarCH6.Value = MainV2.comPort.MAV.cs.rcoverridech6;
+                ProgressBarCH7.Value = MainV2.comPort.MAV.cs.rcoverridech7;
+                ProgressBarCH8.Value = MainV2.comPort.MAV.cs.rcoverridech8;
 
             try
             {

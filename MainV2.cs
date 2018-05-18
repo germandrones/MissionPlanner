@@ -26,6 +26,8 @@ using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+using MissionPlanner.ColibriControl;
+
 namespace MissionPlanner
 {
     public partial class MainV2 : Form
@@ -245,6 +247,11 @@ namespace MissionPlanner
         /// joystick static class
         /// </summary>
         public static Joystick.Joystick joystick { get; set; }
+
+        /// <summary>
+        /// Colibri Gimbal Control static class
+        /// </summary>
+        public static ColibriMavlink mav_proto;
 
         /// <summary>
         /// track last joystick packet sent. used to control rate
@@ -1073,13 +1080,11 @@ namespace MissionPlanner
             _connectionControl.CMB_serialport.Items.Add("AUTO");
             _connectionControl.CMB_serialport.Items.AddRange(SerialPort.GetPortNames(true));
 
-            if (Settings.isDevMode)
-            {
-                _connectionControl.CMB_serialport.Items.Add("TCP");
-                /* UPD GDMP-9 Temporary commented */
-                //_connectionControl.CMB_serialport.Items.Add("UDP");
-                //_connectionControl.CMB_serialport.Items.Add("UDPCl");
-            }
+            _connectionControl.CMB_serialport.Items.Add("TCP");
+            /* UPD GDMP-9 Temporary commented */
+            _connectionControl.CMB_serialport.Items.Add("UDP");
+            //_connectionControl.CMB_serialport.Items.Add("UDPCl");
+            
         }
 
         private void MenuFlightData_Click(object sender, EventArgs e)

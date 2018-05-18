@@ -247,6 +247,7 @@
     <ItemGroup>
     <Compile Include="Antenna\Tracker.Designer.cs" />
     <Compile Include="CodeGen.cs" />
+    <Compile Include="ColibriControl\ColibriMavlink.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="ConnectionOptions.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="CurrentState.cs" />

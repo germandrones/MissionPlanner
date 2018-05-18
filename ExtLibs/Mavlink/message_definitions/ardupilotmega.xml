@@ -1386,9 +1386,9 @@
       <description>log id</description>
       <field name="id" type="uint16_t">File id</field>
       <field name="gitHash" type="char[40]">GitHash</field>
-    </message>  
+    </message>
 
-      <!-- ardupilot specific mavlink2 messages starting at 11000-->
+    <!-- ardupilot specific mavlink2 messages starting at 11000-->
     <message id="11000" name="DEVICE_OP_READ">
       <description>Read registers for a device</description>
       <field type="uint8_t" name="target_system">System ID</field>

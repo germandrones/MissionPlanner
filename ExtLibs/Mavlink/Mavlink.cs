@@ -203,17 +203,14 @@ public partial class MAVLink
 		new message_info(217, "GOPRO_GET_RESPONSE", 202, 6, 6, typeof( mavlink_gopro_get_response_t )),
 		new message_info(218, "GOPRO_SET_REQUEST", 17, 7, 7, typeof( mavlink_gopro_set_request_t )),
 		new message_info(219, "GOPRO_SET_RESPONSE", 162, 2, 2, typeof( mavlink_gopro_set_response_t )),
-		new message_info(226, "RPM", 207, 8, 8, typeof( mavlink_rpm_t )),
-        
-
-        new message_info(239, "LOG_INFO_REQUEST", 185, 42, 42, typeof( mavlink_log_info_t )),
-
+		new message_info(226, "RPM", 207, 8, 8, typeof( mavlink_rpm_t )),                
         new message_info(230, "ESTIMATOR_STATUS", 163, 42, 42, typeof( mavlink_estimator_status_t )),
 		new message_info(231, "WIND_COV", 105, 40, 40, typeof( mavlink_wind_cov_t )),
 		new message_info(232, "GPS_INPUT", 151, 63, 63, typeof( mavlink_gps_input_t )),
 		new message_info(233, "GPS_RTCM_DATA", 35, 182, 182, typeof( mavlink_gps_rtcm_data_t )),
 		new message_info(234, "HIGH_LATENCY", 150, 40, 40, typeof( mavlink_high_latency_t )),
         new message_info(238, "HWP", 180, 32, 32, typeof( mavlink_hwp_t )), // HWP Message definition
+        new message_info(239, "LOG_INFO_REQUEST", 185, 42, 42, typeof( mavlink_log_info_t )),
         new message_info(241, "VIBRATION", 90, 32, 32, typeof( mavlink_vibration_t )),
 		new message_info(242, "HOME_POSITION", 104, 52, 52, typeof( mavlink_home_position_t )),
 		new message_info(243, "SET_HOME_POSITION", 85, 53, 53, typeof( mavlink_set_home_position_t )),
@@ -221,8 +218,8 @@ public partial class MAVLink
 		new message_info(245, "EXTENDED_SYS_STATE", 130, 2, 2, typeof( mavlink_extended_sys_state_t )),
 		new message_info(246, "ADSB_VEHICLE", 184, 38, 38, typeof( mavlink_adsb_vehicle_t )),
 		new message_info(247, "COLLISION", 81, 19, 19, typeof( mavlink_collision_t )),
-		new message_info(248, "V2_EXTENSION", 8, 254, 254, typeof( mavlink_v2_extension_t )),
-		new message_info(249, "MEMORY_VECT", 204, 36, 36, typeof( mavlink_memory_vect_t )),
+        new message_info(248, "V2_EXTENSION", 8, 60, 60, typeof( mavlink_v2_extension_t )),
+        new message_info(249, "MEMORY_VECT", 204, 36, 36, typeof( mavlink_memory_vect_t )),
 		new message_info(250, "DEBUG_VECT", 49, 30, 30, typeof( mavlink_debug_vect_t )),
 		new message_info(251, "NAMED_VALUE_FLOAT", 170, 18, 18, typeof( mavlink_named_value_float_t )),
 		new message_info(252, "NAMED_VALUE_INT", 44, 18, 18, typeof( mavlink_named_value_int_t )),
@@ -6999,22 +6996,24 @@ AOA_SSA = 11020,
     };
 
 
-    [StructLayout(LayoutKind.Sequential,Pack=1,Size=254)]
-    ///<summary> Message implementing parts of the V2 payload specs in V1 frames for transitional support. </summary>
+    [StructLayout(LayoutKind.Sequential, Pack= 1, Size= 60)]
     public struct mavlink_v2_extension_t
     {
-        /// <summary> A code that identifies the software component that understands this message (analogous to usb device classes or mime type strings).  If this code is less than 32768, it is considered a 'registered' protocol extension and the corresponding entry should be added to https://github.com/mavlink/mavlink/extension-message-ids.xml.  Software creators can register blocks of message IDs as needed (useful for GCS specific metadata, etc...). Message_types greater than 32767 are considered local experiments and should not be checked in to any widely distributed codebase. </summary>
-        public  ushort message_type;
-            /// <summary> Network ID (0 for broadcast) </summary>
-        public  byte target_network;
-            /// <summary> System ID (0 for broadcast) </summary>
-        public  byte target_system;
-            /// <summary> Component ID (0 for broadcast) </summary>
-        public  byte target_component;
-            /// <summary> Variable length payload. The length is defined by the remaining message length when subtracting the header and other fields.  The entire content of this block is opaque unless you understand any the encoding message_type.  The particular encoding used can be extension specific and might not always be documented as part of the mavlink specification. </summary>
-        [MarshalAs(UnmanagedType.ByValArray,SizeConst=249)]
-		public byte[] payload;
-    
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
+        public byte[] payload;
+        public byte trip_function_control;
+        byte reserved1;
+        byte reserved2;
+        public byte trip_ext_mode;
+        public Int32 ptc_cam_lat;
+        public Int32 ptc_cam_lng;
+        public Int32 ptc_cam_alt;
+        Int32 not_used1;
+        Int32 not_used2;
+        Int32 not_used3;
+        public float pos_pitch_los_x;
+        public float pos_roll_los_y;
+        public float los_z;
     };
 
 

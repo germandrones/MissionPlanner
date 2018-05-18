@@ -28,7 +28,9 @@ using OpenTK;
 using WebCamService;
 using ZedGraph;
 using LogAnalyzer = MissionPlanner.Utilities.LogAnalyzer;
+
 using MissionPlanner.Maps;
+using MissionPlanner.ColibriControl;
 
 // written by michael oborne
 
@@ -124,6 +126,10 @@ namespace MissionPlanner.GCSViews
         public static int m_forbidden_zone_param2 = 0;
 
         PointLatLngAlt gotohereMarker;
+
+        /*Colibri Gimball control variables*/
+        public int m_oTxTimerTicks = 0;
+        public int m_oMavlinkIntervalInTicks = 0;
 
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -339,8 +345,16 @@ namespace MissionPlanner.GCSViews
             modifyandSetSpeed.Button.Dock = DockStyle.Right;
             */
             MainV2.comPort.ParamListChanged += FlightData_ParentChanged;
-
         }
+        
+        
+
+
+        private void m_oTxTimer_TickEvent(object sender, EventArgs e)
+        {
+            
+        }
+
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
@@ -4213,6 +4227,10 @@ namespace MissionPlanner.GCSViews
                 {
                 }
             }
+
+            /*Colibri status update*/            
+            lbColibriRoll.Text = MainV2.comPort.MAV.cs.ColibriData.pos_pitch_los_x.ToString();
+            lbColibriPitch.Text = MainV2.comPort.MAV.cs.ColibriData.pos_roll_los_y.ToString();
         }
 
         private void dropOutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4922,10 +4940,244 @@ namespace MissionPlanner.GCSViews
             MainV2.comPort.sendPacket(go, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
         }
 
-      
+        private void pointColibriHereToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+           /* if (!MainV2.comPort.BaseStream.IsOpen)
+            {
+                CustomMessageBox.Show("Please Connect First");
+                return;
+            }
+
+            double srtmalt = srtm.getAltitude(MouseDownStart.Lat, MouseDownStart.Lng).alt;
+
+            string alt = (srtmalt * CurrentState.multiplierdist).ToString("0");
+            if (DialogResult.Cancel == InputBox.Show("Enter Alt", "Enter Target Alt (absolute, default value is ground alt)", ref alt))
+                return;
+
+            float intalt = 0;
+            if (!float.TryParse(alt, out intalt))
+            {
+                CustomMessageBox.Show("Bad Alt");
+                return;
+            }
+
+            if (MouseDownStart.Lat == 0 || MouseDownStart.Lng == 0)
+            {
+                CustomMessageBox.Show("Bad Lat/Long");
+                return;
+            }
+
+            try
+            {
+                MAVLink.mavlink_v2_extension_t MetaData = new MAVLink.mavlink_v2_extension_t();
+
+                MetaData.target_component = MainV2.comPort.MAV.compid;
+                MetaData.target_network = 0;// Network ID(0 for broadcast)
+                MetaData.target_system = MainV2.comPort.MAV.sysid;
+                MetaData.message_type = 0x01;//colibri Msg
+
+                MetaData.ptc_cam_lat = (int)(MouseDownStart.Lat * 10000000); // Latitude for PTC mode
+                MetaData.ptc_cam_lng = (int)(MouseDownStart.Lng * 10000000); // Longitude for PTC mode
+                MetaData.ptc_cam_alt = (int)(intalt * 1000); // Altitude for PTC mode                      
+
+                MetaData.los_gnd_lat = 0; // Not Used in outgoing command only in report
+                MetaData.los_gnd_lng = 0; // Not Used in outgoing command only in report
+                MetaData.los_gnd_alt = 0; // Not Used in outgoing command only in report
+
+                MetaData.pos_pitch_los_x = 0; // Pitch Value In Deg For POSITION mode
+                MetaData.pos_roll_los_y = 0;  // Roll Value In Deg For POSITION mode
+                MetaData.los_z = 0; // Not Used in outgoing command only in report
+
+                byte[] ColibData = new byte[20];
+                MetaData.payload = ColibData;
+                MainV2.comPort.sendPacket(MetaData, MetaData.target_system, MetaData.target_component);
+
+            }
+            catch
+            {
+                CustomMessageBox.Show(Strings.CommandFailed, Strings.ERROR);
+            }*/
+        }
 
 
-        
+        #region Colibri control Tab
+
+        #region Arrow Buttons
+        private void BTN_ColibriUp_MouseDown(object sender, MouseEventArgs e)
+        {
+            MainV2.mav_proto.MavlinkMoveCamUp();
+        }
+
+        private void BTN_ColibriUp_MouseUp(object sender, MouseEventArgs e)
+        {
+            MainV2.mav_proto.MavlinkCamStop();
+        }
+
+        private void BTN_ColibriDown_MouseUp(object sender, MouseEventArgs e)
+        {
+            MainV2.mav_proto.MavlinkCamStop();
+        }
+
+        private void BTN_ColibriLeft_MouseUp(object sender, MouseEventArgs e)
+        {
+            MainV2.mav_proto.MavlinkCamStop();
+        }
+
+        private void BTN_ColibriRight_MouseUp(object sender, MouseEventArgs e)
+        {
+            MainV2.mav_proto.MavlinkCamStop();
+        }
+
+        private void BTN_ColibriLeft_MouseDown(object sender, MouseEventArgs e)
+        {
+            MainV2.mav_proto.MavlinkMoveCamLeft();
+        }
+
+        private void BTN_ColibriRight_MouseDown(object sender, MouseEventArgs e)
+        {
+            MainV2.mav_proto.MavlinkMoveCamRight();
+        }
+
+        private void BTN_ColibriDown_MouseDown(object sender, MouseEventArgs e)
+        {
+            MainV2.mav_proto.MavlinkMoveCamDown();
+        }
+        #endregion
+
+        private void BTN_ColibriEnable_Click(object sender, EventArgs e)
+        {
+            if (MainV2.comPort.BaseStream.IsOpen && !ColibriControlTimer.Enabled)
+            {
+                MainV2.mav_proto = new ColibriMavlink();
+                ColibriControlTimer.Interval = 100; //100ms
+                ColibriControlTimer.Enabled = true;
+                m_oMavlinkIntervalInTicks = 250 / ColibriControlTimer.Interval;    /* send secondary mavlink packets every 250ms */
+                m_oTxTimerTicks = 0;
+                BTN_ColibriEnable.Text = "Disable Control";
+
+                MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_Position);
+                MainV2.mav_proto.MavlinkUpdatePosMode(MainV2.mav_proto.pitch_pos, MainV2.mav_proto.roll_pos); //reset
+
+                //MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_RateDriftOff);
+            }
+            else if(ColibriControlTimer.Enabled)
+            {
+                ColibriControlTimer.Enabled = false;
+                BTN_ColibriEnable.Text = "Enable Control";
+            }
+            
+        }
+
+        private float DEG2RAD(float angle) { return (float)(Math.PI * angle / 180.0); }
+
+        private void ColibriControlTimer_Tick(object sender, EventArgs e)
+        {
+            byte[] mavlink_tx_packet = null;
+
+            //MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_RateDriftOff);
+
+            /* update the camera mode */
+            /*if (RadioBtnStow.Checked)
+                mav_proto.MavlinkUpdateCameraMode(MavProtocol.CameraMode.e_Stow);
+            else if (RadioBtnObs.Checked)
+                mav_proto.MavlinkUpdateCameraMode(MavProtocol.CameraMode.e_RateDriftOff);
+            else if (RadioBtnGRR.Checked)
+                mav_proto.MavlinkUpdateCameraMode(MavProtocol.CameraMode.e_GRR);
+            else if (RadioBtnPos.Checked)
+                mav_proto.MavlinkUpdateCameraMode(MavProtocol.CameraMode.e_Position);
+            else if (RadioBtnPTC.Checked)
+                mav_proto.MavlinkUpdateCameraMode(MavProtocol.CameraMode.e_PointToCordinate);
+            else if (RadioBtnHold.Checked)
+                mav_proto.MavlinkUpdateCameraMode(MavProtocol.CameraMode.e_HoldCordinate);
+            */
+
+            /* update the pitch & roll for the position mode */
+            //float pitch_pos = 0, roll_pos = 0;
+            //float.TryParse(textBoxPosPitch.Text, out pitch_pos);
+            //float.TryParse(textBoxPosRoll.Text, out roll_pos);
+            //mav_proto.MavlinkUpdatePosMode(pitch_pos, roll_pos);
+
+            /* update the lat, lon & alt for the PTC mode */
+            /*float lat_ptc = 0, lon_ptc = 0;
+            int alt_ptc = 0;
+            float.TryParse(textBoxPtcLat.Text, out lat_ptc);
+            float.TryParse(textBoxPtcLon.Text, out lon_ptc);
+            int.TryParse(textBoxPtcAlt.Text, out alt_ptc);
+            mav_proto.MavlinkUpdatePtcMode(lat_ptc, lon_ptc, alt_ptc);
+            */
+
+            /* get a mavlink packet for tranmission */
+            MainV2.mav_proto.MavlinkGetV2ExtPacket(ref mavlink_tx_packet);
+
+            if (MainV2.comPort.BaseStream.IsOpen) MainV2.comPort.BaseStream.Write(mavlink_tx_packet, 0, mavlink_tx_packet.Length);
+
+            /* increase the tick counter */
+            m_oTxTimerTicks++;
+
+            /* check if we also need to send the mavlink messages */
+            if (m_oTxTimerTicks >= m_oMavlinkIntervalInTicks)
+            {
+                m_oTxTimerTicks = 0;
+                float roll = 0, pitch = 0, yaw = 0;
+                //MainV2.mav_proto.MavlinkGetAttitudePacket(ref mavlink_tx_packet, DEG2RAD(roll), DEG2RAD(pitch), DEG2RAD(yaw));
+                MainV2.mav_proto.MavlinkGetAttitudePacket(ref mavlink_tx_packet, roll, pitch, DEG2RAD(yaw));
+
+
+                /* prepare & send all the mavlink messages */
+                /* Send Attitude mavlink message */
+                /*float roll = 0, pitch = 0, yaw = 0;
+                float.TryParse(textBoxAttitudeRoll.Text, out roll);
+                float.TryParse(textBoxAttitudePitch.Text, out pitch);
+                float.TryParse(textBoxAttitudeYaw.Text, out yaw);
+                mav_proto.MavlinkGetAttitudePacket(ref mavlink_tx_packet, DEG2RAD(roll), DEG2RAD(pitch), DEG2RAD(yaw));
+                m_oSerialPort.Write(mavlink_tx_packet, 0, mavlink_tx_packet.Length);*/
+
+
+                /* Send Global Position Int mavlink message */
+                /*float lat = 0, lon = 0, vx = 0, vy = 0, vz = 0;
+                int alt = 0, rel_alt = 0;
+                float.TryParse(textBoxGPSLat.Text, out lat);
+                float.TryParse(textBoxGPSLon.Text, out lon);
+                float.TryParse(textBoxGPSVx.Text, out vx);
+                float.TryParse(textBoxGPSVy.Text, out vy);
+                float.TryParse(textBoxGPSVz.Text, out vz);
+                int.TryParse(textBoxGPSAlt.Text, out alt);
+                int.TryParse(textBoxGPSRelAlt.Text, out rel_alt);
+                mav_proto.MavlinkGetGlobalPosIntPacket(ref mavlink_tx_packet, lat, lon, alt, rel_alt, vx, vy, vz);
+                m_oSerialPort.Write(mavlink_tx_packet, 0, mavlink_tx_packet.Length);*/
+
+                /* Send GPS Raw Int mavlink message */
+                /*int sat_count = 0;
+                int.TryParse(textBoxGPSRawSatCnt.Text, out sat_count);
+                mav_proto.MavlinkGetGPSRawIntPacket(ref mavlink_tx_packet, sat_count);
+                m_oSerialPort.Write(mavlink_tx_packet, 0, mavlink_tx_packet.Length);*/
+
+                /* Send System Status mavlink message */
+                /*float batt_voltage = 0;
+                float.TryParse(textBoxSysStatBatVol.Text, out batt_voltage);
+                mav_proto.MavlinkGetSysStatusPacket(ref mavlink_tx_packet, batt_voltage);
+                m_oSerialPort.Write(mavlink_tx_packet, 0, mavlink_tx_packet.Length);*/
+
+                /* Send Heart Beat mavlink message */
+                /*mav_proto.MavlinkGetHeartbeatPacket(ref mavlink_tx_packet, checkBoxDroneArmed.Checked);
+                m_oSerialPort.Write(mavlink_tx_packet, 0, mavlink_tx_packet.Length);*/
+
+                /* Send the System Time mavlink message */
+                /*int epoch_timestamp = 1483228800;
+                int.TryParse(textBoxSysTimeEpoch.Text, out epoch_timestamp);
+                mav_proto.MavlinkGetSysTimePacket(ref mavlink_tx_packet, epoch_timestamp);
+                m_oSerialPort.Write(mavlink_tx_packet, 0, mavlink_tx_packet.Length);*/
+            }
+        }
+
+        #endregion
+
+
+
+
+
+
+
 
     }
 }

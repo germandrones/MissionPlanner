@@ -971,7 +971,7 @@ namespace MissionPlanner.Controls
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            //GL.Enable(EnableCap.AlphaTest)
+            // GL.Enable(EnableCap.AlphaTest)
 
             // Console.WriteLine("hud paint");
 
