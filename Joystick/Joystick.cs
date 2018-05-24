@@ -698,10 +698,36 @@ namespace MissionPlanner.Joystick
                         }
                     }
 
+                    //get data from axis 1 and 2
+                    short roll = pickchannel(1, JoyChannels[1].axis, false, JoyChannels[1].expo);
+                    short pitch = pickchannel(2, JoyChannels[2].axis, false, JoyChannels[2].expo);
+
+                    //stop camera movement if roll and pitch is in the middle
+                    if(roll < 1510 && roll > 1490 && pitch < 1510 && pitch > 1490)
+                    {
+                        if (MainV2.mav_proto != null) MainV2.mav_proto.MavlinkCamStop();
+                    }
+                    else // if any axis moved do camera movement
+                    {
+
+                        double roll_speed    = map(roll, 1000.0, 2000.0, -3.0, 3.0); //double precission of speed
+                        double pitch_speed   = map(pitch, 1000.0, 2000.0, -3.0, 3.0); //double precission of speed
+
+                        roll_speed *= BOOL_TO_SIGN(JoyChannels[1].reverse);
+                        pitch_speed*= BOOL_TO_SIGN(JoyChannels[2].reverse);
+
+                        if (MainV2.mav_proto != null)
+                        {
+                            MainV2.mav_proto.MavlinkMoveCam((float)pitch_speed, (float)roll_speed);
+                        }
+                    }
+
                     if (MainV2.mav_proto == null) { continue; }
 
+
+
                     #region Joystick Gimbal Controls Pitch & Roll
-                    short roll = pickchannel(1, JoyChannels[1].axis, false, JoyChannels[1].expo);
+                    /*short roll = pickchannel(1, JoyChannels[1].axis, false, JoyChannels[1].expo);
                     short pitch = pickchannel(2, JoyChannels[2].axis, false, JoyChannels[2].expo);
 
                     if (roll > 1550)
@@ -726,7 +752,7 @@ namespace MissionPlanner.Joystick
                         float speed = map(pitch, 1500, 2000, 0, 5);
                         if (MainV2.mav_proto.pitch_pos > -90) MainV2.mav_proto.pitch_pos -= speed; else MainV2.mav_proto.pitch_pos = -90;
                     }
-                    MainV2.mav_proto.MavlinkUpdatePosMode(MainV2.mav_proto.pitch_pos, MainV2.mav_proto.roll_pos);
+                    MainV2.mav_proto.MavlinkUpdatePosMode(MainV2.mav_proto.pitch_pos, MainV2.mav_proto.roll_pos);*/
                     #endregion
 
                     #region Joystick Gimbal Controls zoom in out
@@ -821,7 +847,7 @@ namespace MissionPlanner.Joystick
                 {
                     case buttonfunction.CameraTrack:
                         {
-                            if(MainV2.mav_proto.isHoldMode)
+                            /*if(MainV2.mav_proto.isHoldMode)
                             {
                                 MainV2.mav_proto.isHoldMode = false;
                                 MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_Position);
@@ -830,7 +856,7 @@ namespace MissionPlanner.Joystick
                             {
                                 MainV2.mav_proto.isHoldMode = true;
                                 MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_HoldCordinate);
-                            }
+                            }*/
                             break;
                         }
 

@@ -10,7 +10,6 @@ namespace MissionPlanner.ColibriControl
     public class ColibriMavlink
     {
         public float pitch_pos = 0, roll_pos = 0;
-        public bool isHoldMode = false;
 
         #region Initial Definitions and constants
         /* Colibri Camera Mode Enum */
@@ -235,6 +234,30 @@ namespace MissionPlanner.ColibriControl
         /****************************************************************************************************************************
         *                                                      MavlinkCamStop()
         *                                                      
+        * Description : Observe mode camera movements combined
+        *               
+        * Arguments   : pitch speed, roll speed
+        *        
+        * Returns     : none
+        *
+        ****************************************************************************************************************************/
+        public void MavlinkMoveCam(float pitch_speed, float roll_speed)
+        {            
+            mavlink_v2_ext_packet_mutex.WaitOne();
+            mavlink_v2_ext_packet[20] = pitch_speed > 0 ? (byte)0x30 : (byte)0x00; //up or down?
+            mavlink_v2_ext_packet[20] += roll_speed > 0 ? (byte)0x00 : (byte)0x0C; //right or left?
+
+            //pitch rate
+            mavlink_v2_ext_packet[21] = pitch_speed > 0 ? (byte)0xFF : (byte)0x00; //up or down
+
+            //roll rate
+            mavlink_v2_ext_packet[22] = roll_speed > 0 ? (byte)0xFF : (byte)0x00; //right or left
+            mavlink_v2_ext_packet_mutex.ReleaseMutex();
+        }
+
+        /****************************************************************************************************************************
+        *                                                      MavlinkCamStop()
+        *                                                      
         * Description : Stops camera movement
         *               
         * Arguments   : none
@@ -428,6 +451,17 @@ namespace MissionPlanner.ColibriControl
             /* release the v2 ext packet */
             mavlink_v2_ext_packet_mutex.ReleaseMutex();
         }
+
+        public void MavlinkThermalMode(bool enabled)
+        {
+            mavlink_v2_ext_packet_mutex.WaitOne();
+            if (enabled)
+                mavlink_v2_ext_packet[10] |= 0x10;
+            else
+                mavlink_v2_ext_packet[10] &= 0xEF;
+            mavlink_v2_ext_packet_mutex.ReleaseMutex();
+        }
+
 
         /****************************************************************************************************************************
         *                                                 MAVLINK / COLIBRI PROTOCOL FUNCTIONS
