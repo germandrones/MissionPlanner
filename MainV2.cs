@@ -286,7 +286,7 @@ namespace MissionPlanner
         bool joystickthreadrun = false;
 
         Thread httpthread;
-        Thread joystickthread;
+        //Thread joystickthread;
         Thread serialreaderthread;
         Thread pluginthread;
 
@@ -1675,8 +1675,7 @@ namespace MissionPlanner
 
             joystickthreadrun = false;
 
-            if (joystickthread != null)
-                joystickthread.Join();
+            //if (joystickthread != null) joystickthread.Join();
 
             log.Info("closing httpthread");
 
@@ -1745,7 +1744,7 @@ namespace MissionPlanner
             SaveConfig();
 
             Console.WriteLine(httpthread?.IsAlive);
-            Console.WriteLine(joystickthread?.IsAlive);
+            //Console.WriteLine(joystickthread?.IsAlive);
             Console.WriteLine(serialreaderthread?.IsAlive);
             Console.WriteLine(pluginthread?.IsAlive);
 
@@ -2620,13 +2619,13 @@ namespace MissionPlanner
 
             log.Info("start joystick");
             // setup joystick packet sender
-            joystickthread = new Thread(new ThreadStart(joysticksend))
+            /*joystickthread = new Thread(new ThreadStart(joysticksend))
             {
                 IsBackground = true,
                 Priority = ThreadPriority.AboveNormal,
                 Name = "Main joystick sender"
             };
-            joystickthread.Start();
+            joystickthread.Start();*/
 
             log.Info("start serialreader");
             // setup main serial reader

@@ -155,7 +155,7 @@ namespace MissionPlanner.Joystick
             {
                 MainV2.joystick.enabled = false;
 
-                MainV2.joystick.clearRCOverride();
+                //MainV2.joystick.clearRCOverride();
 
                 MainV2.joystick = null;
 
@@ -444,7 +444,7 @@ namespace MissionPlanner.Joystick
             Controls.MyButton but_detect = new Controls.MyButton();
             HorizontalProgressBar hbar = new HorizontalProgressBar();
             ComboBox cmbaction = new ComboBox();
-            Controls.MyButton but_settings = new Controls.MyButton();
+            //Controls.MyButton but_settings = new Controls.MyButton();
 
             if (MainV2.joystick == null)
             {
@@ -453,14 +453,14 @@ namespace MissionPlanner.Joystick
                 but_detect.Dispose();
                 hbar.Dispose();
                 cmbaction.Dispose();
-                but_settings.Dispose();
+                //but_settings.Dispose();
                 return;
             }
 
             var config = MainV2.joystick.getButton(int.Parse(name));
 
             // do this here so putting in text works
-            this.Controls.AddRange(new Control[] {butlabel, butnumberlist, but_detect, hbar, cmbaction, but_settings});
+            this.Controls.AddRange(new Control[] {butlabel, butnumberlist, but_detect, hbar, cmbaction});
 
             butlabel.Location = new Point(x, y);
             butlabel.Size = new Size(47, 13);
@@ -503,7 +503,7 @@ namespace MissionPlanner.Joystick
             cmbaction.Text = config.function.ToString();
             cmbaction.SelectedIndexChanged += cmbaction_SelectedIndexChanged;
 
-            but_settings.Location = new Point(cmbaction.Right + 5, y);
+            /*but_settings.Location = new Point(cmbaction.Right + 5, y);
             but_settings.Size = BUT_detch1.Size;
             but_settings.Text = "Settings";
             but_settings.Name = "butsettings" + name;
@@ -511,7 +511,7 @@ namespace MissionPlanner.Joystick
             but_settings.Tag = cmbaction;
 
             if ((but_settings.Bottom + 30) > this.Height)
-                this.Height += 25;
+                this.Height += 25;*/
         }
 
         void cmbaction_SelectedIndexChanged(object sender, EventArgs e)
@@ -529,10 +529,10 @@ namespace MissionPlanner.Joystick
 
             switch ((Joystick.buttonfunction) Enum.Parse(typeof (Joystick.buttonfunction), cmb.SelectedItem.ToString()))
             {
-                case Joystick.buttonfunction.ChangeMode:
+                /*case Joystick.buttonfunction.CameraTrack:
                     new Joy_ChangeMode((string) cmb.Tag).ShowDialog();
                     break;
-                case Joystick.buttonfunction.Mount_Mode:
+                /*case Joystick.buttonfunction.Mount_Mode:
                     new Joy_Mount_Mode((string) cmb.Tag).ShowDialog();
                     break;
                 case Joystick.buttonfunction.Do_Repeat_Relay:
@@ -555,7 +555,7 @@ namespace MissionPlanner.Joystick
                     break;
                 default:
                     CustomMessageBox.Show("No settings to set", "No settings");
-                    break;
+                    break;*/
             }
         }
 

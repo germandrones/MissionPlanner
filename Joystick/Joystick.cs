@@ -6,6 +6,8 @@ using System.Reflection;
 using System.IO;
 using MissionPlanner.Utilities;
 using SharpDX.DirectInput;
+using MissionPlanner.GCSViews;
+using MissionPlanner.ColibriControl;
 
 namespace MissionPlanner.Joystick
 {
@@ -236,7 +238,8 @@ namespace MissionPlanner.Joystick
             public bool state;
         }
 
-        public enum buttonfunction
+        // old standard implementation
+        /*public enum buttonfunction
         {
             ChangeMode,
             Do_Set_Relay,
@@ -253,6 +256,14 @@ namespace MissionPlanner.Joystick
             Mount_Control_0,
             Button_axis0,
             Button_axis1,
+        }*/
+
+        // Camera Control implementation
+        public enum buttonfunction
+        {
+            CameraTrack,
+            ZoomIn,
+            ZoomOut,
         }
 
 
@@ -291,40 +302,24 @@ namespace MissionPlanner.Joystick
             GC.SuppressFinalize(this);
         }
 
-        //no need for finalizer...
-        //~Joystick()
-        //{
-        //    Dispose(false);
-        //}
-
+        #region Constructor
         public Joystick()
         {
-            for (int a = 0; a < JoyButtons.Length; a++)
-                JoyButtons[a].buttonno = -1;
-
+            for (int a = 0; a < JoyButtons.Length; a++) JoyButtons[a].buttonno = -1;
+            //use only arduplane setting
             if (MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduPlane)
             {
-                loadconfig("joystickbuttons" + MainV2.comPort.MAV.cs.firmware + ".xml",
-                    "joystickaxis" + MainV2.comPort.MAV.cs.firmware + ".xml");
-            }
-            else if (MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduCopter2)
-            {
-                loadconfig("joystickbuttons" + MainV2.comPort.MAV.cs.firmware + ".xml",
-                    "joystickaxis" + MainV2.comPort.MAV.cs.firmware + ".xml");
-            }
-            else if (MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduRover)
-            {
-                loadconfig("joystickbuttons" + MainV2.comPort.MAV.cs.firmware + ".xml",
-                    "joystickaxis" + MainV2.comPort.MAV.cs.firmware + ".xml");
+                loadconfig("joystickbuttons" + MainV2.comPort.MAV.cs.firmware + ".xml", "joystickaxis" + MainV2.comPort.MAV.cs.firmware + ".xml");
             }
             else
             {
                 loadconfig();
             }
         }
+        #endregion
 
-        public void loadconfig(string joystickconfigbutton = "joystickbuttons.xml",
-            string joystickconfigaxis = "joystickaxis.xml")
+        #region Joystick config load/save xml
+        public void loadconfig(string joystickconfigbutton = "joystickbuttons.xml", string joystickconfigaxis = "joystickaxis.xml")
         {
             log.Info("Loading joystick config files " + joystickconfigbutton + " " + joystickconfigaxis);
 
@@ -386,6 +381,7 @@ namespace MissionPlanner.Joystick
                 writer.Serialize(sw, JoyChannels);
             }
         }
+        #endregion
 
         JoyChannel[] JoyChannels = new JoyChannel[9]; // we are base 1
         JoyButton[] JoyButtons = new JoyButton[128]; // base 0
@@ -406,7 +402,6 @@ namespace MissionPlanner.Joystick
                     return new SharpDX.DirectInput.Joystick(directInput, device.InstanceGuid);
                 }
             }
-
             return null;
         }
 
@@ -566,8 +561,7 @@ namespace MissionPlanner.Joystick
 
             var buttonsbefore = obj.GetButtons();
 
-            CustomMessageBox.Show(
-                "Please press the joystick button you want assigned to this function after clicking ok");
+            CustomMessageBox.Show("Please press the joystick button you want assigned to this function after clicking ok");
 
             DateTime start = DateTime.Now;
 
@@ -658,10 +652,7 @@ namespace MissionPlanner.Joystick
             }
         }
 
-        long map(long x, long in_min, long in_max, long out_min, long out_max)
-        {
-            return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-        }
+        
 
         /// <summary>
         /// Updates the rcoverride values and controls the mode changes
@@ -707,144 +698,74 @@ namespace MissionPlanner.Joystick
                         }
                     }
 
+                    if (MainV2.mav_proto == null) { continue; }
+
+                    #region Joystick Gimbal Controls Pitch & Roll
                     short roll = pickchannel(1, JoyChannels[1].axis, false, JoyChannels[1].expo);
                     short pitch = pickchannel(2, JoyChannels[2].axis, false, JoyChannels[2].expo);
 
                     if (roll > 1550)
                     {
                         float speed = map(roll, 1000, 1500, 5, 0);
-                        MainV2.mav_proto.roll_pos+=speed;                        
+                        if (MainV2.mav_proto.roll_pos > -180) MainV2.mav_proto.roll_pos += speed; else MainV2.mav_proto.roll_pos = -180;
                     }
                     else if(roll < 1450)
                     {
                         float speed = map(roll, 1500, 2000, 0, 5);
-                        MainV2.mav_proto.roll_pos-=speed;
+                        if (MainV2.mav_proto.roll_pos < 180) MainV2.mav_proto.roll_pos-=speed; else MainV2.mav_proto.roll_pos = 180;
                     }
 
 
                     if (pitch > 1550)
                     {
                         float speed = map(pitch, 1000, 1500, 5, 0);
-                        MainV2.mav_proto.pitch_pos += speed;
+                        if (MainV2.mav_proto.pitch_pos < 0) MainV2.mav_proto.pitch_pos += speed; else MainV2.mav_proto.pitch_pos = 0;
                     }
                     else if (pitch < 1450)
                     {
                         float speed = map(pitch, 1500, 2000, 0, 5);
-                        MainV2.mav_proto.pitch_pos -= speed;
+                        if (MainV2.mav_proto.pitch_pos > -90) MainV2.mav_proto.pitch_pos -= speed; else MainV2.mav_proto.pitch_pos = -90;
                     }
-
-                    
                     MainV2.mav_proto.MavlinkUpdatePosMode(MainV2.mav_proto.pitch_pos, MainV2.mav_proto.roll_pos);
+                    #endregion
 
-
-                    /*if (elevons)
+                    #region Joystick Gimbal Controls zoom in out
+                    short zoom = pickchannel(3, JoyChannels[3].axis, false, JoyChannels[3].expo);
+                    if (zoom > 1550)
                     {
-                        //g.channel_roll.set_pwm(BOOL_TO_SIGN(g.reverse_elevons) * (BOOL_TO_SIGN(g.reverse_ch2_elevon) * int(ch2_temp - elevon2_trim) - BOOL_TO_SIGN(g.reverse_ch1_elevon) * int(ch1_temp - elevon1_trim)) / 2 + 1500);
-                        //g.channel_pitch.set_pwm(                                 (BOOL_TO_SIGN(g.reverse_ch2_elevon) * int(ch2_temp - elevon2_trim) + BOOL_TO_SIGN(g.reverse_ch1_elevon) * int(ch1_temp - elevon1_trim)) / 2 + 1500);
-                        short roll = pickchannel(1, JoyChannels[1].axis, false, JoyChannels[1].expo);
-                        short pitch = pickchannel(2, JoyChannels[2].axis, false, JoyChannels[2].expo);
-
-                        if (getJoystickAxis(1) != Joystick.joystickaxis.None)
-                            MainV2.comPort.MAV.cs.rcoverridech1 = (short) (BOOL_TO_SIGN(JoyChannels[1].reverse)*((int) (pitch - 1500) - (int) (roll - 1500))/2 + 1500);
-
-                        if (getJoystickAxis(2) != Joystick.joystickaxis.None)
-                            MainV2.comPort.MAV.cs.rcoverridech2 = (short) (BOOL_TO_SIGN(JoyChannels[2].reverse)*((int) (pitch - 1500) + (int) (roll - 1500))/2 + 1500);
-
-                        //mav_proto.MavlinkUpdatePosMode(pitch_pos, roll_pos);
+                        //zoom in
+                        MainV2.mav_proto.MavlinkCamZoomIn();
+                    }
+                    else if(zoom < 1450)
+                    {
+                        //zoom out
+                        MainV2.mav_proto.MavlinkCamZoomOut();
                     }
                     else
                     {
-                        if (getJoystickAxis(1) != Joystick.joystickaxis.None)
-                            MainV2.comPort.MAV.cs.rcoverridech1 = pickchannel(1, JoyChannels[1].axis,
-                                JoyChannels[1].reverse, JoyChannels[1].expo);
-                                //(ushort)(((int)state.Rz / 65.535) + 1000);
-                        if (getJoystickAxis(2) != Joystick.joystickaxis.None)
-                            MainV2.comPort.MAV.cs.rcoverridech2 = pickchannel(2, JoyChannels[2].axis,
-                                JoyChannels[2].reverse, JoyChannels[2].expo);
-                                //(ushort)(((int)state.Y / 65.535) + 1000);
-                    }*/
-
-                    /*if (getJoystickAxis(3) != Joystick.joystickaxis.None)
-                        MainV2.comPort.MAV.cs.rcoverridech3 = pickchannel(3, JoyChannels[3].axis, JoyChannels[3].reverse,
-                            JoyChannels[3].expo); //(ushort)(1000 - ((int)slider[0] / 65.535) + 1000);
-                    if (getJoystickAxis(4) != Joystick.joystickaxis.None)
-                        MainV2.comPort.MAV.cs.rcoverridech4 = pickchannel(4, JoyChannels[4].axis, JoyChannels[4].reverse,
-                            JoyChannels[4].expo); //(ushort)(((int)state.X / 65.535) + 1000);
-
-                    if (getJoystickAxis(5) != Joystick.joystickaxis.None)
-                        MainV2.comPort.MAV.cs.rcoverridech5 = pickchannel(5, JoyChannels[5].axis, JoyChannels[5].reverse,
-                            JoyChannels[5].expo);
-                    if (getJoystickAxis(6) != Joystick.joystickaxis.None)
-                        MainV2.comPort.MAV.cs.rcoverridech6 = pickchannel(6, JoyChannels[6].axis, JoyChannels[6].reverse,
-                            JoyChannels[6].expo);
-                    if (getJoystickAxis(7) != Joystick.joystickaxis.None)
-                        MainV2.comPort.MAV.cs.rcoverridech7 = pickchannel(7, JoyChannels[7].axis, JoyChannels[7].reverse,
-                            JoyChannels[7].expo);
-                    if (getJoystickAxis(8) != Joystick.joystickaxis.None)
-                        MainV2.comPort.MAV.cs.rcoverridech8 = pickchannel(8, JoyChannels[8].axis, JoyChannels[8].reverse,
-                            JoyChannels[8].expo);*/
+                        //zoom stop
+                        MainV2.mav_proto.MavlinkCamZoomStop();
+                    }
+                    #endregion
 
                     // disable button actions when not connected.
-                    //if (MainV2.comPort.BaseStream.IsOpen) DoJoystickButtonFunction();
-                    
+                    if (MainV2.comPort.BaseStream.IsOpen) DoJoystickButtonFunction();
                 }
                 catch (SharpDX.SharpDXException ex)
                 {
                     log.Error(ex);
-                    //clearRCOverride();
                     MainV2.instance.Invoke((System.Action) delegate { CustomMessageBox.Show("Lost Joystick", "Lost Joystick"); });
                     return;
                 }
                 catch (Exception ex)
                 {
                     log.Info("Joystick thread error " + ex.ToString());
-                } // so we cant fall out
+                }
             }
         }
 
-        public void clearRCOverride()
-        {
-            // disable it, before continuing
-            this.enabled = false;
 
-            MAVLink.mavlink_rc_channels_override_t rc = new MAVLink.mavlink_rc_channels_override_t();
-
-            rc.target_component = MainV2.comPort.MAV.compid;
-            rc.target_system = MainV2.comPort.MAV.sysid;
-
-            rc.chan1_raw = 0;
-            rc.chan2_raw = 0;
-            rc.chan3_raw = 0;
-            rc.chan4_raw = 0;
-            rc.chan5_raw = 0;
-            rc.chan6_raw = 0;
-            rc.chan7_raw = 0;
-            rc.chan8_raw = 0;
-
-            try
-            {
-                MainV2.comPort.sendPacket(rc, rc.target_system, rc.target_component);
-                System.Threading.Thread.Sleep(20);
-                MainV2.comPort.sendPacket(rc, rc.target_system, rc.target_component);
-                System.Threading.Thread.Sleep(20);
-                MainV2.comPort.sendPacket(rc, rc.target_system, rc.target_component);
-                System.Threading.Thread.Sleep(20);
-                MainV2.comPort.sendPacket(rc, rc.target_system, rc.target_component);
-                System.Threading.Thread.Sleep(20);
-                MainV2.comPort.sendPacket(rc, rc.target_system, rc.target_component);
-                System.Threading.Thread.Sleep(20);
-                MainV2.comPort.sendPacket(rc, rc.target_system, rc.target_component);
-
-                MainV2.comPort.sendPacket(rc, rc.target_system, rc.target_component);
-                MainV2.comPort.sendPacket(rc, rc.target_system, rc.target_component);
-                MainV2.comPort.sendPacket(rc, rc.target_system, rc.target_component);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex);
-            }
-        }
-
+        #region Button events
         public void DoJoystickButtonFunction()
         {
             foreach (JoyButton but in JoyButtons)
@@ -856,255 +777,79 @@ namespace MissionPlanner.Joystick
             }
         }
 
+        bool getButtonState(JoyButton but, int buttonno)
+        {
+            var buts = state.GetButtons();
+
+            // button down
+            bool ans = buts[buttonno] && !buttonpressed[buttonno]; // press check + debounce
+            if (ans) ButtonDown(but);
+
+            // button up
+            ans = !buts[buttonno] && buttonpressed[buttonno];
+            if (ans) ButtonUp(but);
+
+            buttonpressed[buttonno] = buts[buttonno]; // set only this button
+            return ans;
+        }
+
+        public bool isButtonPressed(int buttonno)
+        {
+            var buts = state.GetButtons();
+
+            if (buts == null || JoyButtons[buttonno].buttonno < 0)
+                return false;
+
+            return buts[JoyButtons[buttonno].buttonno];
+        }
+
+        void ButtonDown(JoyButton but)
+        {
+            ProcessButtonEvent(but, true);
+        }
+
+        void ButtonUp(JoyButton but)
+        {
+            ProcessButtonEvent(but, false);
+        }
+
         void ProcessButtonEvent(JoyButton but, bool buttondown)
         {
             if (but.buttonno != -1)
             {
-                // only do_set_relay and Button_axis0-1 uses the button up option
-                if (buttondown == false)
-                {
-                    if (but.function != buttonfunction.Do_Set_Relay &&
-                        but.function != buttonfunction.Button_axis0 &&
-                        but.function != buttonfunction.Button_axis1)
-                    {
-                        return;
-                    }
-                }
-
                 switch (but.function)
                 {
-                    case buttonfunction.ChangeMode:
-                        string mode = but.mode;
-                        if (mode != null)
+                    case buttonfunction.CameraTrack:
                         {
-                            MainV2.instance.BeginInvoke((System.Windows.Forms.MethodInvoker) delegate()
+                            if(MainV2.mav_proto.isHoldMode)
                             {
-                                try
-                                {
-                                    MainV2.comPort.setMode(mode);
-                                }
-                                catch
-                                {
-                                    CustomMessageBox.Show("Failed to change Modes");
-                                }
-                            });
+                                MainV2.mav_proto.isHoldMode = false;
+                                MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_Position);
+                            }
+                            else
+                            {
+                                MainV2.mav_proto.isHoldMode = true;
+                                MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_HoldCordinate);
+                            }
+                            break;
                         }
-                        break;
-                    case buttonfunction.Mount_Mode:
 
-                        MainV2.instance.BeginInvoke((System.Windows.Forms.MethodInvoker) delegate()
+                    case buttonfunction.ZoomIn:
                         {
-                            try
-                            {
-                                MainV2.comPort.setParam("MNT_MODE", but.p1);
-                            }
-                            catch
-                            {
-                                CustomMessageBox.Show("Failed to change mount mode");
-                            }
-                        });
+                            if(buttondown) MainV2.mav_proto.MavlinkCamZoomIn(); else MainV2.mav_proto.MavlinkCamZoomStop();
+                            break;
+                        }
 
-                        break;
-
-                    case buttonfunction.Arm:
-                        MainV2.instance.BeginInvoke((System.Windows.Forms.MethodInvoker) delegate()
+                    case buttonfunction.ZoomOut:
                         {
-                            try
-                            {
-                                MainV2.comPort.doARM(true);
-                            }
-                            catch
-                            {
-                                CustomMessageBox.Show("Failed to Arm");
-                            }
-                        });
-                        break;
-                    case buttonfunction.TakeOff:
-                        MainV2.instance.BeginInvoke((System.Windows.Forms.MethodInvoker) delegate()
-                        {
-                            try
-                            {
-                                MainV2.comPort.setMode("Guided");
-                                if (MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduCopter2)
-                                {
-                                    MainV2.comPort.doCommand(MAVLink.MAV_CMD.TAKEOFF, 0, 0, 0, 0, 0, 0, 2);
-                                }
-                                else
-                                {
-                                    MainV2.comPort.doCommand(MAVLink.MAV_CMD.TAKEOFF, 0, 0, 0, 0, 0, 0, 20);
-                                }
-                            }
-                            catch
-                            {
-                                CustomMessageBox.Show("Failed to takeoff");
-                            }
-                        });
-                        break;
-                    case buttonfunction.Disarm:
-                        MainV2.instance.BeginInvoke((System.Windows.Forms.MethodInvoker) delegate()
-                        {
-                            try
-                            {
-                                MainV2.comPort.doARM(false);
-                            }
-                            catch
-                            {
-                                CustomMessageBox.Show("Failed to Disarm");
-                            }
-                        });
-                        break;
-                    case buttonfunction.Do_Set_Relay:
-                        MainV2.instance.BeginInvoke((System.Windows.Forms.MethodInvoker) delegate()
-                        {
-                            try
-                            {
-                                int number = (int) but.p1;
-                                int state = buttondown == true ? 1 : 0;
-                                MainV2.comPort.doCommand(MAVLink.MAV_CMD.DO_SET_RELAY, number, state, 0, 0, 0, 0, 0);
-                            }
-                            catch
-                            {
-                                CustomMessageBox.Show("Failed to DO_SET_RELAY");
-                            }
-                        });
-                        break;
-                    case buttonfunction.Digicam_Control:
-                        MainV2.comPort.setDigicamControl(true);
-                        break;
-                    case buttonfunction.Do_Repeat_Relay:
-                        MainV2.instance.BeginInvoke((System.Windows.Forms.MethodInvoker) delegate()
-                        {
-                            try
-                            {
-                                int relaynumber = (int) but.p1;
-                                int repeat = (int) but.p2;
-                                int time = (int) but.p3;
-                                MainV2.comPort.doCommand(MAVLink.MAV_CMD.DO_REPEAT_RELAY, relaynumber, repeat, time, 0,
-                                    0, 0, 0);
-                            }
-                            catch
-                            {
-                                CustomMessageBox.Show("Failed to DO_REPEAT_RELAY");
-                            }
-                        });
-                        break;
-                    case buttonfunction.Do_Set_Servo:
-                        MainV2.instance.BeginInvoke((System.Windows.Forms.MethodInvoker) delegate()
-                        {
-                            try
-                            {
-                                int channel = (int) but.p1;
-                                int pwm = (int) but.p2;
-                                MainV2.comPort.doCommand(MAVLink.MAV_CMD.DO_SET_SERVO, channel, pwm, 0, 0, 0, 0, 0);
-                            }
-                            catch
-                            {
-                                CustomMessageBox.Show("Failed to DO_SET_SERVO");
-                            }
-                        });
-                        break;
-                    case buttonfunction.Do_Repeat_Servo:
-                        MainV2.instance.BeginInvoke((System.Windows.Forms.MethodInvoker) delegate()
-                        {
-                            try
-                            {
-                                int channelno = (int) but.p1;
-                                int pwmvalue = (int) but.p2;
-                                int repeattime = (int) but.p3;
-                                int delay_ms = (int) but.p4;
-                                MainV2.comPort.doCommand(MAVLink.MAV_CMD.DO_REPEAT_SERVO, channelno, pwmvalue,
-                                    repeattime, delay_ms, 0, 0, 0);
-                            }
-                            catch
-                            {
-                                CustomMessageBox.Show("Failed to DO_REPEAT_SERVO");
-                            }
-                        });
-                        break;
-                    case buttonfunction.Toggle_Pan_Stab:
-                        MainV2.instance.BeginInvoke((System.Windows.Forms.MethodInvoker) delegate()
-                        {
-                            try
-                            {
-                                float current = (float) MainV2.comPort.MAV.param["MNT_STAB_PAN"];
-                                float newvalue = (current > 0) ? 0 : 1;
-                                MainV2.comPort.setParam("MNT_STAB_PAN", newvalue);
-                            }
-                            catch
-                            {
-                                CustomMessageBox.Show("Failed to Toggle_Pan_Stab");
-                            }
-                        });
-                        break;
-                    case buttonfunction.Gimbal_pnt_track:
-                        MainV2.instance.BeginInvoke((System.Windows.Forms.MethodInvoker) delegate()
-                        {
-                            try
-                            {
-                                MainV2.comPort.doCommand(MAVLink.MAV_CMD.DO_SET_ROI, 0, 0, 0, 0,
-                                    MainV2.comPort.MAV.cs.gimballat, MainV2.comPort.MAV.cs.gimballng,
-                                    (float) MainV2.comPort.MAV.cs.GimbalPoint.Alt);
-                            }
-                            catch
-                            {
-                                CustomMessageBox.Show("Failed to Gimbal_pnt_track");
-                            }
-                        });
-                        break;
-                    case buttonfunction.Mount_Control_0:
-                        MainV2.instance.BeginInvoke((System.Windows.Forms.MethodInvoker) delegate()
-                        {
-                            try
-                            {
-                                MainV2.comPort.setMountControl(0, 0, 0, false);
-                            }
-                            catch
-                            {
-                                CustomMessageBox.Show("Failed to Mount_Control_0");
-                            }
-                        });
-                        break;
-                    case buttonfunction.Button_axis0:
-                        MainV2.instance.BeginInvoke((System.Windows.Forms.MethodInvoker) delegate()
-                        {
-                            try
-                            {
-                                int pwmmin = (int) but.p1;
-                                int pwmmax = (int) but.p2;
-
-                                if (buttondown)
-                                    custom0 = pwmmax;
-                                else
-                                    custom0 = pwmmin;
-                            }
-                            catch
-                            {
-                                CustomMessageBox.Show("Failed to Button_axis0");
-                            }
-                        });
-                        break;
-                    case buttonfunction.Button_axis1:
-                        MainV2.instance.BeginInvoke((System.Windows.Forms.MethodInvoker) delegate()
-                        {
-                            try
-                            {
-                                int pwmmin = (int) but.p1;
-                                int pwmmax = (int) but.p2;
-
-                                if (buttondown)
-                                    custom1 = pwmmax;
-                                else
-                                    custom1 = pwmmin;
-                            }
-                            catch
-                            {
-                                CustomMessageBox.Show("Failed to Button_axis1");
-                            }
-                        });
-                        break;
+                            if (buttondown) MainV2.mav_proto.MavlinkCamZoomOut(); else MainV2.mav_proto.MavlinkCamZoomStop();
+                            break;
+                        }
                 }
             }
         }
+        #endregion
+
 
         public enum joystickaxis
         {
@@ -1146,39 +891,6 @@ namespace MissionPlanner.Joystick
         const int RESXul = 1024;
         const int RESXl = 1024;
         const int RESKul = 100;
-        /*
-
-        ushort expou(ushort x, ushort k)
-        {
-          // k*x*x*x + (1-k)*x
-          return ((ulong)x*x*x/0x10000*k/(RESXul*RESXul/0x10000) + (RESKul-k)*x+RESKul/2)/RESKul;
-        }
-        // expo-funktion:
-        // ---------------
-        // kmplot
-        // f(x,k)=exp(ln(x)*k/10) ;P[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
-        // f(x,k)=x*x*x*k/10 + x*(1-k/10) ;P[0,1,2,3,4,5,6,7,8,9,10]
-        // f(x,k)=x*x*k/10 + x*(1-k/10) ;P[0,1,2,3,4,5,6,7,8,9,10]
-        // f(x,k)=1+(x-1)*(x-1)*(x-1)*k/10 + (x-1)*(1-k/10) ;P[0,1,2,3,4,5,6,7,8,9,10]
-
-        short expo(short x, short k)
-        {
-            if (k == 0) return x;
-            short y;
-            bool neg = x < 0;
-            if (neg) x = -x;
-            if (k < 0)
-            {
-                y = RESXu - expou((ushort)(RESXu - x), (ushort)-k);
-            }
-            else
-            {
-                y = expou((ushort)x, (ushort)k);
-            }
-            return neg ? -y : y;
-        }
-
-        */
 
 
 
@@ -1189,39 +901,8 @@ namespace MissionPlanner.Joystick
             joystick.Unacquire();
         }
 
-        /// <summary>
-        /// Button press check with debounce
-        /// </summary>
-        /// <param name="buttonno"></param>
-        /// <returns></returns>
-        bool getButtonState(JoyButton but, int buttonno)
-        {
-            var buts = state.GetButtons();
-
-            // button down
-            bool ans = buts[buttonno] && !buttonpressed[buttonno]; // press check + debounce
-            if (ans)
-                ButtonDown(but);
-
-            // button up
-            ans = !buts[buttonno] && buttonpressed[buttonno];
-            if (ans)
-                ButtonUp(but);
-
-            buttonpressed[buttonno] = buts[buttonno]; // set only this button
-
-            return ans;
-        }
-
-        void ButtonDown(JoyButton but)
-        {
-            ProcessButtonEvent(but, true);
-        }
-
-        void ButtonUp(JoyButton but)
-        {
-            ProcessButtonEvent(but, false);
-        }
+        
+        
 
         public int getNumButtons()
         {
@@ -1242,15 +923,7 @@ namespace MissionPlanner.Joystick
             }
         }
 
-        public bool isButtonPressed(int buttonno)
-        {
-            var buts = state.GetButtons();
-
-            if (buts == null || JoyButtons[buttonno].buttonno < 0)
-                return false;
-
-            return buts[JoyButtons[buttonno].buttonno];
-        }
+        
 
         public short getValueForChannel(int channel, string name)
         {
@@ -1285,37 +958,10 @@ namespace MissionPlanner.Joystick
         {
             int min, max, trim = 0;
 
-            if (MainV2.comPort.MAV.param.Count > 0)
-            {
-                try
-                {
-                    if (MainV2.comPort.MAV.param.ContainsKey("RC" + chan + "_MIN"))
-                    {
-                        min = (int) (float) (MainV2.comPort.MAV.param["RC" + chan + "_MIN"]);
-                        max = (int) (float) (MainV2.comPort.MAV.param["RC" + chan + "_MAX"]);
-                        trim = (int) (float) (MainV2.comPort.MAV.param["RC" + chan + "_TRIM"]);
-                    }
-                    else
-                    {
-                        min = 1000;
-                        max = 2000;
-                        trim = 1500;
-                    }
-                }
-                catch
-                {
-                    min = 1000;
-                    max = 2000;
-                    trim = 1500;
-                }
-            }
-            else
-            {
-                min = 1000;
-                max = 2000;
-                trim = 1500;
-            }
-
+            min = 1000;
+            max = 2000;
+            trim = 1500;
+            
             if (manual_control)
             {
                 min = -1000;
@@ -1326,7 +972,6 @@ namespace MissionPlanner.Joystick
             if (chan == 3)
             {
                 trim = (min + max)/2;
-                //                trim = min; // throttle
             }
 
             int range = Math.Abs(max - min);
@@ -1448,30 +1093,29 @@ namespace MissionPlanner.Joystick
                     break;
 
                 case joystickaxis.Hatud1:
-                    hat1 = (int) Constrain(hat1, 0, 65535);
+                    hat1 = (int) constrain(hat1, 0, 65535);
                     working = hat1;
                     break;
 
                 case joystickaxis.Hatlr2:
-                    hat2 = (int) Constrain(hat2, 0, 65535);
+                    hat2 = (int) constrain(hat2, 0, 65535);
                     working = hat2;
                     break;
 
                 case joystickaxis.Custom1:
                     working = (int)(((float)(custom0 - min) / range) * ushort.MaxValue);
-                    working = (int)Constrain(working, 0, 65535);
+                    working = (int)constrain(working, 0, 65535);
                     break;
 
                 case joystickaxis.Custom2:
                     working = (int)(((float)(custom1 - min) / range) * ushort.MaxValue);
-                    working = (int)Constrain(working, 0, 65535);
+                    working = (int)constrain(working, 0, 65535);
                     break;
             }
             // between 0 and 65535 - convert to int -500 to 500
             working = (int)map(working, 0, 65535, -500, 500);
 
-            if (rev)
-                working *= -1;
+            if (rev) working *= -1;
 
             // save for later
             int raw = working;
@@ -1485,6 +1129,7 @@ namespace MissionPlanner.Joystick
             return (short) working;
         }
 
+        #region internal helpers
         public static double Expo(double input, double expo, double min, double max, double mid)
         {
             // input range -500 to 500
@@ -1539,13 +1184,17 @@ namespace MissionPlanner.Joystick
             return (x - in_min)*(out_max - out_min)/(in_max - in_min) + out_min;
         }
 
-        double Constrain(double value, double min, double max)
+        static long map(long x, long in_min, long in_max, long out_min, long out_max)
         {
-            if (value > max)
-                return max;
-            if (value < min)
-                return min;
+            return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+        }
+
+        double constrain(double value, double min, double max)
+        {
+            if (value > max) return max;
+            if (value < min) return min;
             return value;
         }
+        #endregion
     }
 }

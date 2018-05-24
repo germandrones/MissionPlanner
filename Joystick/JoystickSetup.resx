@@ -153,7 +153,7 @@
     <value>SL1</value>
   </data>
   <data name="CMB_CH1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>72, 66</value>
+    <value>94, 66</value>
   </data>
   <data name="CMB_CH1.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 21</value>
@@ -186,7 +186,7 @@
     <value>SL1</value>
   </data>
   <data name="CMB_CH2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>72, 93</value>
+    <value>94, 93</value>
   </data>
   <data name="CMB_CH2.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 21</value>
@@ -219,7 +219,7 @@
     <value>SL1</value>
   </data>
   <data name="CMB_CH3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>72, 120</value>
+    <value>94, 120</value>
   </data>
   <data name="CMB_CH3.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 21</value>
@@ -252,7 +252,7 @@
     <value>SL1</value>
   </data>
   <data name="CMB_CH4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>72, 147</value>
+    <value>94, 147</value>
   </data>
   <data name="CMB_CH4.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 21</value>
@@ -273,7 +273,7 @@
     <value>54</value>
   </data>
   <data name="expo_ch1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>307, 70</value>
+    <value>329, 70</value>
   </data>
   <data name="expo_ch1.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 13</value>
@@ -297,7 +297,7 @@
     <value>49</value>
   </data>
   <data name="expo_ch2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>307, 97</value>
+    <value>329, 97</value>
   </data>
   <data name="expo_ch2.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 13</value>
@@ -324,7 +324,7 @@
     <value>False</value>
   </data>
   <data name="expo_ch3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>307, 124</value>
+    <value>329, 124</value>
   </data>
   <data name="expo_ch3.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 13</value>
@@ -348,7 +348,7 @@
     <value>47</value>
   </data>
   <data name="expo_ch4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>307, 151</value>
+    <value>329, 151</value>
   </data>
   <data name="expo_ch4.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 13</value>
@@ -382,13 +382,13 @@
     <value>10, 69</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>25, 13</value>
+    <value>64, 13</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>Roll</value>
+    <value>Camera Roll</value>
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
@@ -412,13 +412,13 @@
     <value>10, 98</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>31, 13</value>
+    <value>70, 13</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
-    <value>Pitch</value>
+    <value>Camera Pitch</value>
   </data>
   <data name="&gt;&gt;label2.Name" xml:space="preserve">
     <value>label2</value>
@@ -442,13 +442,13 @@
     <value>8, 125</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 13</value>
+    <value>73, 13</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
-    <value>Throttle</value>
+    <value>Camera Zoom</value>
   </data>
   <data name="&gt;&gt;label3.Name" xml:space="preserve">
     <value>label3</value>
@@ -472,13 +472,13 @@
     <value>9, 152</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>42, 13</value>
+    <value>31, 13</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
-    <value>Rudder</value>
+    <value>CH 4</value>
   </data>
   <data name="&gt;&gt;label4.Name" xml:space="preserve">
     <value>label4</value>
@@ -499,7 +499,7 @@
     <value>NoControl</value>
   </data>
   <data name="revCH1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>413, 69</value>
+    <value>435, 69</value>
   </data>
   <data name="revCH1.Size" type="System.Drawing.Size, System.Drawing">
     <value>15, 14</value>
@@ -526,7 +526,7 @@
     <value>NoControl</value>
   </data>
   <data name="revCH2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>413, 96</value>
+    <value>435, 96</value>
   </data>
   <data name="revCH2.Size" type="System.Drawing.Size, System.Drawing">
     <value>15, 14</value>
@@ -553,7 +553,7 @@
     <value>NoControl</value>
   </data>
   <data name="revCH3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>413, 123</value>
+    <value>435, 123</value>
   </data>
   <data name="revCH3.Size" type="System.Drawing.Size, System.Drawing">
     <value>15, 14</value>
@@ -580,7 +580,7 @@
     <value>NoControl</value>
   </data>
   <data name="revCH4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>413, 150</value>
+    <value>435, 150</value>
   </data>
   <data name="revCH4.Size" type="System.Drawing.Size, System.Drawing">
     <value>15, 14</value>
@@ -637,7 +637,7 @@
     <value>NoControl</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>307, 47</value>
+    <value>329, 47</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>31, 13</value>
@@ -667,7 +667,7 @@
     <value>NoControl</value>
   </data>
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>197, 47</value>
+    <value>219, 47</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>39, 13</value>
@@ -697,7 +697,7 @@
     <value>NoControl</value>
   </data>
   <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>69, 47</value>
+    <value>91, 47</value>
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
     <value>73, 13</value>
@@ -727,7 +727,7 @@
     <value>NoControl</value>
   </data>
   <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
-    <value>411, 47</value>
+    <value>433, 47</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 13</value>
@@ -760,7 +760,7 @@
     <value>NoControl</value>
   </data>
   <data name="CHK_elevons.Location" type="System.Drawing.Point, System.Drawing">
-    <value>434, 81</value>
+    <value>456, 81</value>
   </data>
   <data name="CHK_elevons.Size" type="System.Drawing.Size, System.Drawing">
     <value>64, 17</value>
@@ -790,7 +790,7 @@
     <value>NoControl</value>
   </data>
   <data name="revCH5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>413, 179</value>
+    <value>435, 179</value>
   </data>
   <data name="revCH5.Size" type="System.Drawing.Size, System.Drawing">
     <value>15, 14</value>
@@ -841,7 +841,7 @@
     <value>22</value>
   </data>
   <data name="expo_ch5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>307, 180</value>
+    <value>329, 180</value>
   </data>
   <data name="expo_ch5.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 13</value>
@@ -877,7 +877,7 @@
     <value>SL1</value>
   </data>
   <data name="CMB_CH5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>72, 176</value>
+    <value>94, 176</value>
   </data>
   <data name="CMB_CH5.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 21</value>
@@ -904,7 +904,7 @@
     <value>NoControl</value>
   </data>
   <data name="revCH6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>413, 208</value>
+    <value>435, 208</value>
   </data>
   <data name="revCH6.Size" type="System.Drawing.Size, System.Drawing">
     <value>15, 14</value>
@@ -955,7 +955,7 @@
     <value>16</value>
   </data>
   <data name="expo_ch6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>307, 209</value>
+    <value>329, 209</value>
   </data>
   <data name="expo_ch6.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 13</value>
@@ -991,7 +991,7 @@
     <value>SL1</value>
   </data>
   <data name="CMB_CH6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>72, 205</value>
+    <value>94, 205</value>
   </data>
   <data name="CMB_CH6.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 21</value>
@@ -1018,7 +1018,7 @@
     <value>NoControl</value>
   </data>
   <data name="revCH7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>413, 237</value>
+    <value>435, 237</value>
   </data>
   <data name="revCH7.Size" type="System.Drawing.Size, System.Drawing">
     <value>15, 14</value>
@@ -1069,7 +1069,7 @@
     <value>10</value>
   </data>
   <data name="expo_ch7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>307, 238</value>
+    <value>329, 238</value>
   </data>
   <data name="expo_ch7.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 13</value>
@@ -1105,7 +1105,7 @@
     <value>SL1</value>
   </data>
   <data name="CMB_CH7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>72, 234</value>
+    <value>94, 234</value>
   </data>
   <data name="CMB_CH7.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 21</value>
@@ -1132,7 +1132,7 @@
     <value>NoControl</value>
   </data>
   <data name="revCH8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>413, 266</value>
+    <value>435, 266</value>
   </data>
   <data name="revCH8.Size" type="System.Drawing.Size, System.Drawing">
     <value>15, 14</value>
@@ -1183,7 +1183,7 @@
     <value>4</value>
   </data>
   <data name="expo_ch8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>307, 267</value>
+    <value>329, 267</value>
   </data>
   <data name="expo_ch8.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 13</value>
@@ -1219,7 +1219,7 @@
     <value>SL1</value>
   </data>
   <data name="CMB_CH8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>72, 263</value>
+    <value>94, 263</value>
   </data>
   <data name="CMB_CH8.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 21</value>
@@ -1243,7 +1243,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_detch8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 263</value>
+    <value>170, 263</value>
   </data>
   <data name="BUT_detch8.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 23</value>
@@ -1258,7 +1258,7 @@
     <value>BUT_detch8</value>
   </data>
   <data name="&gt;&gt;BUT_detch8.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.6252.12351, Culture=neutral, PublicKeyToken=null</value>
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;BUT_detch8.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1270,7 +1270,7 @@
     <value>NoControl</value>
   </data>
   <data name="ProgressBarCH8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>199, 262</value>
+    <value>221, 262</value>
   </data>
   <data name="ProgressBarCH8.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -1282,7 +1282,7 @@
     <value>ProgressBarCH8</value>
   </data>
   <data name="&gt;&gt;ProgressBarCH8.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.HorizontalProgressBar, MissionPlanner.Controls, Version=1.0.6252.12351, Culture=neutral, PublicKeyToken=null</value>
+    <value>MissionPlanner.Controls.HorizontalProgressBar, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;ProgressBarCH8.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1294,7 +1294,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_detch4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 147</value>
+    <value>170, 147</value>
   </data>
   <data name="BUT_detch4.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 23</value>
@@ -1309,7 +1309,7 @@
     <value>BUT_detch4</value>
   </data>
   <data name="&gt;&gt;BUT_detch4.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.6252.12351, Culture=neutral, PublicKeyToken=null</value>
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;BUT_detch4.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1321,7 +1321,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_detch3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 120</value>
+    <value>170, 120</value>
   </data>
   <data name="BUT_detch3.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 23</value>
@@ -1336,7 +1336,7 @@
     <value>BUT_detch3</value>
   </data>
   <data name="&gt;&gt;BUT_detch3.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.6252.12351, Culture=neutral, PublicKeyToken=null</value>
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;BUT_detch3.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1348,7 +1348,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_detch2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 93</value>
+    <value>170, 93</value>
   </data>
   <data name="BUT_detch2.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 23</value>
@@ -1363,7 +1363,7 @@
     <value>BUT_detch2</value>
   </data>
   <data name="&gt;&gt;BUT_detch2.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.6252.12351, Culture=neutral, PublicKeyToken=null</value>
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;BUT_detch2.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1375,7 +1375,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_detch1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 66</value>
+    <value>170, 66</value>
   </data>
   <data name="BUT_detch1.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 23</value>
@@ -1390,7 +1390,7 @@
     <value>BUT_detch1</value>
   </data>
   <data name="&gt;&gt;BUT_detch1.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.6252.12351, Culture=neutral, PublicKeyToken=null</value>
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;BUT_detch1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1417,7 +1417,7 @@
     <value>BUT_enable</value>
   </data>
   <data name="&gt;&gt;BUT_enable.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.6252.12351, Culture=neutral, PublicKeyToken=null</value>
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;BUT_enable.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1444,7 +1444,7 @@
     <value>BUT_save</value>
   </data>
   <data name="&gt;&gt;BUT_save.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.6252.12351, Culture=neutral, PublicKeyToken=null</value>
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;BUT_save.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1456,7 +1456,7 @@
     <value>NoControl</value>
   </data>
   <data name="progressBarRudder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>199, 146</value>
+    <value>221, 146</value>
   </data>
   <data name="progressBarRudder.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -1468,7 +1468,7 @@
     <value>progressBarRudder</value>
   </data>
   <data name="&gt;&gt;progressBarRudder.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.HorizontalProgressBar, MissionPlanner.Controls, Version=1.0.6252.12351, Culture=neutral, PublicKeyToken=null</value>
+    <value>MissionPlanner.Controls.HorizontalProgressBar, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;progressBarRudder.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1480,7 +1480,7 @@
     <value>NoControl</value>
   </data>
   <data name="progressBarThrottle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>199, 119</value>
+    <value>221, 119</value>
   </data>
   <data name="progressBarThrottle.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -1492,7 +1492,7 @@
     <value>progressBarThrottle</value>
   </data>
   <data name="&gt;&gt;progressBarThrottle.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.HorizontalProgressBar, MissionPlanner.Controls, Version=1.0.6252.12351, Culture=neutral, PublicKeyToken=null</value>
+    <value>MissionPlanner.Controls.HorizontalProgressBar, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;progressBarThrottle.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1504,7 +1504,7 @@
     <value>NoControl</value>
   </data>
   <data name="progressBarPith.Location" type="System.Drawing.Point, System.Drawing">
-    <value>199, 92</value>
+    <value>221, 92</value>
   </data>
   <data name="progressBarPith.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -1516,7 +1516,7 @@
     <value>progressBarPith</value>
   </data>
   <data name="&gt;&gt;progressBarPith.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.HorizontalProgressBar, MissionPlanner.Controls, Version=1.0.6252.12351, Culture=neutral, PublicKeyToken=null</value>
+    <value>MissionPlanner.Controls.HorizontalProgressBar, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;progressBarPith.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1528,7 +1528,7 @@
     <value>NoControl</value>
   </data>
   <data name="progressBarRoll.Location" type="System.Drawing.Point, System.Drawing">
-    <value>199, 65</value>
+    <value>221, 65</value>
   </data>
   <data name="progressBarRoll.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -1540,7 +1540,7 @@
     <value>progressBarRoll</value>
   </data>
   <data name="&gt;&gt;progressBarRoll.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.HorizontalProgressBar, MissionPlanner.Controls, Version=1.0.6252.12351, Culture=neutral, PublicKeyToken=null</value>
+    <value>MissionPlanner.Controls.HorizontalProgressBar, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;progressBarRoll.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1552,7 +1552,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_detch5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 176</value>
+    <value>170, 176</value>
   </data>
   <data name="BUT_detch5.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 23</value>
@@ -1567,7 +1567,7 @@
     <value>BUT_detch5</value>
   </data>
   <data name="&gt;&gt;BUT_detch5.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.6252.12351, Culture=neutral, PublicKeyToken=null</value>
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;BUT_detch5.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1579,7 +1579,7 @@
     <value>NoControl</value>
   </data>
   <data name="ProgressBarCH5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>199, 175</value>
+    <value>221, 175</value>
   </data>
   <data name="ProgressBarCH5.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -1591,7 +1591,7 @@
     <value>ProgressBarCH5</value>
   </data>
   <data name="&gt;&gt;ProgressBarCH5.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.HorizontalProgressBar, MissionPlanner.Controls, Version=1.0.6252.12351, Culture=neutral, PublicKeyToken=null</value>
+    <value>MissionPlanner.Controls.HorizontalProgressBar, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;ProgressBarCH5.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1603,7 +1603,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_detch6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 205</value>
+    <value>170, 205</value>
   </data>
   <data name="BUT_detch6.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 23</value>
@@ -1618,7 +1618,7 @@
     <value>BUT_detch6</value>
   </data>
   <data name="&gt;&gt;BUT_detch6.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.6252.12351, Culture=neutral, PublicKeyToken=null</value>
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;BUT_detch6.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1630,7 +1630,7 @@
     <value>NoControl</value>
   </data>
   <data name="ProgressBarCH6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>199, 204</value>
+    <value>221, 204</value>
   </data>
   <data name="ProgressBarCH6.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -1642,7 +1642,7 @@
     <value>ProgressBarCH6</value>
   </data>
   <data name="&gt;&gt;ProgressBarCH6.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.HorizontalProgressBar, MissionPlanner.Controls, Version=1.0.6252.12351, Culture=neutral, PublicKeyToken=null</value>
+    <value>MissionPlanner.Controls.HorizontalProgressBar, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;ProgressBarCH6.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1654,7 +1654,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_detch7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 234</value>
+    <value>170, 234</value>
   </data>
   <data name="BUT_detch7.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 23</value>
@@ -1669,7 +1669,7 @@
     <value>BUT_detch7</value>
   </data>
   <data name="&gt;&gt;BUT_detch7.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.6252.12351, Culture=neutral, PublicKeyToken=null</value>
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;BUT_detch7.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1681,7 +1681,7 @@
     <value>NoControl</value>
   </data>
   <data name="ProgressBarCH7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>199, 233</value>
+    <value>221, 233</value>
   </data>
   <data name="ProgressBarCH7.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -1693,7 +1693,7 @@
     <value>ProgressBarCH7</value>
   </data>
   <data name="&gt;&gt;ProgressBarCH7.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.HorizontalProgressBar, MissionPlanner.Controls, Version=1.0.6252.12351, Culture=neutral, PublicKeyToken=null</value>
+    <value>MissionPlanner.Controls.HorizontalProgressBar, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;ProgressBarCH7.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1735,7 +1735,7 @@
     <value>NoControl</value>
   </data>
   <data name="chk_manualcontrol.Location" type="System.Drawing.Point, System.Drawing">
-    <value>464, 47</value>
+    <value>486, 47</value>
   </data>
   <data name="chk_manualcontrol.Size" type="System.Drawing.Size, System.Drawing">
     <value>97, 17</value>
@@ -1762,7 +1762,7 @@
     <value>True</value>
   </metadata>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>702, 331</value>
+    <value>702, 390</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

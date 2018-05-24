@@ -8,14 +8,13 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FlightData));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanelQuick = new System.Windows.Forms.TableLayoutPanel();
             this.quickView6 = new MissionPlanner.Controls.QuickView();
             this.contextMenuStripQuickView = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.setViewCountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.bindingSourceQuickTab = new System.Windows.Forms.BindingSource(this.components);
             this.quickView5 = new MissionPlanner.Controls.QuickView();
             this.quickView4 = new MissionPlanner.Controls.QuickView();
             this.quickView3 = new MissionPlanner.Controls.QuickView();
@@ -37,11 +36,9 @@
             this.userItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.russianHudToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.swapWithMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.bindingSourceHud = new System.Windows.Forms.BindingSource(this.components);
             this.tabControlactions = new System.Windows.Forms.TabControl();
             this.tabQuick = new System.Windows.Forms.TabPage();
             this.tabActions = new System.Windows.Forms.TabPage();
-            this.modifyandSetLoiterRad = new MissionPlanner.Controls.ModifyandSet();
             this.BUT_quickmanual = new MissionPlanner.Controls.MyButton();
             this.BUT_joystick = new MissionPlanner.Controls.MyButton();
             this.BTN_ActionTriggerCamNow = new MissionPlanner.Controls.MyButton();
@@ -64,33 +61,19 @@
             this.CMB_modes = new System.Windows.Forms.ComboBox();
             this.BUT_setwp = new MissionPlanner.Controls.MyButton();
             this.CMB_setwp = new System.Windows.Forms.ComboBox();
-            this.modifyandSetAlt = new MissionPlanner.Controls.ModifyandSet();
-            this.modifyandSetSpeed = new MissionPlanner.Controls.ModifyandSet();
             this.tabActionsSimple = new System.Windows.Forms.TabPage();
             this.myButton1 = new MissionPlanner.Controls.MyButton();
             this.myButton2 = new MissionPlanner.Controls.MyButton();
             this.myButton3 = new MissionPlanner.Controls.MyButton();
             this.tabPagePreFlight = new System.Windows.Forms.TabPage();
-            this.checkListControl1 = new MissionPlanner.Controls.PreFlight.CheckListControl();
             this.tabGauges = new System.Windows.Forms.TabPage();
             this.Gvspeed = new AGaugeApp.AGauge();
-            this.bindingSourceGaugesTab = new System.Windows.Forms.BindingSource(this.components);
             this.Gheading = new MissionPlanner.Controls.HSI();
             this.Galt = new AGaugeApp.AGauge();
             this.Gspeed = new AGaugeApp.AGauge();
             this.tabStatus = new System.Windows.Forms.TabPage();
             this.tabServo = new System.Windows.Forms.TabPage();
             this.flowLayoutPanelServos = new System.Windows.Forms.FlowLayoutPanel();
-            this.servoOptions1 = new MissionPlanner.Controls.ServoOptions();
-            this.servoOptions2 = new MissionPlanner.Controls.ServoOptions();
-            this.servoOptions3 = new MissionPlanner.Controls.ServoOptions();
-            this.servoOptions4 = new MissionPlanner.Controls.ServoOptions();
-            this.servoOptions5 = new MissionPlanner.Controls.ServoOptions();
-            this.servoOptions6 = new MissionPlanner.Controls.ServoOptions();
-            this.servoOptions7 = new MissionPlanner.Controls.ServoOptions();
-            this.servoOptions8 = new MissionPlanner.Controls.ServoOptions();
-            this.servoOptions9 = new MissionPlanner.Controls.ServoOptions();
-            this.servoOptions10 = new MissionPlanner.Controls.ServoOptions();
             this.tabTLogs = new System.Windows.Forms.TabPage();
             this.tableLayoutPaneltlogs = new System.Windows.Forms.TableLayoutPanel();
             this.BUT_loadtelem = new MissionPlanner.Controls.MyButton();
@@ -126,17 +109,43 @@
             this.BUT_select_script = new MissionPlanner.Controls.MyButton();
             this.tabPagemessages = new System.Windows.Forms.TabPage();
             this.tabPageColibri = new System.Windows.Forms.TabPage();
-            this.BTN_ColibriEnable = new MissionPlanner.Controls.MyButton();
+            this.Colibri_GB4 = new System.Windows.Forms.GroupBox();
+            this.PTC_Alt = new System.Windows.Forms.TextBox();
+            this.PTC_Lon = new System.Windows.Forms.TextBox();
+            this.PTC_Lat = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.Colibri_GB3 = new System.Windows.Forms.GroupBox();
+            this.LBL_Colibri_Roll = new System.Windows.Forms.Label();
+            this.LBL_Colibri_Pitch = new System.Windows.Forms.Label();
+            this.Colibri_GB2 = new System.Windows.Forms.GroupBox();
+            this.RadioBtnHold = new System.Windows.Forms.RadioButton();
+            this.RadioBtnPTC = new System.Windows.Forms.RadioButton();
+            this.RadioBtnPos = new System.Windows.Forms.RadioButton();
+            this.RadioBtnGRR = new System.Windows.Forms.RadioButton();
+            this.RadioBtnObs = new System.Windows.Forms.RadioButton();
+            this.RadioBtnStow = new System.Windows.Forms.RadioButton();
+            this.Colibri_GB1 = new System.Windows.Forms.GroupBox();
             this.BTN_ColibriRight = new MissionPlanner.Controls.MyButton();
-            this.BTN_ColibriLeft = new MissionPlanner.Controls.MyButton();
-            this.BTN_ColibriDown = new MissionPlanner.Controls.MyButton();
+            this.BTN_ColibriZoomOut = new MissionPlanner.Controls.MyButton();
+            this.BTN_ColibriEnable = new MissionPlanner.Controls.MyButton();
             this.BTN_ColibriUp = new MissionPlanner.Controls.MyButton();
-            this.lbColibriRoll = new MissionPlanner.Controls.MyLabel();
-            this.lbColibriPitch = new MissionPlanner.Controls.MyLabel();
+            this.BTN_ColibriZoomIn = new MissionPlanner.Controls.MyButton();
+            this.BTN_ColibriDown = new MissionPlanner.Controls.MyButton();
+            this.BTN_ColibriLeft = new MissionPlanner.Controls.MyButton();
             this.tableMap = new System.Windows.Forms.TableLayoutPanel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.zg1 = new ZedGraph.ZedGraphControl();
             this.contextMenuStripMap = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.colibriModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gRRToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pTCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.holdToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.positionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.observationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pointColibriHereToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.goHereToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.landHereToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.flyToHereAltToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -152,11 +161,8 @@
             this.setEKFHomeHereToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.takeOffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.onOffCameraOverlapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pointColibriHereToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.but_disablejoystick = new MissionPlanner.Controls.MyButton();
-            this.distanceBar1 = new MissionPlanner.Controls.DistanceBar();
             this.windDir1 = new MissionPlanner.Controls.WindDir();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -180,15 +186,33 @@
             this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.Messagetabtimer = new System.Windows.Forms.Timer(this.components);
-            this.bindingSourceStatusTab = new System.Windows.Forms.BindingSource(this.components);
             this.ColibriControlTimer = new System.Windows.Forms.Timer(this.components);
+            this.bindingSourceHud = new System.Windows.Forms.BindingSource(this.components);
+            this.bindingSourceQuickTab = new System.Windows.Forms.BindingSource(this.components);
+            this.modifyandSetLoiterRad = new MissionPlanner.Controls.ModifyandSet();
+            this.modifyandSetAlt = new MissionPlanner.Controls.ModifyandSet();
+            this.modifyandSetSpeed = new MissionPlanner.Controls.ModifyandSet();
+            this.checkListControl1 = new MissionPlanner.Controls.PreFlight.CheckListControl();
+            this.servoOptions1 = new MissionPlanner.Controls.ServoOptions();
+            this.servoOptions2 = new MissionPlanner.Controls.ServoOptions();
+            this.servoOptions3 = new MissionPlanner.Controls.ServoOptions();
+            this.servoOptions4 = new MissionPlanner.Controls.ServoOptions();
+            this.servoOptions5 = new MissionPlanner.Controls.ServoOptions();
+            this.servoOptions6 = new MissionPlanner.Controls.ServoOptions();
+            this.servoOptions7 = new MissionPlanner.Controls.ServoOptions();
+            this.servoOptions8 = new MissionPlanner.Controls.ServoOptions();
+            this.servoOptions9 = new MissionPlanner.Controls.ServoOptions();
+            this.servoOptions10 = new MissionPlanner.Controls.ServoOptions();
+            this.distanceBar1 = new MissionPlanner.Controls.DistanceBar();
+            this.bindingSourceGaugesTab = new System.Windows.Forms.BindingSource(this.components);
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.bindingSourceStatusTab = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             this.tableLayoutPanelQuick.SuspendLayout();
             this.contextMenuStripQuickView.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceQuickTab)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MainH)).BeginInit();
             this.MainH.Panel1.SuspendLayout();
             this.MainH.Panel2.SuspendLayout();
@@ -198,7 +222,6 @@
             this.SubMainLeft.Panel2.SuspendLayout();
             this.SubMainLeft.SuspendLayout();
             this.contextMenuStripHud.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceHud)).BeginInit();
             this.tabControlactions.SuspendLayout();
             this.tabQuick.SuspendLayout();
             this.tabActions.SuspendLayout();
@@ -206,7 +229,6 @@
             this.tabActionsSimple.SuspendLayout();
             this.tabPagePreFlight.SuspendLayout();
             this.tabGauges.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceGaugesTab)).BeginInit();
             this.tabServo.SuspendLayout();
             this.flowLayoutPanelServos.SuspendLayout();
             this.tabTLogs.SuspendLayout();
@@ -216,17 +238,24 @@
             this.tablogbrowse.SuspendLayout();
             this.tabScripts.SuspendLayout();
             this.tabPageColibri.SuspendLayout();
+            this.Colibri_GB4.SuspendLayout();
+            this.Colibri_GB3.SuspendLayout();
+            this.Colibri_GB2.SuspendLayout();
+            this.Colibri_GB1.SuspendLayout();
             this.tableMap.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.contextMenuStripMap.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TRK_zoom)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Zoomlevel)).BeginInit();
             this.contextMenuStripactionstab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceHud)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceQuickTab)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceGaugesTab)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSourceStatusTab)).BeginInit();
             this.SuspendLayout();
             // 
@@ -282,10 +311,6 @@
             this.setViewCountToolStripMenuItem.Name = "setViewCountToolStripMenuItem";
             resources.ApplyResources(this.setViewCountToolStripMenuItem, "setViewCountToolStripMenuItem");
             this.setViewCountToolStripMenuItem.Click += new System.EventHandler(this.setViewCountToolStripMenuItem_Click);
-            // 
-            // bindingSourceQuickTab
-            // 
-            this.bindingSourceQuickTab.DataSource = typeof(MissionPlanner.CurrentState);
             // 
             // quickView5
             // 
@@ -575,10 +600,6 @@
             resources.ApplyResources(this.swapWithMapToolStripMenuItem, "swapWithMapToolStripMenuItem");
             this.swapWithMapToolStripMenuItem.Click += new System.EventHandler(this.swapWithMapToolStripMenuItem_Click);
             // 
-            // bindingSourceHud
-            // 
-            this.bindingSourceHud.DataSource = typeof(MissionPlanner.CurrentState);
-            // 
             // tabControlactions
             // 
             this.tabControlactions.Controls.Add(this.tabQuick);
@@ -626,32 +647,6 @@
             resources.ApplyResources(this.tabActions, "tabActions");
             this.tabActions.Name = "tabActions";
             this.tabActions.UseVisualStyleBackColor = true;
-            // 
-            // modifyandSetLoiterRad
-            // 
-            this.modifyandSetLoiterRad.ButtonHeight = 20;
-            this.modifyandSetLoiterRad.ButtonText = "Set Loiter Radius(m)";
-            this.modifyandSetLoiterRad.ButtonWidth = 126;
-            resources.ApplyResources(this.modifyandSetLoiterRad, "modifyandSetLoiterRad");
-            this.modifyandSetLoiterRad.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.modifyandSetLoiterRad.Minimum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            -2147483648});
-            this.modifyandSetLoiterRad.Name = "modifyandSetLoiterRad";
-            this.modifyandSetLoiterRad.NumericHeight = 20;
-            this.modifyandSetLoiterRad.NumericWidth = 45;
-            this.modifyandSetLoiterRad.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.modifyandSetLoiterRad.Click += new System.EventHandler(this.modifyandSetLoiterRad_Click);
             // 
             // BUT_quickmanual
             // 
@@ -865,58 +860,6 @@
             this.CMB_setwp.Name = "CMB_setwp";
             this.CMB_setwp.Click += new System.EventHandler(this.CMB_setwp_Click);
             // 
-            // modifyandSetAlt
-            // 
-            this.modifyandSetAlt.ButtonHeight = 20;
-            this.modifyandSetAlt.ButtonText = "Set Altitude(m)";
-            this.modifyandSetAlt.ButtonWidth = 126;
-            resources.ApplyResources(this.modifyandSetAlt, "modifyandSetAlt");
-            this.modifyandSetAlt.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.modifyandSetAlt.Minimum = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            this.modifyandSetAlt.Name = "modifyandSetAlt";
-            this.modifyandSetAlt.NumericHeight = 20;
-            this.modifyandSetAlt.NumericWidth = 45;
-            this.modifyandSetAlt.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.modifyandSetAlt.Click += new System.EventHandler(this.modifyandSetAlt_Click);
-            // 
-            // modifyandSetSpeed
-            // 
-            this.modifyandSetSpeed.ButtonHeight = 20;
-            this.modifyandSetSpeed.ButtonText = "Set Max Airspeed(m/s)";
-            this.modifyandSetSpeed.ButtonWidth = 126;
-            resources.ApplyResources(this.modifyandSetSpeed, "modifyandSetSpeed");
-            this.modifyandSetSpeed.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.modifyandSetSpeed.Minimum = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            this.modifyandSetSpeed.Name = "modifyandSetSpeed";
-            this.modifyandSetSpeed.NumericHeight = 20;
-            this.modifyandSetSpeed.NumericWidth = 45;
-            this.modifyandSetSpeed.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.modifyandSetSpeed.Click += new System.EventHandler(this.modifyandSetSpeed_Click);
-            // 
             // tabActionsSimple
             // 
             this.tabActionsSimple.Controls.Add(this.myButton1);
@@ -965,11 +908,6 @@
             resources.ApplyResources(this.tabPagePreFlight, "tabPagePreFlight");
             this.tabPagePreFlight.Name = "tabPagePreFlight";
             this.tabPagePreFlight.UseVisualStyleBackColor = true;
-            // 
-            // checkListControl1
-            // 
-            resources.ApplyResources(this.checkListControl1, "checkListControl1");
-            this.checkListControl1.Name = "checkListControl1";
             // 
             // tabGauges
             // 
@@ -1124,10 +1062,6 @@
             this.Gvspeed.Value1 = 0F;
             this.Gvspeed.Value2 = 0F;
             this.Gvspeed.Value3 = 0F;
-            // 
-            // bindingSourceGaugesTab
-            // 
-            this.bindingSourceGaugesTab.DataSource = typeof(MissionPlanner.CurrentState);
             // 
             // Gheading
             // 
@@ -1458,66 +1392,6 @@
             this.flowLayoutPanelServos.Controls.Add(this.servoOptions10);
             this.flowLayoutPanelServos.Name = "flowLayoutPanelServos";
             // 
-            // servoOptions1
-            // 
-            resources.ApplyResources(this.servoOptions1, "servoOptions1");
-            this.servoOptions1.Name = "servoOptions1";
-            this.servoOptions1.thisservo = 5;
-            // 
-            // servoOptions2
-            // 
-            resources.ApplyResources(this.servoOptions2, "servoOptions2");
-            this.servoOptions2.Name = "servoOptions2";
-            this.servoOptions2.thisservo = 6;
-            // 
-            // servoOptions3
-            // 
-            resources.ApplyResources(this.servoOptions3, "servoOptions3");
-            this.servoOptions3.Name = "servoOptions3";
-            this.servoOptions3.thisservo = 7;
-            // 
-            // servoOptions4
-            // 
-            resources.ApplyResources(this.servoOptions4, "servoOptions4");
-            this.servoOptions4.Name = "servoOptions4";
-            this.servoOptions4.thisservo = 8;
-            // 
-            // servoOptions5
-            // 
-            resources.ApplyResources(this.servoOptions5, "servoOptions5");
-            this.servoOptions5.Name = "servoOptions5";
-            this.servoOptions5.thisservo = 9;
-            // 
-            // servoOptions6
-            // 
-            resources.ApplyResources(this.servoOptions6, "servoOptions6");
-            this.servoOptions6.Name = "servoOptions6";
-            this.servoOptions6.thisservo = 10;
-            // 
-            // servoOptions7
-            // 
-            resources.ApplyResources(this.servoOptions7, "servoOptions7");
-            this.servoOptions7.Name = "servoOptions7";
-            this.servoOptions7.thisservo = 11;
-            // 
-            // servoOptions8
-            // 
-            resources.ApplyResources(this.servoOptions8, "servoOptions8");
-            this.servoOptions8.Name = "servoOptions8";
-            this.servoOptions8.thisservo = 12;
-            // 
-            // servoOptions9
-            // 
-            resources.ApplyResources(this.servoOptions9, "servoOptions9");
-            this.servoOptions9.Name = "servoOptions9";
-            this.servoOptions9.thisservo = 13;
-            // 
-            // servoOptions10
-            // 
-            resources.ApplyResources(this.servoOptions10, "servoOptions10");
-            this.servoOptions10.Name = "servoOptions10";
-            this.servoOptions10.thisservo = 14;
-            // 
             // tabTLogs
             // 
             this.tabTLogs.Controls.Add(this.tableLayoutPaneltlogs);
@@ -1841,23 +1715,138 @@
             // 
             // tabPageColibri
             // 
-            this.tabPageColibri.Controls.Add(this.BTN_ColibriEnable);
-            this.tabPageColibri.Controls.Add(this.BTN_ColibriRight);
-            this.tabPageColibri.Controls.Add(this.BTN_ColibriLeft);
-            this.tabPageColibri.Controls.Add(this.BTN_ColibriDown);
-            this.tabPageColibri.Controls.Add(this.BTN_ColibriUp);
-            this.tabPageColibri.Controls.Add(this.lbColibriRoll);
-            this.tabPageColibri.Controls.Add(this.lbColibriPitch);
+            this.tabPageColibri.Controls.Add(this.Colibri_GB4);
+            this.tabPageColibri.Controls.Add(this.Colibri_GB3);
+            this.tabPageColibri.Controls.Add(this.Colibri_GB2);
+            this.tabPageColibri.Controls.Add(this.Colibri_GB1);
             resources.ApplyResources(this.tabPageColibri, "tabPageColibri");
             this.tabPageColibri.Name = "tabPageColibri";
             this.tabPageColibri.UseVisualStyleBackColor = true;
             // 
-            // BTN_ColibriEnable
+            // Colibri_GB4
             // 
-            resources.ApplyResources(this.BTN_ColibriEnable, "BTN_ColibriEnable");
-            this.BTN_ColibriEnable.Name = "BTN_ColibriEnable";
-            this.BTN_ColibriEnable.UseVisualStyleBackColor = true;
-            this.BTN_ColibriEnable.Click += new System.EventHandler(this.BTN_ColibriEnable_Click);
+            this.Colibri_GB4.Controls.Add(this.PTC_Alt);
+            this.Colibri_GB4.Controls.Add(this.PTC_Lon);
+            this.Colibri_GB4.Controls.Add(this.PTC_Lat);
+            this.Colibri_GB4.Controls.Add(this.label13);
+            this.Colibri_GB4.Controls.Add(this.label12);
+            this.Colibri_GB4.Controls.Add(this.label11);
+            resources.ApplyResources(this.Colibri_GB4, "Colibri_GB4");
+            this.Colibri_GB4.Name = "Colibri_GB4";
+            this.Colibri_GB4.TabStop = false;
+            // 
+            // PTC_Alt
+            // 
+            resources.ApplyResources(this.PTC_Alt, "PTC_Alt");
+            this.PTC_Alt.Name = "PTC_Alt";
+            // 
+            // PTC_Lon
+            // 
+            resources.ApplyResources(this.PTC_Lon, "PTC_Lon");
+            this.PTC_Lon.Name = "PTC_Lon";
+            // 
+            // PTC_Lat
+            // 
+            resources.ApplyResources(this.PTC_Lat, "PTC_Lat");
+            this.PTC_Lat.Name = "PTC_Lat";
+            // 
+            // label13
+            // 
+            resources.ApplyResources(this.label13, "label13");
+            this.label13.Name = "label13";
+            // 
+            // label12
+            // 
+            resources.ApplyResources(this.label12, "label12");
+            this.label12.Name = "label12";
+            // 
+            // label11
+            // 
+            resources.ApplyResources(this.label11, "label11");
+            this.label11.Name = "label11";
+            // 
+            // Colibri_GB3
+            // 
+            this.Colibri_GB3.Controls.Add(this.LBL_Colibri_Roll);
+            this.Colibri_GB3.Controls.Add(this.LBL_Colibri_Pitch);
+            resources.ApplyResources(this.Colibri_GB3, "Colibri_GB3");
+            this.Colibri_GB3.Name = "Colibri_GB3";
+            this.Colibri_GB3.TabStop = false;
+            // 
+            // LBL_Colibri_Roll
+            // 
+            resources.ApplyResources(this.LBL_Colibri_Roll, "LBL_Colibri_Roll");
+            this.LBL_Colibri_Roll.Name = "LBL_Colibri_Roll";
+            // 
+            // LBL_Colibri_Pitch
+            // 
+            resources.ApplyResources(this.LBL_Colibri_Pitch, "LBL_Colibri_Pitch");
+            this.LBL_Colibri_Pitch.Name = "LBL_Colibri_Pitch";
+            // 
+            // Colibri_GB2
+            // 
+            this.Colibri_GB2.Controls.Add(this.RadioBtnHold);
+            this.Colibri_GB2.Controls.Add(this.RadioBtnPTC);
+            this.Colibri_GB2.Controls.Add(this.RadioBtnPos);
+            this.Colibri_GB2.Controls.Add(this.RadioBtnGRR);
+            this.Colibri_GB2.Controls.Add(this.RadioBtnObs);
+            this.Colibri_GB2.Controls.Add(this.RadioBtnStow);
+            resources.ApplyResources(this.Colibri_GB2, "Colibri_GB2");
+            this.Colibri_GB2.Name = "Colibri_GB2";
+            this.Colibri_GB2.TabStop = false;
+            // 
+            // RadioBtnHold
+            // 
+            resources.ApplyResources(this.RadioBtnHold, "RadioBtnHold");
+            this.RadioBtnHold.Name = "RadioBtnHold";
+            this.RadioBtnHold.TabStop = true;
+            this.RadioBtnHold.UseVisualStyleBackColor = true;
+            // 
+            // RadioBtnPTC
+            // 
+            resources.ApplyResources(this.RadioBtnPTC, "RadioBtnPTC");
+            this.RadioBtnPTC.Name = "RadioBtnPTC";
+            this.RadioBtnPTC.TabStop = true;
+            this.RadioBtnPTC.UseVisualStyleBackColor = true;
+            // 
+            // RadioBtnPos
+            // 
+            resources.ApplyResources(this.RadioBtnPos, "RadioBtnPos");
+            this.RadioBtnPos.Name = "RadioBtnPos";
+            this.RadioBtnPos.UseVisualStyleBackColor = true;
+            // 
+            // RadioBtnGRR
+            // 
+            resources.ApplyResources(this.RadioBtnGRR, "RadioBtnGRR");
+            this.RadioBtnGRR.Name = "RadioBtnGRR";
+            this.RadioBtnGRR.UseVisualStyleBackColor = true;
+            // 
+            // RadioBtnObs
+            // 
+            resources.ApplyResources(this.RadioBtnObs, "RadioBtnObs");
+            this.RadioBtnObs.Name = "RadioBtnObs";
+            this.RadioBtnObs.UseVisualStyleBackColor = true;
+            // 
+            // RadioBtnStow
+            // 
+            resources.ApplyResources(this.RadioBtnStow, "RadioBtnStow");
+            this.RadioBtnStow.Checked = true;
+            this.RadioBtnStow.Name = "RadioBtnStow";
+            this.RadioBtnStow.TabStop = true;
+            this.RadioBtnStow.UseVisualStyleBackColor = true;
+            // 
+            // Colibri_GB1
+            // 
+            this.Colibri_GB1.Controls.Add(this.BTN_ColibriRight);
+            this.Colibri_GB1.Controls.Add(this.BTN_ColibriZoomOut);
+            this.Colibri_GB1.Controls.Add(this.BTN_ColibriEnable);
+            this.Colibri_GB1.Controls.Add(this.BTN_ColibriUp);
+            this.Colibri_GB1.Controls.Add(this.BTN_ColibriZoomIn);
+            this.Colibri_GB1.Controls.Add(this.BTN_ColibriDown);
+            this.Colibri_GB1.Controls.Add(this.BTN_ColibriLeft);
+            resources.ApplyResources(this.Colibri_GB1, "Colibri_GB1");
+            this.Colibri_GB1.Name = "Colibri_GB1";
+            this.Colibri_GB1.TabStop = false;
             // 
             // BTN_ColibriRight
             // 
@@ -1867,21 +1856,20 @@
             this.BTN_ColibriRight.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriRight_MouseDown);
             this.BTN_ColibriRight.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriRight_MouseUp);
             // 
-            // BTN_ColibriLeft
+            // BTN_ColibriZoomOut
             // 
-            resources.ApplyResources(this.BTN_ColibriLeft, "BTN_ColibriLeft");
-            this.BTN_ColibriLeft.Name = "BTN_ColibriLeft";
-            this.BTN_ColibriLeft.UseVisualStyleBackColor = true;
-            this.BTN_ColibriLeft.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriLeft_MouseDown);
-            this.BTN_ColibriLeft.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriLeft_MouseUp);
+            resources.ApplyResources(this.BTN_ColibriZoomOut, "BTN_ColibriZoomOut");
+            this.BTN_ColibriZoomOut.Name = "BTN_ColibriZoomOut";
+            this.BTN_ColibriZoomOut.UseVisualStyleBackColor = true;
+            this.BTN_ColibriZoomOut.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriZoomOut_MouseDown);
+            this.BTN_ColibriZoomOut.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriZoomOut_MouseUp);
             // 
-            // BTN_ColibriDown
+            // BTN_ColibriEnable
             // 
-            resources.ApplyResources(this.BTN_ColibriDown, "BTN_ColibriDown");
-            this.BTN_ColibriDown.Name = "BTN_ColibriDown";
-            this.BTN_ColibriDown.UseVisualStyleBackColor = true;
-            this.BTN_ColibriDown.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriDown_MouseDown);
-            this.BTN_ColibriDown.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriDown_MouseUp);
+            resources.ApplyResources(this.BTN_ColibriEnable, "BTN_ColibriEnable");
+            this.BTN_ColibriEnable.Name = "BTN_ColibriEnable";
+            this.BTN_ColibriEnable.UseVisualStyleBackColor = true;
+            this.BTN_ColibriEnable.Click += new System.EventHandler(this.BTN_ColibriEnable_Click);
             // 
             // BTN_ColibriUp
             // 
@@ -1891,17 +1879,29 @@
             this.BTN_ColibriUp.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriUp_MouseDown);
             this.BTN_ColibriUp.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriUp_MouseUp);
             // 
-            // lbColibriRoll
+            // BTN_ColibriZoomIn
             // 
-            resources.ApplyResources(this.lbColibriRoll, "lbColibriRoll");
-            this.lbColibriRoll.Name = "lbColibriRoll";
-            this.lbColibriRoll.resize = false;
+            resources.ApplyResources(this.BTN_ColibriZoomIn, "BTN_ColibriZoomIn");
+            this.BTN_ColibriZoomIn.Name = "BTN_ColibriZoomIn";
+            this.BTN_ColibriZoomIn.UseVisualStyleBackColor = true;
+            this.BTN_ColibriZoomIn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriZoomIn_MouseDown);
+            this.BTN_ColibriZoomIn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriZoomIn_MouseUp);
             // 
-            // lbColibriPitch
+            // BTN_ColibriDown
             // 
-            resources.ApplyResources(this.lbColibriPitch, "lbColibriPitch");
-            this.lbColibriPitch.Name = "lbColibriPitch";
-            this.lbColibriPitch.resize = false;
+            resources.ApplyResources(this.BTN_ColibriDown, "BTN_ColibriDown");
+            this.BTN_ColibriDown.Name = "BTN_ColibriDown";
+            this.BTN_ColibriDown.UseVisualStyleBackColor = true;
+            this.BTN_ColibriDown.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriDown_MouseDown);
+            this.BTN_ColibriDown.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriDown_MouseUp);
+            // 
+            // BTN_ColibriLeft
+            // 
+            resources.ApplyResources(this.BTN_ColibriLeft, "BTN_ColibriLeft");
+            this.BTN_ColibriLeft.Name = "BTN_ColibriLeft";
+            this.BTN_ColibriLeft.UseVisualStyleBackColor = true;
+            this.BTN_ColibriLeft.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriLeft_MouseDown);
+            this.BTN_ColibriLeft.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriLeft_MouseUp);
             // 
             // tableMap
             // 
@@ -1951,6 +1951,8 @@
             // contextMenuStripMap
             // 
             this.contextMenuStripMap.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.colibriModeToolStripMenuItem,
+            this.pointColibriHereToolStripMenuItem,
             this.goHereToolStripMenuItem,
             this.landHereToolStripMenuItem,
             this.flyToHereAltToolStripMenuItem,
@@ -1961,10 +1963,63 @@
             this.flightPlannerToolStripMenuItem,
             this.setHomeHereToolStripMenuItem,
             this.takeOffToolStripMenuItem,
-            this.onOffCameraOverlapToolStripMenuItem,
-            this.pointColibriHereToolStripMenuItem});
+            this.onOffCameraOverlapToolStripMenuItem});
             this.contextMenuStripMap.Name = "contextMenuStrip1";
             resources.ApplyResources(this.contextMenuStripMap, "contextMenuStripMap");
+            // 
+            // colibriModeToolStripMenuItem
+            // 
+            this.colibriModeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.stowToolStripMenuItem,
+            this.gRRToolStripMenuItem,
+            this.pTCToolStripMenuItem,
+            this.holdToolStripMenuItem,
+            this.positionToolStripMenuItem,
+            this.observationToolStripMenuItem});
+            this.colibriModeToolStripMenuItem.Name = "colibriModeToolStripMenuItem";
+            resources.ApplyResources(this.colibriModeToolStripMenuItem, "colibriModeToolStripMenuItem");
+            // 
+            // stowToolStripMenuItem
+            // 
+            this.stowToolStripMenuItem.Name = "stowToolStripMenuItem";
+            resources.ApplyResources(this.stowToolStripMenuItem, "stowToolStripMenuItem");
+            this.stowToolStripMenuItem.Click += new System.EventHandler(this.stowToolStripMenuItem_Click);
+            // 
+            // gRRToolStripMenuItem
+            // 
+            this.gRRToolStripMenuItem.Name = "gRRToolStripMenuItem";
+            resources.ApplyResources(this.gRRToolStripMenuItem, "gRRToolStripMenuItem");
+            this.gRRToolStripMenuItem.Click += new System.EventHandler(this.gRRToolStripMenuItem_Click);
+            // 
+            // pTCToolStripMenuItem
+            // 
+            this.pTCToolStripMenuItem.Name = "pTCToolStripMenuItem";
+            resources.ApplyResources(this.pTCToolStripMenuItem, "pTCToolStripMenuItem");
+            this.pTCToolStripMenuItem.Click += new System.EventHandler(this.pTCToolStripMenuItem_Click);
+            // 
+            // holdToolStripMenuItem
+            // 
+            this.holdToolStripMenuItem.Name = "holdToolStripMenuItem";
+            resources.ApplyResources(this.holdToolStripMenuItem, "holdToolStripMenuItem");
+            this.holdToolStripMenuItem.Click += new System.EventHandler(this.holdToolStripMenuItem_Click);
+            // 
+            // positionToolStripMenuItem
+            // 
+            this.positionToolStripMenuItem.Name = "positionToolStripMenuItem";
+            resources.ApplyResources(this.positionToolStripMenuItem, "positionToolStripMenuItem");
+            this.positionToolStripMenuItem.Click += new System.EventHandler(this.positionToolStripMenuItem_Click);
+            // 
+            // observationToolStripMenuItem
+            // 
+            this.observationToolStripMenuItem.Name = "observationToolStripMenuItem";
+            resources.ApplyResources(this.observationToolStripMenuItem, "observationToolStripMenuItem");
+            this.observationToolStripMenuItem.Click += new System.EventHandler(this.observationToolStripMenuItem_Click);
+            // 
+            // pointColibriHereToolStripMenuItem
+            // 
+            this.pointColibriHereToolStripMenuItem.Name = "pointColibriHereToolStripMenuItem";
+            resources.ApplyResources(this.pointColibriHereToolStripMenuItem, "pointColibriHereToolStripMenuItem");
+            this.pointColibriHereToolStripMenuItem.Click += new System.EventHandler(this.pointColibriHereToolStripMenuItem_Click);
             // 
             // goHereToolStripMenuItem
             // 
@@ -2063,12 +2118,6 @@
             resources.ApplyResources(this.onOffCameraOverlapToolStripMenuItem, "onOffCameraOverlapToolStripMenuItem");
             this.onOffCameraOverlapToolStripMenuItem.Click += new System.EventHandler(this.onOffCameraOverlapToolStripMenuItem_Click);
             // 
-            // pointColibriHereToolStripMenuItem
-            // 
-            this.pointColibriHereToolStripMenuItem.Name = "pointColibriHereToolStripMenuItem";
-            resources.ApplyResources(this.pointColibriHereToolStripMenuItem, "pointColibriHereToolStripMenuItem");
-            this.pointColibriHereToolStripMenuItem.Click += new System.EventHandler(this.pointColibriHereToolStripMenuItem_Click);
-            // 
             // but_disablejoystick
             // 
             this.but_disablejoystick.ColorMouseDown = System.Drawing.Color.Empty;
@@ -2079,27 +2128,15 @@
             this.but_disablejoystick.UseVisualStyleBackColor = true;
             this.but_disablejoystick.Click += new System.EventHandler(this.but_disablejoystick_Click);
             // 
-            // distanceBar1
-            // 
-            resources.ApplyResources(this.distanceBar1, "distanceBar1");
-            this.distanceBar1.BackColor = System.Drawing.Color.Black;
-            this.distanceBar1.Name = "distanceBar1";
-            this.distanceBar1.totaldist = 100F;
-            this.distanceBar1.traveleddist = 0F;
-            // 
             // windDir1
             // 
             this.windDir1.BackColor = System.Drawing.Color.Transparent;
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Direction", this.bindingSource1, "wind_dir", true, System.Windows.Forms.DataSourceUpdateMode.Never));
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Speed", this.bindingSource1, "wind_vel", true, System.Windows.Forms.DataSourceUpdateMode.Never));
-            this.windDir1.Direction = 180D;
+            this.windDir1.Direction = 360D;
             resources.ApplyResources(this.windDir1, "windDir1");
             this.windDir1.Name = "windDir1";
             this.windDir1.Speed = 0D;
-            // 
-            // bindingSource1
-            // 
-            this.bindingSource1.DataSource = typeof(MissionPlanner.CurrentState);
             // 
             // label6
             // 
@@ -2300,8 +2337,8 @@
             // 
             // dataGridViewImageColumn1
             // 
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridViewImageColumn1.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewImageColumn1.DefaultCellStyle = dataGridViewCellStyle3;
             resources.ApplyResources(this.dataGridViewImageColumn1, "dataGridViewImageColumn1");
             this.dataGridViewImageColumn1.Image = global::MissionPlanner.Properties.Resources.up;
             this.dataGridViewImageColumn1.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
@@ -2309,8 +2346,8 @@
             // 
             // dataGridViewImageColumn2
             // 
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridViewImageColumn2.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewImageColumn2.DefaultCellStyle = dataGridViewCellStyle4;
             resources.ApplyResources(this.dataGridViewImageColumn2, "dataGridViewImageColumn2");
             this.dataGridViewImageColumn2.Image = global::MissionPlanner.Properties.Resources.down;
             this.dataGridViewImageColumn2.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
@@ -2321,13 +2358,180 @@
             this.Messagetabtimer.Interval = 200;
             this.Messagetabtimer.Tick += new System.EventHandler(this.Messagetabtimer_Tick);
             // 
-            // bindingSourceStatusTab
-            // 
-            this.bindingSourceStatusTab.DataSource = typeof(MissionPlanner.CurrentState);
-            // 
             // ColibriControlTimer
             // 
             this.ColibriControlTimer.Tick += new System.EventHandler(this.ColibriControlTimer_Tick);
+            // 
+            // bindingSourceHud
+            // 
+            this.bindingSourceHud.DataSource = typeof(MissionPlanner.CurrentState);
+            // 
+            // bindingSourceQuickTab
+            // 
+            this.bindingSourceQuickTab.DataSource = typeof(MissionPlanner.CurrentState);
+            // 
+            // modifyandSetLoiterRad
+            // 
+            this.modifyandSetLoiterRad.ButtonHeight = 20;
+            this.modifyandSetLoiterRad.ButtonText = "Set Loiter Radius(m)";
+            this.modifyandSetLoiterRad.ButtonWidth = 126;
+            resources.ApplyResources(this.modifyandSetLoiterRad, "modifyandSetLoiterRad");
+            this.modifyandSetLoiterRad.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.modifyandSetLoiterRad.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.modifyandSetLoiterRad.Name = "modifyandSetLoiterRad";
+            this.modifyandSetLoiterRad.NumericHeight = 20;
+            this.modifyandSetLoiterRad.NumericWidth = 45;
+            this.modifyandSetLoiterRad.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.modifyandSetLoiterRad.Click += new System.EventHandler(this.modifyandSetLoiterRad_Click);
+            // 
+            // modifyandSetAlt
+            // 
+            this.modifyandSetAlt.ButtonHeight = 20;
+            this.modifyandSetAlt.ButtonText = "Set Altitude(m)";
+            this.modifyandSetAlt.ButtonWidth = 126;
+            resources.ApplyResources(this.modifyandSetAlt, "modifyandSetAlt");
+            this.modifyandSetAlt.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.modifyandSetAlt.Minimum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.modifyandSetAlt.Name = "modifyandSetAlt";
+            this.modifyandSetAlt.NumericHeight = 20;
+            this.modifyandSetAlt.NumericWidth = 45;
+            this.modifyandSetAlt.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.modifyandSetAlt.Click += new System.EventHandler(this.modifyandSetAlt_Click);
+            // 
+            // modifyandSetSpeed
+            // 
+            this.modifyandSetSpeed.ButtonHeight = 20;
+            this.modifyandSetSpeed.ButtonText = "Set Max Airspeed(m/s)";
+            this.modifyandSetSpeed.ButtonWidth = 126;
+            resources.ApplyResources(this.modifyandSetSpeed, "modifyandSetSpeed");
+            this.modifyandSetSpeed.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.modifyandSetSpeed.Minimum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.modifyandSetSpeed.Name = "modifyandSetSpeed";
+            this.modifyandSetSpeed.NumericHeight = 20;
+            this.modifyandSetSpeed.NumericWidth = 45;
+            this.modifyandSetSpeed.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.modifyandSetSpeed.Click += new System.EventHandler(this.modifyandSetSpeed_Click);
+            // 
+            // checkListControl1
+            // 
+            resources.ApplyResources(this.checkListControl1, "checkListControl1");
+            this.checkListControl1.Name = "checkListControl1";
+            // 
+            // servoOptions1
+            // 
+            resources.ApplyResources(this.servoOptions1, "servoOptions1");
+            this.servoOptions1.Name = "servoOptions1";
+            this.servoOptions1.thisservo = 5;
+            // 
+            // servoOptions2
+            // 
+            resources.ApplyResources(this.servoOptions2, "servoOptions2");
+            this.servoOptions2.Name = "servoOptions2";
+            this.servoOptions2.thisservo = 6;
+            // 
+            // servoOptions3
+            // 
+            resources.ApplyResources(this.servoOptions3, "servoOptions3");
+            this.servoOptions3.Name = "servoOptions3";
+            this.servoOptions3.thisservo = 7;
+            // 
+            // servoOptions4
+            // 
+            resources.ApplyResources(this.servoOptions4, "servoOptions4");
+            this.servoOptions4.Name = "servoOptions4";
+            this.servoOptions4.thisservo = 8;
+            // 
+            // servoOptions5
+            // 
+            resources.ApplyResources(this.servoOptions5, "servoOptions5");
+            this.servoOptions5.Name = "servoOptions5";
+            this.servoOptions5.thisservo = 9;
+            // 
+            // servoOptions6
+            // 
+            resources.ApplyResources(this.servoOptions6, "servoOptions6");
+            this.servoOptions6.Name = "servoOptions6";
+            this.servoOptions6.thisservo = 10;
+            // 
+            // servoOptions7
+            // 
+            resources.ApplyResources(this.servoOptions7, "servoOptions7");
+            this.servoOptions7.Name = "servoOptions7";
+            this.servoOptions7.thisservo = 11;
+            // 
+            // servoOptions8
+            // 
+            resources.ApplyResources(this.servoOptions8, "servoOptions8");
+            this.servoOptions8.Name = "servoOptions8";
+            this.servoOptions8.thisservo = 12;
+            // 
+            // servoOptions9
+            // 
+            resources.ApplyResources(this.servoOptions9, "servoOptions9");
+            this.servoOptions9.Name = "servoOptions9";
+            this.servoOptions9.thisservo = 13;
+            // 
+            // servoOptions10
+            // 
+            resources.ApplyResources(this.servoOptions10, "servoOptions10");
+            this.servoOptions10.Name = "servoOptions10";
+            this.servoOptions10.thisservo = 14;
+            // 
+            // distanceBar1
+            // 
+            resources.ApplyResources(this.distanceBar1, "distanceBar1");
+            this.distanceBar1.BackColor = System.Drawing.Color.Black;
+            this.distanceBar1.Name = "distanceBar1";
+            this.distanceBar1.totaldist = 100F;
+            this.distanceBar1.traveleddist = 0F;
+            // 
+            // bindingSourceGaugesTab
+            // 
+            this.bindingSourceGaugesTab.DataSource = typeof(MissionPlanner.CurrentState);
+            // 
+            // bindingSource1
+            // 
+            this.bindingSource1.DataSource = typeof(MissionPlanner.CurrentState);
+            // 
+            // bindingSourceStatusTab
+            // 
+            this.bindingSourceStatusTab.DataSource = typeof(MissionPlanner.CurrentState);
             // 
             // FlightData
             // 
@@ -2346,7 +2550,6 @@
             this.splitContainer2.ResumeLayout(false);
             this.tableLayoutPanelQuick.ResumeLayout(false);
             this.contextMenuStripQuickView.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceQuickTab)).EndInit();
             this.MainH.Panel1.ResumeLayout(false);
             this.MainH.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.MainH)).EndInit();
@@ -2356,7 +2559,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.SubMainLeft)).EndInit();
             this.SubMainLeft.ResumeLayout(false);
             this.contextMenuStripHud.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceHud)).EndInit();
             this.tabControlactions.ResumeLayout(false);
             this.tabQuick.ResumeLayout(false);
             this.tabActions.ResumeLayout(false);
@@ -2364,7 +2566,6 @@
             this.tabActionsSimple.ResumeLayout(false);
             this.tabPagePreFlight.ResumeLayout(false);
             this.tabGauges.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceGaugesTab)).EndInit();
             this.tabServo.ResumeLayout(false);
             this.flowLayoutPanelServos.ResumeLayout(false);
             this.tabTLogs.ResumeLayout(false);
@@ -2377,6 +2578,13 @@
             this.tabScripts.ResumeLayout(false);
             this.tabScripts.PerformLayout();
             this.tabPageColibri.ResumeLayout(false);
+            this.Colibri_GB4.ResumeLayout(false);
+            this.Colibri_GB4.PerformLayout();
+            this.Colibri_GB3.ResumeLayout(false);
+            this.Colibri_GB3.PerformLayout();
+            this.Colibri_GB2.ResumeLayout(false);
+            this.Colibri_GB2.PerformLayout();
+            this.Colibri_GB1.ResumeLayout(false);
             this.tableMap.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -2384,12 +2592,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.contextMenuStripMap.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.TRK_zoom)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Zoomlevel)).EndInit();
             this.contextMenuStripactionstab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceHud)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceQuickTab)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceGaugesTab)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSourceStatusTab)).EndInit();
             this.ResumeLayout(false);
 
@@ -2562,13 +2773,38 @@
         private System.Windows.Forms.ToolStripMenuItem setVLCStreamSourceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pointColibriHereToolStripMenuItem;
         private System.Windows.Forms.TabPage tabPageColibri;
-        private Controls.MyLabel lbColibriRoll;
-        private Controls.MyLabel lbColibriPitch;
         private Controls.MyButton BTN_ColibriUp;
         private Controls.MyButton BTN_ColibriRight;
         private Controls.MyButton BTN_ColibriLeft;
         private Controls.MyButton BTN_ColibriDown;
         private Controls.MyButton BTN_ColibriEnable;
         private System.Windows.Forms.Timer ColibriControlTimer;
+        private Controls.MyButton BTN_ColibriZoomOut;
+        private Controls.MyButton BTN_ColibriZoomIn;
+        private System.Windows.Forms.GroupBox Colibri_GB1;
+        private System.Windows.Forms.GroupBox Colibri_GB2;
+        private System.Windows.Forms.RadioButton RadioBtnPos;
+        private System.Windows.Forms.RadioButton RadioBtnGRR;
+        private System.Windows.Forms.RadioButton RadioBtnObs;
+        private System.Windows.Forms.RadioButton RadioBtnStow;
+        private System.Windows.Forms.GroupBox Colibri_GB3;
+        private System.Windows.Forms.Label LBL_Colibri_Roll;
+        private System.Windows.Forms.Label LBL_Colibri_Pitch;
+        private System.Windows.Forms.GroupBox Colibri_GB4;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox PTC_Alt;
+        private System.Windows.Forms.TextBox PTC_Lon;
+        private System.Windows.Forms.TextBox PTC_Lat;
+        private System.Windows.Forms.ToolStripMenuItem colibriModeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem gRRToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pTCToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem holdToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem positionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem observationToolStripMenuItem;
+        private System.Windows.Forms.RadioButton RadioBtnPTC;
+        private System.Windows.Forms.RadioButton RadioBtnHold;
+        private System.Windows.Forms.ToolStripMenuItem stowToolStripMenuItem;
     }
 }

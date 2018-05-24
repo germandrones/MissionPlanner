@@ -4227,10 +4227,6 @@ namespace MissionPlanner.GCSViews
                 {
                 }
             }
-
-            /*Colibri status update*/            
-            lbColibriRoll.Text = MainV2.comPort.MAV.cs.ColibriData.pos_pitch_los_x.ToString();
-            lbColibriPitch.Text = MainV2.comPort.MAV.cs.ColibriData.pos_roll_los_y.ToString();
         }
 
         private void dropOutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4476,7 +4472,7 @@ namespace MissionPlanner.GCSViews
             {
                 MainV2.joystick.enabled = false;
 
-                MainV2.joystick.clearRCOverride();
+                //MainV2.joystick.clearRCOverride();
 
                 but_disablejoystick.Visible = false;
             }
@@ -4942,7 +4938,7 @@ namespace MissionPlanner.GCSViews
 
         private void pointColibriHereToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           /* if (!MainV2.comPort.BaseStream.IsOpen)
+            if (!MainV2.comPort.BaseStream.IsOpen)
             {
                 CustomMessageBox.Show("Please Connect First");
                 return;
@@ -4969,34 +4965,16 @@ namespace MissionPlanner.GCSViews
 
             try
             {
-                MAVLink.mavlink_v2_extension_t MetaData = new MAVLink.mavlink_v2_extension_t();
+                PTC_Lat.Text = MouseDownStart.Lat.ToString();
+                PTC_Lon.Text = MouseDownStart.Lng.ToString();
+                PTC_Alt.Text = intalt.ToString();
 
-                MetaData.target_component = MainV2.comPort.MAV.compid;
-                MetaData.target_network = 0;// Network ID(0 for broadcast)
-                MetaData.target_system = MainV2.comPort.MAV.sysid;
-                MetaData.message_type = 0x01;//colibri Msg
-
-                MetaData.ptc_cam_lat = (int)(MouseDownStart.Lat * 10000000); // Latitude for PTC mode
-                MetaData.ptc_cam_lng = (int)(MouseDownStart.Lng * 10000000); // Longitude for PTC mode
-                MetaData.ptc_cam_alt = (int)(intalt * 1000); // Altitude for PTC mode                      
-
-                MetaData.los_gnd_lat = 0; // Not Used in outgoing command only in report
-                MetaData.los_gnd_lng = 0; // Not Used in outgoing command only in report
-                MetaData.los_gnd_alt = 0; // Not Used in outgoing command only in report
-
-                MetaData.pos_pitch_los_x = 0; // Pitch Value In Deg For POSITION mode
-                MetaData.pos_roll_los_y = 0;  // Roll Value In Deg For POSITION mode
-                MetaData.los_z = 0; // Not Used in outgoing command only in report
-
-                byte[] ColibData = new byte[20];
-                MetaData.payload = ColibData;
-                MainV2.comPort.sendPacket(MetaData, MetaData.target_system, MetaData.target_component);
-
+                RadioBtnPTC.Checked = true;
             }
             catch
             {
                 CustomMessageBox.Show(Strings.CommandFailed, Strings.ERROR);
-            }*/
+            }
         }
 
 
@@ -5005,60 +4983,116 @@ namespace MissionPlanner.GCSViews
         #region Arrow Buttons
         private void BTN_ColibriUp_MouseDown(object sender, MouseEventArgs e)
         {
-            MainV2.mav_proto.MavlinkMoveCamUp();
+            if(ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkMoveCamUp();
         }
 
         private void BTN_ColibriUp_MouseUp(object sender, MouseEventArgs e)
         {
-            MainV2.mav_proto.MavlinkCamStop();
+            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkCamStop();
         }
 
         private void BTN_ColibriDown_MouseUp(object sender, MouseEventArgs e)
         {
-            MainV2.mav_proto.MavlinkCamStop();
+            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkCamStop();
         }
 
         private void BTN_ColibriLeft_MouseUp(object sender, MouseEventArgs e)
         {
-            MainV2.mav_proto.MavlinkCamStop();
+            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkCamStop();
         }
 
         private void BTN_ColibriRight_MouseUp(object sender, MouseEventArgs e)
         {
-            MainV2.mav_proto.MavlinkCamStop();
+            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkCamStop();
         }
 
         private void BTN_ColibriLeft_MouseDown(object sender, MouseEventArgs e)
         {
-            MainV2.mav_proto.MavlinkMoveCamLeft();
+            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkMoveCamLeft();
         }
 
         private void BTN_ColibriRight_MouseDown(object sender, MouseEventArgs e)
         {
-            MainV2.mav_proto.MavlinkMoveCamRight();
+            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkMoveCamRight();
         }
 
         private void BTN_ColibriDown_MouseDown(object sender, MouseEventArgs e)
         {
-            MainV2.mav_proto.MavlinkMoveCamDown();
+            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkMoveCamDown();
+        }
+        
+        private void BTN_ColibriZoomIn_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkCamZoomIn();
+        }
+
+        private void BTN_ColibriZoomIn_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkCamZoomStop();
+        }
+
+        private void BTN_ColibriZoomOut_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkCamZoomStop();
+        }
+
+        private void BTN_ColibriZoomOut_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkCamZoomOut();
         }
         #endregion
 
+        private void observationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RadioBtnObs.Checked = true;
+        }
+
+        private void gRRToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RadioBtnGRR.Checked = true;
+        }
+
+        private void positionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RadioBtnPos.Checked = true;
+        }
+
+        private void pTCToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RadioBtnPTC.Checked = true;
+        }
+
+        private void holdToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RadioBtnHold.Checked = true;
+        }
+
+        private void stowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RadioBtnStow.Checked = true;
+        }
+
         private void BTN_ColibriEnable_Click(object sender, EventArgs e)
         {
+            if (!MainV2.comPort.BaseStream.IsOpen)
+            {
+                MessageBox.Show("Please connect first...");
+                return;
+            }
+
             if (MainV2.comPort.BaseStream.IsOpen && !ColibriControlTimer.Enabled)
             {
                 MainV2.mav_proto = new ColibriMavlink();
+
+                Form joy = new JoystickSetup();
+                ThemeManager.ApplyThemeTo(joy);
+                joy.Show();
+
                 ColibriControlTimer.Interval = 100; //100ms
                 ColibriControlTimer.Enabled = true;
                 m_oMavlinkIntervalInTicks = 250 / ColibriControlTimer.Interval;    /* send secondary mavlink packets every 250ms */
                 m_oTxTimerTicks = 0;
                 BTN_ColibriEnable.Text = "Disable Control";
-
-                MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_Position);
-                MainV2.mav_proto.MavlinkUpdatePosMode(MainV2.mav_proto.pitch_pos, MainV2.mav_proto.roll_pos); //reset
-
-                //MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_RateDriftOff);
             }
             else if(ColibriControlTimer.Enabled)
             {
@@ -5074,37 +5108,34 @@ namespace MissionPlanner.GCSViews
         {
             byte[] mavlink_tx_packet = null;
 
-            //MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_RateDriftOff);
-
             /* update the camera mode */
-            /*if (RadioBtnStow.Checked)
-                mav_proto.MavlinkUpdateCameraMode(MavProtocol.CameraMode.e_Stow);
+            if (RadioBtnStow.Checked)
+                MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_Stow);
             else if (RadioBtnObs.Checked)
-                mav_proto.MavlinkUpdateCameraMode(MavProtocol.CameraMode.e_RateDriftOff);
+                MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_RateDriftOff);
             else if (RadioBtnGRR.Checked)
-                mav_proto.MavlinkUpdateCameraMode(MavProtocol.CameraMode.e_GRR);
+                MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_GRR);
             else if (RadioBtnPos.Checked)
-                mav_proto.MavlinkUpdateCameraMode(MavProtocol.CameraMode.e_Position);
+                MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_Position);
             else if (RadioBtnPTC.Checked)
-                mav_proto.MavlinkUpdateCameraMode(MavProtocol.CameraMode.e_PointToCordinate);
+                MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_PointToCordinate);
             else if (RadioBtnHold.Checked)
-                mav_proto.MavlinkUpdateCameraMode(MavProtocol.CameraMode.e_HoldCordinate);
-            */
+                MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_HoldCordinate);
+            
 
             /* update the pitch & roll for the position mode */
-            //float pitch_pos = 0, roll_pos = 0;
-            //float.TryParse(textBoxPosPitch.Text, out pitch_pos);
-            //float.TryParse(textBoxPosRoll.Text, out roll_pos);
-            //mav_proto.MavlinkUpdatePosMode(pitch_pos, roll_pos);
+            LBL_Colibri_Pitch.Text = "Pitch - " + MainV2.mav_proto.pitch_pos.ToString() + "[deg]";
+            LBL_Colibri_Roll.Text = "Roll - " + MainV2.mav_proto.roll_pos.ToString() + "[deg]";
+
 
             /* update the lat, lon & alt for the PTC mode */
-            /*float lat_ptc = 0, lon_ptc = 0;
+            float lat_ptc = 0, lon_ptc = 0;
             int alt_ptc = 0;
-            float.TryParse(textBoxPtcLat.Text, out lat_ptc);
-            float.TryParse(textBoxPtcLon.Text, out lon_ptc);
-            int.TryParse(textBoxPtcAlt.Text, out alt_ptc);
-            mav_proto.MavlinkUpdatePtcMode(lat_ptc, lon_ptc, alt_ptc);
-            */
+            float.TryParse(PTC_Lat.Text, out lat_ptc);
+            float.TryParse(PTC_Lon.Text, out lon_ptc);
+            int.TryParse(PTC_Alt.Text, out alt_ptc);
+            MainV2.mav_proto.MavlinkUpdatePtcMode(lat_ptc, lon_ptc, alt_ptc);
+            
 
             /* get a mavlink packet for tranmission */
             MainV2.mav_proto.MavlinkGetV2ExtPacket(ref mavlink_tx_packet);
@@ -5118,10 +5149,8 @@ namespace MissionPlanner.GCSViews
             if (m_oTxTimerTicks >= m_oMavlinkIntervalInTicks)
             {
                 m_oTxTimerTicks = 0;
-                float roll = 0, pitch = 0, yaw = 0;
+                //float roll = 0, pitch = 0, yaw = 0;
                 //MainV2.mav_proto.MavlinkGetAttitudePacket(ref mavlink_tx_packet, DEG2RAD(roll), DEG2RAD(pitch), DEG2RAD(yaw));
-                MainV2.mav_proto.MavlinkGetAttitudePacket(ref mavlink_tx_packet, roll, pitch, DEG2RAD(yaw));
-
 
                 /* prepare & send all the mavlink messages */
                 /* Send Attitude mavlink message */
