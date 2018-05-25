@@ -1746,11 +1746,7 @@ namespace MissionPlanner.Controls
 
                     if (bg.Height != 0)
                     {
-                        /*using (LinearGradientBrush linearBrush = new LinearGradientBrush(bg, Color.Blue, Color.LightBlue, LinearGradientMode.Vertical))
-                        {
-                            graphicsObject.FillRectangle(linearBrush, bg);
-                        }*/
-                        using (LinearGradientBrush linearBrush = new LinearGradientBrush(bg, Color.FromArgb(0x59, 0x86, 0xa9), Color.FromArgb(0x9B, 0xC0, 0xE0), LinearGradientMode.Vertical))
+                        using (LinearGradientBrush linearBrush = new LinearGradientBrush(bg, Color.FromArgb(75, 125, 160), Color.FromArgb(142, 180, 203), LinearGradientMode.Vertical))
                         {
                             graphicsObject.FillRectangle(linearBrush, bg);
                         }
@@ -1761,11 +1757,7 @@ namespace MissionPlanner.Controls
 
                     if (bg.Height != 0)
                     {
-                        /*using ( LinearGradientBrush linearBrush = new LinearGradientBrush( bg, Color.FromArgb(0x9b, 0xb8, 0x24), Color.FromArgb(0x41, 0x4f, 0x07), LinearGradientMode.Vertical))
-                        {
-                            graphicsObject.FillRectangle(linearBrush, bg);
-                        }*/
-                        using (LinearGradientBrush linearBrush = new LinearGradientBrush(bg, Color.FromArgb(0xA3, 0x71, 0x40), Color.FromArgb(0x6d, 0x46, 0x21), LinearGradientMode.Vertical))
+                        using (LinearGradientBrush linearBrush = new LinearGradientBrush(bg, Color.FromArgb(130, 84, 34), Color.FromArgb(93, 71, 47), LinearGradientMode.Vertical))
                         {
                             graphicsObject.FillRectangle(linearBrush, bg);
                         }
@@ -1925,8 +1917,7 @@ namespace MissionPlanner.Controls
                 Rectangle headbg = new Rectangle(0, 0, this.Width - 0, this.Height / 14);
 
                 graphicsObject.ResetTransform();
-                graphicsObject.ResetClip();
-
+                graphicsObject.ResetClip();                
                 if (displayheading)
                 {
                     graphicsObject.DrawRectangle(this._blackPen, headbg);

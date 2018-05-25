@@ -10,6 +10,7 @@ namespace MissionPlanner.ColibriControl
     public class ColibriMavlink
     {
         public float pitch_pos = 0, roll_pos = 0;
+        public bool thermalcamOn = false;
 
         #region Initial Definitions and constants
         /* Colibri Camera Mode Enum */
@@ -241,17 +242,17 @@ namespace MissionPlanner.ColibriControl
         * Returns     : none
         *
         ****************************************************************************************************************************/
-        public void MavlinkMoveCam(float pitch_speed, float roll_speed)
+        public void MavlinkMoveCam(byte pitch_rate, byte roll_rate)
         {            
             mavlink_v2_ext_packet_mutex.WaitOne();
-            mavlink_v2_ext_packet[20] = pitch_speed > 0 ? (byte)0x30 : (byte)0x00; //up or down?
-            mavlink_v2_ext_packet[20] += roll_speed > 0 ? (byte)0x00 : (byte)0x0C; //right or left?
+            mavlink_v2_ext_packet[20] = pitch_rate > 127 ? (byte)0x30 : (byte)0x00; //up or down?
+            mavlink_v2_ext_packet[20] += roll_rate > 127 ? (byte)0x00 : (byte)0x0C; //right or left?
 
-            //pitch rate
-            mavlink_v2_ext_packet[21] = pitch_speed > 0 ? (byte)0xFF : (byte)0x00; //up or down
+            //pitch rate            
+            mavlink_v2_ext_packet[21] = pitch_rate;// pitch_speed > 0 ? (byte)0xFF : (byte)0x00; //up or down
 
             //roll rate
-            mavlink_v2_ext_packet[22] = roll_speed > 0 ? (byte)0xFF : (byte)0x00; //right or left
+            mavlink_v2_ext_packet[22] = roll_rate;// roll_speed > 0 ? (byte)0xFF : (byte)0x00; //right or left
             mavlink_v2_ext_packet_mutex.ReleaseMutex();
         }
 
