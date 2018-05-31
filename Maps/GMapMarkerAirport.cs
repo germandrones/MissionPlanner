@@ -95,8 +95,7 @@ namespace MissionPlanner.Maps
 
             if (widtharc > 0 && widtharc < 200000000 && Overlay.Control.Zoom > 3)
             {
-                //g.DrawArc(Pen, new System.Drawing.Rectangle(x, y, widtharc, heightarc), 0, 360);
-
+                g.DrawArc(new Pen(Color.FromArgb(127, Color.Red), 1), new System.Drawing.Rectangle(x, y, widtharc, heightarc), 0, 360);
                 g.FillPie(new SolidBrush(Color.FromArgb(25, Color.Red)), x, y, widtharc, heightarc, 0, 360);
             }
         }

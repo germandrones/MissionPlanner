@@ -246,6 +246,9 @@
 
     <ItemGroup>
     <Compile Include="Antenna\Tracker.Designer.cs" />
+    <Compile Include="CamJoystick\CamJoystick.cs" />
+    <Compile Include="CamJoystick\CamJoystickSetup.cs" />
+    <Compile Include="CamJoystick\CamJoystickState.cs" />
     <Compile Include="CodeGen.cs" />
     <Compile Include="ColibriControl\ColibriMavlink.cs" />
     <Compile Include="Common.cs" />

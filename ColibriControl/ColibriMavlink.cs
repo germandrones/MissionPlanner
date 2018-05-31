@@ -10,7 +10,9 @@ namespace MissionPlanner.ColibriControl
     public class ColibriMavlink
     {
         public float pitch_pos = 0, roll_pos = 0;
-        public bool thermalcamOn = false;
+        public bool ThermalOn = false;
+        public bool RecordOn = false;
+        public bool TrackingOn = false;
 
         #region Initial Definitions and constants
         /* Colibri Camera Mode Enum */
@@ -135,6 +137,7 @@ namespace MissionPlanner.ColibriControl
         private ushort mavlink_rx_payload_len = 0;
         #endregion
 
+        #region basic movements
         /****************************************************************************************************************************
         *                                                 CAMERA MOVEMENT FUNCTIONS
         ****************************************************************************************************************************/
@@ -279,7 +282,9 @@ namespace MissionPlanner.ColibriControl
             /* release the v2 ext packet */
             mavlink_v2_ext_packet_mutex.ReleaseMutex();
         }
+        #endregion
 
+        #region zoom actions
         /****************************************************************************************************************************
         *                                                      MavlinkCamZoomIn()
         *                                                      
@@ -345,6 +350,7 @@ namespace MissionPlanner.ColibriControl
             /* release the v2 ext packet */
             mavlink_v2_ext_packet_mutex.ReleaseMutex();
         }
+        #endregion
 
         /****************************************************************************************************************************
         *                                                      MavlinkUpdateCameraMode()
@@ -457,9 +463,15 @@ namespace MissionPlanner.ColibriControl
         {
             mavlink_v2_ext_packet_mutex.WaitOne();
             if (enabled)
-                mavlink_v2_ext_packet[10] |= 0x10;
-            else
+            {
+                mavlink_v2_ext_packet[9] |= 0x80;
                 mavlink_v2_ext_packet[10] &= 0xEF;
+            }
+            else
+            {
+                mavlink_v2_ext_packet[9] &= 0x7F;
+                mavlink_v2_ext_packet[10] |= 0x10;
+            }
             mavlink_v2_ext_packet_mutex.ReleaseMutex();
         }
 

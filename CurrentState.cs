@@ -1320,6 +1320,26 @@ namespace MissionPlanner
         public int hilch7;
         public int hilch8;
 
+        // colibricamera control
+        public ushort colibri_ch1;
+        public ushort colibri_ch1_rev;
+        public ushort colibri_ch2;
+        public ushort colibri_ch3;
+        public ushort colibri_ch4;
+        public ushort colibri_ch5;
+        public ushort colibri_ch6;
+        public ushort colibri_ch7;
+        public ushort colibri_ch8;
+        public ushort colibri_ch9;
+        public ushort colibri_ch10;
+        public ushort colibri_ch11;
+        public ushort colibri_ch12;
+        public ushort colibri_ch13;
+        public ushort colibri_ch14;
+        public ushort colibri_ch15;
+        public ushort colibri_ch16;
+        public float colibri_alt;
+
         // rc override
         public short rcoverridech1;//{ get; set; }
         public short rcoverridech2;// { get; set; }

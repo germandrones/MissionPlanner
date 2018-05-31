@@ -265,6 +265,7 @@ namespace MissionPlanner.Joystick
             ZoomIn,
             ZoomOut,
             SwitchThermalCamera,
+            RecordEnable
         }
 
 
@@ -701,6 +702,7 @@ namespace MissionPlanner.Joystick
 
                     if (MainV2.mav_proto == null) { continue; }
 
+
                     //get data from axis 1 and 2
                     short roll = pickchannel(1, JoyChannels[1].axis, false, JoyChannels[1].expo);
                     short pitch = pickchannel(2, JoyChannels[2].axis, false, JoyChannels[2].expo);
@@ -713,7 +715,8 @@ namespace MissionPlanner.Joystick
                     else // if any axis moved do camera movement
                     {
                         byte roll_rate = JoyChannels[1].reverse ? (byte)map(roll, 1000.0, 2000.0, 0.0, 255.0) : (byte)map(roll, 1000.0, 2000.0, 255.0, 0.0);
-                        byte pitch_rate = JoyChannels[2].reverse ? (byte)map(pitch, 1000.0, 2000.0, 0.0, 255.0) : (byte)map(pitch, 1000.0, 2000.0, 255.0, 0.0);
+                        byte pitch_rate = !JoyChannels[2].reverse ? (byte)map(pitch, 1000.0, 2000.0, 0.0, 255.0) : (byte)map(pitch, 1000.0, 2000.0, 255.0, 0.0);
+
                         if (MainV2.mav_proto != null) { MainV2.mav_proto.MavlinkMoveCam(pitch_rate, roll_rate); }
                     }
 
@@ -772,13 +775,16 @@ namespace MissionPlanner.Joystick
             return buts[JoyButtons[buttonno].buttonno];
         }
 
+        bool isPressed = false;
         void ButtonDown(JoyButton but)
         {
+            isPressed = true;
             ProcessButtonEvent(but, true);
         }
 
         void ButtonUp(JoyButton but)
         {
+            isPressed = false;
             ProcessButtonEvent(but, false);
         }
 
@@ -790,31 +796,30 @@ namespace MissionPlanner.Joystick
                 {
                     case buttonfunction.CameraTrack:
                         {
-                            /*if(MainV2.mav_proto.isHoldMode)
+                            if (!isPressed)
                             {
-                                MainV2.mav_proto.isHoldMode = false;
-                                MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_Position);
+                                if (MainV2.mav_proto.TrackingOn) { MainV2.mav_proto.TrackingOn = false; MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_RateDriftOff); }
+                                else { MainV2.mav_proto.TrackingOn = true; MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_HoldCordinate); }
                             }
-                            else
-                            {
-                                MainV2.mav_proto.isHoldMode = true;
-                                MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_HoldCordinate);
-                            }*/
                             break;
                         }
+                    case buttonfunction.RecordEnable:
+                        {
+                            if (!isPressed)
+                            {
+                                if (MainV2.mav_proto.RecordOn) { MainV2.mav_proto.RecordOn = false; MainV2.mav_proto.MavlinkUpdateRecEn(false); }
+                                else { MainV2.mav_proto.RecordOn = true; MainV2.mav_proto.MavlinkUpdateRecEn(true); }
+                            }
+                            break;
+                        }
+
                     case buttonfunction.SwitchThermalCamera:
                         {
-                            MainV2.mav_proto.MavlinkThermalMode(true);
-                            /*if (MainV2.mav_proto.thermalcamOn)
+                            if (!isPressed)
                             {
-                                MainV2.mav_proto.thermalcamOn = false;
-                                MainV2.mav_proto.MavlinkThermalMode(false);
+                                if (MainV2.mav_proto.ThermalOn) { MainV2.mav_proto.ThermalOn = false; MainV2.mav_proto.MavlinkThermalMode(false); }
+                                else { MainV2.mav_proto.ThermalOn = true; MainV2.mav_proto.MavlinkThermalMode(true); }
                             }
-                            else
-                            {
-                                MainV2.mav_proto.thermalcamOn = true;
-                                MainV2.mav_proto.MavlinkThermalMode(true);
-                            }*/
                             break;
                         }
 
