@@ -41,6 +41,9 @@ namespace MissionPlanner.GCSViews
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        //public VideoPlayer _videoPlayer;
+        //private Form VideoPlayerForm;
+
         public static bool threadrun;
         int tickStart;
         RollingPointPairList list1 = new RollingPointPairList(1200);
@@ -5131,6 +5134,34 @@ namespace MissionPlanner.GCSViews
             Form form = (Form)new CamJoystickSetup();
             MissionPlanner.Utilities.ThemeManager.ApplyThemeTo((Control)form);
             form.Show();
+        }
+
+        private void videoPlayer_BTN_Click(object sender, EventArgs e)
+        {
+            /*if (this._videoPlayer == null)
+                this._videoPlayer = new VideoPlayer();
+            if (this._videoPlayer.IsDisposed)
+                this._videoPlayer = new VideoPlayer();
+            if (this.VideoPlayerForm == null || this.VideoPlayerForm.IsDisposed)
+                this.VideoPlayerForm = (Form)new VideoPlayerForm((MyUserControl)this._videoPlayer);
+            this.VideoPlayerForm.Show();
+            this.VideoPlayerForm.BringToFront();*/
+
+            // in HUD renderer
+            var render = new vlcrender();
+            var url = render.playurl;
+            if (InputBox.Show("enter url", "enter url", ref url) == DialogResult.OK)
+            {
+                render.playurl = url;
+                try
+                {
+                    render.Start();
+                }
+                catch (Exception ex)
+                {
+                    CustomMessageBox.Show(ex.ToString(), Strings.ERROR);
+                }
+            }
         }
 
         private void BTN_ColibriEnable_Click(object sender, EventArgs e)

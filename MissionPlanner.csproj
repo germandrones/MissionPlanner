@@ -71,6 +71,9 @@
     <None Remove="packages\**" />
   </ItemGroup> 
   <ItemGroup>
+    <Reference Include="IPAddressControlLib">
+      <HintPath>ExtLibs\IPAddressControlLib.DLL</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>ExtLibs\log4net.dll</HintPath>
     </Reference>
@@ -154,14 +157,8 @@
       <Project>{cce510f7-1da6-40f2-8921-b86ed41bb85e}</Project>
       <Name>ManagedNativeWifi.Simple</Name>
     </ProjectReference>
-    <ProjectReference Include="ExtLibs\Mavlink\MAVLink.csproj">
-      <Project>{13d2ec90-c41f-48a1-aada-859b6dc24edc}</Project>
-      <Name>MAVLink</Name>
-    </ProjectReference>
-    <ProjectReference Include="ExtLibs\MetaDataExtractorCSharp240d\MetaDataExtractor.csproj">
-      <Project>{B46F6C6C-9184-41AF-8F8B-E0084752CA7C}</Project>
-      <Name>MetaDataExtractor</Name>
-    </ProjectReference>
+    <ProjectReference Include="ExtLibs\Mavlink\MAVLink.csproj" />
+    <ProjectReference Include="ExtLibs\MetaDataExtractorCSharp240d\MetaDataExtractor.csproj" />
     <ProjectReference Include="ExtLibs\px4uploader\px4uploader.csproj">
       <Project>{664FC484-2A94-4B0D-808F-A71F88E06B11}</Project>
       <Name>px4uploader</Name>

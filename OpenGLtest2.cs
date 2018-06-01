@@ -33,13 +33,13 @@ namespace MissionPlanner.Controls
         double cameraX, cameraY, cameraZ; // camera coordinates
         double lookX, lookY, lookZ; // camera look-at coordinates
 
-        double step = 1/1200.0;
+        double step = 1 / 1200.0;
 
         // image zoom level
         int zoom = 14;
 
         RectLatLng area = new RectLatLng(-35.04286, 117.84262, 0.1, 0.1);
-        PointLatLngAlt center = new PointLatLngAlt(-35.04286, 117.84262,40);
+        PointLatLngAlt center = new PointLatLngAlt(-35.04286, 117.84262, 40);
 
         public PointLatLngAlt LocationCenter
         {
@@ -52,9 +52,9 @@ namespace MissionPlanner.Controls
                 if (center.Lat == value.Lat && center.Lng == value.Lng)
                     return;
 
-                center.Lat = Math.Round(value.Lat,7);
-                center.Lng = Math.Round(value.Lng,7);
-                center.Alt = Math.Round(value.Alt,1);
+                center.Lat = Math.Round(value.Lat, 7);
+                center.Lng = Math.Round(value.Lng, 7);
+                center.Alt = Math.Round(value.Alt, 1);
 
                 this.Invalidate();
             }
@@ -65,7 +65,7 @@ namespace MissionPlanner.Controls
         public Vector3 rpy
         {
             get { return _rpy; }
-            set { _rpy.X = (float)Math.Round(value.X,1); _rpy.Y = (float)Math.Round(value.Y, 1); _rpy.Z = (float)Math.Round(value.Z, 1); this.Invalidate(); }
+            set { _rpy.X = (float)Math.Round(value.X, 1); _rpy.Y = (float)Math.Round(value.Y, 1); _rpy.Z = (float)Math.Round(value.Z, 1); this.Invalidate(); }
         }
 
         public OpenGLtest2()
@@ -81,7 +81,7 @@ namespace MissionPlanner.Controls
 
             this.Invalidate();
 
-            Thread bg = new Thread(imageLoader) {IsBackground = true};
+            Thread bg = new Thread(imageLoader) { IsBackground = true };
             bg.Start();
         }
 
@@ -112,9 +112,9 @@ namespace MissionPlanner.Controls
             image.UnlockBits(data);
 
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter,
-                (int) TextureMinFilter.Nearest);
+                (int)TextureMinFilter.Nearest);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter,
-                (int) TextureMagFilter.Nearest);
+                (int)TextureMagFilter.Nearest);
 
             GL.End();
 
@@ -152,7 +152,7 @@ namespace MissionPlanner.Controls
                 {
                     //return;
                 }
-               
+
             }
         }
 
@@ -160,30 +160,45 @@ namespace MissionPlanner.Controls
 
         private int utmzone = -999;
 
+        private Dictionary<object, double> coordcache = new Dictionary<object, double>();
+
         double[] convertCoords(PointLatLngAlt plla)
         {
             if (utmzone < -360)
                 utmzone = plla.GetUTMZone();
 
-            var utm = plla.ToUTM(utmzone);
+            var minlat = LocationCenter.Lat - 0.5;
+            var maxlat = LocationCenter.Lat + 0.5;
+            var minlng = LocationCenter.Lng - 0.5;
+            var maxlng = LocationCenter.Lng + 0.5;
 
-            Array.Resize(ref utm, 3);
+            var id = maxlat * 1e10 + minlng;
+            var diagdist = 0.0;
 
-            utm[2] = plla.Alt;
+            if (!coordcache.ContainsKey(id))
+            {
+                diagdist = new PointLatLngAlt(maxlat, minlng).GetDistance(new PointLatLngAlt(minlat, maxlng));
+                coordcache[id] = diagdist;
+            }
+            else
+            {
+                diagdist = coordcache[id];
+            }
 
-            return utm;
+            var lat = MathHelper.map(plla.Lat, minlat, maxlat, 0, diagdist);
+            var lng = MathHelper.map(plla.Lng, minlng, maxlng, 0, diagdist);
+
+            //var utm = plla.ToUTM(utmzone);
+
+            //Array.Resize(ref utm, 3);
+
+            //utm[2] = plla.Alt;
+
+            return new[] { lng, lat, plla.Alt };
         }
 
         protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
         {
-            DateTime start = DateTime.Now;
-            
-            if (this.DesignMode)
-                return;
-
-            if (area.LocationMiddle.Lat == 0 && area.LocationMiddle.Lng == 0)
-                return;
-
             try
             {
                 base.OnPaint(e);
@@ -192,6 +207,19 @@ namespace MissionPlanner.Controls
             {
                 return;
             }
+
+            Utilities.Extensions.ProtectReentry(doPaint);
+        }
+
+        public void doPaint()
+        {
+            DateTime start = DateTime.Now;
+
+            if (this.DesignMode)
+                return;
+
+            if (area.LocationMiddle.Lat == 0 && area.LocationMiddle.Lng == 0)
+                return;
 
             utmzone = center.GetUTMZone();
 
@@ -202,14 +230,14 @@ namespace MissionPlanner.Controls
             cameraX = campos[0];
             cameraY = campos[1];
             cameraZ = (campos[2] < srtm.getAltitude(center.Lat, center.Lng).alt)
-                ? (srtm.getAltitude(center.Lat, center.Lng).alt + 1)*heightscale
-                : center.Alt*heightscale; // (srtm.getAltitude(lookZ, lookX, 20) + 100) * heighscale;
+                ? (srtm.getAltitude(center.Lat, center.Lng).alt + 1) * heightscale
+                : center.Alt * heightscale; // (srtm.getAltitude(lookZ, lookX, 20) + 100) * heighscale;
 
             lookX = campos[0] + Math.Sin(MathHelper.Radians(rpy.Z)) * 100;
             lookY = campos[1] + Math.Cos(MathHelper.Radians(rpy.Z)) * 100;
             lookZ = cameraZ;
 
-            var size = 20000;
+            var size = 10000;
 
             // in front
             PointLatLngAlt front = center.newpos(rpy.Z, size);
@@ -230,30 +258,30 @@ namespace MissionPlanner.Controls
 
             zoom = 20;
 
-       
+
             float screenscale = 1;//this.Width/(float) this.Height*1f;
 
-            if(!Context.IsCurrent)
-                MakeCurrent();
+            //if(!Context.IsCurrent)
+            MakeCurrent();
 
             GL.MatrixMode(MatrixMode.Projection);
 
-            OpenTK.Matrix4 projection = OpenTK.Matrix4.CreatePerspectiveFieldOfView((float)(90*MathHelper.deg2rad), screenscale, 0.00000001f,
-                (float) 20000);
+            OpenTK.Matrix4 projection = OpenTK.Matrix4.CreatePerspectiveFieldOfView((float)(90 * MathHelper.deg2rad), screenscale, 0.00000001f,
+                (float)20000);
             GL.LoadMatrix(ref projection);
 
-            Console.WriteLine("cam: {0} {1} {2} lookat: {3} {4} {5}", (float) cameraX, (float) cameraY, (float) cameraZ,
-                (float) lookX,
-                (float) lookY, (float) lookZ);
+            Console.WriteLine("cam: {0} {1} {2} lookat: {3} {4} {5}", (float)cameraX, (float)cameraY, (float)cameraZ,
+                (float)lookX,
+                (float)lookY, (float)lookZ);
 
-            Matrix4 modelview = Matrix4.LookAt((float) cameraX, (float) cameraY, (float) cameraZ+100f*0, (float) lookX,
-                (float) lookY, (float) lookZ, 0, 0, 1);
+            Matrix4 modelview = Matrix4.LookAt((float)cameraX, (float)cameraY, (float)cameraZ + 100f * 0, (float)lookX,
+                (float)lookY, (float)lookZ, 0, 0, 1);
             GL.MatrixMode(MatrixMode.Modelview);
 
             // roll
-            modelview = Matrix4.Mult(modelview, Matrix4.CreateRotationZ((float)(rpy.X*MathHelper.deg2rad)));
+            modelview = Matrix4.Mult(modelview, Matrix4.CreateRotationZ((float)(rpy.X * MathHelper.deg2rad)));
             // pitch
-            modelview = Matrix4.Mult(modelview, Matrix4.CreateRotationX((float)(rpy.Y*-MathHelper.deg2rad)));
+            modelview = Matrix4.Mult(modelview, Matrix4.CreateRotationX((float)(rpy.Y * -MathHelper.deg2rad)));
 
             GL.LoadMatrix(ref modelview);
 
@@ -261,18 +289,18 @@ namespace MissionPlanner.Controls
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.AccumBufferBit);
 
-            GL.LightModel(LightModelParameter.LightModelAmbient, new float[] {1f, 1f, 1f, 1f});
+            GL.LightModel(LightModelParameter.LightModelAmbient, new float[] { 1f, 1f, 1f, 1f });
 
-              GL.Disable(EnableCap.Fog);
+            GL.Disable(EnableCap.Fog);
             GL.Enable(EnableCap.Fog);
             //GL.Enable(EnableCap.Lighting);
             //GL.Enable(EnableCap.Light0);
 
-            GL.Fog(FogParameter.FogColor, new float[] {100/255.0f, 149/255.0f, 237/255.0f, 1f});
+            GL.Fog(FogParameter.FogColor, new float[] { 100 / 255.0f, 149 / 255.0f, 237 / 255.0f, 1f });
             //GL.Fog(FogParameter.FogDensity,0.1f);
-            GL.Fog(FogParameter.FogMode, (int) FogMode.Linear);
-            GL.Fog(FogParameter.FogStart, (float) 4000);
-            GL.Fog(FogParameter.FogEnd, (float) size);
+            GL.Fog(FogParameter.FogMode, (int)FogMode.Linear);
+            GL.Fog(FogParameter.FogStart, (float)700);
+            GL.Fog(FogParameter.FogEnd, (float)size);
 
             GL.Disable(EnableCap.DepthTest);
             GL.DepthFunc(DepthFunction.Always);
@@ -348,6 +376,8 @@ namespace MissionPlanner.Controls
                 // step at 0 zoom
                 var distm = MathHelper.map(a, 0, zoom, size, 50);
 
+                //Console.WriteLine("tiles z {0} max {1} dist {2}", a, zoom, distm);
+
                 var offset = center.newpos(rpy.Z, distm);
 
                 area2.Inflate(Math.Abs(center.Lat - offset.Lat), Math.Abs(center.Lng - offset.Lng));
@@ -357,7 +387,7 @@ namespace MissionPlanner.Controls
                 if (a == zoom)
                     extratile = 1;
 
-                var tiles = new tileZoomArea() {zoom = a, points = prj.GetAreaTileList(area2, a, extratile), area = area2 };
+                var tiles = new tileZoomArea() { zoom = a, points = prj.GetAreaTileList(area2, a, extratile), area = area2 };
 
                 tileArea.Add(tiles);
             }
@@ -388,14 +418,14 @@ namespace MissionPlanner.Controls
                             {
                                 if (img.IsParent)
                                 {
-                                    
+
                                 }
 
                                 if (!textureid.ContainsKey(p))
                                 {
                                     try
                                     {
-                                        generateTexture(p, (Bitmap) img.Img);
+                                        generateTexture(p, (Bitmap)img.Img);
                                     }
                                     catch
                                     {
@@ -440,19 +470,19 @@ namespace MissionPlanner.Controls
                     GL.Clear(ClearBufferMask.DepthBufferBit);
 
                     GL.Enable(EnableCap.DepthTest);
-                    
+
                     // generate terrain
                     GL.Begin(PrimitiveType.Points);
 
                     GL.PointSize((float)(20));
-                  
+
                     //GL.Begin(PrimitiveType.Points);
                     GL.Color3(Color.Blue);
-                    
+
                     var latlng = prj.FromPixelToLatLng(xr, yr, tilearea.zoom);
                     var utm = convertCoords(latlng);
                     utm[2] = srtm.getAltitude(latlng.Lat, latlng.Lng).alt;
-         
+
                     GL.TexCoord2(0, 0);
                     GL.Vertex3(utm[0], utm[1], utm[2]);
 
@@ -479,7 +509,7 @@ namespace MissionPlanner.Controls
 
                     GL.TexCoord2(1, 1);
                     GL.Vertex3(utm[0], utm[1], utm[2]);
-                    
+
                     GL.End();
 
                     var dist = LocationCenter.GetDistance(latlng);
@@ -489,13 +519,12 @@ namespace MissionPlanner.Controls
                     if (dist < 500)
                         pxstep = 32;
 
-                    double[] oldutm = null;
                     GL.Begin(PrimitiveType.TriangleStrip);
                     for (long x = xr; x < x2; x += pxstep)
                     {
                         long xnext = x + pxstep;
                         //GL.Begin(PrimitiveType.LineStrip);
-                        for (long y = yr;y < y2; y += pxstep)
+                        for (long y = yr; y < y2; y += pxstep)
                         {
                             long ynext = y + pxstep;
 
@@ -531,7 +560,7 @@ namespace MissionPlanner.Controls
 
                             GL.TexCoord2(imgx, imgy);
                             GL.Vertex3(utm2[0], utm2[1], utm2[2]);
-                   
+
                             //
                             latlng2 = prj.FromPixelToLatLng(xnext, ynext, tilearea.zoom);
                             utm2 = convertCoords(latlng2);
@@ -557,7 +586,7 @@ namespace MissionPlanner.Controls
                 this.SwapBuffers();
 
 
-                //Context.MakeCurrent(null);
+                Context.MakeCurrent(null);
             }
             catch
             {

@@ -1,5 +1,6 @@
 ﻿using log4net;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -78,6 +79,31 @@ namespace MissionPlanner.Utilities
             if (((Form)sender).Tag is MissionPlanner.Controls.IActivate)
             {
                 ((MissionPlanner.Controls.IActivate)((Form)sender).Tag).Activate();
+            }
+        }
+
+        static ConcurrentDictionary<Action, long> reentryDictionary = new ConcurrentDictionary<Action, long>();
+
+        public static void ProtectReentry(Action action)
+        {
+            long m_InFunction = reentryDictionary.ContainsKey(action) ? reentryDictionary[action] : 0;
+
+            if (Interlocked.CompareExchange(ref m_InFunction, 1, 0) == 0)
+            {
+                // We're not in the function
+                try
+                {
+                    action();
+                }
+                finally
+                {
+                    long temp;
+                    reentryDictionary.TryRemove(action, out temp);
+                }
+            }
+            else
+            {
+                // We're already in the function
             }
         }
     }

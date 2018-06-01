@@ -382,13 +382,13 @@
     <value>10, 69</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 13</value>
+    <value>31, 13</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>Camera Roll</value>
+    <value>CH 1</value>
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
@@ -412,13 +412,13 @@
     <value>10, 98</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 13</value>
+    <value>31, 13</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
-    <value>Camera Pitch</value>
+    <value>CH 2</value>
   </data>
   <data name="&gt;&gt;label2.Name" xml:space="preserve">
     <value>label2</value>
@@ -442,13 +442,13 @@
     <value>8, 125</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 13</value>
+    <value>31, 13</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
-    <value>Camera Zoom</value>
+    <value>CH 3</value>
   </data>
   <data name="&gt;&gt;label3.Name" xml:space="preserve">
     <value>label3</value>
