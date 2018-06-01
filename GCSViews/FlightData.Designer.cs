@@ -8,8 +8,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FlightData));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanelQuick = new System.Windows.Forms.TableLayoutPanel();
             this.quickView6 = new MissionPlanner.Controls.QuickView();
@@ -126,6 +126,7 @@
             this.BUT_select_script = new MissionPlanner.Controls.MyButton();
             this.tabPagemessages = new System.Windows.Forms.TabPage();
             this.tabPageColibri = new System.Windows.Forms.TabPage();
+            this.BTN_CamJoystickSetup = new MissionPlanner.Controls.MyButton();
             this.Colibri_GB4 = new System.Windows.Forms.GroupBox();
             this.PTC_Alt = new System.Windows.Forms.TextBox();
             this.PTC_Lon = new System.Windows.Forms.TextBox();
@@ -134,8 +135,6 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.Colibri_GB3 = new System.Windows.Forms.GroupBox();
-            this.TB_ColibriYaw = new System.Windows.Forms.TextBox();
-            this.LBL_Colibri_Yaw = new System.Windows.Forms.Label();
             this.TB_ColibriRoll = new System.Windows.Forms.TextBox();
             this.TB_ColibriPitch = new System.Windows.Forms.TextBox();
             this.LBL_Colibri_Roll = new System.Windows.Forms.Label();
@@ -148,8 +147,6 @@
             this.RadioBtnObs = new System.Windows.Forms.RadioButton();
             this.RadioBtnStow = new System.Windows.Forms.RadioButton();
             this.Colibri_GB1 = new System.Windows.Forms.GroupBox();
-            this.CB_ColibriRecording = new System.Windows.Forms.CheckBox();
-            this.CB_ColibriIrMode = new System.Windows.Forms.CheckBox();
             this.BTN_ColibriRight = new MissionPlanner.Controls.MyButton();
             this.BTN_ColibriZoomOut = new MissionPlanner.Controls.MyButton();
             this.BTN_ColibriEnable = new MissionPlanner.Controls.MyButton();
@@ -215,7 +212,6 @@
             this.bindingSourceStatusTab = new System.Windows.Forms.BindingSource(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.BTN_CamJoystickSetup = new MissionPlanner.Controls.MyButton();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -1879,7 +1875,6 @@
             // 
             // tabPageColibri
             // 
-            this.tabPageColibri.Controls.Add(this.BTN_CamJoystickSetup);
             this.tabPageColibri.Controls.Add(this.Colibri_GB4);
             this.tabPageColibri.Controls.Add(this.Colibri_GB3);
             this.tabPageColibri.Controls.Add(this.Colibri_GB2);
@@ -1887,6 +1882,13 @@
             resources.ApplyResources(this.tabPageColibri, "tabPageColibri");
             this.tabPageColibri.Name = "tabPageColibri";
             this.tabPageColibri.UseVisualStyleBackColor = true;
+            // 
+            // BTN_CamJoystickSetup
+            // 
+            resources.ApplyResources(this.BTN_CamJoystickSetup, "BTN_CamJoystickSetup");
+            this.BTN_CamJoystickSetup.Name = "BTN_CamJoystickSetup";
+            this.BTN_CamJoystickSetup.UseVisualStyleBackColor = true;
+            this.BTN_CamJoystickSetup.Click += new System.EventHandler(this.BTN_CamJoystickSetup_Click);
             // 
             // Colibri_GB4
             // 
@@ -1932,8 +1934,6 @@
             // 
             // Colibri_GB3
             // 
-            this.Colibri_GB3.Controls.Add(this.TB_ColibriYaw);
-            this.Colibri_GB3.Controls.Add(this.LBL_Colibri_Yaw);
             this.Colibri_GB3.Controls.Add(this.TB_ColibriRoll);
             this.Colibri_GB3.Controls.Add(this.TB_ColibriPitch);
             this.Colibri_GB3.Controls.Add(this.LBL_Colibri_Roll);
@@ -1941,16 +1941,6 @@
             resources.ApplyResources(this.Colibri_GB3, "Colibri_GB3");
             this.Colibri_GB3.Name = "Colibri_GB3";
             this.Colibri_GB3.TabStop = false;
-            // 
-            // TB_ColibriYaw
-            // 
-            resources.ApplyResources(this.TB_ColibriYaw, "TB_ColibriYaw");
-            this.TB_ColibriYaw.Name = "TB_ColibriYaw";
-            // 
-            // LBL_Colibri_Yaw
-            // 
-            resources.ApplyResources(this.LBL_Colibri_Yaw, "LBL_Colibri_Yaw");
-            this.LBL_Colibri_Yaw.Name = "LBL_Colibri_Yaw";
             // 
             // TB_ColibriRoll
             // 
@@ -2026,8 +2016,7 @@
             // 
             // Colibri_GB1
             // 
-            this.Colibri_GB1.Controls.Add(this.CB_ColibriRecording);
-            this.Colibri_GB1.Controls.Add(this.CB_ColibriIrMode);
+            this.Colibri_GB1.Controls.Add(this.BTN_CamJoystickSetup);
             this.Colibri_GB1.Controls.Add(this.BTN_ColibriRight);
             this.Colibri_GB1.Controls.Add(this.BTN_ColibriZoomOut);
             this.Colibri_GB1.Controls.Add(this.BTN_ColibriEnable);
@@ -2038,20 +2027,6 @@
             resources.ApplyResources(this.Colibri_GB1, "Colibri_GB1");
             this.Colibri_GB1.Name = "Colibri_GB1";
             this.Colibri_GB1.TabStop = false;
-            // 
-            // CB_ColibriRecording
-            // 
-            resources.ApplyResources(this.CB_ColibriRecording, "CB_ColibriRecording");
-            this.CB_ColibriRecording.Name = "CB_ColibriRecording";
-            this.CB_ColibriRecording.UseVisualStyleBackColor = true;
-            this.CB_ColibriRecording.CheckedChanged += new System.EventHandler(this.CB_ColibriRecording_CheckedChanged);
-            // 
-            // CB_ColibriIrMode
-            // 
-            resources.ApplyResources(this.CB_ColibriIrMode, "CB_ColibriIrMode");
-            this.CB_ColibriIrMode.Name = "CB_ColibriIrMode";
-            this.CB_ColibriIrMode.UseVisualStyleBackColor = true;
-            this.CB_ColibriIrMode.CheckedChanged += new System.EventHandler(this.CB_ColibriIrMode_CheckedChanged);
             // 
             // BTN_ColibriRight
             // 
@@ -2346,7 +2321,7 @@
             this.windDir1.BackColor = System.Drawing.Color.Transparent;
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Direction", this.bindingSource1, "wind_dir", true, System.Windows.Forms.DataSourceUpdateMode.Never));
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Speed", this.bindingSource1, "wind_vel", true, System.Windows.Forms.DataSourceUpdateMode.Never));
-            this.windDir1.Direction = 360D;
+            this.windDir1.Direction = 180D;
             resources.ApplyResources(this.windDir1, "windDir1");
             this.windDir1.Name = "windDir1";
             this.windDir1.Speed = 0D;
@@ -2554,8 +2529,8 @@
             // 
             // dataGridViewImageColumn1
             // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridViewImageColumn1.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewImageColumn1.DefaultCellStyle = dataGridViewCellStyle5;
             resources.ApplyResources(this.dataGridViewImageColumn1, "dataGridViewImageColumn1");
             this.dataGridViewImageColumn1.Image = global::MissionPlanner.Properties.Resources.up;
             this.dataGridViewImageColumn1.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
@@ -2563,8 +2538,8 @@
             // 
             // dataGridViewImageColumn2
             // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridViewImageColumn2.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewImageColumn2.DefaultCellStyle = dataGridViewCellStyle6;
             resources.ApplyResources(this.dataGridViewImageColumn2, "dataGridViewImageColumn2");
             this.dataGridViewImageColumn2.Image = global::MissionPlanner.Properties.Resources.down;
             this.dataGridViewImageColumn2.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
@@ -2592,13 +2567,6 @@
             // 
             this.contextMenuStrip2.Name = "contextMenuStrip2";
             resources.ApplyResources(this.contextMenuStrip2, "contextMenuStrip2");
-            // 
-            // BTN_CamJoystickSetup
-            // 
-            resources.ApplyResources(this.BTN_CamJoystickSetup, "BTN_CamJoystickSetup");
-            this.BTN_CamJoystickSetup.Name = "BTN_CamJoystickSetup";
-            this.BTN_CamJoystickSetup.UseVisualStyleBackColor = true;
-            this.BTN_CamJoystickSetup.Click += new System.EventHandler(this.BTN_CamJoystickSetup_Click);
             // 
             // FlightData
             // 
@@ -2655,7 +2623,6 @@
             this.Colibri_GB2.ResumeLayout(false);
             this.Colibri_GB2.PerformLayout();
             this.Colibri_GB1.ResumeLayout(false);
-            this.Colibri_GB1.PerformLayout();
             this.tableMap.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -2874,14 +2841,10 @@
         private System.Windows.Forms.RadioButton RadioBtnPTC;
         private System.Windows.Forms.RadioButton RadioBtnHold;
         private System.Windows.Forms.ToolStripMenuItem stowToolStripMenuItem;
-        private System.Windows.Forms.CheckBox CB_ColibriIrMode;
-        private System.Windows.Forms.CheckBox CB_ColibriRecording;
         private System.Windows.Forms.TextBox TB_ColibriRoll;
         private System.Windows.Forms.TextBox TB_ColibriPitch;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
-        private System.Windows.Forms.TextBox TB_ColibriYaw;
-        private System.Windows.Forms.Label LBL_Colibri_Yaw;
         private Controls.MyButton BTN_CamJoystickSetup;
     }
 }

@@ -2743,15 +2743,16 @@ namespace MissionPlanner
                 CustomMessageBox.Show(ex.ToString());
             }
 
+
             log.Info("start joystick");
-            // setup joystick packet sender
-            /*joystickthread = new Thread(new ThreadStart(joysticksend))
+            joystickthread = new Thread(new ThreadStart(joysticksend))
             {
                 IsBackground = true,
                 Priority = ThreadPriority.AboveNormal,
                 Name = "Main joystick sender"
             };
-            joystickthread.Start();*/
+            joystickthread.Start();
+
 
             MainV2.log.Info((object)"start camjoystick");
             this.Camjoystickthread = new Thread(new ThreadStart(this.Camjoysticksend))
@@ -2761,6 +2762,7 @@ namespace MissionPlanner
                 Name = "Main Camera joystick sender"
             };
             this.Camjoystickthread.Start();
+
 
             log.Info("start serialreader");
             // setup main serial reader

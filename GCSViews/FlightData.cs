@@ -4946,42 +4946,22 @@ namespace MissionPlanner.GCSViews
 
         private void pointColibriHereToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!MainV2.comPort.BaseStream.IsOpen)
+            RadioBtnPTC.Checked = true;
+            if (this.MouseDownStart.Lat == 0.0 || this.MouseDownStart.Lng == 0.0)
             {
-                CustomMessageBox.Show("Please Connect First");
-                return;
+                int num = (int)CustomMessageBox.Show("Bad Lat/Long");
             }
-
-            double srtmalt = srtm.getAltitude(MouseDownStart.Lat, MouseDownStart.Lng).alt;
-
-            string alt = (srtmalt * CurrentState.multiplierdist).ToString("0");
-            if (DialogResult.Cancel == InputBox.Show("Enter Alt", "Enter Target Alt (absolute, default value is ground alt)", ref alt))
-                return;
-
-            float intalt = 0;
-            if (!float.TryParse(alt, out intalt))
+            else
             {
-                CustomMessageBox.Show("Bad Alt");
-                return;
-            }
+                double alt = srtm.getAltitude(this.MouseDownStart.Lat, this.MouseDownStart.Lng, 16.0).alt;
+                this.ColibriPTCLat = this.MouseDownStart.Lat;
+                this.ColibriPTCLng = this.MouseDownStart.Lng;
+                this.ColibriPTCASL = alt;
+                this.ColibriCamMode = (byte)1;
 
-            if (MouseDownStart.Lat == 0 || MouseDownStart.Lng == 0)
-            {
-                CustomMessageBox.Show("Bad Lat/Long");
-                return;
-            }
-
-            try
-            {
                 PTC_Lat.Text = MouseDownStart.Lat.ToString();
                 PTC_Lon.Text = MouseDownStart.Lng.ToString();
-                PTC_Alt.Text = intalt.ToString();
-
-                RadioBtnPTC.Checked = true;
-            }
-            catch
-            {
-                CustomMessageBox.Show(Strings.CommandFailed, Strings.ERROR);
+                PTC_Alt.Text = alt.ToString();
             }
         }
 
@@ -5095,6 +5075,9 @@ namespace MissionPlanner.GCSViews
                     this.ColibriPositionRoll = result2;
                     this.ColibriPositionPitch = result1;
                     this.ColibriCamMode = (byte)12;
+
+                    TB_ColibriPitch.Text = result1.ToString();
+                    TB_ColibriRoll.Text = result2.ToString();
                 }
             }
         }
@@ -5113,6 +5096,10 @@ namespace MissionPlanner.GCSViews
                 this.ColibriPTCLng = this.MouseDownStart.Lng;
                 this.ColibriPTCASL = alt;
                 this.ColibriCamMode = (byte)1;
+
+                PTC_Lat.Text = MouseDownStart.Lat.ToString();
+                PTC_Lon.Text = MouseDownStart.Lng.ToString();
+                PTC_Alt.Text = alt.ToString();
             }
         }
 
@@ -5137,29 +5124,6 @@ namespace MissionPlanner.GCSViews
         {
             RadioBtnStow.Checked = true;
             this.ColibriCamMode = (byte)4;
-        }
-
-        private void CB_ColibriIrMode_CheckedChanged(object sender, EventArgs e)
-        {
-            if(CB_ColibriIrMode.Checked)
-            {
-                MainV2.mav_proto.MavlinkThermalMode(true);
-            }
-            else
-            {
-                MainV2.mav_proto.MavlinkThermalMode(false);
-            }
-        }
-
-        private void CB_ColibriRecording_CheckedChanged(object sender, EventArgs e)
-        {
-            if(CB_ColibriRecording.Checked)
-            {
-                MainV2.mav_proto.MavlinkUpdateRecEn(true);
-            }else
-            {
-                MainV2.mav_proto.MavlinkUpdateRecEn(false);
-            }
         }
 
         private void BTN_CamJoystickSetup_Click(object sender, EventArgs e)
@@ -5220,85 +5184,12 @@ namespace MissionPlanner.GCSViews
             else if (RadioBtnHold.Checked)
                 MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_HoldCordinate);
 
-            float pitch_pos = 0, roll_pos = 0;
-            float.TryParse(TB_ColibriPitch.Text, out pitch_pos);
-            float.TryParse(TB_ColibriRoll.Text, out roll_pos);
-            MainV2.mav_proto.MavlinkUpdatePosMode(pitch_pos, roll_pos);
-
-            /* update the lat, lon & alt for the PTC mode */
-            float lat_ptc = 0, lon_ptc = 0;
-            int alt_ptc = 0;
-            float.TryParse(PTC_Lat.Text, out lat_ptc);
-            float.TryParse(PTC_Lon.Text, out lon_ptc);
-            int.TryParse(PTC_Alt.Text, out alt_ptc);
-            MainV2.mav_proto.MavlinkUpdatePtcMode(lat_ptc, lon_ptc, alt_ptc);
 
             /* get a mavlink packet for tranmission */
             MainV2.mav_proto.MavlinkGetV2ExtPacket(ref mavlink_tx_packet);
             if (MainV2.comPort.BaseStream.IsOpen) MainV2.comPort.BaseStream.Write(mavlink_tx_packet, 0, mavlink_tx_packet.Length);
-
-            /* increase the tick counter */
-            m_oTxTimerTicks++;
-
-            /* check if we also need to send the mavlink messages */
-            if (m_oTxTimerTicks >= m_oMavlinkIntervalInTicks)
-            {
-                m_oTxTimerTicks = 0;
-
-                /* prepare & send all the mavlink messages */
-                /* Send Attitude mavlink message */
-                float roll = 0, pitch = 0, yaw = 0;
-                float.TryParse(TB_ColibriRoll.Text, out roll);
-                float.TryParse(TB_ColibriPitch.Text, out pitch);
-                float.TryParse(TB_ColibriYaw.Text, out yaw);
-                MainV2.mav_proto.MavlinkGetAttitudePacket(ref mavlink_tx_packet, DEG2RAD(roll), DEG2RAD(pitch), DEG2RAD(yaw));
-                if (MainV2.comPort.BaseStream.IsOpen) MainV2.comPort.BaseStream.Write(mavlink_tx_packet, 0, mavlink_tx_packet.Length);
-
-                /* Send Global Position Int mavlink message */
-                /*float lat = 0, lon = 0, vx = 0, vy = 0, vz = 0;
-                int alt = 0, rel_alt = 0;
-                float.TryParse(textBoxGPSLat.Text, out lat);
-                float.TryParse(textBoxGPSLon.Text, out lon);
-                float.TryParse(textBoxGPSVx.Text, out vx);
-                float.TryParse(textBoxGPSVy.Text, out vy);
-                float.TryParse(textBoxGPSVz.Text, out vz);
-                int.TryParse(textBoxGPSAlt.Text, out alt);
-                int.TryParse(textBoxGPSRelAlt.Text, out rel_alt);
-                mav_proto.MavlinkGetGlobalPosIntPacket(ref mavlink_tx_packet, lat, lon, alt, rel_alt, vx, vy, vz);
-                m_oSerialPort.Write(mavlink_tx_packet, 0, mavlink_tx_packet.Length);*/
-
-                /* Send GPS Raw Int mavlink message */
-                /*int sat_count = 0;
-                int.TryParse(textBoxGPSRawSatCnt.Text, out sat_count);
-                mav_proto.MavlinkGetGPSRawIntPacket(ref mavlink_tx_packet, sat_count);
-                m_oSerialPort.Write(mavlink_tx_packet, 0, mavlink_tx_packet.Length);*/
-
-                /* Send System Status mavlink message */
-                /*float batt_voltage = 0;
-                float.TryParse(textBoxSysStatBatVol.Text, out batt_voltage);
-                mav_proto.MavlinkGetSysStatusPacket(ref mavlink_tx_packet, batt_voltage);
-                m_oSerialPort.Write(mavlink_tx_packet, 0, mavlink_tx_packet.Length);*/
-
-                /* Send Heart Beat mavlink message */
-                /*mav_proto.MavlinkGetHeartbeatPacket(ref mavlink_tx_packet, checkBoxDroneArmed.Checked);
-                m_oSerialPort.Write(mavlink_tx_packet, 0, mavlink_tx_packet.Length);*/
-
-                /* Send the System Time mavlink message */
-                /*int epoch_timestamp = 1483228800;
-                int.TryParse(textBoxSysTimeEpoch.Text, out epoch_timestamp);
-                mav_proto.MavlinkGetSysTimePacket(ref mavlink_tx_packet, epoch_timestamp);
-                m_oSerialPort.Write(mavlink_tx_packet, 0, mavlink_tx_packet.Length);*/
-            }
         }
-
         #endregion
-
-
-
-
-
-
-
 
     }
 }
