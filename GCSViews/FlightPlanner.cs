@@ -2264,6 +2264,7 @@ namespace MissionPlanner.GCSViews
                     CustomMessageBox.Show("Absolute Alt is selected are you sure?", "Alt Mode", MessageBoxButtons.YesNo))
                 {
                     CMB_altmode.SelectedValue = (int)altmode.Relative;
+                    return; // don't upload mission
                 }
             }
 
