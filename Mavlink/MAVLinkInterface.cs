@@ -1134,8 +1134,11 @@ Please check the following
             }
         }
 
+        // by default get just some necessary parameters
         public void getParamList(bool force_params_reading = false)
         {
+            if(!force_params_reading) { return; }
+
             log.InfoFormat("getParamList {0} {1}", sysidcurrent, compidcurrent);
             if (sysidcurrent > 1) return;
 
@@ -1145,11 +1148,7 @@ Please check the following
                 Text = Strings.GettingParams + " " + sysidcurrent
             };
 
-            if (force_params_reading)
-                frmProgressReporter.DoWork += FrmProgressReporterGetParamsNoCheck;
-            else
-                frmProgressReporter.DoWork += FrmProgressReporterGetParams;
-
+            frmProgressReporter.DoWork += FrmProgressReporterGetParams;
             frmProgressReporter.UpdateProgressAndStatus(-1, Strings.GettingParamsD);
             ThemeManager.ApplyThemeTo(frmProgressReporter);
 
@@ -1163,101 +1162,11 @@ Please check the following
             }
         }
 
-        void FrmProgressReporterGetParamsNoCheck(object sender, ProgressWorkerEventArgs e, object passdata = null)
-        {
-            getParamList(MAV.sysid, MAV.compid); // obtain parameters from PX4
-        }
-
-
         void FrmProgressReporterGetParams(object sender, ProgressWorkerEventArgs e, object passdata = null)
         {
-            bool gotHash = false;
-            float param_hash = 0;
-
-            try
-            {
-                /* CASE 1: PIXHAWK SUPPORTS _HASH_CHECK PARAMETER*/
-
-                // try to get magic parameter hash value
-                param_hash = GetParam("_HASH_CHECK");
-                gotHash = true;
-            }
-            catch
-            {
-                /* CASE 2: PIXHAWK do not sends _HASH_CHECK PARAMETER */
-                getParamList(MAV.sysid, MAV.compid); // obtain parameters from PX4
-                return;
-            }
-
-            /* NORMAL CASE: PX4 returns hash */
-            if(gotHash)
-            {
-                string PX4_hash = ((int)param_hash).ToString();
-                
-                // check if local hash not as on pixhawk side
-                if (Settings.Instance["param_hash"] == PX4_hash && File.Exists("autosave.p"))
-                {
-                    // load from autosave file
-                    try
-                    {
-                        // try to restore params
-                        restoreParamsFromFile("autosave.p");
-                    }
-                    catch
-                    {
-                        // if restore crash, reload params from controller
-                        getParamList(MAV.sysid, MAV.compid);
-                        saveParamsToFile("autosave.p");
-                    }
-                }
-                else
-                {
-                    // parameters are changed or no autosave file
-                    getParamList(MAV.sysid, MAV.compid); // obtain parameters from PX4
-
-                    // save params to file!
-                    saveParamsToFile("autosave.p");
-                }
-
-                Settings.Instance["param_hash"] = PX4_hash; // save the remote hash in config
-            }           
+            getParamList(MAV.sysid, MAV.compid);
         }
 
-
-        private void restoreParamsFromFile(string filename)
-        {
-            var param2 = ParamFile.loadParamFile(filename);
-
-            int restored = 0;
-            MainV2.comPort.MAV.param.Clear();
-
-            foreach (string name in param2.Keys)
-            {               
-                var value = param2[name].ToString();
-                MainV2.comPort.MAV.param.Add(new MAVLinkParam(name, double.Parse(value), MAV_PARAM_TYPE.REAL32));
-                restored++;
-            }
-            MainV2.comPort.MAV.param.TotalReported = restored;
-        }
-
-        private void saveParamsToFile(string filename)
-        {
-            var data = new Hashtable();
-            var param_list = MAVlist[MAV.sysid, MAV.compid];
-
-            foreach (var p in param_list.param)
-            {
-                try
-                {
-                    data[p.Name] = p.Value;
-                }
-                catch (Exception)
-                {
-                    CustomMessageBox.Show(Strings.InvalidNumberEntered + " " + p.Value);
-                }
-            }
-            ParamFile.SaveParamFile(filename, data, false);
-        }
 
         /// <summary>
         /// Get param list from apm
