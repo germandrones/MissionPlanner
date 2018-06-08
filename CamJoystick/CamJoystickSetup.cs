@@ -1338,7 +1338,7 @@ namespace MissionPlanner.CamJoystick
             this.myButton1.Name = "myButton1";
             this.myButton1.Size = new Size(75, 23);
             this.myButton1.TabIndex = 120;
-            this.myButton1.Text = "Update";
+            this.myButton1.Text = "Enable";
             this.myButton1.UseVisualStyleBackColor = true;
             this.myButton1.Click += new EventHandler(this.BUT_enable_click);
             this.NUCProgressBar.DrawLabel = true;

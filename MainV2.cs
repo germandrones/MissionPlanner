@@ -26,7 +26,6 @@ using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-using MissionPlanner.ColibriControl;
 
 namespace MissionPlanner
 {
@@ -253,11 +252,6 @@ namespace MissionPlanner
         /// camera joystick static class
         /// </summary>
         public static CamJoystick.CamJoystick Camjoystick { get; set; }
-
-        /// <summary>
-        /// Colibri Gimbal Control static class
-        /// </summary>
-        public static ColibriMavlink mav_proto;
 
         /// <summary>
         /// track last joystick packet sent. used to control rate

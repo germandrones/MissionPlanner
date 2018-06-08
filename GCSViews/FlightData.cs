@@ -30,7 +30,6 @@ using ZedGraph;
 using LogAnalyzer = MissionPlanner.Utilities.LogAnalyzer;
 
 using MissionPlanner.Maps;
-using MissionPlanner.ColibriControl;
 using MissionPlanner.CamJoystick;
 
 // written by michael oborne
@@ -4972,65 +4971,116 @@ namespace MissionPlanner.GCSViews
         #region Colibri control Tab
 
         #region Arrow Buttons
+
+        private void sendColibriActions()
+        {
+            MAVLink.mavlink_v2_extension_t mavlinkV2ExtensionT = new MAVLink.mavlink_v2_extension_t();
+            mavlinkV2ExtensionT.v2_type = (byte)0;
+            mavlinkV2ExtensionT.ptc_cam_lat = 0;
+            mavlinkV2ExtensionT.ptc_cam_lng = 0;
+            mavlinkV2ExtensionT.ptc_cam_alt = 0;
+            mavlinkV2ExtensionT.los_gnd_lat = 0;
+            mavlinkV2ExtensionT.los_gnd_lng = 0;
+            mavlinkV2ExtensionT.los_gnd_alt = 0;
+            mavlinkV2ExtensionT.pos_pitch_los_x = 0.0f;
+            mavlinkV2ExtensionT.pos_roll_los_y = 0.0f;
+            mavlinkV2ExtensionT.los_z = 0.0f;
+
+            MainV2.Colibri.EditingControlYaw = (ushort)512;
+            MainV2.Colibri.EditingControlRoll = MainV2.comPort.MAV.cs.colibri_ch1;
+            MainV2.Colibri.EditingControlPitch = MainV2.comPort.MAV.cs.colibri_ch2;
+            MainV2.Colibri.EditingControlZoomIn = MainV2.comPort.MAV.cs.colibri_ch3 > (ushort)1300 ? (byte)1 : (byte)0;
+            MainV2.Colibri.EditingControlZoomOut = MainV2.comPort.MAV.cs.colibri_ch4 > (ushort)1300 ? (byte)1 : (byte)0;
+
+            byte[] a_pBuffer = new byte[20];
+            MainV2.Colibri.GetransmitPacket(a_pBuffer);
+            mavlinkV2ExtensionT.payload = a_pBuffer;            
+            MainV2.comPort.sendPacket((object)mavlinkV2ExtensionT, (int)MainV2.comPort.MAV.sysid, (int)MainV2.comPort.MAV.compid);
+        }
+
+        private void resetButtonsState()
+        {
+            MainV2.comPort.MAV.cs.colibri_ch1 = 512;
+            MainV2.comPort.MAV.cs.colibri_ch2 = 459;
+            MainV2.comPort.MAV.cs.colibri_ch3 = 1000;
+            MainV2.comPort.MAV.cs.colibri_ch4 = 1000;
+        }
+
+        //UP
         private void BTN_ColibriUp_MouseDown(object sender, MouseEventArgs e)
         {
-            if(ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkMoveCamUp();
+            MainV2.comPort.MAV.cs.colibri_ch2 = 0;
+            sendColibriActions();
         }
-
         private void BTN_ColibriUp_MouseUp(object sender, MouseEventArgs e)
         {
-            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkCamStop();
+            resetButtonsState();
+            sendColibriActions();
         }
 
-        private void BTN_ColibriDown_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkCamStop();
-        }
-
-        private void BTN_ColibriLeft_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkCamStop();
-        }
-
-        private void BTN_ColibriRight_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkCamStop();
-        }
-
-        private void BTN_ColibriLeft_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkMoveCamLeft();
-        }
-
-        private void BTN_ColibriRight_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkMoveCamRight();
-        }
-
+        //DOWN
         private void BTN_ColibriDown_MouseDown(object sender, MouseEventArgs e)
         {
-            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkMoveCamDown();
+            MainV2.comPort.MAV.cs.colibri_ch2 = 1023;
+            sendColibriActions();
         }
-        
+        private void BTN_ColibriDown_MouseUp(object sender, MouseEventArgs e)
+        {
+            resetButtonsState();
+            sendColibriActions();
+        }
+
+        //LEFT
+        private void BTN_ColibriLeft_MouseDown(object sender, MouseEventArgs e)
+        {
+            MainV2.comPort.MAV.cs.colibri_ch1 = 1023;
+            sendColibriActions();
+        }
+        private void BTN_ColibriLeft_MouseUp(object sender, MouseEventArgs e)
+        {
+            resetButtonsState();
+            sendColibriActions();
+        }
+
+        // RIGHT
+        private void BTN_ColibriRight_MouseDown(object sender, MouseEventArgs e)
+        {
+            MainV2.comPort.MAV.cs.colibri_ch1 = 0;
+            sendColibriActions();
+        }
+        private void BTN_ColibriRight_MouseUp(object sender, MouseEventArgs e)
+        {
+            resetButtonsState();
+            sendColibriActions();
+        }
+
+        //ZoomIN Action button
         private void BTN_ColibriZoomIn_MouseDown(object sender, MouseEventArgs e)
         {
-            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkCamZoomIn();
+            MainV2.comPort.MAV.cs.colibri_ch3 = 2000;
+            sendColibriActions();
         }
 
         private void BTN_ColibriZoomIn_MouseUp(object sender, MouseEventArgs e)
         {
-            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkCamZoomStop();
+            resetButtonsState();
+            sendColibriActions();
+        }
+        
+        //ZoomOUT Action button
+        private void BTN_ColibriZoomOut_MouseDown(object sender, MouseEventArgs e)
+        {
+            MainV2.comPort.MAV.cs.colibri_ch4 = 2000;
+            sendColibriActions();
         }
 
         private void BTN_ColibriZoomOut_MouseUp(object sender, MouseEventArgs e)
         {
-            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkCamZoomStop();
+            resetButtonsState();
+            sendColibriActions();
         }
 
-        private void BTN_ColibriZoomOut_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (ColibriControlTimer.Enabled) MainV2.mav_proto.MavlinkCamZoomOut();
-        }
+        
         #endregion
 
         private void observationToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5078,9 +5128,6 @@ namespace MissionPlanner.GCSViews
                     this.ColibriPositionRoll = result2;
                     this.ColibriPositionPitch = result1;
                     this.ColibriCamMode = (byte)12;
-
-                    TB_ColibriPitch.Text = result1.ToString();
-                    TB_ColibriRoll.Text = result2.ToString();
                 }
             }
         }
@@ -5129,24 +5176,8 @@ namespace MissionPlanner.GCSViews
             this.ColibriCamMode = (byte)4;
         }
 
-        private void BTN_CamJoystickSetup_Click(object sender, EventArgs e)
-        {
-            Form form = (Form)new CamJoystickSetup();
-            MissionPlanner.Utilities.ThemeManager.ApplyThemeTo((Control)form);
-            form.Show();
-        }
-
         private void videoPlayer_BTN_Click(object sender, EventArgs e)
         {
-            /*if (this._videoPlayer == null)
-                this._videoPlayer = new VideoPlayer();
-            if (this._videoPlayer.IsDisposed)
-                this._videoPlayer = new VideoPlayer();
-            if (this.VideoPlayerForm == null || this.VideoPlayerForm.IsDisposed)
-                this.VideoPlayerForm = (Form)new VideoPlayerForm((MyUserControl)this._videoPlayer);
-            this.VideoPlayerForm.Show();
-            this.VideoPlayerForm.BringToFront();*/
-
             // in HUD renderer
             var render = new vlcrender();
             var url = render.playurl;
@@ -5172,54 +5203,12 @@ namespace MissionPlanner.GCSViews
                 return;
             }
 
-            if (MainV2.comPort.BaseStream.IsOpen && !ColibriControlTimer.Enabled)
-            {
-                MainV2.mav_proto = new ColibriMavlink();
-
-                //Form joy = new JoystickSetup();
-                //ThemeManager.ApplyThemeTo(joy);
-                //joy.Show();
-
-                ColibriControlTimer.Interval = 100; //100ms
-                ColibriControlTimer.Enabled = true;
-                m_oMavlinkIntervalInTicks = 250 / ColibriControlTimer.Interval;    /* send secondary mavlink packets every 250ms */
-
-                m_oTxTimerTicks = 0;
-                BTN_ColibriEnable.Text = "Disable Control";
-            }
-            else if(ColibriControlTimer.Enabled)
-            {
-                ColibriControlTimer.Enabled = false;
-                BTN_ColibriEnable.Text = "Enable Control";
-            }
-            
+            Form form = (Form)new CamJoystickSetup();
+            MissionPlanner.Utilities.ThemeManager.ApplyThemeTo((Control)form);
+            form.Show();
         }
 
-        private float DEG2RAD(float angle) { return (float)(Math.PI * angle / 180.0); }
-
-        private void ColibriControlTimer_Tick(object sender, EventArgs e)
-        {
-            byte[] mavlink_tx_packet = null;
-
-            /* update the camera mode */
-            if (RadioBtnStow.Checked)
-                MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_Stow);
-            else if (RadioBtnObs.Checked)
-                MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_RateDriftOff);
-            else if (RadioBtnGRR.Checked)
-                MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_GRR);
-            else if (RadioBtnPos.Checked)
-                MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_Position);
-            else if (RadioBtnPTC.Checked)
-                MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_PointToCordinate);
-            else if (RadioBtnHold.Checked)
-                MainV2.mav_proto.MavlinkUpdateCameraMode(ColibriMavlink.CameraMode.e_HoldCordinate);
-
-
-            /* get a mavlink packet for tranmission */
-            MainV2.mav_proto.MavlinkGetV2ExtPacket(ref mavlink_tx_packet);
-            if (MainV2.comPort.BaseStream.IsOpen) MainV2.comPort.BaseStream.Write(mavlink_tx_packet, 0, mavlink_tx_packet.Length);
-        }
+        
         #endregion
 
     }

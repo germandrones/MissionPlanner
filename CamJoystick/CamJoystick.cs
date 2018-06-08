@@ -347,25 +347,19 @@ namespace MissionPlanner.CamJoystick
                             this.hat2 = (int)short.MaxValue;
                         }
                     }
-                    /*if (this.elevons)
+
+                    if ((uint)this.getJoystickAxis(1) > 0U)
                     {
-                        ushort num1 = this.pickchannel(1, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[1].axis, false, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[1].expo);
-                        ushort num2 = this.pickchannel(2, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[2].axis, false, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[2].expo);
-                        if ((uint)this.getJoystickAxis(1) > 0U)
-                            MainV2.comPort.MAV.cs.rcoverridech1 = (short)(this.BOOL_TO_SIGN(MissionPlanner.CamJoystick.CamJoystick.JoyChannels[1].reverse) * ((int)num2 - 1500 - ((int)num1 - 1500)) / 2 + 1500);
-                        if ((uint)this.getJoystickAxis(2) > 0U)
-                            MainV2.comPort.MAV.cs.rcoverridech2 = (short)(this.BOOL_TO_SIGN(MissionPlanner.CamJoystick.CamJoystick.JoyChannels[2].reverse) * ((int)num2 - 1500 + ((int)num1 - 1500)) / 2 + 1500);
+                        MainV2.comPort.MAV.cs.colibri_ch1 = this.pickchannel(1, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[1].axis, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[1].reverse, 0);
+                        MainV2.comPort.MAV.cs.colibri_ch1_rev = this.pickchannel(1, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[1].axis, !MissionPlanner.CamJoystick.CamJoystick.JoyChannels[1].reverse, 0);
                     }
-                    else*/
+
+                    if ((uint)this.getJoystickAxis(2) > 0U)
                     {
-                        if ((uint)this.getJoystickAxis(1) > 0U)
-                        {
-                            MainV2.comPort.MAV.cs.colibri_ch1 = this.pickchannel(1, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[1].axis, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[1].reverse, 0);
-                            MainV2.comPort.MAV.cs.colibri_ch1_rev = this.pickchannel(1, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[1].axis, !MissionPlanner.CamJoystick.CamJoystick.JoyChannels[1].reverse, 0);
-                        }
-                        if ((uint)this.getJoystickAxis(2) > 0U)
-                            MainV2.comPort.MAV.cs.colibri_ch2 = this.pickchannel(2, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[2].axis, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[2].reverse, 0);
+                        MainV2.comPort.MAV.cs.colibri_ch2 = this.pickchannel(2, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[2].axis, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[2].reverse, 0);
                     }
+
+
                     if ((uint)this.getJoystickAxis(3) > 0U)
                         MainV2.comPort.MAV.cs.colibri_ch3 = this.pickchannel(3, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[3].axis, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[3].reverse, 0);
                     if ((uint)this.getJoystickAxis(4) > 0U)
@@ -394,6 +388,7 @@ namespace MissionPlanner.CamJoystick
                         MainV2.comPort.MAV.cs.colibri_ch15 = this.pickchannel(15, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[15].axis, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[15].reverse, 0);
                     if ((uint)this.getJoystickAxis(16) > 0U)
                         MainV2.comPort.MAV.cs.colibri_ch16 = this.pickchannel(16, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[16].axis, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[16].reverse, 0);
+
                     if (MainV2.comPort.BaseStream.IsOpen)
                         this.DoJoystickButtonFunction();
                 }
@@ -401,7 +396,7 @@ namespace MissionPlanner.CamJoystick
                 {
                     MissionPlanner.CamJoystick.CamJoystick.log.Error((object)ex);
                     int num;
-                    MainV2.instance.Invoke((System.Action)delegate { CustomMessageBox.Show("Lost Camera Joystick", "Lost Camera Joystick"); });                    
+                    MainV2.instance.Invoke((System.Action)delegate { CustomMessageBox.Show("Lost Camera Joystick", "Lost Camera Joystick"); });
                     break;
                 }
                 catch (Exception ex)
