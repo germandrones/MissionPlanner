@@ -2816,9 +2816,50 @@ namespace MissionPlanner.GCSViews
         #region SetWP
         private void BUT_setwp_Click(object sender, EventArgs e)
         {
-            ((Button)sender).Enabled = false;
+            /*((Button)sender).Enabled = false;
             Thread newThread = new Thread(new ThreadStart(BUT_setwp_ThreadMethod));
             newThread.Start();
+            ((Button)sender).Enabled = true;*/
+
+            try
+            {
+                if (MainV2.comPort.BaseStream.IsOpen)
+                {
+                    string lastAutoWP = MainV2.comPort.MAV.cs.lastautowp.ToString();
+                    if (lastAutoWP == "-1") lastAutoWP = "1";
+                    int lastAutoWP_int = int.Parse(lastAutoWP);
+
+                    try
+                    {
+                        ((Button)sender).Enabled = false;
+                        MainV2.comPort.setWPCurrent((ushort)CMB_setwp.SelectedIndex);
+                    }
+                    catch
+                    {
+                        CustomMessageBox.Show(Strings.CommandFailed, Strings.ERROR);
+                    }
+
+                    //switch back to auto mode
+                    int timeout = 0;
+                    while (MainV2.comPort.MAV.cs.mode.ToLower() != "AUTO".ToLower())
+                    {
+                        MainV2.comPort.setMode("AUTO");
+                        Thread.Sleep(1000);
+                        Application.DoEvents();
+                        timeout++;
+
+                        if (timeout > 30)
+                        {
+                            CustomMessageBox.Show(Strings.ERROR, Strings.ErrorNoResponce);
+                            return;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.Show(Strings.CommandFailed + "\n" + ex.ToString(), Strings.ERROR);
+            }
             ((Button)sender).Enabled = true;
         }
 
@@ -2835,7 +2876,7 @@ namespace MissionPlanner.GCSViews
         }
         #endregion
 
-        #region ResumeMission no threading yet
+        #region ResumeMission no threading
         private void BUT_resumemis_Click(object sender, EventArgs e)
         {
             try
