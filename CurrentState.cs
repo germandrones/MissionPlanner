@@ -21,6 +21,8 @@ namespace MissionPlanner
 
         public event EventHandler csCallBack;
 
+        public bool GCS_Readonly = false;
+
         [JsonIgnore]
         [IgnoreDataMember]
         public MAVState parent;
@@ -1557,20 +1559,16 @@ namespace MissionPlanner
                     {
                         try
                         {
-                            mavinterface.requestDatastream(MAVLink.MAV_DATA_STREAM.EXTENDED_STATUS, MAV.cs.ratestatus,
-                                MAV.sysid, MAV.compid); // mode
-                            mavinterface.requestDatastream(MAVLink.MAV_DATA_STREAM.POSITION, MAV.cs.rateposition,
-                                MAV.sysid, MAV.compid); // request gps
-                            mavinterface.requestDatastream(MAVLink.MAV_DATA_STREAM.EXTRA1, MAV.cs.rateattitude,
-                                MAV.sysid, MAV.compid); // request attitude
-                            mavinterface.requestDatastream(MAVLink.MAV_DATA_STREAM.EXTRA2, MAV.cs.rateattitude,
-                                MAV.sysid, MAV.compid); // request vfr
-                            mavinterface.requestDatastream(MAVLink.MAV_DATA_STREAM.EXTRA3, MAV.cs.ratesensors, MAV.sysid,
-                                MAV.compid);// request extra stuff - tridge
-                            mavinterface.requestDatastream(MAVLink.MAV_DATA_STREAM.RAW_SENSORS, MAV.cs.ratesensors,
-                                MAV.sysid, MAV.compid); // request raw sensor
-                            mavinterface.requestDatastream(MAVLink.MAV_DATA_STREAM.RC_CHANNELS, MAV.cs.raterc, MAV.sysid,
-                                MAV.compid);// request rc info
+                            if (!GCS_Readonly)
+                            {
+                                mavinterface.requestDatastream(MAVLink.MAV_DATA_STREAM.EXTENDED_STATUS, MAV.cs.ratestatus, MAV.sysid, MAV.compid); // mode
+                                mavinterface.requestDatastream(MAVLink.MAV_DATA_STREAM.POSITION, MAV.cs.rateposition, MAV.sysid, MAV.compid); // request gps
+                                mavinterface.requestDatastream(MAVLink.MAV_DATA_STREAM.EXTRA1, MAV.cs.rateattitude, MAV.sysid, MAV.compid); // request attitude
+                                mavinterface.requestDatastream(MAVLink.MAV_DATA_STREAM.EXTRA2, MAV.cs.rateattitude, MAV.sysid, MAV.compid); // request vfr
+                                mavinterface.requestDatastream(MAVLink.MAV_DATA_STREAM.EXTRA3, MAV.cs.ratesensors, MAV.sysid, MAV.compid);// request extra stuff - tridge
+                                mavinterface.requestDatastream(MAVLink.MAV_DATA_STREAM.RAW_SENSORS, MAV.cs.ratesensors, MAV.sysid, MAV.compid); // request raw sensor
+                                mavinterface.requestDatastream(MAVLink.MAV_DATA_STREAM.RC_CHANNELS, MAV.cs.raterc, MAV.sysid, MAV.compid);// request rc info
+                            }
                         }
                         catch
                         {
@@ -1580,7 +1578,6 @@ namespace MissionPlanner
                     }
 
                     MAVLink.MAVLinkMessage mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.RC_CHANNELS_SCALED);
-
                     if (mavLinkMessage != null) // hil mavlink 0.9
                     {
                         var hil = mavLinkMessage.ToStructure<MAVLink.mavlink_rc_channels_scaled_t>();
@@ -1888,9 +1885,7 @@ namespace MissionPlanner
                     if (mavLinkMessage != null)
                     {
                         var wind = mavLinkMessage.ToStructure<MAVLink.mavlink_wind_t>();
-
                         gotwind = true;
-
                         wind_dir = (wind.direction + 360)%360;
                         wind_vel = wind.speed*multiplierspeed;
                     }

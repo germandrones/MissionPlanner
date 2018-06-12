@@ -53,6 +53,7 @@ namespace MissionPlanner
             this.MenuArduPilot = new System.Windows.Forms.ToolStripButton();
             this.menu = new MissionPlanner.Controls.MyButton();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.CB_MavReadOnly = new System.Windows.Forms.CheckBox();
             this.MainMenu.SuspendLayout();
             this.CTX_mainmenu.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -239,10 +240,18 @@ namespace MissionPlanner
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.CB_MavReadOnly);
             this.panel1.Controls.Add(this.MainMenu);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             this.panel1.MouseLeave += new System.EventHandler(this.MainMenu_MouseLeave);
+            // 
+            // CB_MavReadOnly
+            // 
+            resources.ApplyResources(this.CB_MavReadOnly, "CB_MavReadOnly");
+            this.CB_MavReadOnly.Name = "CB_MavReadOnly";
+            this.CB_MavReadOnly.UseVisualStyleBackColor = true;
+            this.CB_MavReadOnly.CheckedChanged += new System.EventHandler(this.CB_MavReadOnly_CheckedChanged);
             // 
             // MainV2
             // 
@@ -286,5 +295,6 @@ namespace MissionPlanner
         private System.Windows.Forms.ToolStripMenuItem connectionOptionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton MenuArduPilot;
         private System.Windows.Forms.ToolStripMenuItem connectionListToolStripMenuItem;
+        private System.Windows.Forms.CheckBox CB_MavReadOnly;
     }
 }
