@@ -524,12 +524,9 @@ Please check the following
                 byte[] temp = ASCIIEncoding.ASCII.GetBytes("Mission Planner " + getAppVersion() + "\0");
                 Array.Resize(ref temp, 50);
                 // 
-                generatePacket((byte)MAVLINK_MSG_ID.STATUSTEXT,
-                    new mavlink_statustext_t() { severity = (byte)MAV_SEVERITY.INFO, text = temp });
+                generatePacket((byte)MAVLINK_MSG_ID.STATUSTEXT, new mavlink_statustext_t() { severity = (byte)MAV_SEVERITY.INFO, text = temp });
                 // mavlink2
-                generatePacket((byte)MAVLINK_MSG_ID.STATUSTEXT,
-                    new mavlink_statustext_t() { severity = (byte)MAV_SEVERITY.INFO, text = temp }, sysidcurrent,
-                    compidcurrent, true, true);
+                generatePacket((byte)MAVLINK_MSG_ID.STATUSTEXT, new mavlink_statustext_t() { severity = (byte)MAV_SEVERITY.INFO, text = temp }, sysidcurrent, compidcurrent, true, true);
 
                 // this ensures a mavlink2 change has been noticed
                 getHeartBeat();
@@ -538,17 +535,14 @@ Please check the following
 
                 if (getparams)
                 {
-                    frmProgressReporter.UpdateProgressAndStatus(0,
-                        "Getting Params.. (sysid " + MAV.sysid + " compid " + MAV.compid + ") ");
-
+                    frmProgressReporter.UpdateProgressAndStatus(0, "Getting Params.. (sysid " + MAV.sysid + " compid " + MAV.compid + ") ");
                     getParamList();
                 }
 
                 if (frmProgressReporter.doWorkArgs.CancelAcknowledged == true)
                 {
                     giveComport = false;
-                    if (BaseStream.IsOpen)
-                        BaseStream.Close();
+                    if (BaseStream.IsOpen) BaseStream.Close();
                     return;
                 }
             }
@@ -1897,9 +1891,6 @@ Please check the following
         public void Send_HWP_Ack()
         {
             mavlink_hwp_t ack = new mavlink_hwp_t();
-            // send twice
-            generatePacket(MAVLINK_MSG_ID.HWP, ack);
-            Thread.Sleep(20);
             generatePacket(MAVLINK_MSG_ID.HWP, ack);
         }
 

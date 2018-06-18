@@ -799,20 +799,7 @@ namespace MissionPlanner.GCSViews
             {
                 reader.Read();
                 reader.ReadStartElement("CMD");
-                if (MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduPlane ||
-                    MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.Ateryx)
-                {
-                    reader.ReadToFollowing("APM");
-                }
-                else if (MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduRover)
-                {
-                    reader.ReadToFollowing("APRover");
-                }
-                else
-                {
-                    reader.ReadToFollowing("AC2");
-                }
-
+                reader.ReadToFollowing("APM");
                 XmlReader inner = reader.ReadSubtree();
 
                 inner.Read();

@@ -121,6 +121,20 @@ namespace MissionPlanner.Utilities
             return temp;
         }
 
+        public static bool operator== (Locationwp a, Locationwp b)
+        {
+            if (a.lat == b.lat && a.lng == b.lng && a.alt == b.alt)
+                return true;
+            else return false;
+        }
+
+        public static bool operator!=(Locationwp a, Locationwp b)
+        {
+            if (a.lat != b.lat && a.lng != b.lng && a.alt != b.alt)
+                return true;
+            else return false;
+        }
+
         static object Convert(Locationwp cmd, bool isint = false)
         {
             if (isint)

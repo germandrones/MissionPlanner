@@ -1344,7 +1344,7 @@ namespace MissionPlanner
                 connecttime = DateTime.Now;
 
                 // do the connect
-                comPort.Open(false, skipconnectcheck);
+                comPort.Open(true, skipconnectcheck);
 
                 if (!comPort.BaseStream.IsOpen)
                 {

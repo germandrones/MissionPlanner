@@ -1123,7 +1123,7 @@ namespace MissionPlanner.GCSViews
 
                             update_map();
                             MainV2.comPort.MAV.cs.gotHWP = false;
-                        }
+                        }                        
 
                         // show disable joystick button
                         if (MainV2.joystick != null && MainV2.joystick.enabled)
