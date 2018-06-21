@@ -534,7 +534,7 @@ namespace MissionPlanner
             _connectionControl.CMB_serialport.Click += this.CMB_serialport_Click;
             _connectionControl.cmb_sysid.Click += cmb_sysid_Click;
 
-            if (!Settings.isDevMode) { _connectionControl.cmb_sysid.Visible = false; CB_MavReadOnly.Visible = false; }
+            if (!Settings.isDevMode) { _connectionControl.cmb_sysid.Visible = false;}
 
 
 
@@ -2499,7 +2499,7 @@ namespace MissionPlanner
                                     if (!port.MAV.cs.armed)
                                     {
                                         port.getParamPoll();
-                                        port.getParamPoll();
+                                        //port.getParamPoll();
                                     }
                                 }
                                 catch
@@ -3774,11 +3774,6 @@ namespace MissionPlanner
         private void toolStripConnectionControl_Click(object sender, EventArgs e)
         {
 
-        }
-
-        private void CB_MavReadOnly_CheckedChanged(object sender, EventArgs e)
-        {
-            comPort.MAV.cs.GCS_Readonly = CB_MavReadOnly.Checked ? true : false;
         }
     }
 }

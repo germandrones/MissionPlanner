@@ -121,8 +121,7 @@ namespace MissionPlanner.Swarm
 
                             var newspeed = (leadergs + (float) (dist/10));
 
-                            if (newspeed < 5)
-                                newspeed = 5;
+                            if (newspeed < 5) newspeed = 5;
 
                             port.setParam(mav.sysid, mav.compid, "TRIM_ARSPD_CM", newspeed*100.0f);
 

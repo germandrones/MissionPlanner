@@ -64,7 +64,7 @@ namespace SharpAdbClient.DeviceCommands
                     }
                     else
                     {
-                        Debug.WriteLine($"Received invalid input {line}");
+                        //Debug.WriteLine($"Received invalid input {line}");
                     }
                 }
             }

@@ -110,7 +110,7 @@ namespace LibVLC.NET
     /// </summary>
     ~Instance()
     {
-      Debug.WriteLine("Destructing Instance...", "Instance");
+      //Debug.WriteLine("Destructing Instance...", "Instance");
 
       Dispose(false);
     }

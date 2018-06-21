@@ -124,7 +124,7 @@ namespace GMap.NET.CacheProviders
                catch(Exception ex)
                {
                   this.initialized = false;
-                  Debug.WriteLine(ex.Message);
+                  //Debug.WriteLine(ex.Message);
                }
                #endregion
             }
@@ -189,7 +189,7 @@ namespace GMap.NET.CacheProviders
                }
                catch(Exception ex)
                {
-                  Debug.WriteLine(ex.ToString());
+                  //Debug.WriteLine(ex.ToString());
                   ret = false;
                   Dispose();
                }
@@ -231,7 +231,7 @@ namespace GMap.NET.CacheProviders
                }
                catch(Exception ex)
                {
-                  Debug.WriteLine(ex.ToString());
+                  //Debug.WriteLine(ex.ToString());
                   ret = null;
                   Dispose();
                }

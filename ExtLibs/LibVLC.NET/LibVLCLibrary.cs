@@ -104,7 +104,7 @@ namespace LibVLC.NET
     /// </exception>
     public LibVLCLibrary(string libVLCDirectory)
     {
-      Debug.WriteLine("Creating LibVLCLibrary...");
+      //Debug.WriteLine("Creating LibVLCLibrary...");
 
       if(libVLCDirectory == null)
         throw new ArgumentNullException("libVLCDirectory");
@@ -288,7 +288,7 @@ namespace LibVLC.NET
     /// </param>
     protected virtual void Dispose(bool disposing)
     {
-      Debug.WriteLine(String.Format("LibVLCLibrary.Dispose({0})", disposing));
+      //Debug.WriteLine(String.Format("LibVLCLibrary.Dispose({0})", disposing));
 
       if(m_Handle != IntPtr.Zero)
       {
@@ -304,7 +304,7 @@ namespace LibVLC.NET
     /// </summary>
     public void Dispose()
     {
-      Debug.WriteLine("LibVLCLibrary.Dispose()");
+      //Debug.WriteLine("LibVLCLibrary.Dispose()");
 
       VerifyAccess();
 

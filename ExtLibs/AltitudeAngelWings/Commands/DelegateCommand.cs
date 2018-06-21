@@ -52,7 +52,7 @@ namespace AltitudeAngelWings.Commands
                 {
                     if (r.IsFaulted)
                     {
-                        Debug.WriteLine(r.Exception.Message);
+                        //Debug.WriteLine(r.Exception.Message);
                     }
 
                     _canExecute = true;

@@ -61,7 +61,7 @@ namespace SharpKml.Base
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("Unknown type:" + type);
+                //System.Diagnostics.Debug.WriteLine("Unknown type:" + type);
                 value = null;
                 return false;
             }

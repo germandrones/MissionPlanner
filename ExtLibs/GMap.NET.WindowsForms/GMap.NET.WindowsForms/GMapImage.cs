@@ -79,7 +79,7 @@ namespace GMap.NET.WindowsForms
          catch(Exception ex)
          {
             ret = null;
-            Debug.WriteLine("FromStream: " + ex.ToString());
+            //Debug.WriteLine("FromStream: " + ex.ToString());
          }
 
          return ret;

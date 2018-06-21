@@ -372,7 +372,7 @@ namespace ManagedNativeWifi.Simple
 
 				var interfaceInfoList = new WLAN_INTERFACE_INFO_LIST(interfaceList);
 
-				Debug.WriteLine("Interface count: {0}", interfaceInfoList.dwNumberOfItems);
+				//Debug.WriteLine("Interface count: {0}", interfaceInfoList.dwNumberOfItems);
 
 				foreach (var interfaceInfo in interfaceInfoList.InterfaceInfo)
 				{
@@ -388,10 +388,7 @@ namespace ManagedNativeWifi.Simple
 
 					foreach (var network in networkList.Network)
 					{
-						Debug.WriteLine("Interface: {0}, SSID: {1}, Signal: {2}",
-							interfaceInfo.strInterfaceDescription,
-							network.dot11Ssid,
-							network.wlanSignalQuality);
+						//Debug.WriteLine("Interface: {0}, SSID: {1}, Signal: {2}", interfaceInfo.strInterfaceDescription, network.dot11Ssid, network.wlanSignalQuality);
 
 						yield return network.dot11Ssid.ToString();
 					}
@@ -438,7 +435,7 @@ namespace ManagedNativeWifi.Simple
 
 				var interfaceInfoList = new WLAN_INTERFACE_INFO_LIST(interfaceList);
 
-				Debug.WriteLine("Interface count: {0}", interfaceInfoList.dwNumberOfItems);
+				//Debug.WriteLine("Interface count: {0}", interfaceInfoList.dwNumberOfItems);
 
 				foreach (var interfaceInfo in interfaceInfoList.InterfaceInfo)
 				{
@@ -459,11 +456,7 @@ namespace ManagedNativeWifi.Simple
 
 					var association = connection.wlanAssociationAttributes;
 
-					Debug.WriteLine("Interface: {0}, SSID: {1}, BSSID: {2}, Signal: {3}",
-						interfaceInfo.strInterfaceDescription,
-						association.dot11Ssid,
-						association.dot11Bssid,
-						association.wlanSignalQuality);
+					//Debug.WriteLine("Interface: {0}, SSID: {1}, BSSID: {2}, Signal: {3}", interfaceInfo.strInterfaceDescription,association.dot11Ssid, association.dot11Bssid, association.wlanSignalQuality);
 
 					yield return association.dot11Ssid.ToString();
 				}

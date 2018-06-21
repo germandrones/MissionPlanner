@@ -125,7 +125,7 @@ namespace GMap.NET.MapProviders
                                 GMapProviders.GoogleMap.Version = ver;
                                 GMapProviders.GoogleChinaMap.Version = ver;
 #if DEBUG
-                                Debug.WriteLine("GMapProviders.GoogleMap.Version: " + ver + ", " + (ver == old ? "OK" : "old: " + old + ", consider updating source"));
+                                //Debug.WriteLine("GMapProviders.GoogleMap.Version: " + ver + ", " + (ver == old ? "OK" : "old: " + old + ", consider updating source"));
                                 if (Debugger.IsAttached && ver != old)
                                 {
                                     Thread.Sleep(1111);
@@ -148,7 +148,7 @@ namespace GMap.NET.MapProviders
                                 GMapProviders.GoogleHybridMap.Version = ver;
                                 GMapProviders.GoogleChinaHybridMap.Version = ver;
 #if DEBUG
-                                Debug.WriteLine("GMapProviders.GoogleHybridMap.Version: " + ver + ", " + (ver == old ? "OK" : "old: " + old + ", consider updating source"));
+                                //Debug.WriteLine("GMapProviders.GoogleHybridMap.Version: " + ver + ", " + (ver == old ? "OK" : "old: " + old + ", consider updating source"));
                                 if (Debugger.IsAttached && ver != old)
                                 {
                                     Thread.Sleep(1111);
@@ -172,7 +172,7 @@ namespace GMap.NET.MapProviders
                                 GMapProviders.GoogleKoreaSatelliteMap.Version = ver;
                                 GMapProviders.GoogleChinaSatelliteMap.Version = "s@" + ver;
 #if DEBUG
-                                Debug.WriteLine("GMapProviders.GoogleSatelliteMap.Version: " + ver + ", " + (ver == old ? "OK" : "old: " + old + ", consider updating source"));
+                                //Debug.WriteLine("GMapProviders.GoogleSatelliteMap.Version: " + ver + ", " + (ver == old ? "OK" : "old: " + old + ", consider updating source"));
                                 if (Debugger.IsAttached && ver != old)
                                 {
                                     Thread.Sleep(1111);
@@ -195,7 +195,7 @@ namespace GMap.NET.MapProviders
                                 GMapProviders.GoogleTerrainMap.Version = ver;
                                 GMapProviders.GoogleChinaTerrainMap.Version = ver;
 #if DEBUG
-                                Debug.WriteLine("GMapProviders.GoogleTerrainMap.Version: " + ver + ", " + (ver == old ? "OK" : "old: " + old + ", consider updating source"));
+                                //Debug.WriteLine("GMapProviders.GoogleTerrainMap.Version: " + ver + ", " + (ver == old ? "OK" : "old: " + old + ", consider updating source"));
                                 if (Debugger.IsAttached && ver != old)
                                 {
                                     Thread.Sleep(1111);
@@ -210,9 +210,8 @@ namespace GMap.NET.MapProviders
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("TryCorrectGoogleVersions failed: " + ex.ToString());
-                    if (ex.InnerException != null)
-                        Debug.WriteLine(ex.InnerException.ToString());
+                    //Debug.WriteLine("TryCorrectGoogleVersions failed: " + ex.ToString());
+                    //if (ex.InnerException != null) Debug.WriteLine(ex.InnerException.ToString());
                 }
             }
         }
@@ -465,7 +464,7 @@ namespace GMap.NET.MapProviders
             catch (Exception ex)
             {
                 points = null;
-                Debug.WriteLine("GetRoutePoints: " + ex);
+                //Debug.WriteLine("GetRoutePoints: " + ex);
             }
             return points;
         }
@@ -707,7 +706,7 @@ namespace GMap.NET.MapProviders
                         {
                             if (nn.InnerText != "OK")
                             {
-                                Debug.WriteLine("GetLatLngFromGeocoderUrl: " + nn.InnerText);
+                                //Debug.WriteLine("GetLatLngFromGeocoderUrl: " + nn.InnerText);
                             }
                             else
                             {
@@ -747,7 +746,7 @@ namespace GMap.NET.MapProviders
             catch (Exception ex)
             {
                 status = GeoCoderStatusCode.ExceptionInCode;
-                Debug.WriteLine("GetLatLngFromGeocoderUrl: " + ex);
+                //Debug.WriteLine("GetLatLngFromGeocoderUrl: " + ex);
             }
 
             return status;
@@ -1220,7 +1219,7 @@ namespace GMap.NET.MapProviders
                         {
                             if (nn.InnerText != "OK")
                             {
-                                Debug.WriteLine("GetPlacemarkFromReverseGeocoderUrl: " + nn.InnerText);
+                                //Debug.WriteLine("GetPlacemarkFromReverseGeocoderUrl: " + nn.InnerText);
                             }
                             else
                             {
@@ -1239,19 +1238,19 @@ namespace GMap.NET.MapProviders
                                 {
                                     foreach (XmlNode n in l)
                                     {
-                                        Debug.WriteLine("---------------------");
+                                        //Debug.WriteLine("---------------------");
 
                                         nn = n.SelectSingleNode("formatted_address");
                                         if (nn != null)
                                         {
                                             var ret = new Placemark(nn.InnerText);
 
-                                            Debug.WriteLine("formatted_address: [" + nn.InnerText + "]");
+                                            //Debug.WriteLine("formatted_address: [" + nn.InnerText + "]");
 
                                             nn = n.SelectSingleNode("type");
                                             if (nn != null)
                                             {
-                                                Debug.WriteLine("type: " + nn.InnerText);
+                                                //Debug.WriteLine("type: " + nn.InnerText);
                                             }
 
                                             // TODO: fill Placemark details
@@ -1263,12 +1262,12 @@ namespace GMap.NET.MapProviders
                                                 if (nn != null)
                                                 {
                                                     var type = nn.InnerText;
-                                                    Debug.Write(" - [" + type + "], ");
+                                                    //Debug.Write(" - [" + type + "], ");
 
                                                     nn = ac.SelectSingleNode("long_name");
                                                     if (nn != null)
                                                     {
-                                                        Debug.WriteLine("long_name: [" + nn.InnerText + "]");
+                                                        //Debug.WriteLine("long_name: [" + nn.InnerText + "]");
 
                                                         switch (type)
                                                         {
@@ -1345,7 +1344,7 @@ namespace GMap.NET.MapProviders
             {
                 status = GeoCoderStatusCode.ExceptionInCode;
                 placemarkList = null;
-                Debug.WriteLine("GetPlacemarkReverseGeocoderUrl: " + ex.ToString());
+                //Debug.WriteLine("GetPlacemarkReverseGeocoderUrl: " + ex.ToString());
             }
 
             return status;
@@ -1786,7 +1785,7 @@ namespace GMap.NET.MapProviders
                             if (nn != null)
                             {
                                 direction.Summary = nn.InnerText;
-                                Debug.WriteLine("summary: " + direction.Summary);
+                                //Debug.WriteLine("summary: " + direction.Summary);
                             }
 
                             nn = doc.SelectSingleNode("/DirectionsResponse/route/leg/duration");
@@ -1796,7 +1795,7 @@ namespace GMap.NET.MapProviders
                                 if (t != null)
                                 {
                                     direction.Duration = t.InnerText;
-                                    Debug.WriteLine("duration: " + direction.Duration);
+                                    //Debug.WriteLine("duration: " + direction.Duration);
                                 }
 
                                 t = nn.SelectSingleNode("value");
@@ -1805,7 +1804,7 @@ namespace GMap.NET.MapProviders
                                     if (!string.IsNullOrEmpty(t.InnerText))
                                     {
                                         direction.DurationValue = uint.Parse(t.InnerText);
-                                        Debug.WriteLine("value: " + direction.DurationValue);
+                                        //Debug.WriteLine("value: " + direction.DurationValue);
                                     }
                                 }
                             }
@@ -1817,7 +1816,7 @@ namespace GMap.NET.MapProviders
                                 if (t != null)
                                 {
                                     direction.Distance = t.InnerText;
-                                    Debug.WriteLine("distance: " + direction.Distance);
+                                    //Debug.WriteLine("distance: " + direction.Distance);
                                 }
 
                                 t = nn.SelectSingleNode("value");
@@ -1826,7 +1825,7 @@ namespace GMap.NET.MapProviders
                                     if (!string.IsNullOrEmpty(t.InnerText))
                                     {
                                         direction.DistanceValue = uint.Parse(t.InnerText);
-                                        Debug.WriteLine("value: " + direction.DistanceValue);
+                                        //Debug.WriteLine("value: " + direction.DistanceValue);
                                     }
                                 }
                             }
@@ -1867,21 +1866,21 @@ namespace GMap.NET.MapProviders
                             if (nn != null)
                             {
                                 direction.StartAddress = nn.InnerText;
-                                Debug.WriteLine("start_address: " + direction.StartAddress);
+                                //Debug.WriteLine("start_address: " + direction.StartAddress);
                             }
 
                             nn = doc.SelectSingleNode("/DirectionsResponse/route/leg/end_address");
                             if (nn != null)
                             {
                                 direction.EndAddress = nn.InnerText;
-                                Debug.WriteLine("end_address: " + direction.EndAddress);
+                                //Debug.WriteLine("end_address: " + direction.EndAddress);
                             }
 
                             nn = doc.SelectSingleNode("/DirectionsResponse/route/copyrights");
                             if (nn != null)
                             {
                                 direction.Copyrights = nn.InnerText;
-                                Debug.WriteLine("copyrights: " + direction.Copyrights);
+                                //Debug.WriteLine("copyrights: " + direction.Copyrights);
                             }
 
                             nn = doc.SelectSingleNode("/DirectionsResponse/route/overview_polyline/points");
@@ -1903,12 +1902,12 @@ namespace GMap.NET.MapProviders
                                 {
                                     GDirectionStep step = new GDirectionStep();
 
-                                    Debug.WriteLine("----------------------");
+                                    //Debug.WriteLine("----------------------");
                                     nn = s.SelectSingleNode("travel_mode");
                                     if (nn != null)
                                     {
                                         step.TravelMode = nn.InnerText;
-                                        Debug.WriteLine("travel_mode: " + step.TravelMode);
+                                        //Debug.WriteLine("travel_mode: " + step.TravelMode);
                                     }
 
                                     nn = s.SelectSingleNode("start_location");
@@ -1950,7 +1949,7 @@ namespace GMap.NET.MapProviders
                                         if (nn != null)
                                         {
                                             step.Duration = nn.InnerText;
-                                            Debug.WriteLine("duration: " + step.Duration);
+                                            //Debug.WriteLine("duration: " + step.Duration);
                                         }
                                     }
 
@@ -1961,7 +1960,7 @@ namespace GMap.NET.MapProviders
                                         if (nn != null)
                                         {
                                             step.Distance = nn.InnerText;
-                                            Debug.WriteLine("distance: " + step.Distance);
+                                            //Debug.WriteLine("distance: " + step.Distance);
                                         }
                                     }
 
@@ -1969,7 +1968,7 @@ namespace GMap.NET.MapProviders
                                     if (nn != null)
                                     {
                                         step.HtmlInstructions = nn.InnerText;
-                                        Debug.WriteLine("html_instructions: " + step.HtmlInstructions);
+                                        //Debug.WriteLine("html_instructions: " + step.HtmlInstructions);
                                     }
 
                                     nn = s.SelectSingleNode("polyline");
@@ -1994,7 +1993,7 @@ namespace GMap.NET.MapProviders
             {
                 direction = null;
                 ret = DirectionsStatusCode.ExceptionInCode;
-                Debug.WriteLine("GetDirectionsUrl: " + ex);
+                //Debug.WriteLine("GetDirectionsUrl: " + ex);
             }
             return ret;
         }

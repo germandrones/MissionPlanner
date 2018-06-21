@@ -447,7 +447,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;MainMenu.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="menu.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -478,36 +478,6 @@
   </data>
   <data name="&gt;&gt;menu.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="CB_MavReadOnly.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="CB_MavReadOnly.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="CB_MavReadOnly.Location" type="System.Drawing.Point, System.Drawing">
-    <value>745, 7</value>
-  </data>
-  <data name="CB_MavReadOnly.Size" type="System.Drawing.Size, System.Drawing">
-    <value>128, 17</value>
-  </data>
-  <data name="CB_MavReadOnly.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="CB_MavReadOnly.Text" xml:space="preserve">
-    <value>GCS Read-only mode</value>
-  </data>
-  <data name="&gt;&gt;CB_MavReadOnly.Name" xml:space="preserve">
-    <value>CB_MavReadOnly</value>
-  </data>
-  <data name="&gt;&gt;CB_MavReadOnly.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;CB_MavReadOnly.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;CB_MavReadOnly.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 57</value>

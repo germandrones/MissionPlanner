@@ -477,7 +477,7 @@ namespace MissionPlanner.GCSViews.ConfigurationView
 
         private void CMB_rateattitude_SelectedIndexChanged(object sender, EventArgs e)
         {
-            /*if (startup)
+            if (startup)
                 return;
             Settings.Instance[((ComboBox) sender).Name] = ((ComboBox) sender).Text;
             MainV2.comPort.MAV.cs.rateattitude = byte.Parse(((ComboBox) sender).Text);
@@ -485,49 +485,45 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             MainV2.comPort.requestDatastream(MAVLink.MAV_DATA_STREAM.EXTRA1, MainV2.comPort.MAV.cs.rateattitude);
             // request attitude
             MainV2.comPort.requestDatastream(MAVLink.MAV_DATA_STREAM.EXTRA2, MainV2.comPort.MAV.cs.rateattitude);
-            // request vfr
-            */
+            // request vfr            
         }
 
         private void CMB_rateposition_SelectedIndexChanged(object sender, EventArgs e)
         {
-            /*if (startup)
+            if (startup)
                 return;
             Settings.Instance[((ComboBox) sender).Name] = ((ComboBox) sender).Text;
             MainV2.comPort.MAV.cs.rateposition = byte.Parse(((ComboBox) sender).Text);
 
             MainV2.comPort.requestDatastream(MAVLink.MAV_DATA_STREAM.POSITION, MainV2.comPort.MAV.cs.rateposition);
             // request gps
-            */
         }
 
         private void CMB_ratestatus_SelectedIndexChanged(object sender, EventArgs e)
         {
-            /*if (startup)
+            if (startup)
                 return;
             Settings.Instance[((ComboBox) sender).Name] = ((ComboBox) sender).Text;
             MainV2.comPort.MAV.cs.ratestatus = byte.Parse(((ComboBox) sender).Text);
 
             MainV2.comPort.requestDatastream(MAVLink.MAV_DATA_STREAM.EXTENDED_STATUS, MainV2.comPort.MAV.cs.ratestatus);
             // mode
-            */
         }
 
         private void CMB_raterc_SelectedIndexChanged(object sender, EventArgs e)
         {
-            /*if (startup)
+            if (startup)
                 return;
             Settings.Instance[((ComboBox) sender).Name] = ((ComboBox) sender).Text;
             MainV2.comPort.MAV.cs.raterc = byte.Parse(((ComboBox) sender).Text);
 
             MainV2.comPort.requestDatastream(MAVLink.MAV_DATA_STREAM.RC_CHANNELS, MainV2.comPort.MAV.cs.raterc);
             // request rc info
-            */
         }
 
         private void CMB_ratesensors_SelectedIndexChanged(object sender, EventArgs e)
         {
-            /*if (startup)
+            if (startup)
                 return;
             Settings.Instance[((ComboBox) sender).Name] = ((ComboBox) sender).Text;
             MainV2.comPort.MAV.cs.ratesensors = byte.Parse(((ComboBox) sender).Text);
@@ -536,7 +532,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             // request extra stuff - tridge
             MainV2.comPort.requestDatastream(MAVLink.MAV_DATA_STREAM.RAW_SENSORS, MainV2.comPort.MAV.cs.ratesensors);
             // request raw sensor
-            */
         }
 
         private void CHK_mavdebug_CheckedChanged(object sender, EventArgs e)

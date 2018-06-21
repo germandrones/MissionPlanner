@@ -193,7 +193,7 @@ namespace GMap.NET.CacheProviders
             int waitUntilMB = 2;
 #endif
 
-            Debug.WriteLine("FreePageSpace in cache: " + freeMB + "MB | " + freePages + " pages");
+            //Debug.WriteLine("FreePageSpace in cache: " + freeMB + "MB | " + freePages + " pages");
 
             if(freeMB <= waitUntilMB)
             {
@@ -245,7 +245,7 @@ namespace GMap.NET.CacheProviders
 #if MONO
                         Console.WriteLine("CreateEmptyDB: " + exx.ToString());
 #endif
-                        Debug.WriteLine("CreateEmptyDB: " + exx.ToString());
+                        //Debug.WriteLine("CreateEmptyDB: " + exx.ToString());
 
                         tr.Rollback();
                         ret = false;
@@ -260,7 +260,7 @@ namespace GMap.NET.CacheProviders
 #if MONO
             Console.WriteLine("CreateEmptyDB: " + ex.ToString());
 #endif
-            Debug.WriteLine("CreateEmptyDB: " + ex.ToString());
+            //Debug.WriteLine("CreateEmptyDB: " + ex.ToString());
             ret = false;
          }
          return ret;
@@ -272,7 +272,7 @@ namespace GMap.NET.CacheProviders
 
          try
          {
-            Debug.WriteLine("PreAllocateDB: " + file + ", +" + addSizeInMBytes + "MB");
+            //Debug.WriteLine("PreAllocateDB: " + file + ", +" + addSizeInMBytes + "MB");
 
             using(SQLiteConnection cn = new SQLiteConnection())
             {
@@ -300,7 +300,7 @@ namespace GMap.NET.CacheProviders
 #if MONO
                         Console.WriteLine("PreAllocateDB: " + exx.ToString());
 #endif
-                        Debug.WriteLine("PreAllocateDB: " + exx.ToString());
+                        //Debug.WriteLine("PreAllocateDB: " + exx.ToString());
 
                         tr.Rollback();
                         ret = false;
@@ -315,7 +315,7 @@ namespace GMap.NET.CacheProviders
 #if MONO
             Console.WriteLine("PreAllocateDB: " + ex.ToString());
 #endif
-            Debug.WriteLine("PreAllocateDB: " + ex.ToString());
+            //Debug.WriteLine("PreAllocateDB: " + ex.ToString());
             ret = false;
          }
          return ret;
@@ -388,7 +388,7 @@ namespace GMap.NET.CacheProviders
 #if MONO
                            Console.WriteLine("AlterDBAddTimeColumn: " + exx.ToString());
 #endif
-                           Debug.WriteLine("AlterDBAddTimeColumn: " + exx.ToString());
+                           //Debug.WriteLine("AlterDBAddTimeColumn: " + exx.ToString());
 
                            tr.Rollback();
                            ret = false;
@@ -408,7 +408,7 @@ namespace GMap.NET.CacheProviders
 #if MONO
             Console.WriteLine("AlterDBAddTimeColumn: " + ex.ToString());
 #endif
-            Debug.WriteLine("AlterDBAddTimeColumn: " + ex.ToString());
+            //Debug.WriteLine("AlterDBAddTimeColumn: " + ex.ToString());
             ret = false;
          }
          return ret;
@@ -440,7 +440,7 @@ namespace GMap.NET.CacheProviders
          }
          catch(Exception ex)
          {
-            Debug.WriteLine("VacuumDb: " + ex.ToString());
+            //Debug.WriteLine("VacuumDb: " + ex.ToString());
             ret = false;
          }
          return ret;
@@ -525,7 +525,7 @@ namespace GMap.NET.CacheProviders
                               }
                               catch(Exception exx)
                               {
-                                 Debug.WriteLine("ExportMapDataToDB: " + exx.ToString());
+                                 //Debug.WriteLine("ExportMapDataToDB: " + exx.ToString());
                                  tr.Rollback();
                                  ret = false;
                               }
@@ -543,7 +543,7 @@ namespace GMap.NET.CacheProviders
          }
          catch(Exception ex)
          {
-            Debug.WriteLine("ExportMapDataToDB: " + ex.ToString());
+            //Debug.WriteLine("ExportMapDataToDB: " + ex.ToString());
             ret = false;
          }
          return ret;
@@ -651,7 +651,7 @@ namespace GMap.NET.CacheProviders
 #if MONO
                            Console.WriteLine("PutImageToCache: " + ex.ToString());
 #endif
-                           Debug.WriteLine("PutImageToCache: " + ex.ToString());
+                           //Debug.WriteLine("PutImageToCache: " + ex.ToString());
 
                            tr.Rollback();
                            ret = false;
@@ -671,7 +671,7 @@ namespace GMap.NET.CacheProviders
 #if MONO
                Console.WriteLine("PutImageToCache: " + ex.ToString());
 #endif
-               Debug.WriteLine("PutImageToCache: " + ex.ToString());
+               //Debug.WriteLine("PutImageToCache: " + ex.ToString());
                ret = false;
             }
          }
@@ -739,7 +739,7 @@ namespace GMap.NET.CacheProviders
 #if MONO
             Console.WriteLine("GetImageFromCache: " + ex.ToString());
 #endif
-            Debug.WriteLine("GetImageFromCache: " + ex.ToString());
+            //Debug.WriteLine("GetImageFromCache: " + ex.ToString());
             ret = null;
          }
 
@@ -774,7 +774,7 @@ namespace GMap.NET.CacheProviders
 #if MONO
             Console.WriteLine("DeleteOlderThan: " + ex);
 #endif
-            Debug.WriteLine("DeleteOlderThan: " + ex);
+            //Debug.WriteLine("DeleteOlderThan: " + ex);
          }
 
          return affectedRows;

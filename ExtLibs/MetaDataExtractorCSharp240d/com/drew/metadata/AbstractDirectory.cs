@@ -645,7 +645,7 @@ namespace com.drew.metadata
                 }
                 catch (FormatException)
                 {
-                    Debug.Write("Date '" + aDate + "' does not match patern '" + DATE_FORMATS[i] + "', will try an other one");
+                    //Debug.Write("Date '" + aDate + "' does not match patern '" + DATE_FORMATS[i] + "', will try an other one");
                 }
             }
             // If we get here it means that no format worked.

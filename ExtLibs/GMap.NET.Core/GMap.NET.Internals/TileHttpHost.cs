@@ -66,7 +66,7 @@ namespace GMap.NET.Internals
 
             Thread t = new Thread(() =>
             {
-                Debug.WriteLine("TileHttpHost: " + server.LocalEndpoint);
+                //Debug.WriteLine("TileHttpHost: " + server.LocalEndpoint);
 
                 while (listen)
                 {
@@ -83,11 +83,11 @@ namespace GMap.NET.Internals
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine("TileHttpHost: " + ex);
+                        //Debug.WriteLine("TileHttpHost: " + ex);
                     }
                 }
 
-                Debug.WriteLine("TileHttpHost: stoped");
+                //Debug.WriteLine("TileHttpHost: stoped");
             });
 
             t.Name = "TileHost";
@@ -149,7 +149,7 @@ namespace GMap.NET.Internals
           }
           catch (Exception ex)
           {
-              Debug.WriteLine("TileHttpHost, ProcessRequest: " + ex);
+              //Debug.WriteLine("TileHttpHost, ProcessRequest: " + ex);
           }
           //Debug.WriteLine("disconnected");
         }

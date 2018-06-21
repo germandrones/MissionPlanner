@@ -78,7 +78,7 @@ namespace GMap.NET.Internals
                }
                catch(Exception ex)
                {
-                   Debug.WriteLine("RemoveMemoryOverload: " + ex);
+                   //Debug.WriteLine("RemoveMemoryOverload: " + ex);
                }
             }
             else

@@ -728,7 +728,7 @@ namespace com.drew.metadata.exif
             switch (formatCode)
             {
                 case FMT_UNDEFINED:
-                    Debug.Write("Found a tag made of bytes");
+                    //Debug.Write("Found a tag made of bytes");
                     // this includes exif user comments
                     byte[] tagBytes = new byte[componentCount];
                     int byteCount = componentCount * BYTES_PER_FORMAT[formatCode];
@@ -739,7 +739,7 @@ namespace com.drew.metadata.exif
                     directory.SetObject(tagType, tagBytes);
                     break;
                 case FMT_STRING:
-                    Debug.Write("Found a tag made of string");
+                    //Debug.Write("Found a tag made of string");
                     string lcStr = null;
                     if (tagType == ExifDirectory.TAG_USER_COMMENT)
                     {
@@ -759,14 +759,14 @@ namespace com.drew.metadata.exif
                 case FMT_URATIONAL:
                     if (componentCount == 1)
                     {
-                        Debug.Write("Found a tag made of rational");
+                        //Debug.Write("Found a tag made of rational");
                         Rational rational = new Rational(Get32Bits(tagValueOffset), Get32Bits(tagValueOffset + 4));
                         directory.SetObject(tagType, rational);
 
                     }
                     else
                     {
-                        Debug.Write("Found a tag made of rationals");
+                        //Debug.Write("Found a tag made of rationals");
                         Rational[] rationals = new Rational[componentCount];
                         for (int i = 0; i < componentCount; i++)
                         {
@@ -781,14 +781,14 @@ namespace com.drew.metadata.exif
                 case FMT_BYTE:
                     if (componentCount == 1)
                     {
-                        Debug.Write("Found a tag made of byte");
+                        //Debug.Write("Found a tag made of byte");
                         // this may need to be a byte, but I think casting to int is fine
                         int b = base.data[tagValueOffset];
                         directory.SetObject(tagType, b);
                     }
                     else
                     {
-                        Debug.Write("Found a tag made of bytes but will use ints");
+                        //Debug.Write("Found a tag made of bytes but will use ints");
                         int[] bytes = new int[componentCount];
                         for (int i = 0; i < componentCount; i++)
                         {
@@ -801,13 +801,13 @@ namespace com.drew.metadata.exif
                 case FMT_DOUBLE:
                     if (componentCount == 1)
                     {
-                        Debug.Write("Found a tag made of double but will use int");
+                        //Debug.Write("Found a tag made of double but will use int");
                         int i = base.data[tagValueOffset];
                         directory.SetObject(tagType, i);
                     }
                     else
                     {
-                        Debug.Write("Found a tag made of doubles but will use ints");
+                        //Debug.Write("Found a tag made of doubles but will use ints");
                         int[] ints = new int[componentCount];
                         for (int i = 0; i < componentCount; i++)
                         {
@@ -820,13 +820,13 @@ namespace com.drew.metadata.exif
                 case FMT_SSHORT:
                     if (componentCount == 1)
                     {
-                        Debug.Write("Found a tag made of short but will use int");
+                        //Debug.Write("Found a tag made of short but will use int");
                         int i = Get16Bits(tagValueOffset);
                         directory.SetObject(tagType, i);
                     }
                     else
                     {
-                        Debug.Write("Found a tag made of shorts but will use ints");
+                        //Debug.Write("Found a tag made of shorts but will use ints");
                         int[] ints = new int[componentCount];
                         for (int i = 0; i < componentCount; i++)
                         {
@@ -839,13 +839,13 @@ namespace com.drew.metadata.exif
                 case FMT_ULONG:
                     if (componentCount == 1)
                     {
-                        Debug.Write("Found a tag made of long but will use int");
+                        //Debug.Write("Found a tag made of long but will use int");
                         int i = Get32Bits(tagValueOffset);
                         directory.SetObject(tagType, i);
                     }
                     else
                     {
-                        Debug.Write("Found a tag made of longs but will use ints");
+                        //Debug.Write("Found a tag made of longs but will use ints");
                         int[] ints = new int[componentCount];
                         for (int i = 0; i < componentCount; i++)
                         {
@@ -894,7 +894,7 @@ namespace com.drew.metadata.exif
             int formatCode)
         {
             // Olympus has this padded with trailing spaces.  Remove these first.
-            // ArrayIndexOutOfBoundsException bug fixed by Hendrik Wördehoff - 20 Sep 2002
+            // ArrayIndexOutOfBoundsException bug fixed by Hendrik Wï¿½rdehoff - 20 Sep 2002
             int byteCount = componentCount * BYTES_PER_FORMAT[formatCode];
             for (int i = byteCount - 1; i >= 0; i--)
             {

@@ -86,7 +86,7 @@ namespace MissionPlanner.Maps
 #if MONO
             Console.WriteLine("PutImageToCache: " + ex.ToString());
 #endif
-                    Debug.WriteLine("PutImageToCache: " + ex.ToString());
+                    //Debug.WriteLine("PutImageToCache: " + ex.ToString());
                     ret = false;
                 }
             }
@@ -124,7 +124,7 @@ namespace MissionPlanner.Maps
 #if MONO
             Console.WriteLine("GetImageFromCache: " + ex.ToString());
 #endif
-                Debug.WriteLine("GetImageFromCache: " + ex.ToString());
+                //Debug.WriteLine("GetImageFromCache: " + ex.ToString());
                 ret = null;
             }
 

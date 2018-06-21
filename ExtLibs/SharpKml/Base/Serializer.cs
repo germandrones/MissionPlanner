@@ -124,7 +124,7 @@ namespace SharpKml.Base
             }
             else // We can't handle it so ignore it
             {
-                System.Diagnostics.Debug.WriteLine("Unknown Element type - please register first." + element.GetType());
+                //System.Diagnostics.Debug.WriteLine("Unknown Element type - please register first." + element.GetType());
                 return; // Skip
             }
 

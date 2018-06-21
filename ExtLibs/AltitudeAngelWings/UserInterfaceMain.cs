@@ -62,7 +62,7 @@ namespace AltitudeAngelWings
 
         private void UIThreadDipatcherLoop()
         {
-            Debug.WriteLine("Starting AA Wings UI thread.");
+            //Debug.WriteLine("Starting AA Wings UI thread.");
 
             // Set the UI culture for WPF correctly
             FrameworkElement.LanguageProperty.OverrideMetadata(
@@ -81,13 +81,13 @@ namespace AltitudeAngelWings
 
             Dispatcher.Run();
 
-            Debug.WriteLine("AA Wings UI thread has exited.");
+            //Debug.WriteLine("AA Wings UI thread has exited.");
         }
 
         private void UnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            Debug.WriteLine("Unhandled exception in AA Wings UI thread");
-            Debug.WriteLine("{0}", e.Exception);
+            //Debug.WriteLine("Unhandled exception in AA Wings UI thread");
+            //Debug.WriteLine("{0}", e.Exception);
         }
 
         private void DoShowMainWindow()
@@ -101,22 +101,22 @@ namespace AltitudeAngelWings
             {
                 if (_uiThread != null)
                 {
-                    Debug.WriteLine("Shutting down AA Wings UI Thread.");
+                    //Debug.WriteLine("Shutting down AA Wings UI Thread.");
                     if (_uiReady.WaitOne(2000))
                     {
                         _dispatcher.BeginInvokeShutdown(DispatcherPriority.Send);
                         if (!_uiThread.Join(5000))
                         {
                             _uiThread.Abort();
-                            Debug.WriteLine("Aborted AA Wings UI Thread.");
+                            //Debug.WriteLine("Aborted AA Wings UI Thread.");
                         }
 
-                        Debug.WriteLine("Stopped AA Wings UI Thread.");
+                        //Debug.WriteLine("Stopped AA Wings UI Thread.");
                     }
                     else
                     {
                         _uiThread.Abort();
-                        Debug.WriteLine("Aborted AA Wings UI Thread.");
+                        //Debug.WriteLine("Aborted AA Wings UI Thread.");
                     }
 
 

@@ -437,7 +437,7 @@ namespace GMap.NET.MapProviders
                     {
                         MemoryStream data = Stuff.CopyStream(responseStream, false);
 
-                        Debug.WriteLine("Response[" + data.Length + " bytes]: " + url);
+                        //Debug.WriteLine("Response[" + data.Length + " bytes]: " + url);
 
                         if (data.Length > 0)
                         {
@@ -458,7 +458,7 @@ namespace GMap.NET.MapProviders
                 }
                 else
                 {
-                    Debug.WriteLine("CheckTileImageHttpResponse[false]: " + url);
+                    //Debug.WriteLine("CheckTileImageHttpResponse[false]: " + url);
                 }
 #if PocketPC
                 request.Abort();

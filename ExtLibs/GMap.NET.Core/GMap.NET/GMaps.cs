@@ -202,7 +202,7 @@ namespace GMap.NET
               }
               catch (Exception ex)
               {
-                  Debug.WriteLine("GMaps, try set TileImageProxy failed: " + ex.Message);
+                  //Debug.WriteLine("GMaps, try set TileImageProxy failed: " + ex.Message);
               }
           }
       }
@@ -320,7 +320,7 @@ namespace GMap.NET
          {
             if(!tileCacheQueue.Contains(task))
             {
-               Debug.WriteLine("EnqueueCacheTask: " + task);
+               //Debug.WriteLine("EnqueueCacheTask: " + task);
 
                tileCacheQueue.Enqueue(task);
 
@@ -359,7 +359,7 @@ namespace GMap.NET
       /// </summary>
       public void CancelTileCaching()
       {
-         Debug.WriteLine("CancelTileCaching...");
+         //Debug.WriteLine("CancelTileCaching...");
 
          abortCacheLoop = true;
          lock(tileCacheQueue)
@@ -411,7 +411,7 @@ namespace GMap.NET
       /// <param name="e"></param>
       void CacheEngineLoop()
       {
-         Debug.WriteLine("CacheEngine: start");
+         //Debug.WriteLine("CacheEngine: start");
          int left = 0;
 
          if(OnTileCacheStart != null)
@@ -457,7 +457,7 @@ namespace GMap.NET
                   // check if stream wasn't disposed somehow
                   if(task.Value.Img != null)
                   {
-                     Debug.WriteLine("CacheEngine[" + left + "]: storing tile " + task.Value + ", " + task.Value.Img.Length / 1024 + "kB...");
+                     //Debug.WriteLine("CacheEngine[" + left + "]: storing tile " + task.Value + ", " + task.Value.Img.Length / 1024 + "kB...");
 
                      if((task.Value.CacheType & CacheUsage.First) == CacheUsage.First && PrimaryCache != null)
                      {
@@ -496,7 +496,7 @@ namespace GMap.NET
                   }
                   else
                   {
-                     Debug.WriteLine("CacheEngineLoop: skip, tile disposed to early -> " + task.Value);
+                     //Debug.WriteLine("CacheEngineLoop: skip, tile disposed to early -> " + task.Value);
                   }
                   task = null;
                   #endregion
@@ -527,10 +527,10 @@ namespace GMap.NET
 #endif
             catch(Exception ex)
             {
-               Debug.WriteLine("CacheEngineLoop: " + ex.ToString());
+               //Debug.WriteLine("CacheEngineLoop: " + ex.ToString());
             }
          }
-         Debug.WriteLine("CacheEngine: stop");
+         //Debug.WriteLine("CacheEngine: stop");
 
          if(!startEvent)
          {
@@ -688,7 +688,7 @@ namespace GMap.NET
          }
          catch(Exception ex)
          {
-            Debug.WriteLine("ExportGPX: " + ex.ToString());
+            //Debug.WriteLine("ExportGPX: " + ex.ToString());
             return false;
          }
          return true;
@@ -724,7 +724,7 @@ namespace GMap.NET
                      if(ret == null)
                      {
 #if DEBUG
-                        Debug.WriteLine("Image disposed in MemoryCache o.O, should never happen ;} " + new RawTile(provider.DbId, pos, zoom));
+                        //Debug.WriteLine("Image disposed in MemoryCache o.O, should never happen ;} " + new RawTile(provider.DbId, pos, zoom));
                         if(Debugger.IsAttached)
                         {
                            Debugger.Break();
@@ -809,7 +809,7 @@ namespace GMap.NET
          {
             result = ex;
             ret = null;
-            Debug.WriteLine("GetImageFrom: " + ex.ToString());
+            //Debug.WriteLine("GetImageFrom: " + ex.ToString());
          }
 
          return ret;

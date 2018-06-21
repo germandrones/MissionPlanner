@@ -628,7 +628,7 @@ namespace GMap.NET.WindowsForms
       {
          if(Core.updatingBounds || MapProvider == EmptyProvider.Instance || MapProvider == null)
          {
-            Debug.WriteLine("Core.updatingBounds");
+            //Debug.WriteLine("Core.updatingBounds");
             return;
          }
 
@@ -1771,13 +1771,13 @@ namespace GMap.NET.WindowsForms
 #endif
          if(Width == 0 || Height == 0)
          {
-            Debug.WriteLine("minimized");
+            //Debug.WriteLine("minimized");
             return;
          }
 
          if(Width == Core.Width && Height == Core.Height)
          {
-            Debug.WriteLine("maximized");
+            //Debug.WriteLine("maximized");
             return;
          }
 
@@ -1826,7 +1826,9 @@ namespace GMap.NET.WindowsForms
                {
                    ForceUpdateOverlays();
                }
-               catch (System.OverflowException ex) { System.Diagnostics.Debug.WriteLine(ex); }
+               catch (System.OverflowException ex) { 
+                   //System.Diagnostics.Debug.WriteLine(ex); 
+                   }
             }
          }
       }
@@ -1875,7 +1877,7 @@ namespace GMap.NET.WindowsForms
             if(isDragging)
             {
                isDragging = false;
-               Debug.WriteLine("IsDragging = " + isDragging);
+               //Debug.WriteLine("IsDragging = " + isDragging);
 #if !PocketPC
                this.Cursor = cursorBefore;
                cursorBefore = null;
@@ -2079,7 +2081,7 @@ namespace GMap.NET.WindowsForms
             if(!isDragging)
             {
                isDragging = true;
-               Debug.WriteLine("IsDragging = " + isDragging);
+               //Debug.WriteLine("IsDragging = " + isDragging);
 
 #if !PocketPC
                cursorBefore = this.Cursor;
@@ -2660,7 +2662,7 @@ namespace GMap.NET.WindowsForms
          {
             if(zoomReal != value)
             {
-               Debug.WriteLine("ZoomPropertyChanged: " + zoomReal + " -> " + value);
+               //Debug.WriteLine("ZoomPropertyChanged: " + zoomReal + " -> " + value);
 
                if(value > MaxZoom)
                {
@@ -2888,7 +2890,7 @@ namespace GMap.NET.WindowsForms
          {
             if(Core.Provider == null || !Core.Provider.Equals(value))
             {
-               Debug.WriteLine("MapType: " + Core.Provider.Name + " -> " + value.Name);
+               //Debug.WriteLine("MapType: " + Core.Provider.Name + " -> " + value.Name);
 
                RectLatLng viewarea = SelectedArea;
                if(viewarea != RectLatLng.Empty)

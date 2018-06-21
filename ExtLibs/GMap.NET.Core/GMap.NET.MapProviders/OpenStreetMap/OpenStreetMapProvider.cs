@@ -143,7 +143,7 @@ namespace GMap.NET.MapProviders
          }
          catch(Exception ex)
          {
-            Debug.WriteLine("GetRoutePoints: " + ex);
+            //Debug.WriteLine("GetRoutePoints: " + ex);
          }
 
          return points;
@@ -361,7 +361,7 @@ namespace GMap.NET.MapProviders
          catch(Exception ex)
          {
             status = GeoCoderStatusCode.ExceptionInCode;
-            Debug.WriteLine("GetLatLngFromGeocoderUrl: " + ex);
+            //Debug.WriteLine("GetLatLngFromGeocoderUrl: " + ex);
          }
 
          return status;
@@ -463,7 +463,7 @@ namespace GMap.NET.MapProviders
          {
             ret = null;
             status = GeoCoderStatusCode.ExceptionInCode;
-            Debug.WriteLine("GetPlacemarkFromReverseGeocoderUrl: " + ex);
+            //Debug.WriteLine("GetPlacemarkFromReverseGeocoderUrl: " + ex);
          }
 
          return ret;

@@ -205,7 +205,7 @@ namespace GMap.NET.Internals
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("SaveContent: " + ex);
+                //Debug.WriteLine("SaveContent: " + ex);
             }
         }
 
@@ -242,7 +242,7 @@ namespace GMap.NET.Internals
             catch (Exception ex)
             {
                 ret = null;
-                Debug.WriteLine("GetContent: " + ex);
+                //Debug.WriteLine("GetContent: " + ex);
             }
 
             return ret;

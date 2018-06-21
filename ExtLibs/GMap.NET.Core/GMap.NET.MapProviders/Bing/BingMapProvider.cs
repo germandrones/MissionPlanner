@@ -190,7 +190,7 @@ namespace GMap.NET.MapProviders
                               GMapProviders.BingSatelliteMap.Version = ver;
                               GMapProviders.BingHybridMap.Version = ver;
 #if DEBUG
-                              Debug.WriteLine("GMapProviders.BingMap.Version: " + ver + ", old: " + old + ", consider updating source");
+                              //Debug.WriteLine("GMapProviders.BingMap.Version: " + ver + ", old: " + old + ", consider updating source");
                               if(Debugger.IsAttached)
                               {
                                  Thread.Sleep(5555);
@@ -199,7 +199,7 @@ namespace GMap.NET.MapProviders
                            }
                            else
                            {
-                              Debug.WriteLine("GMapProviders.BingMap.Version: " + ver + ", OK");
+                              //Debug.WriteLine("GMapProviders.BingMap.Version: " + ver + ", OK");
                            }
                         }
                      }
@@ -237,14 +237,14 @@ namespace GMap.NET.MapProviders
                      // microsoftMapsNetworkCallback({"sessionId" : "xxx", "authenticationResultCode" : "ValidCredentials"})
 
                      ClientKey = keyResponse.Split(',')[0].Split(':')[1].Replace("\"", string.Empty).Replace(" ", string.Empty);
-                     Debug.WriteLine("GMapProviders.BingMap.ClientKey: " + ClientKey);
+                     //Debug.WriteLine("GMapProviders.BingMap.ClientKey: " + ClientKey);
                   }
                }
                #endregion
             }
             catch(Exception ex)
             {
-               Debug.WriteLine("TryCorrectBingVersions failed: " + ex.ToString());
+               //Debug.WriteLine("TryCorrectBingVersions failed: " + ex.ToString());
             }
          }
       }
@@ -385,7 +385,7 @@ namespace GMap.NET.MapProviders
          catch(Exception ex)
          {
             points = null;
-            Debug.WriteLine("GetRoutePoints: " + ex);
+            //Debug.WriteLine("GetRoutePoints: " + ex);
          }
          return points;
       }
@@ -560,7 +560,7 @@ namespace GMap.NET.MapProviders
          catch(Exception ex)
          {
             status = GeoCoderStatusCode.ExceptionInCode;
-            Debug.WriteLine("GetLatLngFromGeocoderUrl: " + ex);
+            //Debug.WriteLine("GetLatLngFromGeocoderUrl: " + ex);
          }
 
          return status;

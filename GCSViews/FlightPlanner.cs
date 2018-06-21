@@ -1386,7 +1386,7 @@ namespace MissionPlanner.GCSViews
 
             fullpointlist.Clear();
 
-            Debug.WriteLine(DateTime.Now);
+            //Debug.WriteLine(DateTime.Now);
             try
             {
                 if (objectsoverlay != null) // hasnt been created yet
@@ -1596,7 +1596,7 @@ namespace MissionPlanner.GCSViews
                             minlong = Math.Min(double.Parse(Commands.Rows[a].Cells[Lon.Index].Value.ToString()), minlong);
                             minlat = Math.Min(double.Parse(Commands.Rows[a].Cells[Lat.Index].Value.ToString()), minlat);
 
-                            Debug.WriteLine(temp - Stopwatch.GetTimestamp());
+                            //Debug.WriteLine(temp - Stopwatch.GetTimestamp());
                         }
                         else if (command == (ushort)MAVLink.MAV_CMD.DO_JUMP) // fix do jumps into the future
                         {
@@ -1716,7 +1716,7 @@ namespace MissionPlanner.GCSViews
                 log.Info(ex.ToString());
             }
 
-            Debug.WriteLine(DateTime.Now);
+            //Debug.WriteLine(DateTime.Now);
         }
 
 
@@ -3907,7 +3907,7 @@ namespace MissionPlanner.GCSViews
 
         void groupmarkeradd(GMapMarker marker)
         {
-            System.Diagnostics.Debug.WriteLine("add marker " + marker.Tag.ToString());
+            //System.Diagnostics.Debug.WriteLine("add marker " + marker.Tag.ToString());
             groupmarkers.Add(int.Parse(marker.Tag.ToString()));
             if (marker is GMapMarkerWP)
             {
@@ -4491,7 +4491,7 @@ namespace MissionPlanner.GCSViews
                 ((ComboBox)e.Control).SelectionChangeCommitted += Commands_SelectionChangeCommitted;
                 ((ComboBox)e.Control).ForeColor = Color.White;
                 ((ComboBox)e.Control).BackColor = Color.FromArgb(0x43, 0x44, 0x45);
-                Debug.WriteLine("Setting event handle");
+                //Debug.WriteLine("Setting event handle");
             }
         }        
         

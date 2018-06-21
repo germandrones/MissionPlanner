@@ -382,7 +382,7 @@ namespace GMap.NET.Internals
          if(!IsStarted)
          {
             int x = Interlocked.Increment(ref instances);
-            Debug.WriteLine("OnMapOpen: " + x);
+            //Debug.WriteLine("OnMapOpen: " + x);
 
             IsStarted = true;
 
@@ -445,7 +445,7 @@ namespace GMap.NET.Internals
                skiped = false;
 
                w.ReportProgress(1);
-               Debug.WriteLine("Invalidate delta: " + (int)delta.TotalMilliseconds + "ms");
+               //Debug.WriteLine("Invalidate delta: " + (int)delta.TotalMilliseconds + "ms");
             }
             else
             {
@@ -485,7 +485,7 @@ namespace GMap.NET.Internals
             sizeOfMapArea.Height = 1 + (Height / Provider.Projection.TileSize.Height) / 2;
          }
 
-         Debug.WriteLine("OnMapSizeChanged, w: " + width + ", h: " + height + ", size: " + sizeOfMapArea);
+         //Debug.WriteLine("OnMapSizeChanged, w: " + width + ", h: " + height + ", size: " + sizeOfMapArea);
 
          if(IsStarted)
          {
@@ -604,7 +604,7 @@ namespace GMap.NET.Internals
       {
          if(IsStarted)
          {
-            Debug.WriteLine("------------------");
+            //Debug.WriteLine("------------------");
 
             okZoom = 0;
             skipOverZoom = 0;
@@ -809,7 +809,7 @@ namespace GMap.NET.Internals
             {
                while(tileLoadQueue.Count == 0)
                {
-                  Debug.WriteLine(ctid + " - Wait " + loadWaitCount + " - " + DateTime.Now.TimeOfDay);
+                  //Debug.WriteLine(ctid + " - Wait " + loadWaitCount + " - " + DateTime.Now.TimeOfDay);
 
                   if(++loadWaitCount >= GThreadPoolSize)
                   {
@@ -846,7 +846,7 @@ namespace GMap.NET.Internals
                      GC.Collect();
 #endif
 
-                     Debug.WriteLine(ctid + " - OnTileLoadComplete: " + lastTileLoadTimeMs + "ms, MemoryCacheSize: " + GMaps.Instance.MemoryCache.Size + "MB");
+                     //Debug.WriteLine(ctid + " - OnTileLoadComplete: " + lastTileLoadTimeMs + "ms, MemoryCacheSize: " + GMaps.Instance.MemoryCache.Size + "MB");
 
                      if(OnTileLoadComplete != null)
                      {
@@ -881,7 +881,7 @@ namespace GMap.NET.Internals
                   var m = Matrix.GetTileWithReadLock(task.Value.Zoom, task.Value.Pos);
                   if(!m.NotEmpty)
                   {
-                     Debug.WriteLine(ctid + " - try load: " + task);
+                     //Debug.WriteLine(ctid + " - try load: " + task);
 
                      Tile t = new Tile(task.Value.Zoom, task.Value.Pos);
 
@@ -915,7 +915,7 @@ namespace GMap.NET.Internals
                               {
                                  okZoom = task.Value.Zoom;
                                  skipOverZoom = 0;
-                                 Debug.WriteLine("skipOverZoom disabled, okZoom: " + okZoom);
+                                 //Debug.WriteLine("skipOverZoom disabled, okZoom: " + okZoom);
                               }
                            }
                            else if(ex != null)
@@ -925,7 +925,7 @@ namespace GMap.NET.Internals
                                  if(ex.Message.Contains("(404) Not Found"))
                                  {
                                     skipOverZoom = okZoom;
-                                    Debug.WriteLine("skipOverZoom enabled: " + skipOverZoom);
+                                    //Debug.WriteLine("skipOverZoom enabled: " + skipOverZoom);
                                  }
                               }
                            }
@@ -967,7 +967,7 @@ namespace GMap.NET.Internals
 
                            if(img != null)
                            {
-                              Debug.WriteLine(ctid + " - tile loaded: " + img.Data.Length / 1024 + "KB, " + task);
+                              //Debug.WriteLine(ctid + " - tile loaded: " + img.Data.Length / 1024 + "KB, " + task);
                               {
                                  t.AddOverlay(img);
                               }
@@ -997,7 +997,7 @@ namespace GMap.NET.Internals
 
                               if(RetryLoadTile > 0)
                               {
-                                 Debug.WriteLine(ctid + " - ProcessLoadTask: " + task + " -> empty tile, retry " + retry);
+                                 //Debug.WriteLine(ctid + " - ProcessLoadTask: " + task + " -> empty tile, retry " + retry);
                                  {
                                     Thread.Sleep(1111);
                                  }
@@ -1021,7 +1021,7 @@ namespace GMap.NET.Internals
                }
                catch(Exception ex)
                {
-                  Debug.WriteLine(ctid + " - ProcessLoadTask: " + ex.ToString());
+                  //Debug.WriteLine(ctid + " - ProcessLoadTask: " + ex.ToString());
                }
                finally
                {
@@ -1037,7 +1037,7 @@ namespace GMap.NET.Internals
          Monitor.Enter(tileLoadQueue);
          try
          {
-            Debug.WriteLine("Quit - " + ct.Name);
+            //Debug.WriteLine("Quit - " + ct.Name);
             lock(GThreadPool)
             {
                GThreadPool.Remove(ct);
@@ -1162,7 +1162,7 @@ namespace GMap.NET.Internals
                   }
                   GThreadPool.Add(t);
 
-                  Debug.WriteLine("add " + t.Name + " to GThreadPool");
+                  //Debug.WriteLine("add " + t.Name + " to GThreadPool");
 
                   t.Start();
                }
@@ -1171,7 +1171,7 @@ namespace GMap.NET.Internals
 
             {
                LastTileLoadStart = DateTime.Now;
-               Debug.WriteLine("OnTileLoadStart - at zoom " + Zoom + ", time: " + LastTileLoadStart.TimeOfDay);
+               //Debug.WriteLine("OnTileLoadStart - at zoom " + Zoom + ", time: " + LastTileLoadStart.TimeOfDay);
             }
 
             loadWaitCount = 0;
@@ -1231,7 +1231,7 @@ namespace GMap.NET.Internals
             }
 
             int x = Interlocked.Decrement(ref instances);
-            Debug.WriteLine("OnMapClose: " + x);
+            //Debug.WriteLine("OnMapClose: " + x);
 
             CancelAsyncTasks();
             IsStarted = false;
@@ -1267,7 +1267,7 @@ namespace GMap.NET.Internals
             lock(GThreadPool)
             {
 #if PocketPC
-                Debug.WriteLine("waiting until loaders are stopped...");
+                //Debug.WriteLine("waiting until loaders are stopped...");
                 while(GThreadPool.Count > 0)
                 {
                     var t = GThreadPool[0];
@@ -1276,7 +1276,7 @@ namespace GMap.NET.Internals
                     {
                         var tr = t.Join(1111);
 
-                        Debug.WriteLine(t.Name + ", " + t.State);
+                        //Debug.WriteLine(t.Name + ", " + t.State);
 
                         if (!tr)
                         {

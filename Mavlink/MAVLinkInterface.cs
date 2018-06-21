@@ -679,7 +679,8 @@ Please check the following
         /// <param name="messageType">type number = MAVLINK_MSG_ID</param>
         /// <param name="indata">struct of data</param>
         internal void generatePacket(int messageType, object indata, int sysid, int compid, bool forcemavlink2 = false, bool forcesigning = false)
-        {
+        {            
+
             if (!BaseStream.IsOpen)
             {
                 return;
@@ -703,6 +704,8 @@ Please check the following
                     return;
                 }
             }
+
+            Debug.WriteLine("MavlinkMSG: " + ((MAVLINK_MSG_ID)messageType).ToString() + " ID: " + messageType);
 
             lock (objlock)
             {
@@ -1966,7 +1969,7 @@ Please check the following
             rc.chan7_raw = rc7;
             rc.chan8_raw = rc8;
 
-            sendPacket(rc, rc.target_system, rc.target_component);
+            sendPacket(rc, rc.target_system, rc.target_component);            
         }
 
         public void SendManualControl(byte sysid, byte compid, Int16 x, Int16 y, Int16 z, Int16 r, UInt16 buttons)
@@ -2805,7 +2808,7 @@ Please check the following
 
 
             DateTime start = DateTime.Now;
-            int retrys = 30;
+            int retrys = 50;
 
             while (true)
             {

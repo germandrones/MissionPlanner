@@ -160,7 +160,7 @@ namespace MissionPlanner.Log
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(LogStrings.UnhandledException + e.ToString());
+                    //Debug.WriteLine(LogStrings.UnhandledException + e.ToString());
                 }
             }));
         }

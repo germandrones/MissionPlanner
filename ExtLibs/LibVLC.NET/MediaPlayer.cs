@@ -109,7 +109,7 @@ namespace LibVLC.NET
 
           if(orphaned_media_players.Count > 0)
           {
-            Debug.WriteLine(String.Format("Found {0} orphand media players!", orphaned_media_players.Count), "MediaPlayer");
+            //Debug.WriteLine(String.Format("Found {0} orphand media players!", orphaned_media_players.Count), "MediaPlayer");
             foreach(IntPtr media_player in orphaned_media_players)
             {
               WeakReference<MediaPlayer> reference;
@@ -119,7 +119,7 @@ namespace LibVLC.NET
 
           if(m_MediaPlayers.Count == 0)
           {
-            Debug.WriteLine("Freeing callback handles...", "MediaPlayer");
+            //Debug.WriteLine("Freeing callback handles...", "MediaPlayer");
 
             m_VideoFormatCallbackHandle.Free();
             m_VideoCleanupCallbackHandle.Free();
@@ -136,13 +136,13 @@ namespace LibVLC.NET
     //==========================================================================
     private static void RegisterMediaPlayer(IntPtr handle, MediaPlayer mediaPlayer)
     {
-      Debug.WriteLine(String.Format("Registering MediaPlayer {0}...", handle), "MediaPlayer");
+      //Debug.WriteLine(String.Format("Registering MediaPlayer {0}...", handle), "MediaPlayer");
 
       lock(m_MediaPlayers)
       {
         if(m_MediaPlayers.Count == 0)
         {
-          Debug.WriteLine("Allocating callback handles...", "MediaPlayer");
+          //Debug.WriteLine("Allocating callback handles...", "MediaPlayer");
 
           m_VideoFormatCallbackHandle = GCHandle.Alloc(m_VideoFormatCallback);
           m_VideoCleanupCallbackHandle = GCHandle.Alloc(m_VideoCleanupCallback);
@@ -159,7 +159,7 @@ namespace LibVLC.NET
     //==========================================================================
     private static void UnregisterMediaPlayer(IntPtr handle)
     {
-      Debug.WriteLine(String.Format("Unregistering media player {0}...", handle), "MediaPlayer");
+      //Debug.WriteLine(String.Format("Unregistering media player {0}...", handle), "MediaPlayer");
 
       lock(m_MediaPlayers)
       {
@@ -179,7 +179,7 @@ namespace LibVLC.NET
         if(!m_CleaningUpMediaPlayersPending)
         {
           m_CleaningUpMediaPlayersPending = true;
-          Debug.WriteLine("Starting cleanup task", "MediaPlayer");
+          //Debug.WriteLine("Starting cleanup task", "MediaPlayer");
           Task.Factory.StartNew(delegate { CleanupMediaPlayers(); });
         }
     }
@@ -196,7 +196,7 @@ namespace LibVLC.NET
               if(media_player != null)
                 return media_player;
 
-            Debug.WriteLine(String.Format("MediaPlayer {0} has already been collected!", handle), "MediaPlayer");
+            //Debug.WriteLine(String.Format("MediaPlayer {0} has already been collected!", handle), "MediaPlayer");
           }
 
       StartCleanupMediaPlayers();
@@ -206,7 +206,7 @@ namespace LibVLC.NET
     //==========================================================================
     private static uint Video_Format(ref IntPtr opaque, ref uint chroma, ref uint width, ref uint height, ref uint pitches, ref uint lines)
     {
-      Debug.WriteLine("Video_Format", "MediaPlayer");
+      //Debug.WriteLine("Video_Format", "MediaPlayer");
 
       MediaPlayer media_player = GetMediaPlayer(opaque);
       if(media_player == null)
@@ -232,7 +232,7 @@ namespace LibVLC.NET
     //==========================================================================
     private static void Video_Cleanup(IntPtr opaque)
     {
-      Debug.WriteLine("Video_Cleanup", "MediaPlayer");
+      //Debug.WriteLine("Video_Cleanup", "MediaPlayer");
 
       VideoBuffer video_buffer;
       m_VideoBuffers.TryRemove(opaque, out video_buffer);
@@ -248,7 +248,7 @@ namespace LibVLC.NET
     //==========================================================================
     private static IntPtr Video_Lock(IntPtr opaque, ref IntPtr planes)
     {
-      Debug.WriteLine("Video_Lock", "MediaPlayer");
+      //Debug.WriteLine("Video_Lock", "MediaPlayer");
 
       planes = IntPtr.Zero;
 
@@ -267,7 +267,7 @@ namespace LibVLC.NET
     //==========================================================================
     private static void Video_Unlock(IntPtr opaque, IntPtr picture, ref IntPtr planes)
     {
-      Debug.WriteLine("Video_Unlock", "MediaPlayer");
+      //Debug.WriteLine("Video_Unlock", "MediaPlayer");
 
       MediaPlayer media_player = GetMediaPlayer(opaque);
       if(media_player != null)
@@ -282,7 +282,7 @@ namespace LibVLC.NET
     //==========================================================================
     private static void Video_Display(IntPtr opaque, IntPtr picture)
     {
-      Debug.WriteLine("Video_Display", "MediaPlayer");
+      //Debug.WriteLine("Video_Display", "MediaPlayer");
 
       MediaPlayer media_player = GetMediaPlayer(opaque);
       if(media_player != null)
@@ -292,7 +292,7 @@ namespace LibVLC.NET
     //==========================================================================
     private static void EventManager_Event(ref LibVLCLibrary.libvlc_event_t e, IntPtr userData)
     {
-      Debug.WriteLine(String.Format("EventManager_Event({0})", e.type), "MediaPlayer");
+      //Debug.WriteLine(String.Format("EventManager_Event({0})", e.type), "MediaPlayer");
 
       MediaPlayer media_player = GetMediaPlayer(e.p_obj);
       if(media_player == null)
@@ -428,7 +428,7 @@ namespace LibVLC.NET
     //==========================================================================
     ~MediaPlayer()
     {
-      Debug.WriteLine("Destructing MediaPlayer...", "MediaPlayer");
+      //Debug.WriteLine("Destructing MediaPlayer...", "MediaPlayer");
 
       Dispose(false);
     }

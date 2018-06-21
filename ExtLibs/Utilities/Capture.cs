@@ -531,7 +531,7 @@ namespace WebCamService
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                //Debug.WriteLine(ex);
             }
 
             if (m_FilterGraph != null)
