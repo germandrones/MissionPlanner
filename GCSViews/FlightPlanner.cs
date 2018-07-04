@@ -5902,6 +5902,19 @@ namespace MissionPlanner.GCSViews
             }
         }
 
+        // method to prefetch view area of map. for touch devices
+        private void prefetchViewAreaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // generate new area
+            PointLatLng topLeft = MainMap.FromLocalToLatLng(0, 0);
+            PointLatLng bottomRight = MainMap.FromLocalToLatLng(MainMap.Width, MainMap.Height);
+            double widthLat = topLeft.Lat - bottomRight.Lat;
+            double widthLng = bottomRight.Lng - topLeft.Lng;
+
+            MainMap.SelectedArea = new RectLatLng(topLeft.Lat, topLeft.Lng, widthLng, widthLat);
+            prefetchToolStripMenuItem.PerformClick();
+        }
+
         private void prefetchToolStripMenuItem_Click(object sender, EventArgs e)
         {
             RectLatLng area = MainMap.SelectedArea;
@@ -8044,6 +8057,8 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             quickadd = false;
             writeKML();
         }
+
+        
 
         void isMissionCorrect(object sender, ProgressWorkerEventArgs e, object passdata = null)
         {

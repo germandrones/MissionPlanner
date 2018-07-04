@@ -689,6 +689,7 @@ namespace MissionPlanner
                         segment.Add(item);
                         prevpoint = item;
                     }
+
                     try
                     {
                         if (TXT_fovH.Text != "")

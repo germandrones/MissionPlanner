@@ -229,6 +229,7 @@ namespace MissionPlanner.GCSViews
             this.panelBASE = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.prefetchViewAreaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.panelWaypoints.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -1350,7 +1351,8 @@ namespace MissionPlanner.GCSViews
             this.prefetchWPPathToolStripMenuItem,
             this.kMLOverlayToolStripMenuItem,
             this.elevationGraphToolStripMenuItem,
-            this.reverseWPsToolStripMenuItem});
+            this.reverseWPsToolStripMenuItem,
+            this.prefetchViewAreaToolStripMenuItem});
             this.mapToolToolStripMenuItem.Name = "mapToolToolStripMenuItem";
             resources.ApplyResources(this.mapToolToolStripMenuItem, "mapToolToolStripMenuItem");
             // 
@@ -1533,6 +1535,12 @@ namespace MissionPlanner.GCSViews
             // 
             this.timer1.Interval = 1200;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // prefetchViewAreaToolStripMenuItem
+            // 
+            this.prefetchViewAreaToolStripMenuItem.Name = "prefetchViewAreaToolStripMenuItem";
+            resources.ApplyResources(this.prefetchViewAreaToolStripMenuItem, "prefetchViewAreaToolStripMenuItem");
+            this.prefetchViewAreaToolStripMenuItem.Click += new System.EventHandler(this.prefetchViewAreaToolStripMenuItem_Click);
             // 
             // FlightPlanner
             // 
@@ -1747,5 +1755,6 @@ namespace MissionPlanner.GCSViews
         private System.Windows.Forms.ToolStripMenuItem create8ShapeSurveyToolStripMenuItem;
         private System.Windows.Forms.Label DebugMsg;
         private System.Windows.Forms.ToolStripMenuItem createCircleSurveyToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem prefetchViewAreaToolStripMenuItem;
     }
 }
