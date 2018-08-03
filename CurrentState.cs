@@ -1338,6 +1338,7 @@ namespace MissionPlanner
         public ushort colibri_ch14;
         public ushort colibri_ch15;
         public ushort colibri_ch16;
+        public ushort colibri_ch17; //switch mode
         public float colibri_alt;
 
         // rc override

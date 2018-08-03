@@ -2026,6 +2026,10 @@ namespace MissionPlanner
                             MainV2.Colibri.EditingControlRetracting = MainV2.comPort.MAV.cs.colibri_ch15 > (ushort)1300 ? (byte)1 : (byte)0;
                         if ((uint)MainV2.Camjoystick.getJoystickAxis(16) > 0U)
                             MainV2.Colibri.EditingControlFollowTarget = MainV2.comPort.MAV.cs.colibri_ch16 > (ushort)1300 ? (byte)1 : (byte)0;
+
+                        if ((uint)MainV2.Camjoystick.getJoystickAxis(17) > 0U)
+                            MainV2.Colibri.EditingSwitchMode = MainV2.comPort.MAV.cs.colibri_ch17 > (ushort)1300 ? (byte)1 : (byte)0;
+
                         if ((uint)MainV2.Camjoystick.getJoystickAxis(1) > 0U)
                         {
                             byte controlSingleYaw = MainV2.Colibri.EditingControlSingleYaw;
@@ -2054,6 +2058,8 @@ namespace MissionPlanner
                             mavlinkV2ExtensionT.pos_pitch_los_x = this.FlightData.ColibriPositionPitch;
                             mavlinkV2ExtensionT.pos_roll_los_y = this.FlightData.ColibriPositionRoll;
                             mavlinkV2ExtensionT.los_z = 0.0f;
+
+                            //TODO: Add here colibri mode switching
                             MainV2.Colibri.EditingControlCameraMode = this.FlightData.ColibriCamMode;
                         }
                         if (MainV2.Colibri.EditingControlSingleYaw == (byte)1)

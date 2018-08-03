@@ -31,6 +31,12 @@ namespace MissionPlanner.CamJoystick
         private Label label13;
         private Label label14;
         private Label label15;
+        
+        /*switch mode stuff*/
+        private Label label21;
+        private ComboBox CMB_CH17;
+        private HorizontalProgressBar SwitchModeProgressBar;
+
         private Label label9;
         private ComboBox CMB_CH8;
         private ComboBox CMB_CH7;
@@ -156,6 +162,8 @@ namespace MissionPlanner.CamJoystick
             this.CMB_CH14.DataSource = (object)Enum.GetValues(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis));
             this.CMB_CH15.DataSource = (object)Enum.GetValues(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis));
             this.CMB_CH16.DataSource = (object)Enum.GetValues(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis));
+            this.CMB_CH17.DataSource = (object)Enum.GetValues(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis));
+
             this.CMB_CH1.Text = camJoystick.getChannel(1).axis.ToString();
             this.CMB_CH2.Text = camJoystick.getChannel(2).axis.ToString();
             this.CMB_CH3.Text = camJoystick.getChannel(3).axis.ToString();
@@ -172,6 +180,8 @@ namespace MissionPlanner.CamJoystick
             this.CMB_CH14.Text = camJoystick.getChannel(14).axis.ToString();
             this.CMB_CH15.Text = camJoystick.getChannel(15).axis.ToString();
             this.CMB_CH16.Text = camJoystick.getChannel(16).axis.ToString();
+            this.CMB_CH17.Text = camJoystick.getChannel(17).axis.ToString();
+
             this.RevChRoll.Checked = !(camJoystick.getChannel(1).reverse.ToString().ToLower() == "false");
             this.revCHPitch.Checked = !(camJoystick.getChannel(2).reverse.ToString().ToLower() == "false");
             this.revCHzoom_in.Checked = !(camJoystick.getChannel(3).reverse.ToString().ToLower() == "false");
@@ -389,6 +399,11 @@ namespace MissionPlanner.CamJoystick
             this.CMB_CH16.Text = MissionPlanner.CamJoystick.CamJoystick.getMovingAxis(this.CMB_joysticks.Text, 16000).ToString();
         }
 
+        private void BUT_detch17_Click(object sender, EventArgs e)
+        {
+            this.CMB_CH17.Text = MissionPlanner.CamJoystick.CamJoystick.getMovingAxis(this.CMB_joysticks.Text, 16000).ToString();
+        }
+
         private void but_settings_Click(object sender, EventArgs e)
         {
             ComboBox tag = ((Control)sender).Tag as ComboBox;
@@ -436,6 +451,8 @@ namespace MissionPlanner.CamJoystick
                             camJoystick.setChannel(15, (MissionPlanner.CamJoystick.CamJoystick.joystickaxis)Enum.Parse(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis), this.CMB_CH15.Text), this.RevChRetracting.Checked, 0);
                         if (this.CMB_CH16.Text != "")
                             camJoystick.setChannel(16, (MissionPlanner.CamJoystick.CamJoystick.joystickaxis)Enum.Parse(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis), this.CMB_CH16.Text), this.RevChFollowTarget.Checked, 0);
+                        //if (this.CMB_CH17.Text != "") camJoystick.setChannel(17, (MissionPlanner.CamJoystick.CamJoystick.joystickaxis)Enum.Parse(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis), this.CMB_CH17.Text), this.RevChSwitchMode.Checked, 0);
+
                         camJoystick.AcquireJoystick(this.CMB_joysticks.Text);
                         camJoystick.name = this.CMB_joysticks.Text;
                         this.noButtons = camJoystick.getNumButtons();
@@ -460,6 +477,7 @@ namespace MissionPlanner.CamJoystick
                     MainV2.comPort.MAV.cs.colibri_ch14 = camJoystick.getValueForChannel(14, this.CMB_joysticks.Text);
                     MainV2.comPort.MAV.cs.colibri_ch15 = camJoystick.getValueForChannel(15, this.CMB_joysticks.Text);
                     MainV2.comPort.MAV.cs.colibri_ch16 = camJoystick.getValueForChannel(16, this.CMB_joysticks.Text);
+                    MainV2.comPort.MAV.cs.colibri_ch17 = camJoystick.getValueForChannel(17, this.CMB_joysticks.Text);
                 }
             }
             catch (SharpDXException ex)
@@ -487,6 +505,7 @@ namespace MissionPlanner.CamJoystick
             this.BITProgressBar.Value = (int)MainV2.comPort.MAV.cs.colibri_ch14;
             this.RetractingProgressBar.Value = (int)MainV2.comPort.MAV.cs.colibri_ch15;
             this.FollowTargetProgressBar.Value = (int)MainV2.comPort.MAV.cs.colibri_ch16;
+            this.SwitchModeProgressBar.Value = (int)MainV2.comPort.MAV.cs.colibri_ch17;
             try
             {
                 if (MainV2.Camjoystick != null)
@@ -507,6 +526,7 @@ namespace MissionPlanner.CamJoystick
                     this.BITProgressBar.maxline = (int)MainV2.Camjoystick.getRawValueForChannel(14);
                     this.RetractingProgressBar.maxline = (int)MainV2.Camjoystick.getRawValueForChannel(15);
                     this.FollowTargetProgressBar.maxline = (int)MainV2.Camjoystick.getRawValueForChannel(16);
+                    this.SwitchModeProgressBar.maxline = (int)MainV2.Camjoystick.getRawValueForChannel(17);
                 }
             }
             catch
@@ -632,6 +652,13 @@ namespace MissionPlanner.CamJoystick
             if (this.startup || MainV2.Camjoystick == null)
                 return;
             MainV2.Camjoystick.setAxis(16, (MissionPlanner.CamJoystick.CamJoystick.joystickaxis)Enum.Parse(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis), ((Control)sender).Text));
+        }
+
+        private void CMB_CH17_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.startup || MainV2.Camjoystick == null)
+                return;
+            MainV2.Camjoystick.setAxis(17, (MissionPlanner.CamJoystick.CamJoystick.joystickaxis)Enum.Parse(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis), ((Control)sender).Text));
         }
 
         private void revCH1_CheckedChanged(object sender, EventArgs e)
@@ -766,6 +793,8 @@ namespace MissionPlanner.CamJoystick
             MainV2.Camjoystick.setAxis(14, (MissionPlanner.CamJoystick.CamJoystick.joystickaxis)Enum.Parse(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis), "btn12"));
             MainV2.Camjoystick.setAxis(15, (MissionPlanner.CamJoystick.CamJoystick.joystickaxis)Enum.Parse(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis), "btn13"));
             MainV2.Camjoystick.setAxis(16, (MissionPlanner.CamJoystick.CamJoystick.joystickaxis)Enum.Parse(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis), "btn14"));
+            MainV2.Camjoystick.setAxis(17, (MissionPlanner.CamJoystick.CamJoystick.joystickaxis)Enum.Parse(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis), "btn15"));
+
             this.CMB_CH1.Text = "X";
             this.CMB_CH2.Text = "Y";
             this.CMB_CH3.Text = "btn1";
@@ -782,6 +811,7 @@ namespace MissionPlanner.CamJoystick
             this.CMB_CH14.Text = "btn12";
             this.CMB_CH15.Text = "btn13";
             this.CMB_CH16.Text = "btn14";
+            this.CMB_CH17.Text = "btn15";
         }
 
         private void CamJoystickSetup_FormClosed(object sender, FormClosedEventArgs e)
@@ -847,6 +877,7 @@ namespace MissionPlanner.CamJoystick
             this.label13 = new Label();
             this.label14 = new Label();
             this.label15 = new Label();
+            this.label21 = new Label();
             this.label9 = new Label();
             this.CMB_CH8 = new ComboBox();
             this.CMB_CH7 = new ComboBox();
@@ -918,8 +949,10 @@ namespace MissionPlanner.CamJoystick
             this.label17 = new Label();
             this.RevChFollowTarget = new CheckBox();
             this.FollowTargetProgressBar = new HorizontalProgressBar();
+            this.SwitchModeProgressBar = new HorizontalProgressBar();
             this.BUT_detch16 = new MyButton();
             this.CMB_CH16 = new ComboBox();
+            this.CMB_CH17 = new ComboBox();
             this.label19 = new Label();
             this.SuspendLayout();
             this.label5.AutoSize = true;
@@ -1018,6 +1051,17 @@ namespace MissionPlanner.CamJoystick
             this.label15.Size = new Size(63, 13);
             this.label15.TabIndex = 64;
             this.label15.Text = "Rec On/Off";
+
+            /*switch mode stuff*/
+            this.label21.AutoSize = true;
+            this.label21.ImeMode = ImeMode.NoControl;
+            this.label21.Location = new Point(12, 545);
+            this.label21.Name = "label21";
+            this.label21.Size = new Size(63, 13);
+            this.label21.TabIndex = 64;
+            this.label21.Text = "Switch Mode";
+
+
             this.label9.AutoSize = true;
             this.label9.ImeMode = ImeMode.NoControl;
             this.label9.Location = new Point(118, 54);
@@ -1806,6 +1850,20 @@ namespace MissionPlanner.CamJoystick
             this.FollowTargetProgressBar.Size = new Size(100, 23);
             this.FollowTargetProgressBar.TabIndex = 141;
             this.FollowTargetProgressBar.Value = 800;
+
+            this.SwitchModeProgressBar.DrawLabel = true;
+            this.SwitchModeProgressBar.ImeMode = ImeMode.NoControl;
+            this.SwitchModeProgressBar.Label = (string)null;
+            this.SwitchModeProgressBar.Location = new Point(247, 540);
+            this.SwitchModeProgressBar.Maximum = 2200;
+            this.SwitchModeProgressBar.maxline = 0;
+            this.SwitchModeProgressBar.Minimum = 800;
+            this.SwitchModeProgressBar.minline = 0;
+            this.SwitchModeProgressBar.Name = "SwitchModeProgressBar";
+            this.SwitchModeProgressBar.Size = new Size(100, 23);
+            this.SwitchModeProgressBar.TabIndex = 141;
+            this.SwitchModeProgressBar.Value = 800;
+
             this.BUT_detch16.ImeMode = ImeMode.NoControl;
             this.BUT_detch16.Location = new Point(196, 511);
             this.BUT_detch16.Name = "BUT_detch16";
@@ -1834,6 +1892,31 @@ namespace MissionPlanner.CamJoystick
             this.CMB_CH16.Size = new Size(70, 21);
             this.CMB_CH16.TabIndex = 139;
             this.CMB_CH16.SelectedIndexChanged += new EventHandler(this.CMB_CH16_SelectedIndexChanged);
+
+            /*Switch mode combo box*/
+
+            this.CMB_CH17.FormattingEnabled = true;
+            this.CMB_CH17.Items.AddRange(new object[11]
+            {
+        (object) "None",
+        (object) "btn1",
+        (object) "btn2",
+        (object) "btn3",
+        (object) "btn4",
+        (object) "btn5",
+        (object) "btn6",
+        (object) "btn7",
+        (object) "btn8",
+        (object) "btn9",
+        (object) "btn10"
+            });
+            this.CMB_CH17.Location = new Point(120, 542);
+            this.CMB_CH17.Name = "CMB_CH17";
+            this.CMB_CH17.Size = new Size(70, 21);
+            this.CMB_CH17.TabIndex = 139;
+            this.CMB_CH17.SelectedIndexChanged += new EventHandler(this.CMB_CH17_SelectedIndexChanged);
+            /*+++*/
+
             this.label19.AutoSize = true;
             this.label19.ImeMode = ImeMode.NoControl;
             this.label19.Location = new Point(12, 516);
@@ -1843,11 +1926,13 @@ namespace MissionPlanner.CamJoystick
             this.label19.Text = "Follow Target";
             this.AutoScaleDimensions = new SizeF(6f, 13f);
             this.AutoScaleMode = AutoScaleMode.Font;
-            this.ClientSize = new Size(506, 548);
+            this.ClientSize = new Size(506, 598);
             this.Controls.Add((Control)this.RevChFollowTarget);
             this.Controls.Add((Control)this.FollowTargetProgressBar);
+            this.Controls.Add((Control)this.SwitchModeProgressBar);
             this.Controls.Add((Control)this.BUT_detch16);
             this.Controls.Add((Control)this.CMB_CH16);
+            this.Controls.Add((Control)this.CMB_CH17);
             this.Controls.Add((Control)this.label19);
             this.Controls.Add((Control)this.RevChRetracting);
             this.Controls.Add((Control)this.RetractingProgressBar);
@@ -1920,6 +2005,7 @@ namespace MissionPlanner.CamJoystick
             this.Controls.Add((Control)this.label13);
             this.Controls.Add((Control)this.label14);
             this.Controls.Add((Control)this.label15);
+            this.Controls.Add((Control)this.label21);
             this.Controls.Add((Control)this.label8);
             this.Controls.Add((Control)this.label7);
             this.Controls.Add((Control)this.label6);

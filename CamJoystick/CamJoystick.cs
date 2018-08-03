@@ -35,6 +35,10 @@ namespace MissionPlanner.CamJoystick
         private static byte prev_Retracting = byte.MaxValue;
         private static bool m_iFollowTarget_bool = false;
         private static byte prev_FollowTarget = byte.MaxValue;
+
+        private static bool m_iSwitchMode_bool = false;
+        private static byte prev_SwitchMode = byte.MaxValue;
+
         public bool enabled = false;
         private bool[] buttonpressed = new bool[128];
         public bool elevons = false;
@@ -388,6 +392,8 @@ namespace MissionPlanner.CamJoystick
                         MainV2.comPort.MAV.cs.colibri_ch15 = this.pickchannel(15, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[15].axis, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[15].reverse, 0);
                     if ((uint)this.getJoystickAxis(16) > 0U)
                         MainV2.comPort.MAV.cs.colibri_ch16 = this.pickchannel(16, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[16].axis, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[16].reverse, 0);
+                    if ((uint)this.getJoystickAxis(17) > 0U)
+                        MainV2.comPort.MAV.cs.colibri_ch17 = this.pickchannel(17, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[17].axis, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[17].reverse, 0);
 
                     if (MainV2.comPort.BaseStream.IsOpen)
                         this.DoJoystickButtonFunction();
@@ -947,6 +953,7 @@ namespace MissionPlanner.CamJoystick
             private byte m_iPolarity = 0;
             private byte m_iRetracting = 0;
             private byte m_iFollowTarget = 0;
+            private byte m_iSwitchMode = 0;
             private byte m_iGain = 0;
             private byte m_iLevel = 0;
             private byte m_iRecord = 0;
@@ -1348,6 +1355,25 @@ namespace MissionPlanner.CamJoystick
                     this.m_iFollowTarget = Convert.ToByte(MissionPlanner.CamJoystick.CamJoystick.m_iFollowTarget_bool);
                 }
             }
+
+            public byte EditingSwitchMode
+            {
+                get
+                {
+                    return this.m_iSwitchMode;
+                }
+                set
+                {
+                    if ((int)MissionPlanner.CamJoystick.CamJoystick.prev_SwitchMode != (int)value)
+                    {
+                        MissionPlanner.CamJoystick.CamJoystick.prev_SwitchMode = value;
+                        if (value == (byte)1)
+                            MissionPlanner.CamJoystick.CamJoystick.m_iSwitchMode_bool = !MissionPlanner.CamJoystick.CamJoystick.m_iSwitchMode_bool;
+                    }
+                    this.m_iSwitchMode = Convert.ToByte(MissionPlanner.CamJoystick.CamJoystick.m_iSwitchMode_bool);
+                }
+            }
+
 
             public byte EditingControlFollowTargetClear
             {
