@@ -331,7 +331,7 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             //{
             //    CHK_autodec.Enabled = true;
             //    TXT_declination_deg.Enabled = true;
-            //    TXT_declination_min.Enabled = true;
+            //    TXT_declination_min.Enabled = true; 
             // }
             //else
             //{

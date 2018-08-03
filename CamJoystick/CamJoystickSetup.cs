@@ -112,6 +112,34 @@ namespace MissionPlanner.CamJoystick
 
         private void Joystick_Load(object sender, EventArgs e)
         {
+            try
+            {
+                var joysticklist = CamJoystick.getDevices();
+
+                foreach (DeviceInstance device in joysticklist)
+                {
+                    CMB_joysticks.Items.Add(device.ProductName.TrimUnPrintable());
+                }
+            }
+            catch
+            {
+                CustomMessageBox.Show("Error geting joystick list: do you have the directx redist installed?");
+                this.Close();
+                return;
+            }
+
+            try
+            {
+                if (Settings.Instance.ContainsKey("cam_joystick_name") && Settings.Instance["cam_joystick_name"].ToString() != "")
+                    CMB_joysticks.Text = Settings.Instance["cam_joystick_name"].ToString();
+            }
+            catch
+            {
+            }
+
+            //if (CMB_joysticks.Items.Count > 0 && CMB_joysticks.SelectedIndex == -1) CMB_joysticks.SelectedIndex = 0;
+            MissionPlanner.CamJoystick.CamJoystick camJoystick = new MissionPlanner.CamJoystick.CamJoystick();
+
             this.CMB_CH1.DataSource = (object)Enum.GetValues(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis));
             this.CMB_CH2.DataSource = (object)Enum.GetValues(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis));
             this.CMB_CH3.DataSource = (object)Enum.GetValues(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis));
@@ -128,7 +156,6 @@ namespace MissionPlanner.CamJoystick
             this.CMB_CH14.DataSource = (object)Enum.GetValues(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis));
             this.CMB_CH15.DataSource = (object)Enum.GetValues(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis));
             this.CMB_CH16.DataSource = (object)Enum.GetValues(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis));
-            MissionPlanner.CamJoystick.CamJoystick camJoystick = new MissionPlanner.CamJoystick.CamJoystick();
             this.CMB_CH1.Text = camJoystick.getChannel(1).axis.ToString();
             this.CMB_CH2.Text = camJoystick.getChannel(2).axis.ToString();
             this.CMB_CH3.Text = camJoystick.getChannel(3).axis.ToString();
@@ -162,6 +189,8 @@ namespace MissionPlanner.CamJoystick
             this.RevChRetracting.Checked = !(camJoystick.getChannel(15).reverse.ToString().ToLower() == "false");
             this.RevChFollowTarget.Checked = !(camJoystick.getChannel(16).reverse.ToString().ToLower() == "false");
             this.startup = false;
+
+            if (MainV2.Camjoystick != null && MainV2.Camjoystick.enabled) this.timer1.Start();
         }
 
         private void findandsetcontrol(string ctlname, string value)
@@ -183,7 +212,7 @@ namespace MissionPlanner.CamJoystick
             }
             else
             {
-                Settings.Instance["joystick_name"] = this.CMB_joysticks.Text;
+                Settings.Instance["cam_joystick_name"] = this.CMB_joysticks.Text;
                 MainV2.Camjoystick = camJoystick;
                 MainV2.Camjoystick.enabled = true;
                 this.timer1.Start();
