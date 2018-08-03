@@ -107,6 +107,7 @@ namespace MissionPlanner.CamJoystick
         private CheckBox RevChFollowTarget;
         private HorizontalProgressBar FollowTargetProgressBar;
         private MyButton BUT_detch16;
+        private MyButton BUT_detch17;
         private ComboBox CMB_CH16;
         private Label label19;
 
@@ -951,6 +952,7 @@ namespace MissionPlanner.CamJoystick
             this.FollowTargetProgressBar = new HorizontalProgressBar();
             this.SwitchModeProgressBar = new HorizontalProgressBar();
             this.BUT_detch16 = new MyButton();
+            this.BUT_detch17 = new MyButton();
             this.CMB_CH16 = new ComboBox();
             this.CMB_CH17 = new ComboBox();
             this.label19 = new Label();
@@ -1872,6 +1874,16 @@ namespace MissionPlanner.CamJoystick
             this.BUT_detch16.Text = "Auto Detect";
             this.BUT_detch16.UseVisualStyleBackColor = true;
             this.BUT_detch16.Click += new EventHandler(this.BUT_detch16_Click);
+
+            this.BUT_detch17.ImeMode = ImeMode.NoControl;
+            this.BUT_detch17.Location = new Point(196, 540);
+            this.BUT_detch17.Name = "BUT_detch17";
+            this.BUT_detch17.Size = new Size(45, 23);
+            this.BUT_detch17.TabIndex = 140;
+            this.BUT_detch17.Text = "Auto Detect";
+            this.BUT_detch17.UseVisualStyleBackColor = true;
+            this.BUT_detch17.Click += new EventHandler(this.BUT_detch17_Click);
+
             this.CMB_CH16.FormattingEnabled = true;
             this.CMB_CH16.Items.AddRange(new object[11]
             {
@@ -1931,6 +1943,7 @@ namespace MissionPlanner.CamJoystick
             this.Controls.Add((Control)this.FollowTargetProgressBar);
             this.Controls.Add((Control)this.SwitchModeProgressBar);
             this.Controls.Add((Control)this.BUT_detch16);
+            this.Controls.Add((Control)this.BUT_detch17);
             this.Controls.Add((Control)this.CMB_CH16);
             this.Controls.Add((Control)this.CMB_CH17);
             this.Controls.Add((Control)this.label19);
