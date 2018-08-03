@@ -2612,8 +2612,11 @@
         private System.Windows.Forms.GroupBox Colibri_GB1;
         private System.Windows.Forms.RadioButton RadioBtnPos;
         private System.Windows.Forms.RadioButton RadioBtnGRR;
-        private System.Windows.Forms.RadioButton RadioBtnObs;
-        private System.Windows.Forms.RadioButton RadioBtnStow;
+
+        //give more access
+        public System.Windows.Forms.RadioButton RadioBtnObs;
+        public System.Windows.Forms.RadioButton RadioBtnStow;
+
         private System.Windows.Forms.GroupBox Colibri_GB4;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label12;

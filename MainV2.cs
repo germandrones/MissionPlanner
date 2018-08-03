@@ -2028,8 +2028,22 @@ namespace MissionPlanner
                             MainV2.Colibri.EditingControlFollowTarget = MainV2.comPort.MAV.cs.colibri_ch16 > (ushort)1300 ? (byte)1 : (byte)0;
 
                         if ((uint)MainV2.Camjoystick.getJoystickAxis(17) > 0U)
+                        {
+                            // mode changed by joystick action
                             MainV2.Colibri.EditingSwitchMode = MainV2.comPort.MAV.cs.colibri_ch17 > (ushort)1300 ? (byte)1 : (byte)0;
+                            if(MainV2.Colibri.EditingSwitchMode == (byte)1)
+                            {
+                                this.FlightData.RadioBtnStow.Checked = true;
+                                this.FlightData.ColibriCamMode = (byte)4;
+                            }
+                            else
+                            {
+                                this.FlightData.RadioBtnObs.Checked = true;
+                                this.FlightData.ColibriCamMode = (byte)6;
+                            }
+                        }
 
+                        // if mode switch joystick butto is pressed...
                         if ((uint)MainV2.Camjoystick.getJoystickAxis(1) > 0U)
                         {
                             byte controlSingleYaw = MainV2.Colibri.EditingControlSingleYaw;
@@ -2044,8 +2058,8 @@ namespace MissionPlanner
                                 MainV2.Colibri.EditingControlRoll = MainV2.comPort.MAV.cs.colibri_ch1;
                             }
                         }
-                        if (Convert.ToBoolean(MainV2.Colibri.EditingControlRetracting))
-                            MainV2.Colibri.EditingControlCameraMode = (byte)8;
+
+                        if (Convert.ToBoolean(MainV2.Colibri.EditingControlRetracting)) MainV2.Colibri.EditingControlCameraMode = (byte)8;
                         else if (flag)
                         {
                             MainV2.Colibri.EditingControlCameraMode = (byte)10;
@@ -2058,8 +2072,7 @@ namespace MissionPlanner
                             mavlinkV2ExtensionT.pos_pitch_los_x = this.FlightData.ColibriPositionPitch;
                             mavlinkV2ExtensionT.pos_roll_los_y = this.FlightData.ColibriPositionRoll;
                             mavlinkV2ExtensionT.los_z = 0.0f;
-
-                            //TODO: Add here colibri mode switching
+                            
                             MainV2.Colibri.EditingControlCameraMode = this.FlightData.ColibriCamMode;
                         }
                         if (MainV2.Colibri.EditingControlSingleYaw == (byte)1)
