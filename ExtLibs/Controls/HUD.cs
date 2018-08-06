@@ -2612,7 +2612,7 @@ namespace MissionPlanner.Controls
                 {
                     //if ((armedtimer.AddSeconds(8) > DateTime.Now))
                     {
-                        drawstring(HUDT.DISARMED, font, fontsize + 10, (SolidBrush)Brushes.Green, -65,
+                        drawstring(HUDT.DISARMED, font, fontsize + 10, (SolidBrush)Brushes.Red, -65,
                             halfheight / -3);
                         statuslast = status;
                     }

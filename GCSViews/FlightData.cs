@@ -864,14 +864,12 @@ namespace MissionPlanner.GCSViews
                     break;
                 }
 
-                try
+                /*try
                 {
                     if (aviwriter != null && vidrec.AddMilliseconds(100) <= DateTime.Now)
                     {
                         vidrec = DateTime.Now;
-
                         hud1.streamjpgenable = true;
-
                         //aviwriter.avi_start("test.avi");
                         // add a frame
                         aviwriter.avi_add(hud1.streamjpg.ToArray(), (uint) hud1.streamjpg.Length);
@@ -882,9 +880,8 @@ namespace MissionPlanner.GCSViews
                 catch
                 {
                     log.Error("Failed to write avi");
-                }
+                }*/
 
-                // log playback
                 if (MainV2.comPort.logreadmode && MainV2.comPort.logplaybackfile != null)
                 {
                     if (MainV2.comPort.BaseStream.IsOpen)
@@ -1096,9 +1093,8 @@ namespace MissionPlanner.GCSViews
                     }
 
                     // update map
-                    if (tracklast.AddSeconds(0.3) < DateTime.Now)
+                    if (tracklast.AddSeconds(0.3) < DateTime.Now) // check on 100ms 10 Hz update rate
                     {
-
                         // Check if HWP points are already generated and received
                         if (MainV2.comPort.MAV.cs.gotHWP == true)
                         {
@@ -1169,10 +1165,9 @@ namespace MissionPlanner.GCSViews
 
 
                         // update programed wp course
-                        if (waypoints.AddSeconds(1) < DateTime.Now)
+                        if (waypoints.AddSeconds(0.3) < DateTime.Now)
                         {
-                            update_map();
-                            
+                            update_map();                            
                             waypoints = DateTime.Now;
                         }
 
@@ -1333,14 +1328,6 @@ namespace MissionPlanner.GCSViews
 
                         if (route.Points.Count > 0)
                         {
-                            // add primary route icon
-
-                            // draw guide mode point for only main mav
-                            if (MainV2.comPort.MAV.cs.mode.ToLower() == "guided" && MainV2.comPort.MAV.GuidedMode.x != 0)
-                            {
-                                addpolygonmarker("Guided Mode", MainV2.comPort.MAV.GuidedMode.y, MainV2.comPort.MAV.GuidedMode.x, (int)MainV2.comPort.MAV.GuidedMode.z, Color.Blue, routes, (int)MainV2.comPort.MAV.param["WP_RADIUS"].Value);
-                            }
-
                             // draw all icons for all connected mavs
                             foreach (var port in MainV2.Comports.ToArray())
                             {
@@ -1349,8 +1336,7 @@ namespace MissionPlanner.GCSViews
                                 {
                                     var marker = Common.getMAVMarker(MAV);
 
-                                    if(marker.Position.Lat == 0 && marker.Position.Lng == 0)
-                                        continue;
+                                    if(marker.Position.Lat == 0 && marker.Position.Lng == 0) continue; // don't visualize the uav cemetery
 
                                     addMissionRouteMarker(marker);
                                 }

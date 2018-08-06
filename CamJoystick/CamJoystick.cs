@@ -185,28 +185,36 @@ namespace MissionPlanner.CamJoystick
         public static MissionPlanner.CamJoystick.CamJoystick.joystickaxis getMovingAxis(string name, int threshold)
         {
             MissionPlanner.CamJoystick.CamJoystick.self.name = name;
-            SharpDX.DirectInput.Joystick Camjoystick = new MissionPlanner.CamJoystick.CamJoystick().AcquireJoystick(name);
-            if (Camjoystick == null) return MissionPlanner.CamJoystick.CamJoystick.joystickaxis.None;
+            //SharpDX.DirectInput.Joystick CamJStick = new MissionPlanner.CamJoystick.CamJoystick().AcquireJoystick(name);
+            var CamJStick = new MissionPlanner.CamJoystick.CamJoystick().AcquireJoystick(name);
+            if (CamJStick == null) return MissionPlanner.CamJoystick.CamJoystick.joystickaxis.None;
 
             Thread.Sleep(50);
-            CamJoystickState camJoystickState1 = Camjoystick.CurrentCamJoystickState();
+            CamJoystickState camJoystickState1 = CamJStick.CurrentCamJoystickState();
+
             Hashtable hashtable = new Hashtable();
             foreach (PropertyInfo property in camJoystickState1.GetType().GetProperties())
+            {
                 hashtable[(object)property.Name] = (object)int.Parse(property.GetValue((object)camJoystickState1, (object[])null).ToString());
+            }
+
             hashtable[(object)"Slider1"] = (object)camJoystickState1.GetSlider()[0];
             hashtable[(object)"Slider2"] = (object)camJoystickState1.GetSlider()[1];
             hashtable[(object)"Hatud1"] = (object)camJoystickState1.GetPointOfView()[0];
             hashtable[(object)"Hatlr2"] = (object)camJoystickState1.GetPointOfView()[0];
             hashtable[(object)"Custom1"] = (object)0;
             hashtable[(object)"Custom2"] = (object)0;
+
             int num1 = (int)CustomMessageBox.Show("Please move the Camjoystick axis you want assigned to this function after clicking ok");
+
             DateTime now = DateTime.Now;
             while (now.AddSeconds(10.0) > DateTime.Now)
             {
-                Camjoystick.Poll();
+                CamJStick.Poll();
                 Thread.Sleep(50);
-                CamJoystickState camJoystickState2 = Camjoystick.CurrentCamJoystickState();
+                CamJoystickState camJoystickState2 = CamJStick.CurrentCamJoystickState();
                 camJoystickState2.GetSlider();
+
                 int[] pointOfView = camJoystickState2.GetPointOfView();
                 foreach (PropertyInfo property in camJoystickState2.GetType().GetProperties())
                 {
@@ -215,21 +223,24 @@ namespace MissionPlanner.CamJoystick
                     if ((int)hashtable[(object)property.Name] > int.Parse(property.GetValue((object)camJoystickState2, (object[])null).ToString()) + threshold || (int)hashtable[(object)property.Name] < int.Parse(property.GetValue((object)camJoystickState2, (object[])null).ToString()) - threshold)
                     {
                         MissionPlanner.CamJoystick.CamJoystick.log.Info((object)property.Name);
-                        Camjoystick.Unacquire();
+                        CamJStick.Unacquire();
                         return (MissionPlanner.CamJoystick.CamJoystick.joystickaxis)Enum.Parse(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis), property.Name);
                     }
                 }
+
                 if ((int)hashtable[(object)"Hatud1"] != pointOfView[0])
                 {
-                    Camjoystick.Unacquire();
+                    CamJStick.Unacquire();
                     return MissionPlanner.CamJoystick.CamJoystick.joystickaxis.HatUpDown;
                 }
+
                 if ((int)hashtable[(object)"Hatlr2"] != pointOfView[0])
                 {
-                    Camjoystick.Unacquire();
+                    CamJStick.Unacquire();
                     return MissionPlanner.CamJoystick.CamJoystick.joystickaxis.HatLeftRight;
                 }
             }
+
             int num2 = (int)CustomMessageBox.Show("No valid option was detected");
             return MissionPlanner.CamJoystick.CamJoystick.joystickaxis.None;
         }

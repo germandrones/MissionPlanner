@@ -226,6 +226,7 @@ namespace MissionPlanner.CamJoystick
                 Settings.Instance["cam_joystick_name"] = this.CMB_joysticks.Text;
                 MainV2.Camjoystick = camJoystick;
                 MainV2.Camjoystick.enabled = true;
+                myButton1.Text = "Disable";
                 this.timer1.Start();
             }
         }
@@ -321,7 +322,7 @@ namespace MissionPlanner.CamJoystick
         }
 
         private void BUT_detch1_Click(object sender, EventArgs e)
-        {
+        {            
             this.CMB_CH1.Text = MissionPlanner.CamJoystick.CamJoystick.getMovingAxis(this.CMB_joysticks.Text, 16000).ToString();
         }
 
@@ -1412,7 +1413,7 @@ namespace MissionPlanner.CamJoystick
             this.myButton1.Name = "myButton1";
             this.myButton1.Size = new Size(75, 23);
             this.myButton1.TabIndex = 120;
-            this.myButton1.Text = "Enable";
+            this.myButton1.Text = MainV2.Camjoystick == null ? "Enable" : "Disable";
             this.myButton1.UseVisualStyleBackColor = true;
             this.myButton1.Click += new EventHandler(this.BUT_enable_click);
             this.NUCProgressBar.DrawLabel = true;
