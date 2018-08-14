@@ -2372,8 +2372,9 @@ namespace MissionPlanner.GCSViews
                     }
                 }
             }
-            
+
             #region Saving and Uploading the mission
+            MainV2.missionUploading = true;
             IProgressReporterDialogue frmProgressReporter = new ProgressReporterDialogue
             {
                 StartPosition = FormStartPosition.CenterScreen,
@@ -2385,15 +2386,14 @@ namespace MissionPlanner.GCSViews
             frmProgressReporter.UpdateProgressAndStatus(-1, "Sending WP's");
 
             ThemeManager.ApplyThemeTo(frmProgressReporter);
-
             frmProgressReporter.RunBackgroundOperationAsync();
-
             frmProgressReporter.Dispose();
 
             #endregion
 
             MainMap.Focus();
             FlightData.HWP_updated = false;
+            MainV2.missionUploading = false;
         }
 
 

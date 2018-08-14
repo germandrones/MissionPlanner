@@ -2589,7 +2589,7 @@ Please check the following
 
             while (true)
             {
-                if (!(start.AddMilliseconds(500) > DateTime.Now))
+                if (!(start.AddMilliseconds(1500) > DateTime.Now))
                 {
                     if (retrys > 0)
                     {
@@ -2912,11 +2912,11 @@ Please check the following
             generatePacket((byte)MAVLINK_MSG_ID.MISSION_ITEM_INT, req);
 
             DateTime start = DateTime.Now;
-            int retrys = 30;
+            int retrys = 50;
 
             while (true)
             {
-                if (!(start.AddMilliseconds(1500) > DateTime.Now))
+                if (!(start.AddMilliseconds(3000) > DateTime.Now))
                 {
                     if (retrys > 0)
                     {
@@ -3011,11 +3011,12 @@ Please check the following
 
             while (true)
             {
-                if (!(start.AddMilliseconds(1500) > DateTime.Now))
+                if (!(start.AddMilliseconds(30000) > DateTime.Now))
                 {
                     giveComport = false;
                     throw new TimeoutException("Timeout on read - getRequestedWPNo");
                 }
+
                 MAVLinkMessage buffer = readPacket();
                 if (buffer.Length > 5)
                 {

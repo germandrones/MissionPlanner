@@ -1554,7 +1554,7 @@ namespace MissionPlanner
                     }
 
                     // re-request streams
-                    if (!(lastdata.AddSeconds(8) > DateTime.Now) && mavinterface.BaseStream.IsOpen)
+                    if (!(lastdata.AddSeconds(8) > DateTime.Now) && mavinterface.BaseStream.IsOpen && !MainV2.missionUploading)
                     {
                         try
                         {

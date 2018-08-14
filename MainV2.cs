@@ -147,12 +147,12 @@ namespace MissionPlanner
             get { return _displayConfiguration; }
             set
             {
-                _displayConfiguration = value;                
-                if (LayoutChanged != null)LayoutChanged(null, EventArgs.Empty);
+                _displayConfiguration = value;
+                if (LayoutChanged != null) LayoutChanged(null, EventArgs.Empty);
             }
         }
 
-        
+
         public static bool ShowAirports { get; set; }
         public static bool ShowTFR { get; set; }
 
@@ -217,7 +217,7 @@ namespace MissionPlanner
         /// </summary>
         public object adsblock = new object();
 
-        public ConcurrentDictionary<string,adsb.PointLatLngAltHdg> adsbPlanes = new ConcurrentDictionary<string, adsb.PointLatLngAltHdg>();
+        public ConcurrentDictionary<string, adsb.PointLatLngAltHdg> adsbPlanes = new ConcurrentDictionary<string, adsb.PointLatLngAltHdg>();
 
         string titlebar;
 
@@ -284,11 +284,16 @@ namespace MissionPlanner
         bool pluginthreadrun = false;
 
         bool joystickthreadrun = false;
-        bool Camjoystickthreadrun = false;
 
         Thread httpthread;
         Thread joystickthread;
-        Thread Camjoystickthread;
+
+        public Thread Camjoystickthread;
+        public bool Camjoystickthreadrun = false;
+
+        public static bool missionUploading = false;
+        
+
         Thread serialreaderthread;
         Thread pluginthread;
 
@@ -1827,7 +1832,7 @@ namespace MissionPlanner
 
             DateTime lastratechange = DateTime.Now;
 
-            joystickthreadrun = true;
+            //joystickthreadrun = true;
 
             while (joystickthreadrun)
             {
@@ -1845,7 +1850,7 @@ namespace MissionPlanner
                     {
                         //joystick stuff
 
-                        if (joystick != null && joystick.enabled)
+                        if (joystick != null && joystick.enabled && !MainV2.missionUploading)
                         {
                             if (!joystick.manual_control)
                             {
@@ -1971,7 +1976,7 @@ namespace MissionPlanner
         {
             int num = 0;
             DateTime now = DateTime.Now;
-            this.Camjoystickthreadrun = true;
+            Camjoystickthreadrun = true;
             while (this.Camjoystickthreadrun)
             {
                 this.CamjoysendThreadExited = false;
@@ -1982,7 +1987,7 @@ namespace MissionPlanner
                         MainV2.log.Error((object)"Mono: closing joystick thread");
                         break;
                     }
-                    if (!MainV2.MONO && MainV2.Camjoystick != null)
+                    if (!MainV2.MONO && MainV2.Camjoystick != null && !MainV2.missionUploading) // on mission uploading do pause
                     {
                         MAVLink.mavlink_v2_extension_t mavlinkV2ExtensionT = new MAVLink.mavlink_v2_extension_t();
                         mavlinkV2ExtensionT.v2_type = (byte)0;
