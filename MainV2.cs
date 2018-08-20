@@ -3368,6 +3368,28 @@ namespace MissionPlanner
                     CurrentState.DistanceUnit = "m";
                 }
 
+                // alt
+                if (Settings.Instance["altunits"] != null)
+                {
+                    switch (
+                        (distances)Enum.Parse(typeof(altitudes), Settings.Instance["altunits"].ToString()))
+                    {
+                        case distances.Meters:
+                            CurrentState.multiplieralt = 1;
+                            CurrentState.AltUnit = "m";
+                            break;
+                        case distances.Feet:
+                            CurrentState.multiplieralt = 3.2808399f;
+                            CurrentState.AltUnit = "ft";
+                            break;
+                    }
+                }
+                else
+                {
+                    CurrentState.multiplieralt = 1;
+                    CurrentState.AltUnit = "m";
+                }
+
                 // speed
                 if (Settings.Instance["speedunits"] != null)
                 {

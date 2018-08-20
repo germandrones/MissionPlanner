@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using ZedGraph;
 using GMap.NET;
 using System.Xml;
+using MissionPlanner.GCSViews;
 using MissionPlanner.Utilities; // GE xml alt reader
 
 namespace MissionPlanner
@@ -59,12 +60,12 @@ namespace MissionPlanner
 
                 if (lastloc != null)
                 {
-                    distance += (int) loc.GetDistance(lastloc);
+                    distance += (int)loc.GetDistance(lastloc);
                 }
                 lastloc = loc;
             }
 
-            this.homealt = homealt/CurrentState.multiplierdist;
+            this.homealt = homealt / CurrentState.multiplieralt;
 
             Form frm = Common.LoadingBox("Loading", "using alt data");
 
@@ -77,8 +78,6 @@ namespace MissionPlanner
             MissionPlanner.Utilities.Tracking.AddPage(this.GetType().ToString(), this.Text);
         }
 
-
-
         private void ElevationProfile_Load(object sender, EventArgs e)
         {
             if (planlocs.Count <= 1)
@@ -88,7 +87,7 @@ namespace MissionPlanner
             }
             // GE plot
             double a = 0;
-            double increment = (distance/(float)(gelocs.Count - 1));
+            double increment = (distance / (float)(gelocs.Count - 1));
 
             foreach (PointLatLngAlt geloc in gelocs)
             {
@@ -125,13 +124,13 @@ namespace MissionPlanner
                 else if (altmode == GCSViews.FlightPlanner.altmode.Relative)
                 {
                     // already includes the home alt
-                    list1.Add(a, (planloc.Alt/CurrentState.multiplierdist), 0, planloc.Tag);
+                    list1.Add(a, (planloc.Alt / CurrentState.multiplieralt), 0, planloc.Tag);
                 }
                 else
                 {
                     // abs
                     // already absolute
-                    list1.Add(a, (planloc.Alt/CurrentState.multiplierdist), 0, planloc.Tag);
+                    list1.Add(a, (planloc.Alt / CurrentState.multiplieralt), 0, planloc.Tag);
                 }
 
                 lastloc = planloc;
@@ -157,25 +156,33 @@ namespace MissionPlanner
                 if (last == null)
                 {
                     last = loc;
+                    if (altmode == FlightPlanner.altmode.Terrain)
+                        loc.Alt -= srtm.getAltitude(loc.Lat, loc.Lng).alt;
                     continue;
                 }
 
                 double dist = last.GetDistance(loc);
 
-                int points = (int) (dist/10) + 1;
+                if (altmode == FlightPlanner.altmode.Terrain)
+                    loc.Alt -= srtm.getAltitude(loc.Lat, loc.Lng).alt;
+
+                int points = (int)(dist / 10) + 1;
 
                 double deltalat = (last.Lat - loc.Lat);
                 double deltalng = (last.Lng - loc.Lng);
+                double deltaalt = last.Alt - loc.Alt;
 
-                double steplat = deltalat/points;
-                double steplng = deltalng/points;
+                double steplat = deltalat / points;
+                double steplng = deltalng / points;
+                double stepalt = deltaalt / points;
 
                 PointLatLngAlt lastpnt = last;
 
                 for (int a = 0; a <= points; a++)
                 {
-                    double lat = last.Lat - steplat*a;
-                    double lng = last.Lng - steplng*a;
+                    double lat = last.Lat - steplat * a;
+                    double lng = last.Lng - steplng * a;
+                    double alt = last.Alt - stepalt * a;
 
                     var newpoint = new PointLatLngAlt(lat, lng, srtm.getAltitude(lat, lng).alt, "");
 
@@ -184,10 +191,10 @@ namespace MissionPlanner
                     disttotal += subdist;
 
                     // srtm alts
-                    list3.Add(disttotal, newpoint.Alt/CurrentState.multiplierdist);
+                    list3.Add(disttotal, newpoint.Alt / CurrentState.multiplieralt);
 
                     // terrain alt
-                    list4terrain.Add(disttotal, (newpoint.Alt - homealt + loc.Alt)/CurrentState.multiplierdist);
+                    list4terrain.Add(disttotal, (newpoint.Alt + alt) / CurrentState.multiplieralt);
 
                     lastpnt = newpoint;
                 }
@@ -226,7 +233,7 @@ namespace MissionPlanner
 
             if (list.Count < 2 || coords.Length > (2048 - 256))
             {
-                CustomMessageBox.Show("Too many/few WP's or to Big a Distance " + (distance/1000) + "km", Strings.ERROR);
+                CustomMessageBox.Show("Too many/few WP's or to Big a Distance " + (distance / 1000) + "km", Strings.ERROR);
                 return answer;
             }
 
@@ -235,7 +242,7 @@ namespace MissionPlanner
                 using (
                     XmlTextReader xmlreader =
                         new XmlTextReader("http://maps.google.com/maps/api/elevation/xml?path=" + coords + "&samples=" +
-                                          (distance/100).ToString(new System.Globalization.CultureInfo("en-US")) +
+                                          (distance / 100).ToString(new System.Globalization.CultureInfo("en-US")) +
                                           "&sensor=false"))
                 {
                     while (xmlreader.Read())
@@ -288,13 +295,13 @@ namespace MissionPlanner
             foreach (PointPair pp in list1)
             {
                 // Add a another text item to to point out a graph feature
-                TextObj text = new TextObj((string) pp.Tag, pp.X, pp.Y);
+                TextObj text = new TextObj((string)pp.Tag, pp.X, pp.Y);
                 // rotate the text 90 degrees
-                text.FontSpec.Angle = 0;
-                text.FontSpec.FontColor = Color.Black;
+                text.FontSpec.Angle = 90;
+                text.FontSpec.FontColor = Color.White;
                 // Align the text such that the Right-Center is at (700, 50) in user scale coordinates
                 text.Location.AlignH = AlignH.Right;
-                text.Location.AlignV = AlignV.Bottom;
+                text.Location.AlignV = AlignV.Center;
                 // Disable the border and background fill options for the text
                 text.FontSpec.Fill.IsVisible = false;
                 text.FontSpec.Border.IsVisible = false;
