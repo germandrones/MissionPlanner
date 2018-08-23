@@ -199,7 +199,7 @@ namespace MissionPlanner
                     lastpnt = newpoint;
                 }
 
-                answer.Add(new PointLatLngAlt(loc.Lat, loc.Lng, srtm.getAltitude(loc.Lat, loc.Lng).alt, ""));
+                answer.Add(new PointLatLngAlt(loc.Lat, loc.Lng, srtm.getAltitude(loc.Lat, loc.Lng).alt));
 
                 last = loc;
             }
@@ -296,9 +296,10 @@ namespace MissionPlanner
             {
                 // Add a another text item to to point out a graph feature
                 TextObj text = new TextObj((string)pp.Tag, pp.X, pp.Y);
+                
                 // rotate the text 90 degrees
                 text.FontSpec.Angle = 90;
-                text.FontSpec.FontColor = Color.White;
+                text.FontSpec.FontColor = Color.Black;
                 // Align the text such that the Right-Center is at (700, 50) in user scale coordinates
                 text.Location.AlignH = AlignH.Right;
                 text.Location.AlignV = AlignV.Center;

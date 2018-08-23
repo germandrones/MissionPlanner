@@ -1913,7 +1913,7 @@ namespace MissionPlanner.GCSViews
                 Invoke((MethodInvoker)delegate
                 {
                     overlay.Markers.Add(m);
-                    //overlay.Markers.Add(mBorders);
+                    overlay.Markers.Add(mBorders);
                 });
             }
             catch (Exception)

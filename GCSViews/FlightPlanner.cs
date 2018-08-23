@@ -57,7 +57,7 @@ namespace MissionPlanner.GCSViews
         MissionChecker missionChecker = new MissionChecker();
         MissionChecker.MissionCheckerResult mCheckerResult;
 
-        altmode currentaltmode = altmode.Relative;
+        public altmode currentaltmode = altmode.Relative;
 
         bool grid;
 
@@ -2312,27 +2312,29 @@ namespace MissionPlanner.GCSViews
 
             if (mCheckerResult == MissionChecker.MissionCheckerResult.OK)
             {
+                // that will restore the mission from mission checker list
+                //Commands.Rows.Clear();
+                //foreach (var mitem in missionChecker.defined_mission) { AddCommand((MAVLink.MAV_CMD)mitem.getCommand(), mitem.P1, mitem.P2, mitem.P3, mitem.P4, mitem.getCoords().Lng, mitem.getCoords().Lat, mitem.getCoords().Alt); }
+                
                 /*Disable HWPs generating if needed*/
                 int disableHWP_CMD_ID = missionChecker.getDoDisableHWPCommandID();
                 if (disableHWP_CMD_ID > 0) { Commands.Rows.RemoveAt(disableHWP_CMD_ID); }
                 if (missionChecker.DO_DISABLE_HWP) { AddCommand(MAVLink.MAV_CMD.MAV_CMD_DO_DISABLE_HWP, 0, 0, 0, 0, 0, 0, 0); }
-
-
-
-                /*if (missionChecker.DO_DISABLE_HWP || missionChecker.defined_mission.Count != Commands.RowCount)
-                {
-                    DialogResult result = MessageBox.Show("Headwind Waypoints will be deactivated and Mission will be modified automatically.\nClick Yes to allow this modifications, or No to continue uploading.", "Mission Checker", MessageBoxButtons.YesNo);
-                    if (result == DialogResult.Yes)
-                    {
-                        Commands.Rows.Clear();
-                        foreach (var mitem in missionChecker.defined_mission) { AddCommand((MAVLink.MAV_CMD)mitem.getCommand(), mitem.P1, mitem.P2, mitem.P3, mitem.P4, mitem.getCoords().Lng, mitem.getCoords().Lat, mitem.getCoords().Alt); }
-                    }
-                }*/
+                
+                writeKML();
             }
             else
             {
                 return;
             }
+
+            if (currentaltmode == altmode.Terrain)
+            {
+                // verify heights
+                missionChecker.doCheckElevation();
+            }
+
+
 
             // check for invalid grid data
             for (int a = 0; a < Commands.Rows.Count - 0; a++)
@@ -8083,18 +8085,10 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             mCheckerResult = missionChecker.doCheckLandingDirection();
             if (mCheckerResult != MissionChecker.MissionCheckerResult.OK) return;
 
-            /*((ProgressReporterDialogue)sender).UpdateProgressAndStatus(90, "Checking headwind landing sequence...");
-            if (!missionChecker.DO_DISABLE_HWP)
-            {
-                missionChecker.doRestoreModifiedMission();
-            }
-            else
-            {
-                ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(75, "Modifying mission...");
-                mCheckerResult = missionChecker.doDisableHWP();
-            }
-            if (mCheckerResult != MissionChecker.MissionCheckerResult.OK) return;
-            */
+            
+            // TODO: add check if terrain mode is set! Verify altitude here
+
+
 
             // all checks passed.
         }

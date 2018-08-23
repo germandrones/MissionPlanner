@@ -3070,11 +3070,10 @@ Please check the following
 
         public void setGuidedModeWP(byte sysid, byte compid, Locationwp gotohere, bool setguidedmode = true)
         {
-            if (gotohere.alt == 0 || gotohere.lat == 0 || gotohere.lng == 0)
-                return;
+            if (gotohere.alt == 0 || gotohere.lat == 0 || gotohere.lng == 0) return;
 
             giveComport = true;
-
+            
             try
             {
                 gotohere.id = (ushort)MAV_CMD.WAYPOINT;

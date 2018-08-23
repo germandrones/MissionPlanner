@@ -195,6 +195,9 @@ namespace MissionPlanner.Utilities
                 if (cmd_id == (int)MAVLink.MAV_CMD.LAND) m_land_id = defined_mission.Count();
 
                 defined_mission.Add(new MissionItem(cmd_id, p1, p2, p3, p4, x, y, z));
+
+                //actually we ignore all after landing point
+                if (cmd_id == (int)MAVLink.MAV_CMD.LAND) break;
             }
         }
 
@@ -245,8 +248,6 @@ namespace MissionPlanner.Utilities
                 {
                     if (lp_bearing >= unsafeAngleStart && lp_bearing <= unsafeAngleEnd) return MissionCheckerResult.LANDING_CROSING_UNSAFE_AREA;
                 }
-
-
             }
             return MissionCheckerResult.OK;
         }
@@ -359,9 +360,51 @@ namespace MissionPlanner.Utilities
             //if (LTA.GetDistance(LWP) < m_hwp_lradius + m_hwp_wpradius) return MissionCheckerResult.DISTANCE_UNSAFE;
             return MissionCheckerResult.OK;
         }
+
+        //check only waypoints
+        public MissionCheckerResult doCheckElevation()
+        {
+            for (int a = 0; a < defined_mission.Count - 1; a++)
+            {
+                // lets find a pair of waypoints to check the altitude
+                PointLatLngAlt p1;
+                if (defined_mission[a].getCommand() != (ushort)MAVLink.MAV_CMD.WAYPOINT) continue; else p1 = defined_mission[a].getCoords();
+
+                //ok first wp is found, find next
+                PointLatLngAlt p2 = null;
+                for (int i = a + 1; i < defined_mission.Count; i++)
+                {
+                    if (defined_mission[i].getCommand() != (ushort)MAVLink.MAV_CMD.WAYPOINT) continue; else { p2 = defined_mission[i].getCoords(); a = i; break; }
+                }
+
+                if (p2 == null) { return MissionCheckerResult.OK; } //we finished check
+
+                // calculate altitude difference in meters
+                double alt_p1 = p1.Alt + srtm.getAltitude(p1.Lat, p1.Lng).alt;
+                double alt_p2 = p2.Alt + srtm.getAltitude(p2.Lat, p2.Lng).alt;
+                double alt_diff = Math.Abs(alt_p2 - alt_p1); // altitude difference in meters
+
+                double distance = p1.GetDistance(p2); // distance in meters
+
+                double pitchAngle = Math.Atan(alt_diff / distance) / (Math.PI / 180); // angle in deg
+
+                if(pitchAngle > 20 || pitchAngle < -25)
+                {
+                    //this situation is dangerous! Alert!
+
+                    string alertText = "Dangerous Altitude is detected on WP " + a + ". Pitch angle is critical." + pitchAngle.ToString();
+                    MessageBox.Show(alertText, "Mission Checker warning", MessageBoxButtons.OK);
+
+                    return MissionCheckerResult.GROUND_COLLISION_DETECTED;
+                }
+            }
+            return MissionCheckerResult.OK;
+        }
         
 
         #endregion
+
+
 
     }
 }
