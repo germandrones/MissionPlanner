@@ -25,7 +25,7 @@ using WebCamService;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
+using SharpDX.DirectInput;
 
 namespace MissionPlanner
 {
@@ -288,12 +288,16 @@ namespace MissionPlanner
         Thread httpthread;
         Thread joystickthread;
 
+        /*Camera control Joystick threads*/
         public Thread Camjoystickthread;
         public bool Camjoystickthreadrun = false;
 
-        public static bool missionUploading = false;
-        
+        public Thread CamjoystickDetectThread;
+        public bool CamjoystickDetectThreadRun = false;
 
+
+
+        public static bool missionUploading = false;
         Thread serialreaderthread;
         Thread pluginthread;
 
@@ -1085,14 +1089,12 @@ namespace MissionPlanner
         {
             _connectionControl.CMB_serialport.Items.Clear();
             _connectionControl.CMB_serialport.Items.Add("AUTO");
-            _connectionControl.CMB_serialport.Items.AddRange(SerialPort.GetPortNames(true));
-
+            _connectionControl.CMB_serialport.Items.AddRange(SerialPort.GetPortNames());
             _connectionControl.CMB_serialport.Items.Add("TCP");
-            /* UPD GDMP-9 Temporary commented */
             _connectionControl.CMB_serialport.Items.Add("UDP");
             //_connectionControl.CMB_serialport.Items.Add("UDPCl");
-            
         }
+       
 
         private void MenuFlightData_Click(object sender, EventArgs e)
         {
@@ -1819,8 +1821,7 @@ namespace MissionPlanner
             }
         }
 
-        volatile private bool joysendThreadExited = true;
-        volatile private bool CamjoysendThreadExited = true;
+        volatile private bool joysendThreadExited = true;        
 
         /// <summary>
         /// thread used to send joystick packets to the MAV
@@ -1878,36 +1879,6 @@ namespace MissionPlanner
 
                                 if (lastjoystick.AddMilliseconds(rate) < DateTime.Now)
                                 {
-                                    /*
-                                if (MainV2.comPort.MAV.cs.rssi > 0 && MainV2.comPort.MAV.cs.remrssi > 0)
-                                {
-                                    if (lastratechange.Second != DateTime.Now.Second)
-                                    {
-                                        if (MainV2.comPort.MAV.cs.txbuffer > 90)
-                                        {
-                                            if (rate < 20)
-                                                rate = 21;
-                                            rate--;
-
-                                            if (MainV2.comPort.MAV.cs.linkqualitygcs < 70)
-                                                rate = 50;
-                                        }
-                                        else
-                                        {
-                                            if (rate > 100)
-                                                rate = 100;
-                                            rate++;
-                                        }
-
-                                        lastratechange = DateTime.Now;
-                                    }
-                                 
-                                }
-                                */
-                                    //                                Console.WriteLine(DateTime.Now.Millisecond + " {0} {1} {2} {3} {4}", rc.chan1_raw, rc.chan2_raw, rc.chan3_raw, rc.chan4_raw,rate);
-
-                                    //Console.WriteLine("Joystick btw " + comPort.BaseStream.BytesToWrite);
-
                                     if (!comPort.BaseStream.IsOpen)
                                         continue;
 
@@ -1972,6 +1943,64 @@ namespace MissionPlanner
             joysendThreadExited = true; //so we know this thread exited.    
         }
 
+        // Joystick Autodetection thread
+        private bool CamJoystickFound = false;
+        private void CamjoystickDetect()
+        {
+            while(this.CamjoystickDetectThreadRun)            
+            {
+                bool statusChanged = false;
+                string devName = "";
+                try {
+                    IList<DeviceInstance> devices = CamJoystick.CamJoystick.getDevices(); //Get List of Devices!                    
+                    if (devices.Count() > 0)
+                    {
+                        statusChanged = CamJoystickFound ? false : true;
+                        CamJoystickFound = true;                        
+                        devName = devices[0].ProductName + " # " + 1;
+                    }
+                    else
+                    {
+                        statusChanged = CamJoystickFound ? true : false;
+                        CamJoystickFound = false;                        
+                    }
+                }
+                catch { }
+
+                if (statusChanged) // do once
+                {
+                    if (CamJoystickFound)
+                    {
+                        MainV2.comPort.MAV.cs.messages.Add("Joystick found.");
+
+                        try
+                        {
+                            MissionPlanner.CamJoystick.CamJoystick camJoystick = new MissionPlanner.CamJoystick.CamJoystick();
+                            if (!camJoystick.start(devName))
+                            {
+                                int num = (int)CustomMessageBox.Show("Please Connect a Joystick", "No Joystick");
+                                camJoystick.Dispose();
+                            }
+                            else
+                            {
+                                Settings.Instance["cam_joystick_name"] = devName;
+                                MainV2.Camjoystick = camJoystick;
+                                MainV2.Camjoystick.enabled = true;
+                                MainV2.comPort.MAV.cs.messages.Add(devName + " is active.");
+                            }
+                        }
+                        catch { }
+                    }
+                    else
+                    {
+                        MainV2.comPort.MAV.cs.messages.Add("Joystick lost");
+                    }
+                }
+
+            }
+        }
+
+        volatile private bool CamjoysendThreadExited = true;
         private void Camjoysticksend()
         {
             int num = 0;
@@ -2772,6 +2801,19 @@ namespace MissionPlanner
             joystickthread.Start();
 
 
+            // Additional Thread to look for the joystick if connected.
+            MainV2.log.Info((object)"start camjoystickDetectThread");
+            this.CamjoystickDetectThread = new Thread(new ThreadStart(this.CamjoystickDetect))
+            {
+                IsBackground = true,
+                Priority = ThreadPriority.Normal,
+                Name = "Camera Joystick Autodetect Thread"
+            };
+            this.CamjoystickDetectThreadRun = true; // Enable Thread
+            this.CamjoystickDetectThread.Start();
+
+
+            // This thread sends CameraJoystick Data over Mavlink.
             MainV2.log.Info((object)"start camjoystick");
             this.Camjoystickthread = new Thread(new ThreadStart(this.Camjoysticksend))
             {
@@ -2780,6 +2822,10 @@ namespace MissionPlanner
                 Name = "Main Camera joystick sender"
             };
             this.Camjoystickthread.Start();
+
+            
+
+
 
 
             log.Info("start serialreader");

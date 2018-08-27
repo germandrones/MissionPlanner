@@ -5072,6 +5072,8 @@ namespace MissionPlanner.GCSViews
             }
         }
 
+
+
         private void stowToolStripMenuItem_Click(object sender, EventArgs e)
         {
             RadioBtnStow.Checked = true;
@@ -5102,7 +5104,7 @@ namespace MissionPlanner.GCSViews
             if (!MainV2.comPort.BaseStream.IsOpen)
             {
                 MessageBox.Show("Please connect first...");
-                return;
+                //return;
             }
 
             Form form = (Form)new CamJoystickSetup();

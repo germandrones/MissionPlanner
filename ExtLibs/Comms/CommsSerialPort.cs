@@ -8,11 +8,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 using System.Threading;
-
-
 using log4net;
 using System.Management;
-using System.Runtime;
 
 namespace MissionPlanner.Comms
 {
@@ -25,38 +22,8 @@ namespace MissionPlanner.Comms
 
         public new bool DtrEnable { get { return base.DtrEnable; } set { log.Info(base.PortName + " DtrEnable " + value); if (base.DtrEnable == value) return; if (ispx4(base.PortName)) return; base.DtrEnable = value; } }
         public new bool RtsEnable { get { return base.RtsEnable; } set { log.Info(base.PortName + " RtsEnable " + value); if (base.RtsEnable == value) return; if (ispx4(base.PortName)) return; base.RtsEnable = value; } }
-        /*
-        protected override void Dispose(bool disposing)
-        {
-            try
-            {
-                try
-                {
-                    Type mytype = typeof(System.IO.Ports.SerialPort);
-                    FieldInfo field = mytype.GetField("internalSerialStream", BindingFlags.Instance | BindingFlags.NonPublic);
+        
 
-                    if (field != null)
-                    {
-                        Stream stream = (Stream)field.GetValue(this);
-
-                        if (stream != null)
-                        {
-                            try
-                            {
-                                stream.Dispose();
-                            }
-                            catch (Exception ex) { Console.WriteLine("1 " + ex.ToString()); }
-                            stream = null;
-                        }
-                    }
-                }
-                catch (Exception ex) { Console.WriteLine("2 " + ex.ToString()); }
-
-                base.Dispose(disposing);
-            }
-            catch (Exception ex) { Console.WriteLine("3 " + ex.ToString()); }
-        }
-        */
         public new void Open()
         {
             // 500ms write timeout - win32 api default
@@ -86,7 +53,8 @@ namespace MissionPlanner.Comms
                 base.Open();
                 base.WriteTimeout = -1;
             }
-            catch {
+            catch
+            {
                 try { Close(); }
                 catch { }
                 throw;
@@ -137,52 +105,17 @@ namespace MissionPlanner.Comms
             Console.WriteLine("toggleDTR done " + this.IsOpen);
         }
 
-        public new static string[] GetPortNames(bool showAll = false)
+        public new static string[] GetPortNames()
         {
             // prevent hammering
             lock (locker)
             {
                 List<string> allPorts = new List<string>();
 
-                // Try to get a ports list in Mono
-                if (Directory.Exists("/dev/"))
-                {
-                    // cleanup now
-                    GC.Collect();
-                    // mono is failing in here on linux "too many open files"
-                    try
-                    {
-                        if (Directory.Exists("/dev/serial/by-id/"))
-                            allPorts.AddRange(Directory.GetFiles("/dev/serial/by-id/", "*"));
-                    }
-                    catch { }
-                    try
-                    {
-                        allPorts.AddRange(Directory.GetFiles("/dev/", "ttyACM*"));
-                    }
-                    catch { }
-                    try
-                    {
-                        allPorts.AddRange(Directory.GetFiles("/dev/", "ttyUSB*"));
-                    }
-                    catch { }
-                    try
-                    {
-                        allPorts.AddRange(Directory.GetFiles("/dev/", "rfcomm*"));
-                    }
-                    catch { }
-                    try
-                    {
-                        allPorts.AddRange(Directory.GetFiles("/dev/", "*usb*"));
-                    }
-                    catch { }
-                }
-
                 string[] ports = null;
-                
+
                 try
                 {
-                    // Get the array of all serial ports
                     ports = System.IO.Ports.SerialPort.GetPortNames()
                     .Select(p => p.TrimEnd())
                     .Select(FixBlueToothPortNameBug)
@@ -191,31 +124,29 @@ namespace MissionPlanner.Comms
                     // UPD: GDMP-9                     
                     #region find all FTDI
                     ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PnPEntity  WHERE Caption like '%(COM%'");
-
-                    if(showAll) // in dev mode return all ports
-                    {
-                        foreach (string p in ports) { allPorts.Add(p); }
-                        return allPorts.ToArray();
-                    }
+                    List<string> ftdi_ports = new List<string>();
 
                     foreach (ManagementObject queryObj in searcher.Get())
-                    {                        
+                    {
                         if (queryObj["DeviceID"].ToString().Contains("VID_0403") || queryObj["DeviceID"].ToString().Contains("VID_26AC") || queryObj["DeviceID"].ToString().Contains("VID_1FFB"))
                         {
                             // this device is supported:
                             string devCaption = queryObj["Caption"].ToString();
                             foreach (string p in ports)
                             {
-                                if (devCaption.Contains(p)) { allPorts.Add(p); }
+                                if (devCaption.Contains(p))
+                                {
+                                    ftdi_ports.Add(p);
+                                    allPorts.Add(p);
+                                }
                             }
                         }
                     }
-
                     #endregion
-
-                    
                 }
                 catch { }
+
+                if (ports != null) allPorts.AddRange(ports);
 
                 return allPorts.ToArray();
             }
@@ -304,7 +235,6 @@ namespace MissionPlanner.Comms
         {
             try
             {
-                /*
                 ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_SerialPort");// Win32_USBControllerDevice
                 using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
                 {
@@ -313,13 +243,10 @@ namespace MissionPlanner.Comms
                         //DeviceID                     
                         if (obj2.Properties["DeviceID"].Value.ToString().ToUpper() == port.ToUpper())
                         {
-                            if (obj2.Properties["Name"].Value.ToString().ToLower().Contains("px4"))
-                                return true;
+                            if (obj2.Properties["Name"].Value.ToString().ToLower().Contains("px4")) return true;
                         }
                     }
-
                 }
-                */
             }
             catch (Exception ex) { log.Error(ex); }
 
@@ -438,7 +365,7 @@ namespace MissionPlanner.Comms
         {
             Dcb dcb = new Dcb();
             GetCommStateNative(ref dcb);
-            log.Info("before dcb flags: "+dcb.Flags);
+            log.Info("before dcb flags: " + dcb.Flags);
             dcb.Flags &= ~(1u << DcbFlagAbortOnError);
             log.Info("after dcb flags: " + dcb.Flags);
             SetCommStateNative(ref dcb);

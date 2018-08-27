@@ -2683,8 +2683,7 @@ namespace MissionPlanner.GCSViews
 
                 try
                 {
-                    port.setParam(new[] { "LOITER_RAD", "WP_LOITER_RAD" },
-                        float.Parse(TXT_loiterrad.Text) / CurrentState.multiplierdist);
+                    port.setParam(new[] { "LOITER_RAD", "WP_LOITER_RAD" }, float.Parse(TXT_loiterrad.Text) / CurrentState.multiplierdist);
                 }
                 catch
                 {

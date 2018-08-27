@@ -91,6 +91,7 @@ namespace MissionPlanner.CamJoystick
             this.loadconfig("Camjoystickbuttons" + (object)MainV2.comPort.MAV.cs.firmware + ".xml", "Camjoystickaxis" + (object)MainV2.comPort.MAV.cs.firmware + ".xml");
         }
 
+
         public void loadconfig(string joystickconfigbutton = "Camjoystickbuttons.xml", string joystickconfigaxis = "Camjoystickaxis.xml")
         {
             MissionPlanner.CamJoystick.CamJoystick.log.Info((object)("Loading Camjoystick config files " + joystickconfigbutton + " " + joystickconfigaxis));
@@ -334,7 +335,7 @@ namespace MissionPlanner.CamJoystick
 
         private void mainloop()
         {
-            while (this.enabled)
+            while (this.enabled && this.Camjoystick != null)
             {
                 try
                 {
@@ -413,8 +414,8 @@ namespace MissionPlanner.CamJoystick
                 {
                     MissionPlanner.CamJoystick.CamJoystick.log.Error((object)ex);
                     int num;
-                    MainV2.instance.Invoke((System.Action)delegate { CustomMessageBox.Show("Lost Camera Joystick", "Lost Camera Joystick"); });
-                    break;
+                    //MainV2.instance.Invoke((System.Action)delegate { CustomMessageBox.Show("Lost Camera Joystick", "Lost Camera Joystick"); });
+                    //break;
                 }
                 catch (Exception ex)
                 {
