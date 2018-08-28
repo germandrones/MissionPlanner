@@ -100,11 +100,7 @@
 
   </ItemGroup>
   
-  <ItemGroup>
-    <ProjectReference Include="ExtLibs\AltitudeAngelWings\AltitudeAngelWings.csproj">
-      <Project>{098f542c-7c70-4b9c-b2e2-ac5dc5e0294b}</Project>
-      <Name>AltitudeAngelWings</Name>
-    </ProjectReference>
+  <ItemGroup>    
     <ProjectReference Include="ExtLibs\Arduino\Arduino.csproj">
       <Project>{DFA3C3B7-F098-4567-A780-A37DC52CA577}</Project>
       <Name>Arduino</Name>

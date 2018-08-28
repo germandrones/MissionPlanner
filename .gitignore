@@ -24,7 +24,6 @@ obj/
 *.ncrunchproject
 *.crunchsolution.cache
 *.ncrunchsolution
-/Plugins/AltitudeAngelWings/AltitudeAngelWings/Keys.config
 /ExtLibs/Mavlink/Mavlink.cs
 /ExtLibs/Mavlink/mavlink
 /LogAnalyzer/LogAnalyzer.zip
@@ -33,10 +32,8 @@ obj/
 /LogAnalyzer/LogAnalyzer64.zip
 /gstream
 /MissionPlanner.appx
-/AltitudeAngelWings.sln
 /appxkey.cer
 /ExtLibs/Portable/Portable
-/ExtLibs/AltitudeAngelWings/Keys.config
 /MissionPlannerBeta.zip
 *.vspx
 /ExtLibs/Android

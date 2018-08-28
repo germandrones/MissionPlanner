@@ -2906,35 +2906,6 @@ namespace MissionPlanner
 
             ZeroConf.ProbeForRTSP();
 
-            /*try
-            {
-                log.Info("Load AltitudeAngel");
-                new Utilities.AltitudeAngel.AltitudeAngel();
-
-                // setup as a prompt once dialog
-                if (!Settings.Instance.GetBoolean("AACheck2"))
-                {
-                    if (CustomMessageBox.Show(
-                            "Do you wish to enable Altitude Angel airspace management data?\nFor more information visit [link;http://www.altitudeangel.com;www.altitudeangel.com]",
-                            "Altitude Angel - Enable", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    {
-                        Utilities.AltitudeAngel.AltitudeAngel.service.SignInAsync();
-                    }
-
-                    Settings.Instance["AACheck2"] = true.ToString();
-                }
-                
-                log.Info("Load AltitudeAngel... Done");
-            }
-            catch (TypeInitializationException) // windows xp lacking patch level
-            {
-                //CustomMessageBox.Show("Please update your .net version. kb2468871");
-            }
-            catch (Exception ex)
-            {
-                Tracking.AddException(ex);
-            }*/
-
             this.ResumeLayout();
 
             Program.Splash?.Close();
