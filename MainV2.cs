@@ -27,6 +27,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using SharpDX.DirectInput;
 
+using NextVisionControlLibrary;// Special NExtvision extended library
+
 namespace MissionPlanner
 {
     public partial class MainV2 : Form
@@ -285,10 +287,11 @@ namespace MissionPlanner
 
         bool joystickthreadrun = false;
 
-        Thread httpthread;
-        Thread joystickthread;
+        //Thread httpthread;
+        //Thread joystickthread;
 
         /*Camera control Joystick threads*/
+        public static float gimbal_current_target = 0;
         public Thread Camjoystickthread;
         public bool Camjoystickthreadrun = false;
 
@@ -304,7 +307,7 @@ namespace MissionPlanner
         /// <summary>
         /// track the last heartbeat sent
         /// </summary>
-        private DateTime heatbeatSend = DateTime.Now;
+        private DateTime heartbeatSend = DateTime.Now;
 
         /// <summary>
         /// used to call anything as needed.
@@ -1645,7 +1648,7 @@ namespace MissionPlanner
             // save config
             SaveConfig();
 
-            Console.WriteLine(httpthread?.IsAlive);
+            //Console.WriteLine(httpthread?.IsAlive);
             //Console.WriteLine(joystickthread?.IsAlive);
             Console.WriteLine(serialreaderthread?.IsAlive);
             Console.WriteLine(pluginthread?.IsAlive);
@@ -1963,7 +1966,7 @@ namespace MissionPlanner
                             }
                         }
 
-                        // if mode switch joystick butto is pressed...
+                        // if mode switch joystick button is pressed...
                         if ((uint)MainV2.Camjoystick.getJoystickAxis(1) > 0U)
                         {
                             byte controlSingleYaw = MainV2.Colibri.EditingControlSingleYaw;
@@ -2012,7 +2015,7 @@ namespace MissionPlanner
                             Thread.Sleep(250);
                             continue;
                         }
-                        MainV2.comPort.sendPacket((object)mavlinkV2ExtensionT, (int)MainV2.comPort.MAV.sysid, (int)MainV2.comPort.MAV.compid);
+                        MainV2.comPort.sendPacket((object)mavlinkV2ExtensionT, (int)MainV2.comPort.MAV.sysid, (int)MainV2.comPort.MAV.compid);                        
                         ++num;
                     }
                     Thread.Sleep(40);
@@ -2021,6 +2024,13 @@ namespace MissionPlanner
                 {
                     MainV2.log.Error((object)ex);
                 }
+
+
+                // Try to read feedback from Colibri if connected
+                NextVisionExtended nvlib = new NextVisionExtended();
+                nvlib.read();
+
+
             }
             this.CamjoysendThreadExited = true;
         }
@@ -2157,8 +2167,9 @@ namespace MissionPlanner
                     }
 
                     // 30 seconds interval speech options
-                    if (speechEnable && speechEngine != null && (DateTime.Now - speechcustomtime).TotalSeconds > 30 &&
-                        (MainV2.comPort.logreadmode || comPort.BaseStream.IsOpen))
+                    #region Speech Stuff Disabled
+                    /*
+                    if (speechEnable && speechEngine != null && (DateTime.Now - speechcustomtime).TotalSeconds > 30 && (MainV2.comPort.logreadmode || comPort.BaseStream.IsOpen))
                     {
                         if (MainV2.speechEngine.IsReady)
                         {
@@ -2232,8 +2243,7 @@ namespace MissionPlanner
                     }
 
                     // speech altitude warning - message high warning
-                    if (speechEnable && speechEngine != null &&
-                        (MainV2.comPort.logreadmode || comPort.BaseStream.IsOpen))
+                    if (speechEnable && speechEngine != null && (MainV2.comPort.logreadmode || comPort.BaseStream.IsOpen))
                     {
                         float warnalt = float.MaxValue;
                         if (Settings.Instance.ContainsKey("speechaltheight"))
@@ -2277,6 +2287,8 @@ namespace MissionPlanner
                         {
                         }
                     }
+                    */
+                    #endregion
 
                     // not doing anything
                     if (!MainV2.comPort.logreadmode && !comPort.BaseStream.IsOpen)
@@ -2291,14 +2303,12 @@ namespace MissionPlanner
                         {
                             MainV2.comPort.MAV.cs.linkqualitygcs = (ushort) (MainV2.comPort.MAV.cs.linkqualitygcs*0.8f);
                             linkqualitytime = DateTime.Now;
-
-                            // force redraw if there are no other packets are being read
                             GCSViews.FlightData.myhud.Invalidate();
                         }
                     }
 
                     // data loss warning - wait min of 10 seconds, ignore first 30 seconds of connect, repeat at 5 seconds interval
-                    if ((DateTime.Now - MainV2.comPort.MAV.lastvalidpacket).TotalSeconds > 10
+                    /*if ((DateTime.Now - MainV2.comPort.MAV.lastvalidpacket).TotalSeconds > 10
                         && (DateTime.Now - connecttime).TotalSeconds > 30
                         && (DateTime.Now - nodatawarning).TotalSeconds > 5
                         && (MainV2.comPort.logreadmode || comPort.BaseStream.IsOpen)
@@ -2315,7 +2325,7 @@ namespace MissionPlanner
                                 nodatawarning = DateTime.Now;
                             }
                         }
-                    }
+                    }*/
 
                     // get home point on armed status change.
                     if (armedstatus != MainV2.comPort.MAV.cs.armed && comPort.BaseStream.IsOpen)
@@ -2340,18 +2350,12 @@ namespace MissionPlanner
                                 catch
                                 {
                                     // dont hang this loop
-                                    this.BeginInvoke(
-                                        (MethodInvoker)
-                                            delegate
-                                            {
-                                                CustomMessageBox.Show("Failed to update home location (" +
-                                                                      MainV2.comPort.MAV.sysid + ")");
-                                            });
+                                    this.BeginInvoke( (MethodInvoker) delegate { CustomMessageBox.Show("Failed to update home location (" + MainV2.comPort.MAV.sysid + ")"); });
                                 }
                             });
                         }
 
-                        if (speechEnable && speechEngine != null)
+                        /*if (speechEnable && speechEngine != null)
                         {
                             if (Settings.Instance.GetBoolean("speecharmenabled"))
                             {
@@ -2361,11 +2365,11 @@ namespace MissionPlanner
                                     MainV2.speechEngine.SpeakAsync(Common.speechConversion(speech));
                                 }
                             }
-                        }
+                        }*/
                     }
 
                     // send a hb every seconds from gcs to ap
-                    if (heatbeatSend.Second != DateTime.Now.Second)
+                    if (heartbeatSend.Second != DateTime.Now.Second)
                     {
                         MAVLink.mavlink_heartbeat_t htb = new MAVLink.mavlink_heartbeat_t()
                         {
@@ -2377,8 +2381,7 @@ namespace MissionPlanner
                         // enumerate each link
                         foreach (var port in Comports)
                         {
-                            if (!port.BaseStream.IsOpen)
-                                continue;
+                            if (!port.BaseStream.IsOpen) continue;
 
                             // poll for params at heartbeat interval - primary mav on this port only
                             if (!port.giveComport)
@@ -2389,7 +2392,6 @@ namespace MissionPlanner
                                     if (!port.MAV.cs.armed)
                                     {
                                         port.getParamPoll();
-                                        //port.getParamPoll();
                                     }
                                 }
                                 catch
@@ -2455,10 +2457,8 @@ namespace MissionPlanner
                                         {
                                             this.BeginInvoke((MethodInvoker) delegate()
                                             {
-                                                if (MyView.current.Name == "HWConfig")
-                                                    MyView.ShowScreen("HWConfig");
-                                                if (MyView.current.Name == "SWConfig")
-                                                    MyView.ShowScreen("SWConfig");
+                                                if (MyView.current.Name == "HWConfig") MyView.ShowScreen("HWConfig");
+                                                if (MyView.current.Name == "SWConfig") MyView.ShowScreen("SWConfig");
                                             });
                                         }
                                     }
@@ -2466,7 +2466,7 @@ namespace MissionPlanner
                             }
                         }
 
-                        heatbeatSend = DateTime.Now;
+                        heartbeatSend = DateTime.Now;
                     }
 
                     // if not connected or busy, sleep and loop
@@ -2495,8 +2495,7 @@ namespace MissionPlanner
                         if (!port.BaseStream.IsOpen)
                         {
                             // skip primary interface
-                            if (port == comPort)
-                                continue;
+                            if (port == comPort) continue;
 
                             // modify array and drop out
                             Comports.Remove(port);
@@ -2504,8 +2503,7 @@ namespace MissionPlanner
                             break;
                         }
 
-                        while (port.BaseStream.IsOpen && port.BaseStream.BytesToRead > minbytes &&
-                               port.giveComport == false && serialThread)
+                        while (port.BaseStream.IsOpen && port.BaseStream.BytesToRead > minbytes && port.giveComport == false && serialThread)
                         {
                             try
                             {

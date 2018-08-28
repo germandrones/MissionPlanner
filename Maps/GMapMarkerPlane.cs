@@ -16,8 +16,9 @@ namespace MissionPlanner.Maps
         float target = -1;
         float nav_bearing = -1;
         float radius = -1;
+        float gimbaltarget = 0;
 
-        public GMapMarkerPlane(PointLatLng p, float heading, float cog, float nav_bearing, float target, float radius)
+        public GMapMarkerPlane(PointLatLng p, float heading, float cog, float nav_bearing, float target, float radius, float gimbaltarget = 0)
             : base(p)
         {
             this.heading = heading;
@@ -25,6 +26,7 @@ namespace MissionPlanner.Maps
             this.target = target;
             this.nav_bearing = nav_bearing;
             this.radius = radius;
+            this.gimbaltarget = gimbaltarget;
             Size = icon.Size;
         }
 
@@ -38,13 +40,22 @@ namespace MissionPlanner.Maps
             int length = 500;
             // anti NaN
             try
-            {
-                g.DrawLine(new Pen(Color.Red, 2), 0.0f, 0.0f, (float) Math.Cos((heading - 90)*MathHelper.deg2rad)*length,
-                    (float) Math.Sin((heading - 90)*MathHelper.deg2rad)*length);
+            {                
+                g.DrawLine(new Pen(Color.Red, 2), 0.0f, 0.0f, (float)Math.Cos((heading - 90) * MathHelper.deg2rad) * length, (float)Math.Sin((heading - 90) * MathHelper.deg2rad) * length);
             }
             catch
             {
             }
+
+            //show also the gimbal targeting
+            try
+            {
+                //g.DrawLine(new Pen(Color.White, 2), 0.0f, 0.0f, (float)Math.Cos((gimbaltarget - 90) * MathHelper.deg2rad) * length, (float)Math.Sin((gimbaltarget - 90) * MathHelper.deg2rad) * length);
+            }
+            catch
+            {
+            }
+
             g.DrawLine(new Pen(Color.Green, 2), 0.0f, 0.0f, (float) Math.Cos((nav_bearing - 90)*MathHelper.deg2rad)*length,
                 (float) Math.Sin((nav_bearing - 90)*MathHelper.deg2rad)*length);
             g.DrawLine(new Pen(Color.Black, 2), 0.0f, 0.0f, (float) Math.Cos((cog - 90)*MathHelper.deg2rad)*length,

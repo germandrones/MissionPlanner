@@ -288,6 +288,7 @@
     <Compile Include="MainV2.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="Maps\GMapMarkerLand.cs" />
     <Compile Include="MovingBase.cs"> <SubType>Control</SubType> </Compile>
+    <Compile Include="NextVision\NextVisionControlLibrary.cs" />
     <Compile Include="OpenGLtest.cs" />
     <Compile Include="OpenGLtest2.cs" />
     <Compile Include="OSDVideo.cs"> <SubType>Control</SubType> </Compile>

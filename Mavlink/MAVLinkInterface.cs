@@ -1897,11 +1897,6 @@ Please check the following
             generatePacket(MAVLINK_MSG_ID.HWP, ack);
         }
 
-        public void sendColibriPacket(mavlink_v2_extension_t dataStruct)
-        {
-            generatePacket(MAVLINK_MSG_ID.V2_EXTENSION, dataStruct);
-        }
-
         public void SendSerialControl(SERIAL_CONTROL_DEV port, ushort timeoutms, byte[] data, uint baudrate = 0,
             bool close = false)
         {

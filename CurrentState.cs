@@ -679,9 +679,6 @@ namespace MissionPlanner
         public bool gotHWP = false;
         #endregion
 
-        //Colibri data structure
-        public MAVLink.mavlink_v2_extension_t ColibriData;
-
         public float targetaltd100
         {
             get { return (_targetalt/100)%10; }
@@ -1433,8 +1430,7 @@ namespace MissionPlanner
                 {
                     fieldValue = field.GetValue(thisBoxed, null); // Get value
 
-                    if (fieldValue == null)
-                        continue;
+                    if (fieldValue == null) continue;
                     // Get the TypeCode enumeration. Multiple types get mapped to a common typecode.
                     typeCode = Type.GetTypeCode(fieldValue.GetType());
                 }
@@ -1508,7 +1504,7 @@ namespace MissionPlanner
         public void UpdateCurrentSettings(System.Windows.Forms.BindingSource bs, bool updatenow,
             MAVLinkInterface mavinterface)
         {
-            UpdateCurrentSettings(bs, updatenow, mavinterface, mavinterface.MAV);
+            UpdateCurrentSettings(bs, updatenow, mavinterface, mavinterface.MAV); 
         }
 
         public void UpdateCurrentSettings(System.Windows.Forms.BindingSource bs, bool updatenow, MAVLinkInterface mavinterface, MAVState MAV)
@@ -1929,7 +1925,9 @@ namespace MissionPlanner
                     mavLinkMessage = MAV.getPacket((uint)MAVLink.MAVLINK_MSG_ID.V2_EXTENSION);
                     if(mavLinkMessage != null)
                     {
-                        ColibriData = mavLinkMessage.ToStructure<MAVLink.mavlink_v2_extension_t>();                                                
+                        var cdata = mavLinkMessage.ToStructure<MAVLink.mavlink_v2_extension_t>();                        
+                        // It sends no feedback at all!
+                        MAV.clearPacket((uint)MAVLink.MAVLINK_MSG_ID.V2_EXTENSION);
                     }
 
 

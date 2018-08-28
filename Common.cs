@@ -385,72 +385,11 @@ union px4_custom_mode {
         public static GMapMarker getMAVMarker(MAVState MAV)
         {
             PointLatLng portlocation = new PointLatLng(MAV.cs.lat, MAV.cs.lng);
-
-            if (MAV.aptype == MAVLink.MAV_TYPE.FIXED_WING)
+            return (new GMapMarkerPlane(portlocation, MAV.cs.yaw, MAV.cs.groundcourse, MAV.cs.nav_bearing, MAV.cs.target_bearing, MAV.cs.radius, MainV2.gimbal_current_target)
             {
-                return (new GMapMarkerPlane(portlocation, MAV.cs.yaw,
-                    MAV.cs.groundcourse, MAV.cs.nav_bearing, MAV.cs.target_bearing, MAV.cs.radius)
-                {
-                    ToolTipText = MAV.cs.alt.ToString("0") + "\n" + MAV.sysid.ToString("sysid: 0"),
-                    ToolTipMode = MarkerTooltipMode.Always
-                });
-            }
-            else if (MAV.aptype == MAVLink.MAV_TYPE.GROUND_ROVER)
-            {
-                return  (new GMapMarkerRover(portlocation, MAV.cs.yaw,
-                    MAV.cs.groundcourse, MAV.cs.nav_bearing, MAV.cs.target_bearing)
-                {
-                    ToolTipText = MAV.cs.alt.ToString("0") + "\n" + MAV.sysid.ToString("sysid: 0"),
-                    ToolTipMode = MarkerTooltipMode.Always
-                });
-            }
-            else if (MAV.aptype == MAVLink.MAV_TYPE.SURFACE_BOAT)
-            { 
-                return (new GMapMarkerBoat(portlocation, MAV.cs.yaw,
-                    MAV.cs.groundcourse, MAV.cs.nav_bearing, MAV.cs.target_bearing));
-            }
-            else if (MAV.aptype == MAVLink.MAV_TYPE.SUBMARINE)
-            {
-                return (new GMapMarkerSub(portlocation, MAV.cs.yaw,
-                    MAV.cs.groundcourse, MAV.cs.nav_bearing, MAV.cs.target_bearing));
-            }
-            else if (MAV.aptype == MAVLink.MAV_TYPE.HELICOPTER)
-            {
-                return (new GMapMarkerHeli(portlocation, MAV.cs.yaw,
-                    MAV.cs.groundcourse, MAV.cs.nav_bearing));
-            }
-            else if (MAV.cs.firmware == MainV2.Firmwares.ArduTracker)
-            {
-                return (new GMapMarkerAntennaTracker(portlocation, MAV.cs.yaw,
-                    MAV.cs.target_bearing));
-            }
-            else if (MAV.cs.firmware == MainV2.Firmwares.ArduCopter2 || MAV.aptype == MAVLink.MAV_TYPE.QUADROTOR)
-            {
-                if (MAV.param.ContainsKey("AVD_W_DIST_XY") && MAV.param.ContainsKey("AVD_F_DIST_XY"))
-                {
-                    var w = MAV.param["AVD_W_DIST_XY"].Value;
-                    var f = MAV.param["AVD_F_DIST_XY"].Value;
-                    return (new GMapMarkerQuad(portlocation, MAV.cs.yaw,
-                        MAV.cs.groundcourse, MAV.cs.nav_bearing, MAV.sysid)
-                    {
-                        danger = (int)f,
-                        warn = (int)w
-                    });
-                }
-
-                return (new GMapMarkerQuad(portlocation, MAV.cs.yaw,
-                    MAV.cs.groundcourse, MAV.cs.nav_bearing, MAV.sysid));
-            }
-            else if (MAV.aptype == MAVLink.MAV_TYPE.COAXIAL)
-            {
-                return (new GMapMarkerSingle(portlocation, MAV.cs.yaw,
-                   MAV.cs.groundcourse, MAV.cs.nav_bearing, MAV.sysid));
-            }
-            else
-            {
-                // unknown type
-                return (new GMarkerGoogle(portlocation, GMarkerGoogleType.green_dot));
-            }
+                ToolTipText = MAV.cs.alt.ToString("0") + "\n" + MAV.sysid.ToString("sysid: 0"),
+                ToolTipMode = MarkerTooltipMode.Always
+            });
         }
     }
 }

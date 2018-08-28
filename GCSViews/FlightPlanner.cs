@@ -5130,8 +5130,7 @@ namespace MissionPlanner.GCSViews
                         Color.Blue, routesoverlay);
                 }
 
-                if (MainV2.comPort.MAV.cs.lat == 0 || MainV2.comPort.MAV.cs.lng == 0)
-                    return;
+                if (MainV2.comPort.MAV.cs.lat == 0 || MainV2.comPort.MAV.cs.lng == 0) return;
 
                 var marker = Common.getMAVMarker(MainV2.comPort.MAV);
 
