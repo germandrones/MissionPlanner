@@ -93,9 +93,7 @@
             this.CHK_showairports = new System.Windows.Forms.CheckBox();
             this.chk_ADSB = new System.Windows.Forms.CheckBox();
             this.chk_tfr = new System.Windows.Forms.CheckBox();
-            this.chk_temp = new System.Windows.Forms.CheckBox();
             this.chk_norcreceiver = new System.Windows.Forms.CheckBox();
-            this.but_AAsignin = new MissionPlanner.Controls.MyButton();
             this.CHK_AutoParamCommit = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.NUM_tracklength)).BeginInit();
             this.SuspendLayout();
@@ -624,9 +622,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.Controls.Add(this.CHK_AutoParamCommit);
-            this.Controls.Add(this.but_AAsignin);
             this.Controls.Add(this.chk_norcreceiver);
-            this.Controls.Add(this.chk_temp);
             this.Controls.Add(this.chk_tfr);
             this.Controls.Add(this.chk_ADSB);
             this.Controls.Add(this.CHK_showairports);
@@ -766,9 +762,7 @@
         private System.Windows.Forms.CheckBox CHK_showairports;
         private System.Windows.Forms.CheckBox chk_ADSB;
         private System.Windows.Forms.CheckBox chk_tfr;
-        private System.Windows.Forms.CheckBox chk_temp;
         private System.Windows.Forms.CheckBox chk_norcreceiver;
-        private Controls.MyButton but_AAsignin;
         private System.Windows.Forms.CheckBox CHK_AutoParamCommit;
     }
 }

@@ -259,19 +259,6 @@ namespace MissionPlanner
         DateTime lastjoystick = DateTime.Now;
 
         /// <summary>
-        /// determine if we are running sitl
-        /// </summary>
-        public static bool sitl
-        {
-            get
-            {
-                if (MissionPlanner.Controls.SITL.SITLSEND == null) return false;
-                if (MissionPlanner.Controls.SITL.SITLSEND.Client.Connected) return true;
-                return false;
-            }
-        }
-
-        /// <summary>
         /// hud background image grabber from a video stream - not realy that efficent. ie no hardware overlays etc.
         /// </summary>
         public static WebCamService.Capture cam { get; set; }
@@ -497,9 +484,6 @@ namespace MissionPlanner
 
             // load config
             LoadConfig();
-
-            // force language to be loaded
-            L10N.GetConfigLang();
 
             ShowAirports = true;
 
@@ -1770,14 +1754,7 @@ namespace MissionPlanner
 
                                     if (comPort.BaseStream.BytesToWrite < 50)
                                     {
-                                        if (sitl)
-                                        {
-                                            MissionPlanner.Controls.SITL.rcinput();
-                                        }
-                                        else
-                                        {
-                                            comPort.sendPacket(rc, rc.target_system, rc.target_component);
-                                        }
+                                        comPort.sendPacket(rc, rc.target_system, rc.target_component);
                                         count++;
                                         lastjoystick = DateTime.Now;
                                     }
@@ -1805,14 +1782,7 @@ namespace MissionPlanner
 
                                     if (comPort.BaseStream.BytesToWrite < 50)
                                     {
-                                        if (sitl)
-                                        {
-                                            MissionPlanner.Controls.SITL.rcinput();
-                                        }
-                                        else
-                                        {
-                                            comPort.sendPacket(rc, comPort.MAV.sysid, comPort.MAV.compid);
-                                        }
+                                        comPort.sendPacket(rc, comPort.MAV.sysid, comPort.MAV.compid);
                                         count++;
                                         lastjoystick = DateTime.Now;
                                     }
@@ -3058,16 +3028,6 @@ namespace MissionPlanner
             }
             if (keyData == (Keys.Control | Keys.L)) // limits
             {
-                return true;
-            }
-            if (keyData == (Keys.Control | Keys.Z))
-            {
-                MissionPlanner.GenOTP otp = new MissionPlanner.GenOTP();
-
-                otp.ShowDialog(this);
-
-                otp.Dispose();
-
                 return true;
             }
             if (keyData == (Keys.Control | Keys.T)) // for override connect

@@ -113,7 +113,6 @@ namespace MissionPlanner.GCSViews
 
             if (MainV2.DisplayConfiguration.displayFrameType)
             {
-                AddBackstageViewPage(typeof(ConfigTradHeli), rm.GetString("backstageViewPagetradheli.Text"), isHeli, mand);
                 AddBackstageViewPage(typeof(ConfigFrameType), rm.GetString("backstageViewPageframetype.Text"), isCopter && !isCopter35plus, mand);
                 AddBackstageViewPage(typeof(ConfigFrameClassType), rm.GetString("backstageViewPageframetype.Text"), isCopter && isCopter35plus, mand);
             }
@@ -197,11 +196,7 @@ namespace MissionPlanner.GCSViews
                 if (MainV2.DisplayConfiguration.displayAntennaTracker)
                 {
                     AddBackstageViewPage(typeof(ConfigAntennaTracker), rm.GetString("backstageViewPageAntTrack.Text"), isTracker, opt);
-                }
-                if (MainV2.DisplayConfiguration.displayMotorTest)
-                {
-                    AddBackstageViewPage(typeof(ConfigMotorTest), rm.GetString("backstageViewPageMotorTest.Text"), isConnected, opt);
-                }
+                }                
                 if (MainV2.DisplayConfiguration.displayBluetooth)
                 {
                     AddBackstageViewPage(typeof(ConfigHWBT), rm.GetString("backstageViewPagehwbt.Text"), true, opt);

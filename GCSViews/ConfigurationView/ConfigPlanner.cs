@@ -879,5 +879,10 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         {
             Settings.Instance["autoParamCommit"] = CHK_AutoParamCommit.Checked.ToString();
         }
+
+        private void but_AAsignin_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

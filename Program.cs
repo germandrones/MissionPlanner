@@ -168,9 +168,6 @@ namespace MissionPlanner
             GMap.NET.MapProviders.GMapProviders.List.Add(Maps.Eniro_Topo.Instance);
             GMap.NET.MapProviders.GMapProviders.List.Add(Maps.MapBox.Instance);
             GMap.NET.MapProviders.GMapProviders.List.Add(Maps.MapboxNoFly.Instance);
-            // optionally add gdal support
-            if (Directory.Exists(Application.StartupPath + Path.DirectorySeparatorChar + "gdal")) GMap.NET.MapProviders.GMapProviders.List.Add(GDAL.GDALProvider.Instance);
-
             // add proxy settings
             GMap.NET.MapProviders.GMapProvider.WebProxy = WebRequest.GetSystemWebProxy();
             GMap.NET.MapProviders.GMapProvider.WebProxy.Credentials = CredentialCache.DefaultCredentials;
@@ -234,15 +231,6 @@ namespace MissionPlanner
 
                 Console.WriteLine("\nPress any key to exit!");
                 Console.ReadLine();
-            }
-
-            try
-            {
-                // kill sim background process if its still running
-                if (Controls.SITL.simulator != null) Controls.SITL.simulator.Kill();
-            }
-            catch
-            {
             }
         }
 

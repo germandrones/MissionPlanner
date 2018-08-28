@@ -71,9 +71,6 @@
     <None Remove="packages\**" />
   </ItemGroup> 
   <ItemGroup>
-    <Reference Include="IPAddressControlLib">
-      <HintPath>ExtLibs\IPAddressControlLib.DLL</HintPath>
-    </Reference>
     <Reference Include="log4net">
       <HintPath>ExtLibs\log4net.dll</HintPath>
     </Reference>
@@ -127,7 +124,6 @@
       <Name>Core</Name>
       <Private>true</Private>
     </ProjectReference>
-    <ProjectReference Include="ExtLibs\GDAL\GDAL.NET.csproj" />
     <ProjectReference Include="ExtLibs\GeoUtility\GeoUtility.csproj">
       <Project>{7F7994CE-823F-4A04-BBEA-D0A3808FF56D}</Project>
       <Name>GeoUtility</Name>
@@ -247,8 +243,6 @@
     <Compile Include="ConnectionOptions.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="CurrentState.cs" />
     <Compile Include="ElevationProfile.cs"> <SubType>Control</SubType> </Compile>
-    <Compile Include="FollowMe.cs"> <SubType>Control</SubType> </Compile>
-    <Compile Include="GenOTP.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="Joystick\Joy_Button_axis.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -277,7 +271,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Joystick\Joy_Mount_Mode.Designer.cs" />
-    <Compile Include="L10N.cs" />
     <Compile Include="Log\LogStrings.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -332,7 +325,6 @@
     <Compile Include="Controls\ModifyandSet.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="Controls\MyDataGridView.cs" />
     <Compile Include="Controls\ServoOptions.cs"> <SubType>Control</SubType> </Compile>
-    <Compile Include="Controls\SITL.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="Controls\ThemeColors.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="Controls\ToolStripConnectionControl.cs" />
     <Compile Include="Controls\Vibration.cs"> <SubType>Control</SubType> </Compile>
@@ -353,9 +345,6 @@
     <Compile Include="GCSViews\ConfigurationView\ConfigAccelerometerCalibration.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigAC_Fence.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigAntennaTracker.cs"> <SubType>Control</SubType> </Compile>
-    <Compile Include="GCSViews\ConfigurationView\ConfigArducopter.cs"> <SubType>Control</SubType> </Compile>
-    <Compile Include="GCSViews\ConfigurationView\ConfigArduplane.cs"> <SubType>Control</SubType> </Compile>
-    <Compile Include="GCSViews\ConfigurationView\ConfigArdurover.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigAteryx.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigAteryxSensors.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigBatteryMonitoring.cs"> <SubType>Control</SubType> </Compile>
@@ -382,7 +371,6 @@
     <Compile Include="GCSViews\ConfigurationView\ConfigHWRangeFinder.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigHWUAVCAN.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigMandatory.cs"> <SubType>Control</SubType> </Compile>
-    <Compile Include="GCSViews\ConfigurationView\ConfigMotorTest.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigMount.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigOptional.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigPlanner.cs"> <SubType>Control</SubType> </Compile>
@@ -392,7 +380,6 @@
     <Compile Include="GCSViews\ConfigurationView\ConfigRawParams.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigRawParamsTree.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigSimplePids.cs"> <SubType>Control</SubType> </Compile>
-    <Compile Include="GCSViews\ConfigurationView\ConfigTradHeli.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GeoRef\georefimage.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GeoRef\PictureInformation.cs" />
     <Compile Include="GeoRef\Rational.cs" />
@@ -417,9 +404,7 @@
     <Compile Include="Maps\Custom.cs" />
     <Compile Include="Maps\Earthbuilder.cs" />
     <Compile Include="Maps\Eniro_Topo.cs" />
-    <Compile Include="Maps\GMapMarkerADSBPlane.cs" />
     <Compile Include="Maps\GMapMarkerAirport.cs" />
-    <Compile Include="Maps\GMapMarkerAntennaTracker.cs" />
     <Compile Include="Maps\GMapMarkerBoat.cs" />
     <Compile Include="Maps\GMapMarkerHeli.cs" />
     <Compile Include="Maps\GMapMarkerOverlapCount.cs" />
@@ -429,7 +414,6 @@
     <Compile Include="Maps\GMapMarkerQuad.cs" />
     <Compile Include="Maps\GMapMarkerRallyPt.cs" />
     <Compile Include="Maps\GMapMarkerRect.cs" />
-    <Compile Include="Maps\GMapMarkerRover.cs" />
     <Compile Include="Maps\GMapMarkerSingle.cs" />
     <Compile Include="Maps\GMapMarkerSub.cs" />
     <Compile Include="Maps\GMapMarkerWP.cs" />
@@ -499,8 +483,6 @@
   <ItemGroup>
     <Compile Include="ConnectionOptions.Designer.cs"><DependentUpon>ConnectionOptions.cs</DependentUpon> </Compile>
     <Compile Include="ElevationProfile.Designer.cs"><DependentUpon>ElevationProfile.cs</DependentUpon> </Compile>
-    <Compile Include="FollowMe.Designer.cs"><DependentUpon>FollowMe.cs</DependentUpon> </Compile>
-    <Compile Include="GenOTP.Designer.cs"><DependentUpon>GenOTP.cs</DependentUpon> </Compile>
     <Compile Include="MainV2.Designer.cs"><DependentUpon>MainV2.cs</DependentUpon> </Compile>
     <Compile Include="MovingBase.Designer.cs"><DependentUpon>MovingBase.cs</DependentUpon> </Compile>
     <Compile Include="OSDVideo.Designer.cs"><DependentUpon>OSDVideo.cs</DependentUpon> </Compile>
@@ -526,7 +508,6 @@
     <Compile Include="Controls\LogAnalyzer.Designer.cs"><DependentUpon>LogAnalyzer.cs</DependentUpon> </Compile>
     <Compile Include="Controls\ModifyandSet.Designer.cs"><DependentUpon>ModifyandSet.cs</DependentUpon> </Compile>
     <Compile Include="Controls\ServoOptions.Designer.cs"><DependentUpon>ServoOptions.cs</DependentUpon> </Compile>
-    <Compile Include="Controls\SITL.Designer.cs"><DependentUpon>SITL.cs</DependentUpon> </Compile>
     <Compile Include="Controls\ThemeColors.Designer.cs"><DependentUpon>ThemeColors.cs</DependentUpon> </Compile>
     <Compile Include="Controls\Vibration.Designer.cs"><DependentUpon>Vibration.cs</DependentUpon> </Compile>
     <Compile Include="Controls\Video.Designer.cs"><DependentUpon>Video.cs</DependentUpon> </Compile>
@@ -541,9 +522,6 @@
     <Compile Include="GCSViews\ConfigurationView\ConfigAccelerometerCalibration.Designer.cs"><DependentUpon>ConfigAccelerometerCalibration.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigAC_Fence.Designer.cs"><DependentUpon>ConfigAC_Fence.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigAntennaTracker.Designer.cs"><DependentUpon>ConfigAntennaTracker.cs</DependentUpon> </Compile>
-    <Compile Include="GCSViews\ConfigurationView\ConfigArducopter.Designer.cs"><DependentUpon>ConfigArducopter.cs</DependentUpon> </Compile>
-    <Compile Include="GCSViews\ConfigurationView\ConfigArduplane.Designer.cs"><DependentUpon>ConfigArduplane.cs</DependentUpon> </Compile>
-    <Compile Include="GCSViews\ConfigurationView\ConfigArdurover.Designer.cs"><DependentUpon>ConfigArdurover.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigAteryx.Designer.cs"><DependentUpon>ConfigAteryx.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigAteryxSensors.Designer.cs"><DependentUpon>ConfigAteryxSensors.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigBatteryMonitoring.Designer.cs"><DependentUpon>ConfigBatteryMonitoring.cs</DependentUpon> </Compile>
@@ -569,7 +547,6 @@
     <Compile Include="GCSViews\ConfigurationView\ConfigHWRangeFinder.Designer.cs"><DependentUpon>ConfigHWRangeFinder.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigHWUAVCAN.Designer.cs"><DependentUpon>ConfigHWUAVCAN.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigMandatory.Designer.cs"><DependentUpon>ConfigMandatory.cs</DependentUpon> </Compile>
-    <Compile Include="GCSViews\ConfigurationView\ConfigMotorTest.Designer.cs"><DependentUpon>ConfigMotorTest.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigMount.Designer.cs"><DependentUpon>ConfigMount.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigOptional.Designer.cs"><DependentUpon>ConfigOptional.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigPlanner.Designer.cs"><DependentUpon>ConfigPlanner.cs</DependentUpon> </Compile>
@@ -579,7 +556,6 @@
     <Compile Include="GCSViews\ConfigurationView\ConfigRawParams.Designer.cs"><DependentUpon>ConfigRawParams.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigRawParamsTree.Designer.cs"><DependentUpon>ConfigRawParamsTree.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigSimplePids.Designer.cs"><DependentUpon>ConfigSimplePids.cs</DependentUpon> </Compile>
-    <Compile Include="GCSViews\ConfigurationView\ConfigTradHeli.Designer.cs"><DependentUpon>ConfigTradHeli.cs</DependentUpon> </Compile>
     <Compile Include="GeoRef\georefimage.Designer.cs"><DependentUpon>georefimage.cs</DependentUpon> </Compile>
     <Compile Include="Grid\GridUI.Designer.cs"><DependentUpon>GridUI.cs</DependentUpon> </Compile>
     <Compile Include="Joystick\JoystickSetup.Designer.cs"><DependentUpon>JoystickSetup.cs</DependentUpon> </Compile>
@@ -617,12 +593,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Drivers\dpinst.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FirmwareHistory.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="hud.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mavcmd.xml">
@@ -671,21 +641,6 @@
     <EmbeddedResource Include="ConnectionOptions.pt.resx"><DependentUpon>ConnectionOptions.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="ConnectionOptions.zh-Hans.resx"><DependentUpon>ConnectionOptions.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="ElevationProfile.resx"><DependentUpon>ElevationProfile.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="FollowMe.resx"><DependentUpon>FollowMe.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="FollowMe.ar.resx"><DependentUpon>FollowMe.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="FollowMe.az-Latn-AZ.resx"><DependentUpon>FollowMe.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="FollowMe.de-DE.resx"><DependentUpon>FollowMe.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="FollowMe.es-ES.resx"><DependentUpon>FollowMe.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="FollowMe.fr.resx"><DependentUpon>FollowMe.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="FollowMe.id-ID.resx"><DependentUpon>FollowMe.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="FollowMe.it-IT.resx"><DependentUpon>FollowMe.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="FollowMe.ko-KR.resx"><DependentUpon>FollowMe.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="FollowMe.pl.resx"><DependentUpon>FollowMe.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="FollowMe.pt.resx"><DependentUpon>FollowMe.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="FollowMe.zh-Hans.resx"><DependentUpon>FollowMe.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="FollowMe.zh-Hant.resx"><DependentUpon>FollowMe.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="FollowMe.zh-TW.resx"><DependentUpon>FollowMe.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GenOTP.resx"><DependentUpon>GenOTP.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="Log\LogStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LogStrings.Designer.cs</LastGenOutput>
@@ -850,7 +805,6 @@
     <EmbeddedResource Include="Controls\ServoOptions.ko-KR.resx"><DependentUpon>ServoOptions.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="Controls\ServoOptions.pt.resx"><DependentUpon>ServoOptions.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="Controls\ServoOptions.zh-Hans.resx"><DependentUpon>ServoOptions.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="Controls\SITL.resx"><DependentUpon>SITL.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="Controls\ThemeColors.resx"><DependentUpon>ThemeColors.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="Controls\ThemeColors.ar.resx"><DependentUpon>ThemeColors.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="Controls\ThemeColors.az-Latn-AZ.resx"><DependentUpon>ThemeColors.cs</DependentUpon> </EmbeddedResource>
@@ -972,43 +926,6 @@
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigAntennaTracker.ja-JP.resx"><DependentUpon>ConfigAntennaTracker.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigAntennaTracker.ko-KR.resx"><DependentUpon>ConfigAntennaTracker.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigAntennaTracker.pt.resx"><DependentUpon>ConfigAntennaTracker.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArducopter.resx"><DependentUpon>ConfigArducopter.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArducopter.ar.resx"><DependentUpon>ConfigArducopter.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArducopter.az-Latn-AZ.resx"><DependentUpon>ConfigArducopter.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArducopter.de-DE.resx"><DependentUpon>ConfigArducopter.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArducopter.fr.resx"><DependentUpon>ConfigArducopter.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArducopter.id-ID.resx"><DependentUpon>ConfigArducopter.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArducopter.it-IT.resx"><DependentUpon>ConfigArducopter.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArducopter.ja-JP.resx"><DependentUpon>ConfigArducopter.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArducopter.ko-KR.resx"><DependentUpon>ConfigArducopter.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArducopter.pt.resx"><DependentUpon>ConfigArducopter.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArducopter.zh-Hans.resx"><DependentUpon>ConfigArducopter.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArducopter.zh-Hant.resx"><DependentUpon>ConfigArducopter.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArducopter.zh-TW.resx"><DependentUpon>ConfigArducopter.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArduplane.resx"><DependentUpon>ConfigArduplane.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArduplane.ar.resx"><DependentUpon>ConfigArduplane.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArduplane.az-Latn-AZ.resx"><DependentUpon>ConfigArduplane.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArduplane.de-DE.resx"><DependentUpon>ConfigArduplane.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArduplane.fr.resx"><DependentUpon>ConfigArduplane.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArduplane.id-ID.resx"><DependentUpon>ConfigArduplane.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArduplane.it-IT.resx"><DependentUpon>ConfigArduplane.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArduplane.ja-JP.resx"><DependentUpon>ConfigArduplane.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArduplane.ko-KR.resx"><DependentUpon>ConfigArduplane.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArduplane.pt.resx"><DependentUpon>ConfigArduplane.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArduplane.zh-Hans.resx"><DependentUpon>ConfigArduplane.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArduplane.zh-Hant.resx"><DependentUpon>ConfigArduplane.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArduplane.zh-TW.resx"><DependentUpon>ConfigArduplane.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArdurover.resx"><DependentUpon>ConfigArdurover.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArdurover.ar.resx"><DependentUpon>ConfigArdurover.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArdurover.az-Latn-AZ.resx"><DependentUpon>ConfigArdurover.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArdurover.de-DE.resx"><DependentUpon>ConfigArdurover.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArdurover.fr.resx"><DependentUpon>ConfigArdurover.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArdurover.id-ID.resx"><DependentUpon>ConfigArdurover.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArdurover.it-IT.resx"><DependentUpon>ConfigArdurover.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArdurover.ja-JP.resx"><DependentUpon>ConfigArdurover.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArdurover.ko-KR.resx"><DependentUpon>ConfigArdurover.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArdurover.pt.resx"><DependentUpon>ConfigArdurover.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigArdurover.zh-Hans.resx"><DependentUpon>ConfigArdurover.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigAteryx.resx"><DependentUpon>ConfigAteryx.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigAteryx.ar.resx"><DependentUpon>ConfigAteryx.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigAteryx.az-Latn-AZ.resx"><DependentUpon>ConfigAteryx.cs</DependentUpon> </EmbeddedResource>
@@ -1323,15 +1240,6 @@
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMandatory.ko-KR.resx"><DependentUpon>ConfigMandatory.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMandatory.pt.resx"><DependentUpon>ConfigMandatory.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMandatory.zh-Hans.resx"><DependentUpon>ConfigMandatory.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMotorTest.resx"><DependentUpon>ConfigMotorTest.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMotorTest.ar.resx"><DependentUpon>ConfigMotorTest.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMotorTest.az-Latn-AZ.resx"><DependentUpon>ConfigMotorTest.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMotorTest.de-DE.resx"><DependentUpon>ConfigMotorTest.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMotorTest.id-ID.resx"><DependentUpon>ConfigMotorTest.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMotorTest.ja-JP.resx"><DependentUpon>ConfigMotorTest.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMotorTest.ko-KR.resx"><DependentUpon>ConfigMotorTest.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMotorTest.pt.resx"><DependentUpon>ConfigMotorTest.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMotorTest.zh-Hans.resx"><DependentUpon>ConfigMotorTest.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMount.resx"><DependentUpon>ConfigMount.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMount.ar.resx"><DependentUpon>ConfigMount.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMount.az-Latn-AZ.resx"><DependentUpon>ConfigMount.cs</DependentUpon> </EmbeddedResource>
@@ -1418,20 +1326,6 @@
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigSimplePids.ko-KR.resx"><DependentUpon>ConfigSimplePids.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigSimplePids.pt.resx"><DependentUpon>ConfigSimplePids.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigSimplePids.zh-Hans.resx"><DependentUpon>ConfigSimplePids.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigTradHeli.resx"><DependentUpon>ConfigTradHeli.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigTradHeli.ar.resx"><DependentUpon>ConfigTradHeli.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigTradHeli.az-Latn-AZ.resx"><DependentUpon>ConfigTradHeli.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigTradHeli.de-DE.resx"><DependentUpon>ConfigTradHeli.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigTradHeli.es-ES.resx"><DependentUpon>ConfigTradHeli.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigTradHeli.fr.resx"><DependentUpon>ConfigTradHeli.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigTradHeli.id-ID.resx"><DependentUpon>ConfigTradHeli.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigTradHeli.it-IT.resx"><DependentUpon>ConfigTradHeli.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigTradHeli.ja-JP.resx"><DependentUpon>ConfigTradHeli.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigTradHeli.ko-KR.resx"><DependentUpon>ConfigTradHeli.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigTradHeli.pl.resx"><DependentUpon>ConfigTradHeli.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigTradHeli.pt.resx"><DependentUpon>ConfigTradHeli.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigTradHeli.zh-Hans.resx"><DependentUpon>ConfigTradHeli.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigTradHeli.zh-TW.resx"><DependentUpon>ConfigTradHeli.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GeoRef\georefimage.resx"><DependentUpon>georefimage.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GeoRef\Georefimage.ar.resx"><DependentUpon>georefimage.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GeoRef\Georefimage.az-Latn-AZ.resx"><DependentUpon>georefimage.cs</DependentUpon> </EmbeddedResource>
@@ -1535,16 +1429,10 @@
     <EmbeddedResource Include="Warnings\WarningsManager.resx"><DependentUpon>WarningsManager.cs</DependentUpon> </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="adb.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="AdbWinApi.dll">
+    <None Include="DLLs\AdbWinApi.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="airports.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="aot.sh">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="app.config" />
@@ -1669,24 +1557,6 @@
     </None>
     <None Include="Drivers\vrugimbal.inf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib.zip">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="m3u\both.m3u">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="m3u\GeoRefnetworklink.kml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="m3u\hud.m3u">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="m3u\map.m3u">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="m3u\networklink.kml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="mavelous_web\bundle.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

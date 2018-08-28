@@ -150,9 +150,6 @@ namespace MissionPlanner.Utilities
 
 
             temp.Add(new GCSViews.ConfigurationView.ConfigAC_Fence());
-            temp.Add(new GCSViews.ConfigurationView.ConfigArducopter());
-            temp.Add(new GCSViews.ConfigurationView.ConfigArduplane());
-            temp.Add(new GCSViews.ConfigurationView.ConfigArdurover());
             temp.Add(new GCSViews.ConfigurationView.ConfigAteryx());
             temp.Add(new GCSViews.ConfigurationView.ConfigAteryxSensors());
             temp.Add(new GCSViews.ConfigurationView.ConfigBatteryMonitoring());
@@ -176,7 +173,6 @@ namespace MissionPlanner.Utilities
             temp.Add(new GCSViews.ConfigurationView.ConfigRawParams());
             temp.Add(new GCSViews.ConfigurationView.ConfigRawParamsTree());
             temp.Add(new GCSViews.ConfigurationView.ConfigSimplePids());
-            temp.Add(new GCSViews.ConfigurationView.ConfigTradHeli());
 
             foreach (var ctl in temp)
             {

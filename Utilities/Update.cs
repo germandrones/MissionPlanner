@@ -112,8 +112,6 @@ namespace MissionPlanner.Utilities
             // Create a request using a URL that can receive a post. 
             string requestUriString = baseurl + Path.GetFileName(path);
 
-            L10N.ReplaceMirrorUrl(ref requestUriString);
-
             log.Info("Checking for update at: " + requestUriString);
 
             var webRequest = WebRequest.Create(requestUriString);
@@ -226,8 +224,6 @@ namespace MissionPlanner.Utilities
 
         static void CheckMD5(ProgressReporterDialogue frmProgressReporter, string md5url, string baseurl)
         {
-            L10N.ReplaceMirrorUrl(ref baseurl);
-
             string responseFromServer = "";
 
             WebRequest request = WebRequest.Create(md5url);

@@ -135,8 +135,6 @@ namespace MissionPlanner.Utilities
                     a++;
                 }
             }
-
-            System.Threading.Thread.CurrentThread.CurrentUICulture = L10N.ConfigLang;
         }
 
         /// <summary>
@@ -324,7 +322,6 @@ namespace MissionPlanner.Utilities
                 {
                     try
                     {
-                        getAPMVersion(software);
                     }
                     catch
                     {
@@ -384,66 +381,6 @@ namespace MissionPlanner.Utilities
         {
             if (Progress != null)
                 Progress(percent, status);
-        }
-
-        /// <summary>
-        /// Get fw version from firmeware.diydrones.com
-        /// </summary>
-        /// <param name="fwurl"></param>
-        /// <returns></returns>
-        void getAPMVersion(object tempin)
-        {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = L10N.ConfigLang;
-
-            try
-            {
-                software temp = (software)tempin;
-
-                string baseurl = temp.urlpx4v2;
-
-                if (baseurl == "" || !baseurl.ToLower().StartsWith("http")) return;
-
-                Uri url = new Uri(new Uri(baseurl), "git-version.txt");
-
-                log.Info("Get url " + url.ToString());
-
-                updateProgress(-1, Strings.GettingFWVersion);
-
-                WebRequest wr = WebRequest.Create(url);
-                wr.Timeout = 10000;
-                using (WebResponse wresp = wr.GetResponse())
-                using (StreamReader sr = new StreamReader(wresp.GetResponseStream()))
-                {
-                    while (!sr.EndOfStream)
-                    {
-                        string line = sr.ReadLine();
-
-                        if (line.Contains("APMVERSION:"))
-                        {
-                            log.Info(line);
-
-                            // get index
-                            var index = softwares.IndexOf(temp);
-                            // get item to modify
-                            var item = softwares[index];
-                            // move existing name
-                            item.desc = item.name;
-                            // change name
-                            item.name = line.Substring(line.IndexOf(':') + 2);
-                            // save back to list
-                            softwares[index] = item;
-
-                            return;
-                        }
-                    }
-                }
-
-                log.Info("no answer");
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex);
-            }
         }
 
         /// <summary>

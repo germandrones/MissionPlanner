@@ -1290,42 +1290,6 @@ namespace MissionPlanner.GCSViews
                         {
                         }
 
-                        lock (MainV2.instance.adsblock)
-                        {
-                            foreach (adsb.PointLatLngAltHdg plla in MainV2.instance.adsbPlanes.Values)
-                            {
-                                // 30 seconds history
-                                if (((DateTime) plla.Time) > DateTime.Now.AddSeconds(-30))
-                                {
-                                    var adsbplane = new GMapMarkerADSBPlane(plla, plla.Heading)
-                                    {
-                                        ToolTipText = "ICAO: " + plla.Tag + " " + plla.Alt.ToString("0"),
-                                        ToolTipMode = MarkerTooltipMode.OnMouseOver,
-                                        Tag = plla
-                                    };
-
-                                    if (plla.DisplayICAO)
-                                        adsbplane.ToolTipMode = MarkerTooltipMode.Always;
-
-                                    switch (plla.ThreatLevel)
-                                    {
-                                        case MAVLink.MAV_COLLISION_THREAT_LEVEL.NONE:
-                                            adsbplane.AlertLevel = GMapMarkerADSBPlane.AlertLevelOptions.Green;
-                                            break;
-                                        case MAVLink.MAV_COLLISION_THREAT_LEVEL.LOW:
-                                            adsbplane.AlertLevel = GMapMarkerADSBPlane.AlertLevelOptions.Orange;
-                                            break;
-                                        case MAVLink.MAV_COLLISION_THREAT_LEVEL.HIGH:
-                                            adsbplane.AlertLevel = GMapMarkerADSBPlane.AlertLevelOptions.Red;
-                                            break;
-                                    }
-
-                                    addMissionRouteMarker(adsbplane);
-                                }
-                            }
-                        }
-
-
                         if (route.Points.Count > 0)
                         {
                             // draw all icons for all connected mavs
@@ -2254,19 +2218,6 @@ namespace MissionPlanner.GCSViews
             if (ModifierKeys == Keys.Control)
             {
                 goHereToolStripMenuItem_Click(null, null);
-            }
-
-            if (gMapControl1.IsMouseOverMarker)
-            {
-                if (CurrentGMapMarker is GMapMarkerADSBPlane)
-                {
-                    var marker = CurrentGMapMarker as GMapMarkerADSBPlane;
-                    if (marker.Tag is adsb.PointLatLngAltHdg)
-                    {
-                        var plla = marker.Tag as adsb.PointLatLngAltHdg;
-                        plla.DisplayICAO = !plla.DisplayICAO;
-                    }
-                }
             }
         }        
 
