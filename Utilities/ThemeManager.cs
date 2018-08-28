@@ -98,7 +98,7 @@ namespace MissionPlanner.Utilities
 
             temp.Add(new GCSViews.FlightData());
             temp.Add(new GCSViews.FlightPlanner());
-            temp.Add(new GCSViews.Help());
+            //temp.Add(new GCSViews.Help());
             temp.Add(new GCSViews.InitialSetup());
             temp.Add(new GCSViews.SoftwareConfig());
             temp.Add(new GCSViews.Terminal());
@@ -165,7 +165,6 @@ namespace MissionPlanner.Utilities
             temp.Add(new GCSViews.ConfigurationView.ConfigHWOSD());
             temp.Add(new GCSViews.ConfigurationView.ConfigHWRangeFinder());
             temp.Add(new GCSViews.ConfigurationView.ConfigMandatory());
-            temp.Add(new GCSViews.ConfigurationView.ConfigMount());
             temp.Add(new GCSViews.ConfigurationView.ConfigOptional());
             temp.Add(new GCSViews.ConfigurationView.ConfigPlanner());
             temp.Add(new GCSViews.ConfigurationView.ConfigPlannerAdv());

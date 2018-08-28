@@ -137,6 +137,7 @@ namespace MissionPlanner.Controls
                                     displayconninfo =
                                         displayxtrack = displayrollpitch = displaygps = bgon = hudon = batteryon = true;
 
+            opengl = false;
             displayAOASSA = false;
 
             this.Name = "Hud";
@@ -971,14 +972,7 @@ namespace MissionPlanner.Controls
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            // GL.Enable(EnableCap.AlphaTest)
-
-            // Console.WriteLine("hud paint");
-
-            // Console.WriteLine("hud ms " + (DateTime.Now.Millisecond));
-
-            if (!started)
-                return;
+            if (!started) return;
 
             if (this.DesignMode)
             {
@@ -987,14 +981,12 @@ namespace MissionPlanner.Controls
                 opengl = false;
                 doPaint();
                 e.Graphics.DrawImageUnscaled(objBitmap, 0, 0);
-                opengl = true;
+                opengl = false;
                 return;
             }
 
             if ((DateTime.Now - starttime).TotalMilliseconds < 30 && (_bgimage == null))
             {
-                //Console.WriteLine("ms "+(DateTime.Now - starttime).TotalMilliseconds);
-                //e.Graphics.DrawImageUnscaled(objBitmap, 0, 0);          
                 return;
             }
 

@@ -81,15 +81,6 @@
             this.TXT_battcapacity.Name = "TXT_battcapacity";
             this.TXT_battcapacity.Validated += new System.EventHandler(this.TXT_battcapacity_Validated);
             // 
-            // pictureBox5
-            // 
-            this.pictureBox5.BackColor = System.Drawing.Color.White;
-            this.pictureBox5.BackgroundImage = global::MissionPlanner.Properties.Resources.BR_APMPWRDEAN_2;
-            resources.ApplyResources(this.pictureBox5, "pictureBox5");
-            this.pictureBox5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.TabStop = false;
-            // 
             // timer1
             // 
             this.timer1.Interval = 1000;

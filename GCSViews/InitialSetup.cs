@@ -7,6 +7,7 @@ using MissionPlanner.Controls.BackstageView;
 using MissionPlanner.GCSViews.ConfigurationView;
 using MissionPlanner.Utilities;
 using System.Resources;
+using GCSViews.ConfigurationView.ConfigGimbalJoystick;
 
 namespace MissionPlanner.GCSViews
 {
@@ -109,6 +110,8 @@ namespace MissionPlanner.GCSViews
                 }
             }
 
+            AddBackstageViewPage(typeof(ConfigGimbal), "Gimbal Joystick", true);
+
             var mand = AddBackstageViewPage(typeof(ConfigMandatory), rm.GetString("backstageViewPagemand.Text"), isConnected);
 
             if (MainV2.DisplayConfiguration.displayFrameType)
@@ -188,10 +191,6 @@ namespace MissionPlanner.GCSViews
                 if (MainV2.DisplayConfiguration.displayOsd)
                 {
                     AddBackstageViewPage(typeof(ConfigHWOSD), rm.GetString("backstageViewPageosd.Text"), isConnected, opt);
-                }
-                if (MainV2.DisplayConfiguration.displayCameraGimbal)
-                {
-                    AddBackstageViewPage(typeof(ConfigMount), rm.GetString("backstageViewPagegimbal.Text"), isConnected, opt);
                 }
                 if (MainV2.DisplayConfiguration.displayAntennaTracker)
                 {

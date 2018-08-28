@@ -107,10 +107,6 @@
       <Name>AviFile</Name>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </ProjectReference>
-    <ProjectReference Include="ExtLibs\BSE.Windows.Forms\BSE.Windows.Forms.csproj">
-      <Project>{9ca367b8-0b98-49d1-84fb-735e612e3ba9}</Project>
-      <Name>BSE.Windows.Forms</Name>
-    </ProjectReference>
     <ProjectReference Include="ExtLibs\Comms\MissionPlanner.Comms.csproj">
       <Project>{825E7A10-390C-4A2B-B3A8-491D14966912}</Project>
       <Name>MissionPlanner.Comms</Name>
@@ -151,10 +147,7 @@
     </ProjectReference>
     <ProjectReference Include="ExtLibs\Mavlink\MAVLink.csproj" />
     <ProjectReference Include="ExtLibs\MetaDataExtractorCSharp240d\MetaDataExtractor.csproj" />
-    <ProjectReference Include="ExtLibs\px4uploader\px4uploader.csproj">
-      <Project>{664FC484-2A94-4B0D-808F-A71F88E06B11}</Project>
-      <Name>px4uploader</Name>
-    </ProjectReference>
+    <ProjectReference Include="ExtLibs\px4uploader\px4uploader.csproj" />
     <ProjectReference Include="ExtLibs\SharpAdbClient\SharpAdbClient.csproj">
       <Project>{65473257-e70f-410b-9269-d0c0f771ea87}</Project>
       <Name>SharpAdbClient</Name>
@@ -243,6 +236,9 @@
     <Compile Include="ConnectionOptions.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="CurrentState.cs" />
     <Compile Include="ElevationProfile.cs"> <SubType>Control</SubType> </Compile>
+    <Compile Include="GCSViews\ConfigurationView\ConfigGimbalJoystick.cs">
+      <SubType>Control</SubType>
+    </Compile>
     <Compile Include="Joystick\Joy_Button_axis.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -280,7 +276,6 @@
     <Compile Include="Magfitrotation.cs" />
     <Compile Include="MainV2.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="Maps\GMapMarkerLand.cs" />
-    <Compile Include="MovingBase.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="OpenGLtest.cs" />
     <Compile Include="OpenGLtest2.cs" />
     <Compile Include="OSDVideo.cs"> <SubType>Control</SubType> </Compile>
@@ -338,7 +333,6 @@
     <Compile Include="Controls\Waypoints\Spline2.cs" />
     <Compile Include="GCSViews\FlightData.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\FlightPlanner.cs"> <SubType>Control</SubType> </Compile>
-    <Compile Include="GCSViews\Help.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\InitialSetup.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\SoftwareConfig.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\Terminal.cs"> <SubType>Control</SubType> </Compile>
@@ -371,7 +365,6 @@
     <Compile Include="GCSViews\ConfigurationView\ConfigHWRangeFinder.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigHWUAVCAN.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigMandatory.cs"> <SubType>Control</SubType> </Compile>
-    <Compile Include="GCSViews\ConfigurationView\ConfigMount.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigOptional.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigPlanner.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigPlannerAdv.cs"> <SubType>Control</SubType> </Compile>
@@ -405,17 +398,13 @@
     <Compile Include="Maps\Earthbuilder.cs" />
     <Compile Include="Maps\Eniro_Topo.cs" />
     <Compile Include="Maps\GMapMarkerAirport.cs" />
-    <Compile Include="Maps\GMapMarkerBoat.cs" />
-    <Compile Include="Maps\GMapMarkerHeli.cs" />
     <Compile Include="Maps\GMapMarkerOverlapCount.cs" />
     <Compile Include="Maps\GMapMarkerPhoto.cs" />
     <Compile Include="Maps\GMapMarkerPlane.cs" />
     <Compile Include="Maps\GMapMarkerPOI.cs" />
-    <Compile Include="Maps\GMapMarkerQuad.cs" />
     <Compile Include="Maps\GMapMarkerRallyPt.cs" />
     <Compile Include="Maps\GMapMarkerRect.cs" />
     <Compile Include="Maps\GMapMarkerSingle.cs" />
-    <Compile Include="Maps\GMapMarkerSub.cs" />
     <Compile Include="Maps\GMapMarkerWP.cs" />
     <Compile Include="Maps\Mapbox.cs" />
     <Compile Include="Maps\MapboxNoFly.cs" />
@@ -428,8 +417,6 @@
     <Compile Include="Mavlink\MAVLinkSerialPort.cs" />
     <Compile Include="Mavlink\MAVList.cs" />
     <Compile Include="Mavlink\MAVState.cs" />
-    <Compile Include="Models\DelegateCommand.cs" />
-    <Compile Include="Models\ICommand.cs" />
     <Compile Include="NoFly\NoFly.cs" />
     <Compile Include="Plugin\Plugin.cs" />
     <Compile Include="Plugin\PluginLoader.cs" />
@@ -484,7 +471,6 @@
     <Compile Include="ConnectionOptions.Designer.cs"><DependentUpon>ConnectionOptions.cs</DependentUpon> </Compile>
     <Compile Include="ElevationProfile.Designer.cs"><DependentUpon>ElevationProfile.cs</DependentUpon> </Compile>
     <Compile Include="MainV2.Designer.cs"><DependentUpon>MainV2.cs</DependentUpon> </Compile>
-    <Compile Include="MovingBase.Designer.cs"><DependentUpon>MovingBase.cs</DependentUpon> </Compile>
     <Compile Include="OSDVideo.Designer.cs"><DependentUpon>OSDVideo.cs</DependentUpon> </Compile>
     <Compile Include="paramcompare.Designer.cs"><DependentUpon>paramcompare.cs</DependentUpon> </Compile>
     <Compile Include="RAW_Sensor.Designer.cs"><DependentUpon>RAW_Sensor.cs</DependentUpon> </Compile>
@@ -515,7 +501,6 @@
     <Compile Include="Controls\PreFlight\CheckListEditor.Designer.cs"><DependentUpon>CheckListEditor.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\FlightData.Designer.cs"><DependentUpon>FlightData.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\FlightPlanner.Designer.cs"><DependentUpon>FlightPlanner.cs</DependentUpon> </Compile>
-    <Compile Include="GCSViews\Help.Designer.cs"><DependentUpon>Help.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\InitialSetup.Designer.cs"><DependentUpon>InitialSetup.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\SoftwareConfig.Designer.cs"><DependentUpon>SoftwareConfig.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\Terminal.Designer.cs"><DependentUpon>Terminal.cs</DependentUpon> </Compile>
@@ -547,7 +532,6 @@
     <Compile Include="GCSViews\ConfigurationView\ConfigHWRangeFinder.Designer.cs"><DependentUpon>ConfigHWRangeFinder.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigHWUAVCAN.Designer.cs"><DependentUpon>ConfigHWUAVCAN.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigMandatory.Designer.cs"><DependentUpon>ConfigMandatory.cs</DependentUpon> </Compile>
-    <Compile Include="GCSViews\ConfigurationView\ConfigMount.Designer.cs"><DependentUpon>ConfigMount.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigOptional.Designer.cs"><DependentUpon>ConfigOptional.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigPlanner.Designer.cs"><DependentUpon>ConfigPlanner.cs</DependentUpon> </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigPlannerAdv.Designer.cs"><DependentUpon>ConfigPlannerAdv.cs</DependentUpon> </Compile>
@@ -655,21 +639,6 @@
     <EmbeddedResource Include="MainV2.zh-Hans.resx"><DependentUpon>MainV2.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="MainV2.zh-Hant.resx"><DependentUpon>MainV2.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="MainV2.zh-TW.resx"><DependentUpon>MainV2.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="MovingBase.resx"><DependentUpon>MovingBase.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="MovingBase.ar.resx"><DependentUpon>MovingBase.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="MovingBase.az-Latn-AZ.resx"><DependentUpon>MovingBase.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="MovingBase.de-DE.resx"><DependentUpon>MovingBase.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="MovingBase.es-ES.resx"><DependentUpon>MovingBase.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="MovingBase.fr.resx"><DependentUpon>MovingBase.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="MovingBase.id-ID.resx"><DependentUpon>MovingBase.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="MovingBase.it-IT.resx"><DependentUpon>MovingBase.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="MovingBase.ja-JP.resx"><DependentUpon>MovingBase.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="MovingBase.ko-KR.resx"><DependentUpon>MovingBase.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="MovingBase.pl.resx"><DependentUpon>MovingBase.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="MovingBase.pt.resx"><DependentUpon>MovingBase.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="MovingBase.zh-Hans.resx"><DependentUpon>MovingBase.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="MovingBase.zh-Hant.resx"><DependentUpon>MovingBase.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="MovingBase.zh-TW.resx"><DependentUpon>MovingBase.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="OpenGLtest.resx"><DependentUpon>OpenGLtest.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="OpenGLtest2.resx"><DependentUpon>OpenGLtest2.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="OSDVideo.resx"><DependentUpon>OSDVideo.cs</DependentUpon> </EmbeddedResource>
@@ -849,22 +818,6 @@
     <EmbeddedResource Include="GCSViews\FlightPlanner.zh-Hans.resx"><DependentUpon>FlightPlanner.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\FlightPlanner.zh-Hant.resx"><DependentUpon>FlightPlanner.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\FlightPlanner.zh-TW.resx"><DependentUpon>FlightPlanner.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\Help.resx"><DependentUpon>Help.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\Help.ar.resx"><DependentUpon>Help.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\Help.az-Latn-AZ.resx"><DependentUpon>Help.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\Help.de-DE.resx"><DependentUpon>Help.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\Help.es-ES.resx"><DependentUpon>Help.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\Help.fr.resx"><DependentUpon>Help.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\Help.id-ID.resx"><DependentUpon>Help.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\Help.it-IT.resx"><DependentUpon>Help.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\Help.ja-JP.resx"><DependentUpon>Help.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\Help.ko-KR.resx"><DependentUpon>Help.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\Help.pl.resx"><DependentUpon>Help.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\Help.pt.resx"><DependentUpon>Help.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\Help.ru-RU.resx"><DependentUpon>Help.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\Help.zh-Hans.resx"><DependentUpon>Help.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\Help.zh-Hant.resx"><DependentUpon>Help.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\Help.zh-TW.resx"><DependentUpon>Help.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\InitialSetup.resx"><DependentUpon>InitialSetup.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\InitialSetup.ar.resx"><DependentUpon>InitialSetup.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\InitialSetup.az-Latn-AZ.resx"><DependentUpon>InitialSetup.cs</DependentUpon> </EmbeddedResource>
@@ -1240,19 +1193,6 @@
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMandatory.ko-KR.resx"><DependentUpon>ConfigMandatory.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMandatory.pt.resx"><DependentUpon>ConfigMandatory.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMandatory.zh-Hans.resx"><DependentUpon>ConfigMandatory.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMount.resx"><DependentUpon>ConfigMount.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMount.ar.resx"><DependentUpon>ConfigMount.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMount.az-Latn-AZ.resx"><DependentUpon>ConfigMount.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMount.de-DE.resx"><DependentUpon>ConfigMount.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMount.fr.resx"><DependentUpon>ConfigMount.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMount.id-ID.resx"><DependentUpon>ConfigMount.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMount.it-IT.resx"><DependentUpon>ConfigMount.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMount.ja-JP.resx"><DependentUpon>ConfigMount.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMount.ko-KR.resx"><DependentUpon>ConfigMount.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMount.pt.resx"><DependentUpon>ConfigMount.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMount.zh-Hans.resx"><DependentUpon>ConfigMount.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMount.zh-Hant.resx"><DependentUpon>ConfigMount.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMount.zh-TW.resx"><DependentUpon>ConfigMount.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigOptional.resx"><DependentUpon>ConfigOptional.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigOptional.ar.resx"><DependentUpon>ConfigOptional.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigOptional.az-Latn-AZ.resx"><DependentUpon>ConfigOptional.cs</DependentUpon> </EmbeddedResource>
