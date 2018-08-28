@@ -109,11 +109,6 @@ namespace MissionPlanner.GCSViews
                 }
             }
 
-            if (MainV2.DisplayConfiguration.displayWizard)
-            {
-                AddBackstageViewPage(typeof(ConfigWizard), rm.GetString("backstageViewPagewizard.Text"));
-            }
-
             var mand = AddBackstageViewPage(typeof(ConfigMandatory), rm.GetString("backstageViewPagemand.Text"), isConnected);
 
             if (MainV2.DisplayConfiguration.displayFrameType)

@@ -53,13 +53,6 @@ namespace MissionPlanner.GCSViews
             Process.Start("http://germandrones.com/Software/MP_Upgrade/ChangeLog.txt");
         }
 
-        private void PIC_wizard_Click(object sender, EventArgs e)
-        {
-            var cfg = new Wizard.Wizard();
-
-            cfg.ShowDialog(this);
-        }
-
         private void BUT_betaupdate_Click(object sender, EventArgs e)
         {
             
