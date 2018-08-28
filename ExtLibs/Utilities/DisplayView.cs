@@ -297,8 +297,8 @@ namespace MissionPlanner.Utilities
             {
                 displayName = DisplayNames.Advanced,
                 //MainV2 buttons
-                displaySimulation = true,
-                displayTerminal = true,
+                displaySimulation = false,
+                displayTerminal = false,
                 displayHelp = false,
 
                 //flight Data view

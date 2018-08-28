@@ -16,6 +16,7 @@ using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using MissionPlanner.Comms;
 using MissionPlanner.Controls;
+using System.Runtime.InteropServices;
 
 namespace MissionPlanner
 {
@@ -42,16 +43,29 @@ namespace MissionPlanner
         public static string[] names = new string[] { "VVVVZ" };
         public static bool MONO = false;
 
+
+
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        const int SW_HIDE = 0;
+        const int SW_SHOW = 5;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         public static void Main(string[] args)
         {
+            var handle = GetConsoleWindow();
+            ShowWindow(handle, SW_HIDE);
+
             Program.args = args;
 
-            Console.WriteLine(
-                "If your error is about Microsoft.DirectX.DirectInput, please install the latest directx redist from here http://www.microsoft.com/en-us/download/details.aspx?id=35 \n\n");
+            Console.WriteLine("If your error is about Microsoft.DirectX.DirectInput, please install the latest directx redist from here http://www.microsoft.com/en-us/download/details.aspx?id=35 \n\n");
             Console.WriteLine("Debug under mono    MONO_LOG_LEVEL=debug mono MissionPlanner.exe");
 
             if (Program.args.Contains("-dev")) Settings.isDevMode = true;
@@ -155,8 +169,7 @@ namespace MissionPlanner
             GMap.NET.MapProviders.GMapProviders.List.Add(Maps.MapBox.Instance);
             GMap.NET.MapProviders.GMapProviders.List.Add(Maps.MapboxNoFly.Instance);
             // optionally add gdal support
-            if (Directory.Exists(Application.StartupPath + Path.DirectorySeparatorChar + "gdal"))
-                GMap.NET.MapProviders.GMapProviders.List.Add(GDAL.GDALProvider.Instance);
+            if (Directory.Exists(Application.StartupPath + Path.DirectorySeparatorChar + "gdal")) GMap.NET.MapProviders.GMapProviders.List.Add(GDAL.GDALProvider.Instance);
 
             // add proxy settings
             GMap.NET.MapProviders.GMapProvider.WebProxy = WebRequest.GetSystemWebProxy();
@@ -226,8 +239,7 @@ namespace MissionPlanner
             try
             {
                 // kill sim background process if its still running
-                if (Controls.SITL.simulator != null)
-                    Controls.SITL.simulator.Kill();
+                if (Controls.SITL.simulator != null) Controls.SITL.simulator.Kill();
             }
             catch
             {
