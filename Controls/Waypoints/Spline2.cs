@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MissionPlanner.HIL;
 using MissionPlanner.Utilities;
 using uint8_t = System.Byte;
 using uint32_t = System.UInt32;

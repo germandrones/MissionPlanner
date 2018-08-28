@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using MissionPlanner.HIL;
 using uint8_t = System.Byte;
 using int8_t = System.SByte;
 using uint32_t = System.UInt32;

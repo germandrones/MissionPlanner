@@ -604,13 +604,6 @@
             this.chk_tfr.UseVisualStyleBackColor = true;
             this.chk_tfr.CheckedChanged += new System.EventHandler(this.chk_tfr_CheckedChanged);
             // 
-            // chk_temp
-            // 
-            resources.ApplyResources(this.chk_temp, "chk_temp");
-            this.chk_temp.Name = "chk_temp";
-            this.chk_temp.UseVisualStyleBackColor = true;
-            this.chk_temp.CheckedChanged += new System.EventHandler(this.chk_temp_CheckedChanged);
-            // 
             // chk_norcreceiver
             // 
             resources.ApplyResources(this.chk_norcreceiver, "chk_norcreceiver");

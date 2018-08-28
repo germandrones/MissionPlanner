@@ -7,7 +7,6 @@ using uint16_t = System.UInt16;
 using uint8_t = System.Byte;
 using int32_t = System.Int32;
 using int8_t = System.SByte;
-using MissionPlanner.HIL;
 
 namespace MissionPlanner.Utilities
 {

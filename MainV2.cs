@@ -27,8 +27,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using SharpDX.DirectInput;
 
-using NextVisionControlLibrary;// Special NExtvision extended library
-
 namespace MissionPlanner
 {
     public partial class MainV2 : Form
@@ -2024,13 +2022,6 @@ namespace MissionPlanner
                 {
                     MainV2.log.Error((object)ex);
                 }
-
-
-                // Try to read feedback from Colibri if connected
-                NextVisionExtended nvlib = new NextVisionExtended();
-                nvlib.read();
-
-
             }
             this.CamjoysendThreadExited = true;
         }
@@ -3053,18 +3044,6 @@ namespace MissionPlanner
                 return true;
             }
 
-            if (keyData == (Keys.Control | Keys.F)) // temp
-            {
-                Form frm = new temp();
-                ThemeManager.ApplyThemeTo(frm);
-                frm.Show();
-                return true;
-            }
-            /*if (keyData == (Keys.Control | Keys.S)) // screenshot
-            {
-                ScreenShot();
-                return true;
-            }*/
             if (keyData == (Keys.Control | Keys.G)) // nmea out
             {
                 Form frm = new SerialOutputNMEA();
@@ -3079,12 +3058,6 @@ namespace MissionPlanner
             }
             if (keyData == (Keys.Control | Keys.L)) // limits
             {
-                return true;
-            }
-            if (keyData == (Keys.Control | Keys.W)) // test ac config
-            {
-                new Swarm.SRB.Control().Show();
-
                 return true;
             }
             if (keyData == (Keys.Control | Keys.Z))

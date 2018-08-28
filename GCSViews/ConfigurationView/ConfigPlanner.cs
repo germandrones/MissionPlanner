@@ -857,12 +857,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             }
         }
 
-        private void chk_temp_CheckedChanged(object sender, EventArgs e)
-        {
-            var temp = new temp();
-            temp.Show();
-        }
-
         private void chk_norcreceiver_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Instance["norcreceiver"] = chk_norcreceiver.Checked.ToString();

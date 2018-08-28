@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using MissionPlanner.Controls;
-using MissionPlanner.HIL;
 
 namespace MissionPlanner.GCSViews.ConfigurationView
 {
@@ -13,25 +12,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         {
             InitializeComponent();
         }
-
-        /*
-#if (FRAME_CONFIG == QUAD_FRAME)
-        MAV_TYPE_QUADROTOR,
-#elif (FRAME_CONFIG == TRI_FRAME)
-        MAV_TYPE_TRICOPTER,
-#elif (FRAME_CONFIG == HEXA_FRAME || FRAME_CONFIG == Y6_FRAME)
-        MAV_TYPE_HEXAROTOR,
-#elif (FRAME_CONFIG == OCTA_FRAME || FRAME_CONFIG == OCTA_QUAD_FRAME)
-        MAV_TYPE_OCTOROTOR,
-#elif (FRAME_CONFIG == HELI_FRAME)
-        MAV_TYPE_HELICOPTER,
-#elif (FRAME_CONFIG == SINGLE_FRAME)  //because mavlink did not define a singlecopter, we use a rocket
-        MAV_TYPE_ROCKET,
-#elif (FRAME_CONFIG == COAX_FRAME)  //because mavlink did not define a singlecopter, we use a rocket
-        MAV_TYPE_ROCKET,
-#else
-  #error Unrecognised frame type
-#endif*/
 
         public void Activate()
         {
@@ -138,37 +118,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             {
                 type = MainV2.comPort.MAV.aptype;
                 frame_type = (int)MainV2.comPort.MAV.param["FRAME_TYPE"].Value;
-            }
-
-            var motors = new Motor[0];
-
-            if (type == MAVLink.MAV_TYPE.TRICOPTER)
-            {
-                motormax = 4;
-
-                motors = Motor.build_motors(MAVLink.MAV_TYPE.TRICOPTER, frame_type);
-            }
-            else if (type == MAVLink.MAV_TYPE.QUADROTOR)
-            {
-                motormax = 4;
-
-                motors = Motor.build_motors(MAVLink.MAV_TYPE.QUADROTOR, frame_type);
-            }
-            else if (type == MAVLink.MAV_TYPE.HEXAROTOR)
-            {
-                motormax = 6;
-
-                motors = Motor.build_motors(MAVLink.MAV_TYPE.HEXAROTOR, frame_type);
-            }
-            else if (type == MAVLink.MAV_TYPE.OCTOROTOR)
-            {
-                motormax = 8;
-
-                motors = Motor.build_motors(MAVLink.MAV_TYPE.OCTOROTOR, frame_type);
-            }
-            else if (type == MAVLink.MAV_TYPE.HELICOPTER)
-            {
-                motormax = 0;
             }
 
             return motormax;

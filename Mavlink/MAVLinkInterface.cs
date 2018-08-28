@@ -17,10 +17,10 @@ using System.Diagnostics;
 using log4net;
 using MissionPlanner.Comms;
 using MissionPlanner.Controls;
-using MissionPlanner.HIL;
 using MissionPlanner.Mavlink;
 using MissionPlanner.Utilities;
 using Timer = System.Timers.Timer;
+using System.Management;
 
 namespace MissionPlanner
 {
@@ -93,6 +93,7 @@ namespace MissionPlanner
 
         public TerrainFollow Terrain;
 
+        public delegate void ProgressEventHandler(int progress, string status);
         public event ProgressEventHandler Progress;
 
         int _sysidcurrent = 0;

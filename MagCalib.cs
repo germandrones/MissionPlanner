@@ -10,7 +10,6 @@ using log4net;
 using MissionPlanner.Log;
 using MissionPlanner.Controls;
 using MissionPlanner.Utilities;
-using MissionPlanner.HIL;
 
 namespace MissionPlanner
 {

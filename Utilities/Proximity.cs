@@ -1,5 +1,4 @@
 ﻿using log4net;
-using MissionPlanner.HIL;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
