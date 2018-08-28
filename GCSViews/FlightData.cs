@@ -5050,20 +5050,6 @@ namespace MissionPlanner.GCSViews
             }
         }
 
-        private void BTN_ColibriEnable_Click(object sender, EventArgs e)
-        {
-            if (!MainV2.comPort.BaseStream.IsOpen)
-            {
-                MessageBox.Show("Please connect first...");
-                //return;
-            }
-
-            Form form = (Form)new CamJoystickSetup();
-            MissionPlanner.Utilities.ThemeManager.ApplyThemeTo((Control)form);
-            form.Show();
-        }
-
-        
         #endregion
 
     }

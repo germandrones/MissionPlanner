@@ -130,7 +130,6 @@
             this.RadioBtnPos = new System.Windows.Forms.RadioButton();
             this.BTN_ColibriZoomOut = new MissionPlanner.Controls.MyButton();
             this.RadioBtnGRR = new System.Windows.Forms.RadioButton();
-            this.BTN_ColibriEnable = new MissionPlanner.Controls.MyButton();
             this.RadioBtnObs = new System.Windows.Forms.RadioButton();
             this.BTN_ColibriUp = new MissionPlanner.Controls.MyButton();
             this.RadioBtnStow = new System.Windows.Forms.RadioButton();
@@ -1782,7 +1781,6 @@
             this.Colibri_GB1.Controls.Add(this.RadioBtnPos);
             this.Colibri_GB1.Controls.Add(this.BTN_ColibriZoomOut);
             this.Colibri_GB1.Controls.Add(this.RadioBtnGRR);
-            this.Colibri_GB1.Controls.Add(this.BTN_ColibriEnable);
             this.Colibri_GB1.Controls.Add(this.RadioBtnObs);
             this.Colibri_GB1.Controls.Add(this.BTN_ColibriUp);
             this.Colibri_GB1.Controls.Add(this.RadioBtnStow);
@@ -1852,13 +1850,6 @@
             this.RadioBtnGRR.Name = "RadioBtnGRR";
             this.RadioBtnGRR.UseVisualStyleBackColor = true;
             this.RadioBtnGRR.Click += new System.EventHandler(this.gRRToolStripMenuItem_Click);
-            // 
-            // BTN_ColibriEnable
-            // 
-            resources.ApplyResources(this.BTN_ColibriEnable, "BTN_ColibriEnable");
-            this.BTN_ColibriEnable.Name = "BTN_ColibriEnable";
-            this.BTN_ColibriEnable.UseVisualStyleBackColor = true;
-            this.BTN_ColibriEnable.Click += new System.EventHandler(this.BTN_ColibriEnable_Click);
             // 
             // RadioBtnObs
             // 
@@ -2614,7 +2605,6 @@
         private Controls.MyButton BTN_ColibriRight;
         private Controls.MyButton BTN_ColibriLeft;
         private Controls.MyButton BTN_ColibriDown;
-        private Controls.MyButton BTN_ColibriEnable;
         private Controls.MyButton BTN_ColibriZoomOut;
         private Controls.MyButton BTN_ColibriZoomIn;
         private System.Windows.Forms.GroupBox Colibri_GB1;
