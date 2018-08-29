@@ -89,21 +89,6 @@
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.Colibri_GB1 = new System.Windows.Forms.GroupBox();
-            this.BTN_ColibriStow = new MissionPlanner.Controls.MyButton();
-            this.RadioBtnHold = new System.Windows.Forms.RadioButton();
-            this.videoPlayer_BTN = new MissionPlanner.Controls.MyButton();
-            this.RadioBtnPTC = new System.Windows.Forms.RadioButton();
-            this.BTN_ColibriRight = new MissionPlanner.Controls.MyButton();
-            this.RadioBtnPos = new System.Windows.Forms.RadioButton();
-            this.BTN_ColibriZoomOut = new MissionPlanner.Controls.MyButton();
-            this.RadioBtnGRR = new System.Windows.Forms.RadioButton();
-            this.RadioBtnObs = new System.Windows.Forms.RadioButton();
-            this.BTN_ColibriUp = new MissionPlanner.Controls.MyButton();
-            this.RadioBtnStow = new System.Windows.Forms.RadioButton();
-            this.BTN_ColibriZoomIn = new MissionPlanner.Controls.MyButton();
-            this.BTN_ColibriDown = new MissionPlanner.Controls.MyButton();
-            this.BTN_ColibriLeft = new MissionPlanner.Controls.MyButton();
             this.tableMap = new System.Windows.Forms.TableLayoutPanel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.zg1 = new ZedGraph.ZedGraphControl();
@@ -148,11 +133,23 @@
             this.CB_tuning = new System.Windows.Forms.CheckBox();
             this.quickActions = new BSE.Windows.Forms.Panel();
             this.BUT_ChangeSpeed = new MissionPlanner.Controls.MyButton();
+            this.Colibri_GB1 = new System.Windows.Forms.GroupBox();
+            this.BTN_ColibriStow = new MissionPlanner.Controls.MyButton();
+            this.RadioBtnHold = new System.Windows.Forms.RadioButton();
+            this.RadioBtnPTC = new System.Windows.Forms.RadioButton();
+            this.BTN_ColibriRight = new MissionPlanner.Controls.MyButton();
+            this.RadioBtnPos = new System.Windows.Forms.RadioButton();
+            this.BTN_ColibriZoomOut = new MissionPlanner.Controls.MyButton();
+            this.RadioBtnGRR = new System.Windows.Forms.RadioButton();
+            this.RadioBtnObs = new System.Windows.Forms.RadioButton();
+            this.BTN_ColibriUp = new MissionPlanner.Controls.MyButton();
+            this.RadioBtnStow = new System.Windows.Forms.RadioButton();
+            this.BTN_ColibriZoomIn = new MissionPlanner.Controls.MyButton();
+            this.BTN_ColibriDown = new MissionPlanner.Controls.MyButton();
+            this.BTN_ColibriLeft = new MissionPlanner.Controls.MyButton();
             this.BUT_changeAltitude = new MissionPlanner.Controls.MyButton();
-            this.BUT_quickauto = new MissionPlanner.Controls.MyButton();
             this.BUT_changeLoiterRad = new MissionPlanner.Controls.MyButton();
             this.BUT_joystick = new MissionPlanner.Controls.MyButton();
-            this.BUT_clear_track = new MissionPlanner.Controls.MyButton();
             this.BUT_quickmanual = new MissionPlanner.Controls.MyButton();
             this.BTN_ActionTriggerCamNow = new MissionPlanner.Controls.MyButton();
             this.BUT_setwp = new MissionPlanner.Controls.MyButton();
@@ -216,7 +213,6 @@
             this.tabScripts.SuspendLayout();
             this.tabPageColibri.SuspendLayout();
             this.Colibri_GB4.SuspendLayout();
-            this.Colibri_GB1.SuspendLayout();
             this.tableMap.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -227,6 +223,7 @@
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Zoomlevel)).BeginInit();
             this.quickActions.SuspendLayout();
+            this.Colibri_GB1.SuspendLayout();
             this.contextMenuStripactionstab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSourceHud)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSourceQuickTab)).BeginInit();
@@ -534,12 +531,6 @@
             this.setMJPEGSourceToolStripMenuItem.Name = "setMJPEGSourceToolStripMenuItem";
             resources.ApplyResources(this.setMJPEGSourceToolStripMenuItem, "setMJPEGSourceToolStripMenuItem");
             this.setMJPEGSourceToolStripMenuItem.Click += new System.EventHandler(this.setMJPEGSourceToolStripMenuItem_Click);
-            // 
-            // startCameraToolStripMenuItem
-            // 
-            this.startCameraToolStripMenuItem.Name = "startCameraToolStripMenuItem";
-            resources.ApplyResources(this.startCameraToolStripMenuItem, "startCameraToolStripMenuItem");
-            this.startCameraToolStripMenuItem.Click += new System.EventHandler(this.startCameraToolStripMenuItem_Click);
             // 
             // setGStreamerSourceToolStripMenuItem
             // 
@@ -1419,7 +1410,6 @@
             // tabPageColibri
             // 
             this.tabPageColibri.Controls.Add(this.Colibri_GB4);
-            this.tabPageColibri.Controls.Add(this.Colibri_GB1);
             resources.ApplyResources(this.tabPageColibri, "tabPageColibri");
             this.tabPageColibri.Name = "tabPageColibri";
             this.tabPageColibri.UseVisualStyleBackColor = true;
@@ -1465,134 +1455,6 @@
             // 
             resources.ApplyResources(this.label11, "label11");
             this.label11.Name = "label11";
-            // 
-            // Colibri_GB1
-            // 
-            this.Colibri_GB1.Controls.Add(this.BTN_ColibriStow);
-            this.Colibri_GB1.Controls.Add(this.RadioBtnHold);
-            this.Colibri_GB1.Controls.Add(this.videoPlayer_BTN);
-            this.Colibri_GB1.Controls.Add(this.RadioBtnPTC);
-            this.Colibri_GB1.Controls.Add(this.BTN_ColibriRight);
-            this.Colibri_GB1.Controls.Add(this.RadioBtnPos);
-            this.Colibri_GB1.Controls.Add(this.BTN_ColibriZoomOut);
-            this.Colibri_GB1.Controls.Add(this.RadioBtnGRR);
-            this.Colibri_GB1.Controls.Add(this.RadioBtnObs);
-            this.Colibri_GB1.Controls.Add(this.BTN_ColibriUp);
-            this.Colibri_GB1.Controls.Add(this.RadioBtnStow);
-            this.Colibri_GB1.Controls.Add(this.BTN_ColibriZoomIn);
-            this.Colibri_GB1.Controls.Add(this.BTN_ColibriDown);
-            this.Colibri_GB1.Controls.Add(this.BTN_ColibriLeft);
-            resources.ApplyResources(this.Colibri_GB1, "Colibri_GB1");
-            this.Colibri_GB1.Name = "Colibri_GB1";
-            this.Colibri_GB1.TabStop = false;
-            // 
-            // BTN_ColibriStow
-            // 
-            resources.ApplyResources(this.BTN_ColibriStow, "BTN_ColibriStow");
-            this.BTN_ColibriStow.Name = "BTN_ColibriStow";
-            this.BTN_ColibriStow.UseVisualStyleBackColor = true;
-            this.BTN_ColibriStow.Click += new System.EventHandler(this.stowToolStripMenuItem_Click);
-            // 
-            // RadioBtnHold
-            // 
-            resources.ApplyResources(this.RadioBtnHold, "RadioBtnHold");
-            this.RadioBtnHold.Name = "RadioBtnHold";
-            this.RadioBtnHold.TabStop = true;
-            this.RadioBtnHold.UseVisualStyleBackColor = true;
-            this.RadioBtnHold.Click += new System.EventHandler(this.holdToolStripMenuItem_Click);
-            // 
-            // videoPlayer_BTN
-            // 
-            resources.ApplyResources(this.videoPlayer_BTN, "videoPlayer_BTN");
-            this.videoPlayer_BTN.Name = "videoPlayer_BTN";
-            this.videoPlayer_BTN.UseVisualStyleBackColor = true;
-            this.videoPlayer_BTN.Click += new System.EventHandler(this.videoPlayer_BTN_Click);
-            // 
-            // RadioBtnPTC
-            // 
-            resources.ApplyResources(this.RadioBtnPTC, "RadioBtnPTC");
-            this.RadioBtnPTC.Name = "RadioBtnPTC";
-            this.RadioBtnPTC.TabStop = true;
-            this.RadioBtnPTC.UseVisualStyleBackColor = true;
-            this.RadioBtnPTC.Click += new System.EventHandler(this.pTCToolStripMenuItem_Click);
-            // 
-            // BTN_ColibriRight
-            // 
-            resources.ApplyResources(this.BTN_ColibriRight, "BTN_ColibriRight");
-            this.BTN_ColibriRight.Name = "BTN_ColibriRight";
-            this.BTN_ColibriRight.UseVisualStyleBackColor = true;
-            this.BTN_ColibriRight.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriRight_MouseDown);
-            this.BTN_ColibriRight.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriRight_MouseUp);
-            // 
-            // RadioBtnPos
-            // 
-            resources.ApplyResources(this.RadioBtnPos, "RadioBtnPos");
-            this.RadioBtnPos.Name = "RadioBtnPos";
-            this.RadioBtnPos.UseVisualStyleBackColor = true;
-            this.RadioBtnPos.Click += new System.EventHandler(this.positionToolStripMenuItem_Click);
-            // 
-            // BTN_ColibriZoomOut
-            // 
-            resources.ApplyResources(this.BTN_ColibriZoomOut, "BTN_ColibriZoomOut");
-            this.BTN_ColibriZoomOut.Name = "BTN_ColibriZoomOut";
-            this.BTN_ColibriZoomOut.UseVisualStyleBackColor = true;
-            this.BTN_ColibriZoomOut.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriZoomOut_MouseDown);
-            this.BTN_ColibriZoomOut.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriZoomOut_MouseUp);
-            // 
-            // RadioBtnGRR
-            // 
-            resources.ApplyResources(this.RadioBtnGRR, "RadioBtnGRR");
-            this.RadioBtnGRR.Name = "RadioBtnGRR";
-            this.RadioBtnGRR.UseVisualStyleBackColor = true;
-            this.RadioBtnGRR.Click += new System.EventHandler(this.gRRToolStripMenuItem_Click);
-            // 
-            // RadioBtnObs
-            // 
-            resources.ApplyResources(this.RadioBtnObs, "RadioBtnObs");
-            this.RadioBtnObs.Name = "RadioBtnObs";
-            this.RadioBtnObs.UseVisualStyleBackColor = true;
-            this.RadioBtnObs.Click += new System.EventHandler(this.observationToolStripMenuItem_Click);
-            // 
-            // BTN_ColibriUp
-            // 
-            resources.ApplyResources(this.BTN_ColibriUp, "BTN_ColibriUp");
-            this.BTN_ColibriUp.Name = "BTN_ColibriUp";
-            this.BTN_ColibriUp.UseVisualStyleBackColor = true;
-            this.BTN_ColibriUp.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriUp_MouseDown);
-            this.BTN_ColibriUp.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriUp_MouseUp);
-            // 
-            // RadioBtnStow
-            // 
-            resources.ApplyResources(this.RadioBtnStow, "RadioBtnStow");
-            this.RadioBtnStow.Checked = true;
-            this.RadioBtnStow.Name = "RadioBtnStow";
-            this.RadioBtnStow.TabStop = true;
-            this.RadioBtnStow.UseVisualStyleBackColor = true;
-            this.RadioBtnStow.Click += new System.EventHandler(this.stowToolStripMenuItem_Click);
-            // 
-            // BTN_ColibriZoomIn
-            // 
-            resources.ApplyResources(this.BTN_ColibriZoomIn, "BTN_ColibriZoomIn");
-            this.BTN_ColibriZoomIn.Name = "BTN_ColibriZoomIn";
-            this.BTN_ColibriZoomIn.UseVisualStyleBackColor = true;
-            this.BTN_ColibriZoomIn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriZoomIn_MouseDown);
-            this.BTN_ColibriZoomIn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriZoomIn_MouseUp);
-            // 
-            // BTN_ColibriDown
-            // 
-            resources.ApplyResources(this.BTN_ColibriDown, "BTN_ColibriDown");
-            this.BTN_ColibriDown.Name = "BTN_ColibriDown";
-            this.BTN_ColibriDown.UseVisualStyleBackColor = true;
-            this.BTN_ColibriDown.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriDown_MouseDown);
-            this.BTN_ColibriDown.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriDown_MouseUp);
-            // 
-            // BTN_ColibriLeft
-            // 
-            resources.ApplyResources(this.BTN_ColibriLeft, "BTN_ColibriLeft");
-            this.BTN_ColibriLeft.Name = "BTN_ColibriLeft";
-            this.BTN_ColibriLeft.UseVisualStyleBackColor = true;
-            this.BTN_ColibriLeft.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriLeft_MouseDown);
-            this.BTN_ColibriLeft.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriLeft_MouseUp);
             // 
             // tableMap
             // 
@@ -1818,7 +1680,7 @@
             this.windDir1.BackColor = System.Drawing.Color.Transparent;
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Direction", this.bindingSource1, "wind_dir", true, System.Windows.Forms.DataSourceUpdateMode.Never));
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Speed", this.bindingSource1, "wind_vel", true, System.Windows.Forms.DataSourceUpdateMode.Never));
-            this.windDir1.Direction = 0D;
+            this.windDir1.Direction = 180D;
             resources.ApplyResources(this.windDir1, "windDir1");
             this.windDir1.Name = "windDir1";
             this.windDir1.Speed = 0D;
@@ -1997,11 +1859,10 @@
             this.quickActions.CaptionHeight = 21;
             this.quickActions.ColorScheme = BSE.Windows.Forms.ColorScheme.Custom;
             this.quickActions.Controls.Add(this.BUT_ChangeSpeed);
+            this.quickActions.Controls.Add(this.Colibri_GB1);
             this.quickActions.Controls.Add(this.BUT_changeAltitude);
-            this.quickActions.Controls.Add(this.BUT_quickauto);
             this.quickActions.Controls.Add(this.BUT_changeLoiterRad);
             this.quickActions.Controls.Add(this.BUT_joystick);
-            this.quickActions.Controls.Add(this.BUT_clear_track);
             this.quickActions.Controls.Add(this.BUT_quickmanual);
             this.quickActions.Controls.Add(this.BTN_ActionTriggerCamNow);
             this.quickActions.Controls.Add(this.BUT_setwp);
@@ -2039,23 +1900,132 @@
             this.BUT_ChangeSpeed.UseVisualStyleBackColor = true;
             this.BUT_ChangeSpeed.Click += new System.EventHandler(this.modifyandSetSpeed_Click);
             // 
+            // Colibri_GB1
+            // 
+            this.Colibri_GB1.Controls.Add(this.BTN_ColibriStow);
+            this.Colibri_GB1.Controls.Add(this.RadioBtnHold);
+            this.Colibri_GB1.Controls.Add(this.RadioBtnPTC);
+            this.Colibri_GB1.Controls.Add(this.BTN_ColibriRight);
+            this.Colibri_GB1.Controls.Add(this.RadioBtnPos);
+            this.Colibri_GB1.Controls.Add(this.BTN_ColibriZoomOut);
+            this.Colibri_GB1.Controls.Add(this.RadioBtnGRR);
+            this.Colibri_GB1.Controls.Add(this.RadioBtnObs);
+            this.Colibri_GB1.Controls.Add(this.BTN_ColibriUp);
+            this.Colibri_GB1.Controls.Add(this.RadioBtnStow);
+            this.Colibri_GB1.Controls.Add(this.BTN_ColibriZoomIn);
+            this.Colibri_GB1.Controls.Add(this.BTN_ColibriDown);
+            this.Colibri_GB1.Controls.Add(this.BTN_ColibriLeft);
+            resources.ApplyResources(this.Colibri_GB1, "Colibri_GB1");
+            this.Colibri_GB1.Name = "Colibri_GB1";
+            this.Colibri_GB1.TabStop = false;
+            // 
+            // BTN_ColibriStow
+            // 
+            resources.ApplyResources(this.BTN_ColibriStow, "BTN_ColibriStow");
+            this.BTN_ColibriStow.Name = "BTN_ColibriStow";
+            this.BTN_ColibriStow.UseVisualStyleBackColor = true;
+            this.BTN_ColibriStow.Click += new System.EventHandler(this.stowToolStripMenuItem_Click);
+            // 
+            // RadioBtnHold
+            // 
+            resources.ApplyResources(this.RadioBtnHold, "RadioBtnHold");
+            this.RadioBtnHold.Name = "RadioBtnHold";
+            this.RadioBtnHold.TabStop = true;
+            this.RadioBtnHold.UseVisualStyleBackColor = true;
+            this.RadioBtnHold.Click += new System.EventHandler(this.holdToolStripMenuItem_Click);
+            // 
+            // RadioBtnPTC
+            // 
+            resources.ApplyResources(this.RadioBtnPTC, "RadioBtnPTC");
+            this.RadioBtnPTC.Name = "RadioBtnPTC";
+            this.RadioBtnPTC.TabStop = true;
+            this.RadioBtnPTC.UseVisualStyleBackColor = true;
+            this.RadioBtnPTC.Click += new System.EventHandler(this.pTCToolStripMenuItem_Click);
+            // 
+            // BTN_ColibriRight
+            // 
+            resources.ApplyResources(this.BTN_ColibriRight, "BTN_ColibriRight");
+            this.BTN_ColibriRight.Name = "BTN_ColibriRight";
+            this.BTN_ColibriRight.UseVisualStyleBackColor = true;
+            this.BTN_ColibriRight.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriRight_MouseDown);
+            this.BTN_ColibriRight.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriRight_MouseUp);
+            // 
+            // RadioBtnPos
+            // 
+            resources.ApplyResources(this.RadioBtnPos, "RadioBtnPos");
+            this.RadioBtnPos.Name = "RadioBtnPos";
+            this.RadioBtnPos.UseVisualStyleBackColor = true;
+            this.RadioBtnPos.Click += new System.EventHandler(this.positionToolStripMenuItem_Click);
+            // 
+            // BTN_ColibriZoomOut
+            // 
+            resources.ApplyResources(this.BTN_ColibriZoomOut, "BTN_ColibriZoomOut");
+            this.BTN_ColibriZoomOut.Name = "BTN_ColibriZoomOut";
+            this.BTN_ColibriZoomOut.UseVisualStyleBackColor = true;
+            this.BTN_ColibriZoomOut.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriZoomOut_MouseDown);
+            this.BTN_ColibriZoomOut.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriZoomOut_MouseUp);
+            // 
+            // RadioBtnGRR
+            // 
+            resources.ApplyResources(this.RadioBtnGRR, "RadioBtnGRR");
+            this.RadioBtnGRR.Name = "RadioBtnGRR";
+            this.RadioBtnGRR.UseVisualStyleBackColor = true;
+            this.RadioBtnGRR.Click += new System.EventHandler(this.gRRToolStripMenuItem_Click);
+            // 
+            // RadioBtnObs
+            // 
+            resources.ApplyResources(this.RadioBtnObs, "RadioBtnObs");
+            this.RadioBtnObs.Name = "RadioBtnObs";
+            this.RadioBtnObs.UseVisualStyleBackColor = true;
+            this.RadioBtnObs.Click += new System.EventHandler(this.observationToolStripMenuItem_Click);
+            // 
+            // BTN_ColibriUp
+            // 
+            resources.ApplyResources(this.BTN_ColibriUp, "BTN_ColibriUp");
+            this.BTN_ColibriUp.Name = "BTN_ColibriUp";
+            this.BTN_ColibriUp.UseVisualStyleBackColor = true;
+            this.BTN_ColibriUp.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriUp_MouseDown);
+            this.BTN_ColibriUp.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriUp_MouseUp);
+            // 
+            // RadioBtnStow
+            // 
+            resources.ApplyResources(this.RadioBtnStow, "RadioBtnStow");
+            this.RadioBtnStow.Checked = true;
+            this.RadioBtnStow.Name = "RadioBtnStow";
+            this.RadioBtnStow.TabStop = true;
+            this.RadioBtnStow.UseVisualStyleBackColor = true;
+            this.RadioBtnStow.Click += new System.EventHandler(this.stowToolStripMenuItem_Click);
+            // 
+            // BTN_ColibriZoomIn
+            // 
+            resources.ApplyResources(this.BTN_ColibriZoomIn, "BTN_ColibriZoomIn");
+            this.BTN_ColibriZoomIn.Name = "BTN_ColibriZoomIn";
+            this.BTN_ColibriZoomIn.UseVisualStyleBackColor = true;
+            this.BTN_ColibriZoomIn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriZoomIn_MouseDown);
+            this.BTN_ColibriZoomIn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriZoomIn_MouseUp);
+            // 
+            // BTN_ColibriDown
+            // 
+            resources.ApplyResources(this.BTN_ColibriDown, "BTN_ColibriDown");
+            this.BTN_ColibriDown.Name = "BTN_ColibriDown";
+            this.BTN_ColibriDown.UseVisualStyleBackColor = true;
+            this.BTN_ColibriDown.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriDown_MouseDown);
+            this.BTN_ColibriDown.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriDown_MouseUp);
+            // 
+            // BTN_ColibriLeft
+            // 
+            resources.ApplyResources(this.BTN_ColibriLeft, "BTN_ColibriLeft");
+            this.BTN_ColibriLeft.Name = "BTN_ColibriLeft";
+            this.BTN_ColibriLeft.UseVisualStyleBackColor = true;
+            this.BTN_ColibriLeft.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriLeft_MouseDown);
+            this.BTN_ColibriLeft.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BTN_ColibriLeft_MouseUp);
+            // 
             // BUT_changeAltitude
             // 
             resources.ApplyResources(this.BUT_changeAltitude, "BUT_changeAltitude");
             this.BUT_changeAltitude.Name = "BUT_changeAltitude";
             this.BUT_changeAltitude.UseVisualStyleBackColor = true;
             this.BUT_changeAltitude.Click += new System.EventHandler(this.modifyandSetAlt_Click);
-            // 
-            // BUT_quickauto
-            // 
-            this.BUT_quickauto.ColorMouseDown = System.Drawing.Color.Empty;
-            this.BUT_quickauto.ColorMouseOver = System.Drawing.Color.Empty;
-            this.BUT_quickauto.ColorNotEnabled = System.Drawing.Color.Empty;
-            resources.ApplyResources(this.BUT_quickauto, "BUT_quickauto");
-            this.BUT_quickauto.Name = "BUT_quickauto";
-            this.toolTip1.SetToolTip(this.BUT_quickauto, resources.GetString("BUT_quickauto.ToolTip"));
-            this.BUT_quickauto.UseVisualStyleBackColor = true;
-            this.BUT_quickauto.Click += new System.EventHandler(this.BUT_quickauto_Click);
             // 
             // BUT_changeLoiterRad
             // 
@@ -2071,14 +2041,6 @@
             this.toolTip1.SetToolTip(this.BUT_joystick, resources.GetString("BUT_joystick.ToolTip"));
             this.BUT_joystick.UseVisualStyleBackColor = true;
             this.BUT_joystick.Click += new System.EventHandler(this.BUT_joystick_Click);
-            // 
-            // BUT_clear_track
-            // 
-            resources.ApplyResources(this.BUT_clear_track, "BUT_clear_track");
-            this.BUT_clear_track.Name = "BUT_clear_track";
-            this.toolTip1.SetToolTip(this.BUT_clear_track, resources.GetString("BUT_clear_track.ToolTip"));
-            this.BUT_clear_track.UseVisualStyleBackColor = true;
-            this.BUT_clear_track.Click += new System.EventHandler(this.BUT_clear_track_Click);
             // 
             // BUT_quickmanual
             // 
@@ -2292,7 +2254,6 @@
             this.Name = "FlightData";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FlightData_FormClosing);
             this.Load += new System.EventHandler(this.FlightData_Load);
-            this.Resize += new System.EventHandler(this.FlightData_Resize);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
             this.splitContainer2.Panel2.PerformLayout();
@@ -2327,8 +2288,6 @@
             this.tabPageColibri.ResumeLayout(false);
             this.Colibri_GB4.ResumeLayout(false);
             this.Colibri_GB4.PerformLayout();
-            this.Colibri_GB1.ResumeLayout(false);
-            this.Colibri_GB1.PerformLayout();
             this.tableMap.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -2341,6 +2300,8 @@
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Zoomlevel)).EndInit();
             this.quickActions.ResumeLayout(false);
+            this.Colibri_GB1.ResumeLayout(false);
+            this.Colibri_GB1.PerformLayout();
             this.contextMenuStripactionstab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSourceHud)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSourceQuickTab)).EndInit();
@@ -2361,7 +2322,6 @@
         private System.Windows.Forms.SplitContainer SubMainLeft;
         private System.Windows.Forms.ToolStripMenuItem goHereToolStripMenuItem;
         private Controls.HUD hud1;
-        private Controls.MyButton BUT_clear_track;
         private System.Windows.Forms.CheckBox CB_tuning;
         private System.Windows.Forms.TrackBar tracklog;
         private Controls.MyButton BUT_playlog;
@@ -2379,7 +2339,6 @@
         public System.Windows.Forms.TabPage tabGauges;
         public System.Windows.Forms.TabPage tabStatus;
         public System.Windows.Forms.TabPage tabTLogs;
-        private Controls.MyButton BUT_quickauto;
         private Controls.MyButton BUT_log2kml;
         private Controls.MyButton BUT_joystick;
         private System.Windows.Forms.ToolTip toolTip1;
@@ -2526,7 +2485,6 @@
         private System.Windows.Forms.ToolStripMenuItem stowToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
-        private Controls.MyButton videoPlayer_BTN;
         private Controls.MyButton BTN_ColibriStow;
         public BSE.Windows.Forms.Panel quickActions;
         public System.Windows.Forms.TableLayoutPanel tableMap;

@@ -169,7 +169,7 @@
     <value>100, 27</value>
   </data>
   <data name="quickView6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>110, 96</value>
+    <value>110, 106</value>
   </data>
   <data name="quickView6.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -196,13 +196,13 @@
     <value>Fill</value>
   </data>
   <data name="quickView5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 105</value>
+    <value>3, 115</value>
   </data>
   <data name="quickView5.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>100, 27</value>
   </data>
   <data name="quickView5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>108, 97</value>
+    <value>108, 106</value>
   </data>
   <data name="quickView5.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -223,13 +223,13 @@
     <value>Fill</value>
   </data>
   <data name="quickView4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>231, 105</value>
+    <value>231, 115</value>
   </data>
   <data name="quickView4.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>100, 27</value>
   </data>
   <data name="quickView4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>110, 97</value>
+    <value>110, 106</value>
   </data>
   <data name="quickView4.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -250,13 +250,13 @@
     <value>Fill</value>
   </data>
   <data name="quickView3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>117, 105</value>
+    <value>117, 115</value>
   </data>
   <data name="quickView3.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>100, 27</value>
   </data>
   <data name="quickView3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>108, 97</value>
+    <value>108, 106</value>
   </data>
   <data name="quickView3.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -283,7 +283,7 @@
     <value>100, 27</value>
   </data>
   <data name="quickView2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>108, 96</value>
+    <value>108, 106</value>
   </data>
   <data name="quickView2.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -310,7 +310,7 @@
     <value>100, 27</value>
   </data>
   <data name="quickView1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>108, 96</value>
+    <value>108, 106</value>
   </data>
   <data name="quickView1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -340,7 +340,7 @@
     <value>2</value>
   </data>
   <data name="tableLayoutPanelQuick.Size" type="System.Drawing.Size, System.Drawing">
-    <value>344, 205</value>
+    <value>344, 224</value>
   </data>
   <data name="tableLayoutPanelQuick.TabIndex" type="System.Int32, mscorlib">
     <value>74</value>
@@ -391,7 +391,7 @@
     <value>Vertical</value>
   </data>
   <data name="txt_messagebox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>344, 175</value>
+    <value>344, 192</value>
   </data>
   <data name="txt_messagebox.TabIndex" type="System.Int32, mscorlib">
     <value>75</value>
@@ -424,10 +424,10 @@
     <value>1</value>
   </data>
   <data name="splitContainer2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>344, 384</value>
+    <value>344, 420</value>
   </data>
   <data name="splitContainer2.SplitterDistance" type="System.Int32, mscorlib">
-    <value>205</value>
+    <value>224</value>
   </data>
   <data name="splitContainer2.TabIndex" type="System.Int32, mscorlib">
     <value>75</value>
@@ -553,7 +553,7 @@
     <value>0, 0</value>
   </data>
   <data name="hud1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>358, 197</value>
+    <value>358, 212</value>
   </data>
   <data name="hud1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -592,7 +592,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabQuick.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 390</value>
+    <value>350, 426</value>
   </data>
   <data name="tabQuick.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -619,7 +619,7 @@
     <value>3, 3</value>
   </data>
   <data name="checkListControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>344, 384</value>
+    <value>344, 420</value>
   </data>
   <data name="checkListControl1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -643,7 +643,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabPagePreFlight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 390</value>
+    <value>350, 426</value>
   </data>
   <data name="tabPagePreFlight.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -796,7 +796,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabGauges.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 390</value>
+    <value>350, 426</value>
   </data>
   <data name="tabGauges.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -826,7 +826,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 390</value>
+    <value>350, 426</value>
   </data>
   <data name="tabStatus.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1066,7 +1066,7 @@
     <value>3, 3</value>
   </data>
   <data name="flowLayoutPanelServos.Size" type="System.Drawing.Size, System.Drawing">
-    <value>344, 384</value>
+    <value>344, 420</value>
   </data>
   <data name="flowLayoutPanelServos.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1090,7 +1090,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabServo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 390</value>
+    <value>350, 426</value>
   </data>
   <data name="tabServo.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1549,7 +1549,7 @@
     <value>89, 69</value>
   </data>
   <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 318</value>
+    <value>217, 354</value>
   </data>
   <data name="panel2.TabIndex" type="System.Int32, mscorlib">
     <value>81</value>
@@ -1576,7 +1576,7 @@
     <value>3</value>
   </data>
   <data name="tableLayoutPaneltlogs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 390</value>
+    <value>350, 426</value>
   </data>
   <data name="tableLayoutPaneltlogs.TabIndex" type="System.Int32, mscorlib">
     <value>81</value>
@@ -1600,7 +1600,7 @@
     <value>4, 40</value>
   </data>
   <data name="tabTLogs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 390</value>
+    <value>350, 426</value>
   </data>
   <data name="tabTLogs.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1789,7 +1789,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tablogbrowse.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 390</value>
+    <value>350, 426</value>
   </data>
   <data name="tablogbrowse.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -2023,7 +2023,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabScripts.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 390</value>
+    <value>350, 426</value>
   </data>
   <data name="tabScripts.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -2050,7 +2050,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabPagemessages.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 390</value>
+    <value>350, 426</value>
   </data>
   <data name="tabPagemessages.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -2233,7 +2233,7 @@
     <value>5</value>
   </data>
   <data name="Colibri_GB4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 200</value>
+    <value>3, 3</value>
   </data>
   <data name="Colibri_GB4.Size" type="System.Drawing.Size, System.Drawing">
     <value>154, 102</value>
@@ -2256,452 +2256,11 @@
   <data name="&gt;&gt;Colibri_GB4.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="BTN_ColibriStow.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
-  <data name="BTN_ColibriStow.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BTN_ColibriStow.Location" type="System.Drawing.Point, System.Drawing">
-    <value>143, 88</value>
-  </data>
-  <data name="BTN_ColibriStow.Size" type="System.Drawing.Size, System.Drawing">
-    <value>27, 27</value>
-  </data>
-  <data name="BTN_ColibriStow.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
-  </data>
-  <data name="BTN_ColibriStow.Text" xml:space="preserve">
-    <value>S</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriStow.Name" xml:space="preserve">
-    <value>BTN_ColibriStow</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriStow.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriStow.Parent" xml:space="preserve">
-    <value>Colibri_GB1</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriStow.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="RadioBtnHold.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="RadioBtnHold.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="RadioBtnHold.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 171</value>
-  </data>
-  <data name="RadioBtnHold.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 17</value>
-  </data>
-  <data name="RadioBtnHold.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="RadioBtnHold.Text" xml:space="preserve">
-    <value>Hold</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnHold.Name" xml:space="preserve">
-    <value>RadioBtnHold</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnHold.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnHold.Parent" xml:space="preserve">
-    <value>Colibri_GB1</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnHold.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="videoPlayer_BTN.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="videoPlayer_BTN.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 19</value>
-  </data>
-  <data name="videoPlayer_BTN.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 23</value>
-  </data>
-  <data name="videoPlayer_BTN.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
-  <data name="videoPlayer_BTN.Text" xml:space="preserve">
-    <value>Network Video</value>
-  </data>
-  <data name="&gt;&gt;videoPlayer_BTN.Name" xml:space="preserve">
-    <value>videoPlayer_BTN</value>
-  </data>
-  <data name="&gt;&gt;videoPlayer_BTN.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;videoPlayer_BTN.Parent" xml:space="preserve">
-    <value>Colibri_GB1</value>
-  </data>
-  <data name="&gt;&gt;videoPlayer_BTN.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="RadioBtnPTC.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="RadioBtnPTC.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="RadioBtnPTC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 148</value>
-  </data>
-  <data name="RadioBtnPTC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>115, 17</value>
-  </data>
-  <data name="RadioBtnPTC.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="RadioBtnPTC.Text" xml:space="preserve">
-    <value>Point to Coordinate</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnPTC.Name" xml:space="preserve">
-    <value>RadioBtnPTC</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnPTC.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnPTC.Parent" xml:space="preserve">
-    <value>Colibri_GB1</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnPTC.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="BTN_ColibriRight.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Courier New, 12pt</value>
-  </data>
-  <data name="BTN_ColibriRight.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BTN_ColibriRight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>176, 88</value>
-  </data>
-  <data name="BTN_ColibriRight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>27, 27</value>
-  </data>
-  <data name="BTN_ColibriRight.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="BTN_ColibriRight.Text" xml:space="preserve">
-    <value>►</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriRight.Name" xml:space="preserve">
-    <value>BTN_ColibriRight</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriRight.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriRight.Parent" xml:space="preserve">
-    <value>Colibri_GB1</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriRight.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="RadioBtnPos.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="RadioBtnPos.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="RadioBtnPos.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 123</value>
-  </data>
-  <data name="RadioBtnPos.Size" type="System.Drawing.Size, System.Drawing">
-    <value>62, 17</value>
-  </data>
-  <data name="RadioBtnPos.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="RadioBtnPos.Text" xml:space="preserve">
-    <value>Position</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnPos.Name" xml:space="preserve">
-    <value>RadioBtnPos</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnPos.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnPos.Parent" xml:space="preserve">
-    <value>Colibri_GB1</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnPos.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="BTN_ColibriZoomOut.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Courier New, 12pt, style=Bold</value>
-  </data>
-  <data name="BTN_ColibriZoomOut.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BTN_ColibriZoomOut.Location" type="System.Drawing.Point, System.Drawing">
-    <value>176, 121</value>
-  </data>
-  <data name="BTN_ColibriZoomOut.Size" type="System.Drawing.Size, System.Drawing">
-    <value>27, 27</value>
-  </data>
-  <data name="BTN_ColibriZoomOut.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="BTN_ColibriZoomOut.Text" xml:space="preserve">
-    <value>-</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriZoomOut.Name" xml:space="preserve">
-    <value>BTN_ColibriZoomOut</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriZoomOut.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriZoomOut.Parent" xml:space="preserve">
-    <value>Colibri_GB1</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriZoomOut.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="RadioBtnGRR.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="RadioBtnGRR.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="RadioBtnGRR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 100</value>
-  </data>
-  <data name="RadioBtnGRR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>49, 17</value>
-  </data>
-  <data name="RadioBtnGRR.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="RadioBtnGRR.Text" xml:space="preserve">
-    <value>GRR</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnGRR.Name" xml:space="preserve">
-    <value>RadioBtnGRR</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnGRR.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnGRR.Parent" xml:space="preserve">
-    <value>Colibri_GB1</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnGRR.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="RadioBtnObs.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="RadioBtnObs.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="RadioBtnObs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 77</value>
-  </data>
-  <data name="RadioBtnObs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 17</value>
-  </data>
-  <data name="RadioBtnObs.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="RadioBtnObs.Text" xml:space="preserve">
-    <value>Observation</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnObs.Name" xml:space="preserve">
-    <value>RadioBtnObs</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnObs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnObs.Parent" xml:space="preserve">
-    <value>Colibri_GB1</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnObs.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="BTN_ColibriUp.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Courier New, 12pt</value>
-  </data>
-  <data name="BTN_ColibriUp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BTN_ColibriUp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>143, 54</value>
-  </data>
-  <data name="BTN_ColibriUp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>27, 27</value>
-  </data>
-  <data name="BTN_ColibriUp.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="BTN_ColibriUp.Text" xml:space="preserve">
-    <value>▲</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriUp.Name" xml:space="preserve">
-    <value>BTN_ColibriUp</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriUp.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriUp.Parent" xml:space="preserve">
-    <value>Colibri_GB1</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriUp.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="RadioBtnStow.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="RadioBtnStow.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="RadioBtnStow.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 54</value>
-  </data>
-  <data name="RadioBtnStow.Size" type="System.Drawing.Size, System.Drawing">
-    <value>49, 17</value>
-  </data>
-  <data name="RadioBtnStow.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="RadioBtnStow.Text" xml:space="preserve">
-    <value>Stow</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnStow.Name" xml:space="preserve">
-    <value>RadioBtnStow</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnStow.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnStow.Parent" xml:space="preserve">
-    <value>Colibri_GB1</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnStow.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="BTN_ColibriZoomIn.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Courier New, 12pt, style=Bold</value>
-  </data>
-  <data name="BTN_ColibriZoomIn.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BTN_ColibriZoomIn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>176, 54</value>
-  </data>
-  <data name="BTN_ColibriZoomIn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>27, 27</value>
-  </data>
-  <data name="BTN_ColibriZoomIn.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="BTN_ColibriZoomIn.Text" xml:space="preserve">
-    <value>+</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriZoomIn.Name" xml:space="preserve">
-    <value>BTN_ColibriZoomIn</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriZoomIn.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriZoomIn.Parent" xml:space="preserve">
-    <value>Colibri_GB1</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriZoomIn.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="BTN_ColibriDown.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Courier New, 12pt</value>
-  </data>
-  <data name="BTN_ColibriDown.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BTN_ColibriDown.Location" type="System.Drawing.Point, System.Drawing">
-    <value>143, 121</value>
-  </data>
-  <data name="BTN_ColibriDown.Size" type="System.Drawing.Size, System.Drawing">
-    <value>27, 27</value>
-  </data>
-  <data name="BTN_ColibriDown.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="BTN_ColibriDown.Text" xml:space="preserve">
-    <value>▼</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriDown.Name" xml:space="preserve">
-    <value>BTN_ColibriDown</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriDown.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriDown.Parent" xml:space="preserve">
-    <value>Colibri_GB1</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriDown.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="BTN_ColibriLeft.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Courier New, 12pt</value>
-  </data>
-  <data name="BTN_ColibriLeft.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BTN_ColibriLeft.Location" type="System.Drawing.Point, System.Drawing">
-    <value>110, 88</value>
-  </data>
-  <data name="BTN_ColibriLeft.Size" type="System.Drawing.Size, System.Drawing">
-    <value>27, 27</value>
-  </data>
-  <data name="BTN_ColibriLeft.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="BTN_ColibriLeft.Text" xml:space="preserve">
-    <value>◄</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriLeft.Name" xml:space="preserve">
-    <value>BTN_ColibriLeft</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriLeft.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriLeft.Parent" xml:space="preserve">
-    <value>Colibri_GB1</value>
-  </data>
-  <data name="&gt;&gt;BTN_ColibriLeft.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="Colibri_GB1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="Colibri_GB1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>209, 194</value>
-  </data>
-  <data name="Colibri_GB1.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="Colibri_GB1.Text" xml:space="preserve">
-    <value>Camera Control </value>
-  </data>
-  <data name="&gt;&gt;Colibri_GB1.Name" xml:space="preserve">
-    <value>Colibri_GB1</value>
-  </data>
-  <data name="&gt;&gt;Colibri_GB1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Colibri_GB1.Parent" xml:space="preserve">
-    <value>tabPageColibri</value>
-  </data>
-  <data name="&gt;&gt;Colibri_GB1.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="tabPageColibri.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 40</value>
   </data>
   <data name="tabPageColibri.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 390</value>
+    <value>350, 426</value>
   </data>
   <data name="tabPageColibri.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -2734,7 +2293,7 @@
     <value>No</value>
   </data>
   <data name="tabControlactions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>358, 434</value>
+    <value>358, 470</value>
   </data>
   <data name="tabControlactions.TabIndex" type="System.Int32, mscorlib">
     <value>84</value>
@@ -2764,10 +2323,10 @@
     <value>1</value>
   </data>
   <data name="SubMainLeft.Size" type="System.Drawing.Size, System.Drawing">
-    <value>360, 639</value>
+    <value>360, 690</value>
   </data>
   <data name="SubMainLeft.SplitterDistance" type="System.Int32, mscorlib">
-    <value>199</value>
+    <value>214</value>
   </data>
   <data name="SubMainLeft.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -3040,7 +2599,7 @@
     <value>66, 0</value>
   </data>
   <data name="distanceBar1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>574, 15</value>
+    <value>637, 15</value>
   </data>
   <data name="distanceBar1.TabIndex" type="System.Int32, mscorlib">
     <value>76</value>
@@ -3094,7 +2653,7 @@
     <value>NoControl</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>334, 573</value>
+    <value>334, 606</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 13</value>
@@ -3127,7 +2686,7 @@
     <value>NoControl</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>247, 573</value>
+    <value>247, 606</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>81, 13</value>
@@ -3160,7 +2719,7 @@
     <value>NoControl</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>137, 573</value>
+    <value>137, 606</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>104, 13</value>
@@ -3193,7 +2752,7 @@
     <value>NoControl</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>47, 573</value>
+    <value>47, 606</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 13</value>
@@ -3223,7 +2782,7 @@
     <value>NoControl</value>
   </data>
   <data name="lbl_hdop.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 555</value>
+    <value>1, 588</value>
   </data>
   <data name="lbl_hdop.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 12</value>
@@ -3256,7 +2815,7 @@
     <value>NoControl</value>
   </data>
   <data name="lbl_sats.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 574</value>
+    <value>1, 607</value>
   </data>
   <data name="lbl_sats.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 12</value>
@@ -3292,7 +2851,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="gMapControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>646, 595</value>
+    <value>709, 628</value>
   </data>
   <data name="gMapControl1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -3316,13 +2875,13 @@
     <value>NoControl</value>
   </data>
   <data name="TRK_zoom.Location" type="System.Drawing.Point, System.Drawing">
-    <value>646, 0</value>
+    <value>709, 0</value>
   </data>
   <data name="TRK_zoom.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
     <value>Vertical</value>
   </data>
   <data name="TRK_zoom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 595</value>
+    <value>45, 628</value>
   </data>
   <data name="TRK_zoom.TabIndex" type="System.Int32, mscorlib">
     <value>72</value>
@@ -3352,7 +2911,7 @@
     <value>1</value>
   </data>
   <data name="splitContainer1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>691, 595</value>
+    <value>754, 628</value>
   </data>
   <data name="splitContainer1.SplitterDistance" type="System.Int32, mscorlib">
     <value>210</value>
@@ -3397,7 +2956,7 @@
     <value>Bottom, Left</value>
   </data>
   <data name="Zoomlevel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>386, 5</value>
+    <value>189, 28</value>
   </data>
   <data name="Zoomlevel.Size" type="System.Drawing.Size, System.Drawing">
     <value>76, 20</value>
@@ -3427,10 +2986,10 @@
     <value>NoControl</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>346, 7</value>
+    <value>149, 31</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>34, 13</value>
+    <value>34, 16</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>70</value>
@@ -3460,7 +3019,7 @@
     <value>NoControl</value>
   </data>
   <data name="CHK_autopan.Location" type="System.Drawing.Point, System.Drawing">
-    <value>270, 7</value>
+    <value>69, 31</value>
   </data>
   <data name="CHK_autopan.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 17</value>
@@ -3496,7 +3055,7 @@
     <value>NoControl</value>
   </data>
   <data name="CB_tuning.Location" type="System.Drawing.Point, System.Drawing">
-    <value>205, 7</value>
+    <value>7, 31</value>
   </data>
   <data name="CB_tuning.Size" type="System.Drawing.Size, System.Drawing">
     <value>59, 17</value>
@@ -3526,13 +3085,13 @@
     <value>Fill</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 603</value>
+    <value>1, 636</value>
   </data>
   <data name="panel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>697, 33</value>
+    <value>760, 51</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -3576,6 +3135,420 @@
   <data name="&gt;&gt;BUT_ChangeSpeed.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="BTN_ColibriStow.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="BTN_ColibriStow.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BTN_ColibriStow.Location" type="System.Drawing.Point, System.Drawing">
+    <value>42, 53</value>
+  </data>
+  <data name="BTN_ColibriStow.Size" type="System.Drawing.Size, System.Drawing">
+    <value>27, 27</value>
+  </data>
+  <data name="BTN_ColibriStow.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="BTN_ColibriStow.Text" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriStow.Name" xml:space="preserve">
+    <value>BTN_ColibriStow</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriStow.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriStow.Parent" xml:space="preserve">
+    <value>Colibri_GB1</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriStow.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="RadioBtnHold.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="RadioBtnHold.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="RadioBtnHold.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 241</value>
+  </data>
+  <data name="RadioBtnHold.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 17</value>
+  </data>
+  <data name="RadioBtnHold.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="RadioBtnHold.Text" xml:space="preserve">
+    <value>Hold</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnHold.Name" xml:space="preserve">
+    <value>RadioBtnHold</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnHold.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnHold.Parent" xml:space="preserve">
+    <value>Colibri_GB1</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnHold.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="RadioBtnPTC.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="RadioBtnPTC.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="RadioBtnPTC.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 218</value>
+  </data>
+  <data name="RadioBtnPTC.Size" type="System.Drawing.Size, System.Drawing">
+    <value>115, 17</value>
+  </data>
+  <data name="RadioBtnPTC.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="RadioBtnPTC.Text" xml:space="preserve">
+    <value>Point to Coordinate</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnPTC.Name" xml:space="preserve">
+    <value>RadioBtnPTC</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnPTC.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnPTC.Parent" xml:space="preserve">
+    <value>Colibri_GB1</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnPTC.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="BTN_ColibriRight.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Courier New, 12pt</value>
+  </data>
+  <data name="BTN_ColibriRight.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BTN_ColibriRight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>75, 53</value>
+  </data>
+  <data name="BTN_ColibriRight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>27, 27</value>
+  </data>
+  <data name="BTN_ColibriRight.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="BTN_ColibriRight.Text" xml:space="preserve">
+    <value>►</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriRight.Name" xml:space="preserve">
+    <value>BTN_ColibriRight</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriRight.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriRight.Parent" xml:space="preserve">
+    <value>Colibri_GB1</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriRight.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="RadioBtnPos.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="RadioBtnPos.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="RadioBtnPos.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 193</value>
+  </data>
+  <data name="RadioBtnPos.Size" type="System.Drawing.Size, System.Drawing">
+    <value>62, 17</value>
+  </data>
+  <data name="RadioBtnPos.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="RadioBtnPos.Text" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnPos.Name" xml:space="preserve">
+    <value>RadioBtnPos</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnPos.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnPos.Parent" xml:space="preserve">
+    <value>Colibri_GB1</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnPos.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="BTN_ColibriZoomOut.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Courier New, 12pt, style=Bold</value>
+  </data>
+  <data name="BTN_ColibriZoomOut.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BTN_ColibriZoomOut.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 20</value>
+  </data>
+  <data name="BTN_ColibriZoomOut.Size" type="System.Drawing.Size, System.Drawing">
+    <value>27, 27</value>
+  </data>
+  <data name="BTN_ColibriZoomOut.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="BTN_ColibriZoomOut.Text" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriZoomOut.Name" xml:space="preserve">
+    <value>BTN_ColibriZoomOut</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriZoomOut.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriZoomOut.Parent" xml:space="preserve">
+    <value>Colibri_GB1</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriZoomOut.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="RadioBtnGRR.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="RadioBtnGRR.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="RadioBtnGRR.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 170</value>
+  </data>
+  <data name="RadioBtnGRR.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 17</value>
+  </data>
+  <data name="RadioBtnGRR.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="RadioBtnGRR.Text" xml:space="preserve">
+    <value>GRR</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnGRR.Name" xml:space="preserve">
+    <value>RadioBtnGRR</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnGRR.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnGRR.Parent" xml:space="preserve">
+    <value>Colibri_GB1</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnGRR.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="RadioBtnObs.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="RadioBtnObs.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="RadioBtnObs.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 147</value>
+  </data>
+  <data name="RadioBtnObs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 17</value>
+  </data>
+  <data name="RadioBtnObs.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="RadioBtnObs.Text" xml:space="preserve">
+    <value>Observation</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnObs.Name" xml:space="preserve">
+    <value>RadioBtnObs</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnObs.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnObs.Parent" xml:space="preserve">
+    <value>Colibri_GB1</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnObs.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="BTN_ColibriUp.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Courier New, 12pt</value>
+  </data>
+  <data name="BTN_ColibriUp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BTN_ColibriUp.Location" type="System.Drawing.Point, System.Drawing">
+    <value>42, 19</value>
+  </data>
+  <data name="BTN_ColibriUp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>27, 27</value>
+  </data>
+  <data name="BTN_ColibriUp.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="BTN_ColibriUp.Text" xml:space="preserve">
+    <value>▲</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriUp.Name" xml:space="preserve">
+    <value>BTN_ColibriUp</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriUp.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriUp.Parent" xml:space="preserve">
+    <value>Colibri_GB1</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriUp.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="RadioBtnStow.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="RadioBtnStow.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="RadioBtnStow.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 124</value>
+  </data>
+  <data name="RadioBtnStow.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 17</value>
+  </data>
+  <data name="RadioBtnStow.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="RadioBtnStow.Text" xml:space="preserve">
+    <value>Stow</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnStow.Name" xml:space="preserve">
+    <value>RadioBtnStow</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnStow.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnStow.Parent" xml:space="preserve">
+    <value>Colibri_GB1</value>
+  </data>
+  <data name="&gt;&gt;RadioBtnStow.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="BTN_ColibriZoomIn.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Courier New, 12pt, style=Bold</value>
+  </data>
+  <data name="BTN_ColibriZoomIn.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BTN_ColibriZoomIn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>75, 19</value>
+  </data>
+  <data name="BTN_ColibriZoomIn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>27, 27</value>
+  </data>
+  <data name="BTN_ColibriZoomIn.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="BTN_ColibriZoomIn.Text" xml:space="preserve">
+    <value>+</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriZoomIn.Name" xml:space="preserve">
+    <value>BTN_ColibriZoomIn</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriZoomIn.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriZoomIn.Parent" xml:space="preserve">
+    <value>Colibri_GB1</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriZoomIn.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="BTN_ColibriDown.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Courier New, 12pt</value>
+  </data>
+  <data name="BTN_ColibriDown.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BTN_ColibriDown.Location" type="System.Drawing.Point, System.Drawing">
+    <value>42, 86</value>
+  </data>
+  <data name="BTN_ColibriDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>27, 27</value>
+  </data>
+  <data name="BTN_ColibriDown.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="BTN_ColibriDown.Text" xml:space="preserve">
+    <value>▼</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriDown.Name" xml:space="preserve">
+    <value>BTN_ColibriDown</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriDown.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriDown.Parent" xml:space="preserve">
+    <value>Colibri_GB1</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriDown.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="BTN_ColibriLeft.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Courier New, 12pt</value>
+  </data>
+  <data name="BTN_ColibriLeft.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BTN_ColibriLeft.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 53</value>
+  </data>
+  <data name="BTN_ColibriLeft.Size" type="System.Drawing.Size, System.Drawing">
+    <value>27, 27</value>
+  </data>
+  <data name="BTN_ColibriLeft.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="BTN_ColibriLeft.Text" xml:space="preserve">
+    <value>◄</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriLeft.Name" xml:space="preserve">
+    <value>BTN_ColibriLeft</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriLeft.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriLeft.Parent" xml:space="preserve">
+    <value>Colibri_GB1</value>
+  </data>
+  <data name="&gt;&gt;BTN_ColibriLeft.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="Colibri_GB1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 246</value>
+  </data>
+  <data name="Colibri_GB1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 269</value>
+  </data>
+  <data name="Colibri_GB1.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="Colibri_GB1.Text" xml:space="preserve">
+    <value>Camera Control </value>
+  </data>
+  <data name="&gt;&gt;Colibri_GB1.Name" xml:space="preserve">
+    <value>Colibri_GB1</value>
+  </data>
+  <data name="&gt;&gt;Colibri_GB1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Colibri_GB1.Parent" xml:space="preserve">
+    <value>quickActions</value>
+  </data>
+  <data name="&gt;&gt;Colibri_GB1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="BUT_changeAltitude.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -3601,39 +3574,6 @@
     <value>quickActions</value>
   </data>
   <data name="&gt;&gt;BUT_changeAltitude.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="BUT_quickauto.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BUT_quickauto.Location" type="System.Drawing.Point, System.Drawing">
-    <value>37, 351</value>
-  </data>
-  <data name="BUT_quickauto.Size" type="System.Drawing.Size, System.Drawing">
-    <value>102, 23</value>
-  </data>
-  <data name="BUT_quickauto.TabIndex" type="System.Int32, mscorlib">
-    <value>74</value>
-  </data>
-  <data name="BUT_quickauto.Text" xml:space="preserve">
-    <value>Auto</value>
-  </data>
-  <data name="BUT_quickauto.ToolTip" xml:space="preserve">
-    <value>Change mode to Auto</value>
-  </data>
-  <data name="BUT_quickauto.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;BUT_quickauto.Name" xml:space="preserve">
-    <value>BUT_quickauto</value>
-  </data>
-  <data name="&gt;&gt;BUT_quickauto.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;BUT_quickauto.Parent" xml:space="preserve">
-    <value>quickActions</value>
-  </data>
-  <data name="&gt;&gt;BUT_quickauto.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="BUT_changeLoiterRad.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
@@ -3667,7 +3607,7 @@
     <value>NoControl</value>
   </data>
   <data name="BUT_joystick.Location" type="System.Drawing.Point, System.Drawing">
-    <value>37, 296</value>
+    <value>31, 612</value>
   </data>
   <data name="BUT_joystick.Size" type="System.Drawing.Size, System.Drawing">
     <value>102, 20</value>
@@ -3681,6 +3621,9 @@
   <data name="BUT_joystick.ToolTip" xml:space="preserve">
     <value>Setup and enable your joystick</value>
   </data>
+  <data name="BUT_joystick.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="&gt;&gt;BUT_joystick.Name" xml:space="preserve">
     <value>BUT_joystick</value>
   </data>
@@ -3692,36 +3635,6 @@
   </data>
   <data name="&gt;&gt;BUT_joystick.ZOrder" xml:space="preserve">
     <value>4</value>
-  </data>
-  <data name="BUT_clear_track.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BUT_clear_track.Location" type="System.Drawing.Point, System.Drawing">
-    <value>37, 322</value>
-  </data>
-  <data name="BUT_clear_track.Size" type="System.Drawing.Size, System.Drawing">
-    <value>102, 23</value>
-  </data>
-  <data name="BUT_clear_track.TabIndex" type="System.Int32, mscorlib">
-    <value>52</value>
-  </data>
-  <data name="BUT_clear_track.Text" xml:space="preserve">
-    <value>Clear Track</value>
-  </data>
-  <data name="BUT_clear_track.ToolTip" xml:space="preserve">
-    <value>Clear the recorded path on the map</value>
-  </data>
-  <data name="&gt;&gt;BUT_clear_track.Name" xml:space="preserve">
-    <value>BUT_clear_track</value>
-  </data>
-  <data name="&gt;&gt;BUT_clear_track.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;BUT_clear_track.Parent" xml:space="preserve">
-    <value>quickActions</value>
-  </data>
-  <data name="&gt;&gt;BUT_clear_track.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="BUT_quickmanual.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -3751,7 +3664,7 @@
     <value>quickActions</value>
   </data>
   <data name="&gt;&gt;BUT_quickmanual.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="BTN_ActionTriggerCamNow.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -3778,7 +3691,7 @@
     <value>quickActions</value>
   </data>
   <data name="&gt;&gt;BTN_ActionTriggerCamNow.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="BUT_setwp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -3808,7 +3721,7 @@
     <value>quickActions</value>
   </data>
   <data name="&gt;&gt;BUT_setwp.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="CMB_setwp.Items" xml:space="preserve">
     <value>0 (Home)</value>
@@ -3832,7 +3745,7 @@
     <value>quickActions</value>
   </data>
   <data name="&gt;&gt;CMB_setwp.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>8</value>
   </data>
   <data name="BUT_resumemis.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -3859,7 +3772,7 @@
     <value>quickActions</value>
   </data>
   <data name="&gt;&gt;BUT_resumemis.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>9</value>
   </data>
   <data name="BUT_quickrtl.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -3889,19 +3802,19 @@
     <value>quickActions</value>
   </data>
   <data name="&gt;&gt;BUT_quickrtl.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>10</value>
   </data>
   <data name="quickActions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Right</value>
   </data>
   <data name="quickActions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>702, 4</value>
+    <value>765, 4</value>
   </data>
   <data name="quickActions.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>21, 21</value>
   </data>
   <data name="quickActions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>170, 595</value>
+    <value>170, 628</value>
   </data>
   <data name="quickActions.TabIndex" type="System.Int32, mscorlib">
     <value>77</value>
@@ -3931,7 +3844,7 @@
     <value>2</value>
   </data>
   <data name="tableMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>876, 637</value>
+    <value>939, 688</value>
   </data>
   <data name="tableMap.TabIndex" type="System.Int32, mscorlib">
     <value>75</value>
@@ -3949,7 +3862,7 @@
     <value>0</value>
   </data>
   <data name="tableMap.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="splitContainer1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panel1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="quickActions" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,Absolute,176" /&gt;&lt;Rows Styles="Percent,100,Absolute,33,Absolute,22" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="splitContainer1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panel1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="quickActions" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,Absolute,176" /&gt;&lt;Rows Styles="Percent,100,Absolute,51,Absolute,22" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="&gt;&gt;MainH.Panel2.Name" xml:space="preserve">
     <value>MainH.Panel2</value>
@@ -3964,7 +3877,7 @@
     <value>1</value>
   </data>
   <data name="MainH.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1242, 639</value>
+    <value>1305, 690</value>
   </data>
   <data name="MainH.SplitterDistance" type="System.Int32, mscorlib">
     <value>360</value>
@@ -4069,7 +3982,7 @@
     <value>1008, 462</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1242, 639</value>
+    <value>1305, 690</value>
   </data>
   <data name="&gt;&gt;setViewCountToolStripMenuItem.Name" xml:space="preserve">
     <value>setViewCountToolStripMenuItem</value>

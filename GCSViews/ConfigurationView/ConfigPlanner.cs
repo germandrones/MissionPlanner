@@ -72,26 +72,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                 }
             }
 
-            // setup up camera button states
-            if (MainV2.cam != null)
-            {
-                BUT_videostart.Enabled = false;
-                CHK_hudshow.Checked = FlightData.myhud.hudon;
-            }
-            else
-            {
-                BUT_videostart.Enabled = true;
-            }
-
-            // setup speech states
-            SetCheckboxFromConfig("speechenable", CHK_enablespeech);
-            SetCheckboxFromConfig("speechwaypointenabled", CHK_speechwaypoint);
-            SetCheckboxFromConfig("speechmodeenabled", CHK_speechmode);
-            SetCheckboxFromConfig("speechcustomenabled", CHK_speechcustom);
-            SetCheckboxFromConfig("speechbatteryenabled", CHK_speechbattery);
-            SetCheckboxFromConfig("speechaltenabled", CHK_speechaltwarning);
-            SetCheckboxFromConfig("speecharmenabled", CHK_speecharmdisarm);
-            SetCheckboxFromConfig("speechlowspeedenabled", CHK_speechlowspeed);
             SetCheckboxFromConfig("beta_updates", CHK_beta);
             SetCheckboxFromConfig("password_protect", CHK_Password);
             SetCheckboxFromConfig("showairports", CHK_showairports);
@@ -165,44 +145,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             txt_log_dir.Text = Settings.Instance.LogDir;
 
             startup = false;
-        }
-
-        private void BUT_videostart_Click(object sender, EventArgs e)
-        {
-            if (MainV2.MONO)
-                return;
-
-            // stop first
-            BUT_videostop_Click(sender, e);
-
-            var bmp = (GCSBitmapInfo) CMB_videoresolutions.SelectedItem;
-
-            try
-            {
-                MainV2.cam = new Capture(CMB_videosources.SelectedIndex, bmp.Media);
-
-                MainV2.cam.Start();
-
-                Settings.Instance["video_device"] = CMB_videosources.SelectedIndex.ToString();
-
-                Settings.Instance["video_options"] = CMB_videoresolutions.SelectedIndex.ToString();
-
-                BUT_videostart.Enabled = false;
-            }
-            catch (Exception ex)
-            {
-                CustomMessageBox.Show("Camera Fail: " + ex.Message);
-            }
-        }
-
-        private void BUT_videostop_Click(object sender, EventArgs e)
-        {
-            BUT_videostart.Enabled = true;
-            if (MainV2.cam != null)
-            {
-                MainV2.cam.Dispose();
-                MainV2.cam = null;
-            }
         }
 
         private void CMB_videosources_SelectedIndexChanged(object sender, EventArgs e)
@@ -289,32 +231,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             Settings.Instance["CHK_hudshow"] = CHK_hudshow.Checked.ToString();
         }
 
-        private void CHK_enablespeech_CheckedChanged(object sender, EventArgs e)
-        {
-            MainV2.speechEnable = CHK_enablespeech.Checked;
-            Settings.Instance["speechenable"] = CHK_enablespeech.Checked.ToString();
-
-            if (CHK_enablespeech.Checked)
-            {
-                CHK_speechwaypoint.Visible = true;
-                CHK_speechaltwarning.Visible = true;
-                CHK_speechbattery.Visible = true;
-                CHK_speechcustom.Visible = true;
-                CHK_speechmode.Visible = true;
-                CHK_speecharmdisarm.Visible = true;
-                CHK_speechlowspeed.Visible = true;
-            }
-            else
-            {
-                CHK_speechwaypoint.Visible = false;
-                CHK_speechaltwarning.Visible = false;
-                CHK_speechbattery.Visible = false;
-                CHK_speechcustom.Visible = false;
-                CHK_speechmode.Visible = false;
-                CHK_speecharmdisarm.Visible = false;
-                CHK_speechlowspeed.Visible = false;
-            }
-        }
 
         private void CMB_language_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -340,60 +256,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             }
         }
 
-        private void CHK_speechwaypoint_CheckedChanged(object sender, EventArgs e)
-        {
-            if (startup)
-                return;
-            Settings.Instance["speechwaypointenabled"] = ((CheckBox) sender).Checked.ToString();
-
-            if (((CheckBox) sender).Checked)
-            {
-                var speechstring = "Heading to Waypoint {wpn}";
-                if (Settings.Instance["speechwaypoint"] != null)
-                    speechstring = Settings.Instance["speechwaypoint"].ToString();
-                if (DialogResult.Cancel ==
-                    InputBox.Show("Notification", "What do you want it to say?", ref speechstring))
-                    return;
-                Settings.Instance["speechwaypoint"] = speechstring;
-            }
-        }
-
-        private void CHK_speechmode_CheckedChanged(object sender, EventArgs e)
-        {
-            if (startup)
-                return;
-            Settings.Instance["speechmodeenabled"] = ((CheckBox) sender).Checked.ToString();
-
-            if (((CheckBox) sender).Checked)
-            {
-                var speechstring = "Mode changed to {mode}";
-                if (Settings.Instance["speechmode"] != null)
-                    speechstring = Settings.Instance["speechmode"].ToString();
-                if (DialogResult.Cancel ==
-                    InputBox.Show("Notification", "What do you want it to say?", ref speechstring))
-                    return;
-                Settings.Instance["speechmode"] = speechstring;
-            }
-        }
-
-        private void CHK_speechcustom_CheckedChanged(object sender, EventArgs e)
-        {
-            if (startup)
-                return;
-            Settings.Instance["speechcustomenabled"] = ((CheckBox) sender).Checked.ToString();
-
-            if (((CheckBox) sender).Checked)
-            {
-                var speechstring = "Heading to Waypoint {wpn}, altitude is {alt}, Ground speed is {gsp} ";
-                if (Settings.Instance["speechcustom"] != null)
-                    speechstring = Settings.Instance["speechcustom"].ToString();
-                if (DialogResult.Cancel ==
-                    InputBox.Show("Notification", "What do you want it to say?", ref speechstring))
-                    return;
-                Settings.Instance["speechcustom"] = speechstring;
-            }
-        }
-
         private void BUT_rerequestparams_Click(object sender, EventArgs e)
         {
             if (!MainV2.comPort.BaseStream.IsOpen)
@@ -414,40 +276,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
 
 
             startup = false;
-        }
-
-        private void CHK_speechbattery_CheckedChanged(object sender, EventArgs e)
-        {
-            if (startup)
-                return;
-            Settings.Instance["speechbatteryenabled"] = ((CheckBox) sender).Checked.ToString();
-
-            if (((CheckBox) sender).Checked)
-            {
-                var speechstring = "WARNING, Battery at {batv} Volt, {batp} percent";
-                if (Settings.Instance["speechbattery"] != null)
-                    speechstring = Settings.Instance["speechbattery"].ToString();
-                if (DialogResult.Cancel ==
-                    InputBox.Show("Notification", "What do you want it to say?", ref speechstring))
-                    return;
-                Settings.Instance["speechbattery"] = speechstring;
-
-                speechstring = "9.6";
-                if (Settings.Instance["speechbatteryvolt"] != null)
-                    speechstring = Settings.Instance["speechbatteryvolt"].ToString();
-                if (DialogResult.Cancel ==
-                    InputBox.Show("Battery Level", "What Voltage do you want to warn at?", ref speechstring))
-                    return;
-                Settings.Instance["speechbatteryvolt"] = speechstring;
-
-                speechstring = "20";
-                if (Settings.Instance["speechbatterypercent"] != null)
-                    speechstring = Settings.Instance["speechbatterypercent"].ToString();
-                if (DialogResult.Cancel ==
-                    InputBox.Show("Battery Level", "What percentage do you want to warn at?", ref speechstring))
-                    return;
-                Settings.Instance["speechbatterypercent"] = speechstring;
-            }
         }
 
         private void BUT_Joystick_Click(object sender, EventArgs e)
@@ -540,34 +368,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         private void CHK_resetapmonconnect_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Instance[((CheckBox) sender).Name] = ((CheckBox) sender).Checked.ToString();
-        }
-
-        private void CHK_speechaltwarning_CheckedChanged(object sender, EventArgs e)
-        {
-            if (startup)
-                return;
-            Settings.Instance["speechaltenabled"] = ((CheckBox) sender).Checked.ToString();
-
-            if (((CheckBox) sender).Checked)
-            {
-                var speechstring = "WARNING, low altitude {alt}";
-                if (Settings.Instance["speechalt"] != null)
-                    speechstring = Settings.Instance["speechalt"].ToString();
-                if (DialogResult.Cancel ==
-                    InputBox.Show("Notification", "What do you want it to say?", ref speechstring))
-                    return;
-                Settings.Instance["speechalt"] = speechstring;
-
-                speechstring = "2";
-                if (Settings.Instance["speechaltheight"] != null)
-                    speechstring = Settings.Instance["speechaltheight"].ToString();
-                if (DialogResult.Cancel ==
-                    InputBox.Show("Min Alt", "What altitude do you want to warn at? (relative to home)",
-                        ref speechstring))
-                    return;
-                Settings.Instance["speechaltheight"] = (double.Parse(speechstring)/CurrentState.multiplierdist).ToString();
-                // save as m
-            }
         }
 
         private void NUM_tracklength_ValueChanged(object sender, EventArgs e)
@@ -692,30 +492,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             CMB_theme.Text = "Custom";
         }
 
-        private void CHK_speecharmdisarm_CheckedChanged(object sender, EventArgs e)
-        {
-            if (startup)
-                return;
-            Settings.Instance["speecharmenabled"] = ((CheckBox) sender).Checked.ToString();
-
-            if (((CheckBox) sender).Checked)
-            {
-                var speechstring = "Armed";
-                if (Settings.Instance["speecharm"] != null)
-                    speechstring = Settings.Instance["speecharm"];
-                if (DialogResult.Cancel == InputBox.Show("Arm", "What do you want it to say?", ref speechstring))
-                    return;
-                Settings.Instance["speecharm"] = speechstring;
-
-                speechstring = "Disarmed";
-                if (Settings.Instance["speechdisarm"] != null)
-                    speechstring = Settings.Instance["speechdisarm"];
-                if (DialogResult.Cancel == InputBox.Show("Disarmed", "What do you want it to say?", ref speechstring))
-                    return;
-                Settings.Instance["speechdisarm"] = speechstring;
-            }
-        }
-
         private void BUT_Vario_Click(object sender, EventArgs e)
         {
             if (Vario.run)
@@ -750,47 +526,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             if (CHK_Password.Checked)
             {
                 Password.EnterPassword();
-            }
-        }
-
-        private void CHK_speechlowspeed_CheckedChanged(object sender, EventArgs e)
-        {
-            if (startup)
-                return;
-            Settings.Instance["speechlowspeedenabled"] = ((CheckBox) sender).Checked.ToString();
-
-            if (((CheckBox) sender).Checked)
-            {
-                var speechstring = "Low Ground Speed {gsp}";
-                if (Settings.Instance["speechlowgroundspeed"] != null)
-                    speechstring = Settings.Instance["speechlowgroundspeed"];
-                if (DialogResult.Cancel ==
-                    InputBox.Show("Ground Speed", "What do you want it to say?", ref speechstring))
-                    return;
-                Settings.Instance["speechlowgroundspeed"] = speechstring;
-
-                speechstring = "0";
-                if (Settings.Instance["speechlowgroundspeedtrigger"] != null)
-                    speechstring = Settings.Instance["speechlowgroundspeedtrigger"];
-                if (DialogResult.Cancel ==
-                    InputBox.Show("speed trigger", "What speed do you want to warn at (m/s)?", ref speechstring))
-                    return;
-                Settings.Instance["speechlowgroundspeedtrigger"] = speechstring;
-
-                speechstring = "Low Air Speed {asp}";
-                if (Settings.Instance["speechlowairspeed"] != null)
-                    speechstring = Settings.Instance["speechlowairspeed"];
-                if (DialogResult.Cancel == InputBox.Show("Air Speed", "What do you want it to say?", ref speechstring))
-                    return;
-                Settings.Instance["speechlowairspeed"] = speechstring;
-
-                speechstring = "0";
-                if (Settings.Instance["speechlowairspeedtrigger"] != null)
-                    speechstring = Settings.Instance["speechlowairspeedtrigger"];
-                if (DialogResult.Cancel ==
-                    InputBox.Show("speed trigger", "What speed do you want to warn at (m/s)?", ref speechstring))
-                    return;
-                Settings.Instance["speechlowairspeedtrigger"] = speechstring;
             }
         }
 

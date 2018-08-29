@@ -2161,24 +2161,7 @@ namespace MissionPlanner.GCSViews
             {
             }
         }
-
-        private void BUT_clear_track_Click(object sender, EventArgs e)
-        {
-            if (route != null)
-                route.Points.Clear();
-
-            if (MainV2.comPort.MAV.camerapoints != null)
-                MainV2.comPort.MAV.camerapoints.Clear();
-        }
-
-        private void FlightData_Resize(object sender, EventArgs e)
-        {
-            //Gspeed;
-            //Galt;
-            //Gheading;
-            //attitudeIndicatorInstrumentControl1;
-        }
-
+       
         private void CB_tuning_CheckedChanged(object sender, EventArgs e)
         {
             if (CB_tuning.Checked)
@@ -2311,7 +2294,8 @@ namespace MissionPlanner.GCSViews
             {
                 try
                 {
-                    BUT_clear_track_Click(null, null);
+                    if (route != null) route.Points.Clear();
+                    if (MainV2.comPort.MAV.camerapoints != null) MainV2.comPort.MAV.camerapoints.Clear();
 
                     MainV2.comPort.logreadmode = true;
                     MainV2.comPort.logplaybackfile = new BinaryReader(File.OpenRead(file));
@@ -2369,7 +2353,8 @@ namespace MissionPlanner.GCSViews
         {
             try
             {
-                BUT_clear_track_Click(sender, e);
+                if (route != null) route.Points.Clear();
+                if (MainV2.comPort.MAV.camerapoints != null) MainV2.comPort.MAV.camerapoints.Clear();
 
                 MainV2.comPort.lastlogread = DateTime.MinValue;
                 MainV2.comPort.MAV.cs.ResetInternals();
@@ -2494,20 +2479,6 @@ namespace MissionPlanner.GCSViews
                 }
                 return;
             }
-        }
-
-        private void BUT_quickauto_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                ((Button) sender).Enabled = false;
-                MainV2.comPort.setMode("Auto");
-            }
-            catch
-            {
-                CustomMessageBox.Show(Strings.CommandFailed, Strings.ERROR);
-            }
-            ((Button) sender).Enabled = true;
         }
 
         private void BUT_quickrtl_Click(object sender, EventArgs e)
@@ -3966,29 +3937,7 @@ namespace MissionPlanner.GCSViews
             if (MainV2.joystick != null && MainV2.joystick.enabled)
             {
                 MainV2.joystick.enabled = false;
-
-                //MainV2.joystick.clearRCOverride();
-
                 but_disablejoystick.Visible = false;
-            }
-        }
-
-        private void startCameraToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (MainV2.MONO)
-                return;
-
-            try
-            {
-                MainV2.cam = new Capture(Settings.Instance.GetInt32("video_device"), new AMMediaType());
-
-                MainV2.cam.Start();
-
-                MainV2.cam.camimage += new CamImage(cam_camimage);
-            }
-            catch (Exception ex)
-            {
-                CustomMessageBox.Show("Camera Fail: " + ex.ToString(), Strings.ERROR);
             }
         }
 
@@ -4626,26 +4575,6 @@ namespace MissionPlanner.GCSViews
             RadioBtnStow.Checked = true;
             this.ColibriCamMode = (byte)4;
         }
-
-        private void videoPlayer_BTN_Click(object sender, EventArgs e)
-        {
-            // in HUD renderer
-            var render = new vlcrender();
-            var url = render.playurl;
-            if (InputBox.Show("enter url", "enter url", ref url) == DialogResult.OK)
-            {
-                render.playurl = url;
-                try
-                {
-                    render.Start();
-                }
-                catch (Exception ex)
-                {
-                    CustomMessageBox.Show(ex.ToString(), Strings.ERROR);
-                }
-            }
-        }
-
         #endregion
 
 
