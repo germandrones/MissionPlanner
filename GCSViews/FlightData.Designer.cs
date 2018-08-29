@@ -41,7 +41,6 @@
             this.tabControlactions = new System.Windows.Forms.TabControl();
             this.tabQuick = new System.Windows.Forms.TabPage();
             this.tabActions = new System.Windows.Forms.TabPage();
-            this.myButton4 = new MissionPlanner.Controls.MyButton();
             this.BUT_quickauto = new MissionPlanner.Controls.MyButton();
             this.BUT_quickmanual = new MissionPlanner.Controls.MyButton();
             this.BUT_joystick = new MissionPlanner.Controls.MyButton();
@@ -624,7 +623,6 @@
             // 
             // tabActions
             // 
-            this.tabActions.Controls.Add(this.myButton4);
             this.tabActions.Controls.Add(this.BUT_quickauto);
             this.tabActions.Controls.Add(this.BUT_quickmanual);
             this.tabActions.Controls.Add(this.BUT_joystick);
@@ -640,11 +638,6 @@
             resources.ApplyResources(this.tabActions, "tabActions");
             this.tabActions.Name = "tabActions";
             this.tabActions.UseVisualStyleBackColor = true;
-            // 
-            // myButton4
-            // 
-            resources.ApplyResources(this.myButton4, "myButton4");
-            this.myButton4.Name = "myButton4";
             // 
             // BUT_quickauto
             // 
@@ -2137,7 +2130,7 @@
             this.windDir1.BackColor = System.Drawing.Color.Transparent;
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Direction", this.bindingSource1, "wind_dir", true, System.Windows.Forms.DataSourceUpdateMode.Never));
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Speed", this.bindingSource1, "wind_vel", true, System.Windows.Forms.DataSourceUpdateMode.Never));
-            this.windDir1.Direction = 360D;
+            this.windDir1.Direction = 180D;
             resources.ApplyResources(this.windDir1, "windDir1");
             this.windDir1.Name = "windDir1";
             this.windDir1.Speed = 0D;
@@ -2635,6 +2628,5 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
         private Controls.MyButton videoPlayer_BTN;
         private Controls.MyButton BTN_ColibriStow;
-        private Controls.MyButton myButton4;
     }
 }

@@ -25,8 +25,7 @@ namespace MissionPlanner
             Dictionary<string, object> options = new Dictionary<string, object>();
             options["Debug"] = true;
 
-            if (engine != null)
-                engine.Runtime.Shutdown();
+            if (engine != null) engine.Runtime.Shutdown();
 
             engine = Python.CreateEngine(options);
 

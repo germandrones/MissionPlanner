@@ -1,10 +1,7 @@
 ﻿using log4net;
-using ManagedNativeWifi.Simple;
 using MissionPlanner.Arduino;
 using MissionPlanner.Comms;
 using px4uploader;
-using SharpAdbClient;
-using solo;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -1009,35 +1006,6 @@ namespace MissionPlanner.Utilities
 
         
 
-        bool isParrotWifiConnected(string ssid)
-        {
-            IEnumerable<string> connectedSSIDs = NativeWifi.GetConnectedNetworkSsids();
-            bool ssidFound = false;
-
-            foreach (string ssidName in connectedSSIDs)
-            {
-                if (ssidName.StartsWith(ssid))
-                {
-                    ssidFound = true;
-                    break;
-                }
-            }
-
-            return ssidFound;
-        }
-
-        PingReply pingParrotVehicle(Ping ping)
-        {
-            try
-            {
-                return ping.Send("192.168.42.1");
-            }
-            catch (PingException)
-            {
-                return null;
-            }
-        }
-
         string _message = "";
 
         void up_LogEvent(string message, int level = 0)
@@ -1086,22 +1054,9 @@ namespace MissionPlanner.Utilities
                 return UploadVRBRAIN(filename, board);
             }
 
-            
-
-            if (board == BoardDetect.boards.solo)
-            {
-                return UploadSolo(filename, board);
-            }
-
             return UploadArduino(comport, filename, board);
         }
 
-        private bool UploadSolo(string filename, BoardDetect.boards board)
-        {
-            Solo.flash_px4(filename);
-
-            return true;
-        }
 
         public bool UploadArduino(string comport, string filename, BoardDetect.boards board)
         {

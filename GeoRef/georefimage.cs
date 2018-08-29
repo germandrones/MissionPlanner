@@ -908,9 +908,6 @@ namespace MissionPlanner.GeoRef
                 serializer.Serialize(kmlroot);
                 swlockml.Write(serializer.Xml);
 
-                Utilities.httpserver.georefkml = serializer.Xml;
-                Utilities.httpserver.georefimagepath = dirWithImages + Path.DirectorySeparatorChar;
-
                 writeGPX(dirWithImages + Path.DirectorySeparatorChar + "location.gpx", listPhotosWithInfo);
 
                 // flightmission

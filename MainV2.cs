@@ -239,11 +239,6 @@ namespace MissionPlanner
         public static bool speechEnable = false;
 
         /// <summary>
-        /// spech engine static class
-        /// </summary>
-        public static Speech speechEngine { get; set; }
-
-        /// <summary>
         /// joystick static class
         /// </summary>
         public static Joystick.Joystick joystick { get; set; }
@@ -536,8 +531,6 @@ namespace MissionPlanner
 
             var t = Type.GetType("Mono.Runtime");
             MONO = (t != null);
-
-            speechEngine = new Speech();
 
             Warnings.CustomWarning.defaultsrc = comPort.MAV.cs;
             Warnings.WarningEngine.Start();
@@ -1059,9 +1052,6 @@ namespace MissionPlanner
             log.Info("We are disconnecting");
             try
             {
-                if (speechEngine != null) // cancel all pending speech
-                    speechEngine.SpeakAsyncCancelAll();
-
                 comPort.BaseStream.DtrEnable = false;
                 comPort.Close();
             }
@@ -1573,9 +1563,6 @@ namespace MissionPlanner
             //if (joystickthread != null) joystickthread.Join();
 
             log.Info("closing httpthread");
-
-            // if we are waiting on a socket we need to force an abort
-            httpserver.Stop();
 
             log.Info("sorting tlogs");
             try

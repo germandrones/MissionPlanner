@@ -6,13 +6,13 @@
     <OutputType>Exe</OutputType>
     <StartupObject></StartupObject>
     <Authors>Germandrones GmbH</Authors>
-    <Version>1.01</Version>
+    <Version>1.2</Version>
     <DebugType>full</DebugType>
     <Company>Germandrones GmbH</Company>
     <Product>GD Ground Control Station</Product>
     <Description>Germandrones Ground Control Station</Description>
     <Copyright></Copyright>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <AssemblyVersion>1.2.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
@@ -141,24 +141,12 @@
       <Name>LibVLC.NET</Name>
       <Private>true</Private>
     </ProjectReference>
-    <ProjectReference Include="ExtLibs\ManagedNativeWifi.Simple\ManagedNativeWifi.Simple.csproj">
-      <Project>{cce510f7-1da6-40f2-8921-b86ed41bb85e}</Project>
-      <Name>ManagedNativeWifi.Simple</Name>
-    </ProjectReference>
     <ProjectReference Include="ExtLibs\Mavlink\MAVLink.csproj" />
     <ProjectReference Include="ExtLibs\MetaDataExtractorCSharp240d\MetaDataExtractor.csproj" />
     <ProjectReference Include="ExtLibs\px4uploader\px4uploader.csproj" />
-    <ProjectReference Include="ExtLibs\SharpAdbClient\SharpAdbClient.csproj">
-      <Project>{65473257-e70f-410b-9269-d0c0f771ea87}</Project>
-      <Name>SharpAdbClient</Name>
-    </ProjectReference>
     <ProjectReference Include="ExtLibs\SharpKml\SharpKml.csproj">
       <Project>{53F12A60-E9CC-44BC-8366-1AE3AB2B547D}</Project>
       <Name>SharpKml</Name>
-    </ProjectReference>
-    <ProjectReference Include="ExtLibs\solo\solo.csproj">
-      <Project>{cf402948-a3f4-4962-8a57-e40b46759d25}</Project>
-      <Name>solo</Name>
     </ProjectReference>
     <ProjectReference Include="ExtLibs\tlogThumbnailHandler\tlogThumbnailHandler.csproj">
       <Project>{aba78b2e-77c3-4377-8568-9542ac227971}</Project>
@@ -435,7 +423,6 @@
     <Compile Include="Utilities\fftui.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="Utilities\Firmware.cs" />
     <Compile Include="Utilities\GimbalPoint.cs" />
-    <Compile Include="Utilities\httpserver.cs" />
     <Compile Include="Utilities\LangUtility.cs" />
     <Compile Include="Utilities\LogAnalyzer.cs" />
     <Compile Include="Utilities\MeasureString.cs" />
@@ -452,7 +439,6 @@
     <Compile Include="Utilities\Password.cs" />
     <Compile Include="Utilities\POI.cs" />
     <Compile Include="Utilities\Proximity.cs" />
-    <Compile Include="Utilities\Speech.cs" />
     <Compile Include="Utilities\StreamCombiner.cs" />
     <Compile Include="Utilities\StringRedirectWriter.cs" />
     <Compile Include="Utilities\ThemeManager.cs" />
@@ -581,19 +567,10 @@
     <Content Include="mavcmd.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mavelous_web\index.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="mavgraphs.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mpdesktop.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mpdesktop150.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mpdesktop44.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ParameterFactMetaData.xml">
@@ -1495,9 +1472,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Drivers\vrugimbal.inf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="mavelous_web\bundle.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="NoFly\Areas-Lisboa.kmz">

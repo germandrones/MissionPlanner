@@ -1991,12 +1991,6 @@ namespace MissionPlanner
                                     _mode = hb.custom_mode;
                                 }
                             }
-
-                            if (oldmode != mode && MainV2.speechEnable && MainV2.comPort.MAV.cs == this &&
-                                Settings.Instance.GetBoolean("speechmodeenabled"))
-                            {
-                                MainV2.speechEngine.SpeakAsync(Common.speechConversion(""+ Settings.Instance["speechmode"]));
-                            }
                         }
                     }
 
@@ -2321,14 +2315,6 @@ namespace MissionPlanner
                         {
                             lastautowp = (int) wpno;
                         }
-
-                        if (oldwp != wpno && MainV2.speechEnable && MainV2.comPort.MAV.cs == this &&
-                            Settings.Instance.GetBoolean("speechwaypointenabled"))
-                        {
-                            MainV2.speechEngine.SpeakAsync(Common.speechConversion(""+ Settings.Instance["speechwaypoint"]));
-                        }
-
-                        //MAVLink.packets[(byte)MAVLink.MSG_NAMES.WAYPOINT_CURRENT);
                     }
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.NAV_CONTROLLER_OUTPUT);

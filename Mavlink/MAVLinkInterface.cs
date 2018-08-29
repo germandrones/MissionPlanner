@@ -3914,15 +3914,6 @@ Please check the following
                         {
                             MAVlist[sysid, compid].cs.messageHigh = logdata;
                             MAVlist[sysid, compid].cs.messageHighTime = DateTime.Now;
-
-                            if (MainV2.speechEngine != null &&
-                                MainV2.speechEngine.IsReady &&
-                                Settings.Instance["speechenable"] != null &&
-                                Settings.Instance["speechenable"].ToString() == "True")
-                            {
-                                if (speechenabled)
-                                    MainV2.speechEngine.SpeakAsync(logdata);
-                            }
                         }
                     }
                     if (Settings.Instance["autoParamCommit"] == null || Settings.Instance.GetBoolean("autoParamCommit") == true)

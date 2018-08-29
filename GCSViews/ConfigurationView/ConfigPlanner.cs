@@ -293,8 +293,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         {
             MainV2.speechEnable = CHK_enablespeech.Checked;
             Settings.Instance["speechenable"] = CHK_enablespeech.Checked.ToString();
-            if (MainV2.speechEngine != null)
-                MainV2.speechEngine.SpeakAsyncCancelAll();
 
             if (CHK_enablespeech.Checked)
             {
