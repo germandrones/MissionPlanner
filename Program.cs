@@ -131,14 +131,13 @@ namespace MissionPlanner
             if (SplashBG != null)
             {
                 Splash.BackgroundImage = SplashBG;
-                Splash.pictureBox1.Visible = false;
             }
 
             if (IconFile != null)
                 Splash.Icon = Icon.FromHandle(((Bitmap)IconFile).GetHicon());
 
             string strVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            Splash.Text = name;// + " " + Application.ProductVersion + " build " + strVersion;
+            Splash.Text = name + " " + Application.ProductVersion + " build " + strVersion;
             Splash.Show();
 
             Application.DoEvents();
