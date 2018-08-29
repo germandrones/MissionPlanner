@@ -560,6 +560,8 @@ namespace MissionPlanner
             // Two diferent configs to show
             DisplayConfiguration = Settings.isDevMode ? DisplayConfiguration.Developer() : DisplayConfiguration.Basic();
 
+            if (Settings.isDevMode) this.Text += " DEVMODE" + " v." + Application.ProductVersion;
+
             LayoutChanged += updateLayout;
             LayoutChanged(null, EventArgs.Empty);
 

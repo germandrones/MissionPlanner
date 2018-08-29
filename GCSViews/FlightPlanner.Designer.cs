@@ -412,7 +412,6 @@ namespace MissionPlanner.GCSViews
             this.panelWaypoints.BackColor = System.Drawing.Color.Transparent;
             this.panelWaypoints.CaptionFont = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
             this.panelWaypoints.CaptionHeight = 21;
-            this.panelWaypoints.ColorScheme = BSE.Windows.Forms.ColorScheme.Custom;
             this.panelWaypoints.Controls.Add(this.panel6);
             this.panelWaypoints.Controls.Add(this.Commands);
             this.panelWaypoints.CustomColors.BorderColor = System.Drawing.Color.Black;
@@ -783,7 +782,6 @@ namespace MissionPlanner.GCSViews
             this.panelAction.BackColor = System.Drawing.Color.Transparent;
             this.panelAction.CaptionFont = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
             this.panelAction.CaptionHeight = 21;
-            this.panelAction.ColorScheme = BSE.Windows.Forms.ColorScheme.Custom;
             this.panelAction.Controls.Add(this.flowLayoutPanel1);
             this.panelAction.CustomColors.BorderColor = System.Drawing.Color.Black;
             this.panelAction.CustomColors.CaptionCloseIcon = System.Drawing.Color.White;

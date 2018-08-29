@@ -2124,8 +2124,6 @@ namespace MissionPlanner.GCSViews
                 throw;
             }
 
-            //shareMissionWithFlighDataView(cmds);
-            
             // Hide commands from user. Commands for internal use for example:MAV_CMD_SET_FORBIDDEN_ZONE 
             cmds = HideCommands(cmds);
 
@@ -2348,7 +2346,7 @@ namespace MissionPlanner.GCSViews
                 Text = "Sending WP's"
             };
 
-            //frmProgressReporter.DoWork += saveWPsFast; // Not tested yet, please ignore
+            //frmProgressReporter.DoWork += saveWPsFast; // Not tested yet, please ignore, work only if Telemetry signal good
             frmProgressReporter.DoWork += saveWPs;
             frmProgressReporter.UpdateProgressAndStatus(-1, "Sending WP's");
 
@@ -2634,8 +2632,6 @@ namespace MissionPlanner.GCSViews
                     }
                 }
 
-                //shareMissionWithFlighDataView(commandlist);
-
                 port.setWPACK();
 
                 ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(95, "Setting params");
@@ -2714,8 +2710,6 @@ namespace MissionPlanner.GCSViews
             // get the command list from the datagrid
             var commandlist = GetCommandList();
             commandlist.Insert(0, home);
-
-            //shareMissionWithFlighDataView(commandlist);
 
             var totalwpcountforupload = (ushort)(commandlist.Count);
             MainV2.comPort.setWPTotal(totalwpcountforupload);
