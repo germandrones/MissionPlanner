@@ -209,6 +209,7 @@ namespace MissionPlanner.GCSViews
             this.kMLOverlayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.elevationGraphToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reverseWPsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.prefetchViewAreaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fileLoadSaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadWPFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadAndAppendToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -229,7 +230,6 @@ namespace MissionPlanner.GCSViews
             this.panelBASE = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.prefetchViewAreaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.panelWaypoints.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -410,7 +410,7 @@ namespace MissionPlanner.GCSViews
             // 
             this.panelWaypoints.AssociatedSplitter = this.splitter1;
             this.panelWaypoints.BackColor = System.Drawing.Color.Transparent;
-            this.panelWaypoints.CaptionFont = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.panelWaypoints.CaptionFont = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
             this.panelWaypoints.CaptionHeight = 21;
             this.panelWaypoints.ColorScheme = BSE.Windows.Forms.ColorScheme.Custom;
             this.panelWaypoints.Controls.Add(this.panel6);
@@ -781,7 +781,7 @@ namespace MissionPlanner.GCSViews
             // 
             this.panelAction.AssociatedSplitter = this.splitter2;
             this.panelAction.BackColor = System.Drawing.Color.Transparent;
-            this.panelAction.CaptionFont = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.panelAction.CaptionFont = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
             this.panelAction.CaptionHeight = 21;
             this.panelAction.ColorScheme = BSE.Windows.Forms.ColorScheme.Custom;
             this.panelAction.Controls.Add(this.flowLayoutPanel1);
@@ -1404,6 +1404,12 @@ namespace MissionPlanner.GCSViews
             resources.ApplyResources(this.reverseWPsToolStripMenuItem, "reverseWPsToolStripMenuItem");
             this.reverseWPsToolStripMenuItem.Click += new System.EventHandler(this.reverseWPsToolStripMenuItem_Click);
             // 
+            // prefetchViewAreaToolStripMenuItem
+            // 
+            this.prefetchViewAreaToolStripMenuItem.Name = "prefetchViewAreaToolStripMenuItem";
+            resources.ApplyResources(this.prefetchViewAreaToolStripMenuItem, "prefetchViewAreaToolStripMenuItem");
+            this.prefetchViewAreaToolStripMenuItem.Click += new System.EventHandler(this.prefetchViewAreaToolStripMenuItem_Click);
+            // 
             // fileLoadSaveToolStripMenuItem
             // 
             this.fileLoadSaveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1535,12 +1541,6 @@ namespace MissionPlanner.GCSViews
             // 
             this.timer1.Interval = 1200;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // prefetchViewAreaToolStripMenuItem
-            // 
-            this.prefetchViewAreaToolStripMenuItem.Name = "prefetchViewAreaToolStripMenuItem";
-            resources.ApplyResources(this.prefetchViewAreaToolStripMenuItem, "prefetchViewAreaToolStripMenuItem");
-            this.prefetchViewAreaToolStripMenuItem.Click += new System.EventHandler(this.prefetchViewAreaToolStripMenuItem_Click);
             // 
             // FlightPlanner
             // 

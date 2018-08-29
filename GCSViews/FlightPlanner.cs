@@ -939,6 +939,8 @@ namespace MissionPlanner.GCSViews
                     item.Visible = MainV2.DisplayConfiguration.displayPluginAutoWp;
                 }
             }
+
+
         }
 
         void POI_POIModified(object sender, EventArgs e)

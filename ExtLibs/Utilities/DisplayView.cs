@@ -30,8 +30,6 @@ namespace MissionPlanner.Utilities
         public Boolean displayAnenometer { get; set; }
         public Boolean displayQuickTab { get; set; }
         public Boolean displayPreFlightTab { get; set; }
-        public Boolean displayAdvActionsTab { get; set; }
-        public Boolean displaySimpleActionsTab { get; set; }
         public Boolean displayGaugesTab { get; set; }
         public Boolean displayStatusTab { get; set; }
         public Boolean displayServoTab { get; set; } 
@@ -110,8 +108,6 @@ namespace MissionPlanner.Utilities
             displayAnenometer = true;
             displayQuickTab = true;
             displayPreFlightTab = false;
-            displayAdvActionsTab = true;
-            displaySimpleActionsTab = false;
             displayGaugesTab = false;
             displayStatusTab = true;
             displayServoTab = false;
@@ -223,8 +219,6 @@ namespace MissionPlanner.Utilities
                 displayAnenometer = true,
                 displayQuickTab = true,
                 displayPreFlightTab = false,
-                displayAdvActionsTab = true,
-                displaySimpleActionsTab = false,
                 displayGaugesTab = false,
                 displayStatusTab = true,
                 displayServoTab = false,
@@ -305,11 +299,9 @@ namespace MissionPlanner.Utilities
                 displayAnenometer = true,
                 displayQuickTab = true,
                 displayPreFlightTab = false,
-                displayAdvActionsTab = true,
-                displaySimpleActionsTab = false,
                 displayGaugesTab = false,
                 displayStatusTab = true,
-                displayServoTab = true,
+                displayServoTab = false,
                 displayScriptsTab = true,
                 displayTelemetryTab = true,
                 displayDataflashTab = true,

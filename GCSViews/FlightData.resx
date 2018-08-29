@@ -378,6 +378,9 @@
   <data name="txt_messagebox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
+  <data name="txt_messagebox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
   <data name="txt_messagebox.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -609,480 +612,6 @@
   <data name="&gt;&gt;tabQuick.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="BUT_quickauto.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BUT_quickauto.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 151</value>
-  </data>
-  <data name="BUT_quickauto.Size" type="System.Drawing.Size, System.Drawing">
-    <value>102, 23</value>
-  </data>
-  <data name="BUT_quickauto.TabIndex" type="System.Int32, mscorlib">
-    <value>74</value>
-  </data>
-  <data name="BUT_quickauto.Text" xml:space="preserve">
-    <value>Auto</value>
-  </data>
-  <data name="BUT_quickauto.ToolTip" xml:space="preserve">
-    <value>Change mode to Auto</value>
-  </data>
-  <data name="BUT_quickauto.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;BUT_quickauto.Name" xml:space="preserve">
-    <value>BUT_quickauto</value>
-  </data>
-  <data name="&gt;&gt;BUT_quickauto.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;BUT_quickauto.Parent" xml:space="preserve">
-    <value>tabActions</value>
-  </data>
-  <data name="&gt;&gt;BUT_quickauto.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="BUT_quickmanual.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BUT_quickmanual.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 6</value>
-  </data>
-  <data name="BUT_quickmanual.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 20</value>
-  </data>
-  <data name="BUT_quickmanual.TabIndex" type="System.Int32, mscorlib">
-    <value>80</value>
-  </data>
-  <data name="BUT_quickmanual.Text" xml:space="preserve">
-    <value>Start Loitering</value>
-  </data>
-  <data name="BUT_quickmanual.ToolTip" xml:space="preserve">
-    <value>Change Mode to Manual/Stabalize</value>
-  </data>
-  <data name="&gt;&gt;BUT_quickmanual.Name" xml:space="preserve">
-    <value>BUT_quickmanual</value>
-  </data>
-  <data name="&gt;&gt;BUT_quickmanual.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;BUT_quickmanual.Parent" xml:space="preserve">
-    <value>tabActions</value>
-  </data>
-  <data name="&gt;&gt;BUT_quickmanual.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="BUT_joystick.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BUT_joystick.Location" type="System.Drawing.Point, System.Drawing">
-    <value>226, 125</value>
-  </data>
-  <data name="BUT_joystick.Size" type="System.Drawing.Size, System.Drawing">
-    <value>102, 20</value>
-  </data>
-  <data name="BUT_joystick.TabIndex" type="System.Int32, mscorlib">
-    <value>77</value>
-  </data>
-  <data name="BUT_joystick.Text" xml:space="preserve">
-    <value>RC Joystick Setup</value>
-  </data>
-  <data name="BUT_joystick.ToolTip" xml:space="preserve">
-    <value>Setup and enable your joystick</value>
-  </data>
-  <data name="&gt;&gt;BUT_joystick.Name" xml:space="preserve">
-    <value>BUT_joystick</value>
-  </data>
-  <data name="&gt;&gt;BUT_joystick.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;BUT_joystick.Parent" xml:space="preserve">
-    <value>tabActions</value>
-  </data>
-  <data name="&gt;&gt;BUT_joystick.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="BTN_ActionTriggerCamNow.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BTN_ActionTriggerCamNow.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 84</value>
-  </data>
-  <data name="BTN_ActionTriggerCamNow.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 21</value>
-  </data>
-  <data name="BTN_ActionTriggerCamNow.TabIndex" type="System.Int32, mscorlib">
-    <value>82</value>
-  </data>
-  <data name="BTN_ActionTriggerCamNow.Text" xml:space="preserve">
-    <value>Trigger Camera Now</value>
-  </data>
-  <data name="&gt;&gt;BTN_ActionTriggerCamNow.Name" xml:space="preserve">
-    <value>BTN_ActionTriggerCamNow</value>
-  </data>
-  <data name="&gt;&gt;BTN_ActionTriggerCamNow.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;BTN_ActionTriggerCamNow.Parent" xml:space="preserve">
-    <value>tabActions</value>
-  </data>
-  <data name="&gt;&gt;BTN_ActionTriggerCamNow.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="BUT_resumemis.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BUT_resumemis.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 32</value>
-  </data>
-  <data name="BUT_resumemis.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 20</value>
-  </data>
-  <data name="BUT_resumemis.TabIndex" type="System.Int32, mscorlib">
-    <value>85</value>
-  </data>
-  <data name="BUT_resumemis.Text" xml:space="preserve">
-    <value>Resume Mission</value>
-  </data>
-  <data name="&gt;&gt;BUT_resumemis.Name" xml:space="preserve">
-    <value>BUT_resumemis</value>
-  </data>
-  <data name="&gt;&gt;BUT_resumemis.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;BUT_resumemis.Parent" xml:space="preserve">
-    <value>tabActions</value>
-  </data>
-  <data name="&gt;&gt;BUT_resumemis.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="BUT_clear_track.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BUT_clear_track.Location" type="System.Drawing.Point, System.Drawing">
-    <value>226, 151</value>
-  </data>
-  <data name="BUT_clear_track.Size" type="System.Drawing.Size, System.Drawing">
-    <value>102, 23</value>
-  </data>
-  <data name="BUT_clear_track.TabIndex" type="System.Int32, mscorlib">
-    <value>52</value>
-  </data>
-  <data name="BUT_clear_track.Text" xml:space="preserve">
-    <value>Clear Track</value>
-  </data>
-  <data name="BUT_clear_track.ToolTip" xml:space="preserve">
-    <value>Clear the recorded path on the map</value>
-  </data>
-  <data name="&gt;&gt;BUT_clear_track.Name" xml:space="preserve">
-    <value>BUT_clear_track</value>
-  </data>
-  <data name="&gt;&gt;BUT_clear_track.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;BUT_clear_track.Parent" xml:space="preserve">
-    <value>tabActions</value>
-  </data>
-  <data name="&gt;&gt;BUT_clear_track.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="BUT_quickrtl.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BUT_quickrtl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 58</value>
-  </data>
-  <data name="BUT_quickrtl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 20</value>
-  </data>
-  <data name="BUT_quickrtl.TabIndex" type="System.Int32, mscorlib">
-    <value>79</value>
-  </data>
-  <data name="BUT_quickrtl.Text" xml:space="preserve">
-    <value>Return-to-Launch(RTL)</value>
-  </data>
-  <data name="BUT_quickrtl.ToolTip" xml:space="preserve">
-    <value>Change Mode to RTL</value>
-  </data>
-  <data name="&gt;&gt;BUT_quickrtl.Name" xml:space="preserve">
-    <value>BUT_quickrtl</value>
-  </data>
-  <data name="&gt;&gt;BUT_quickrtl.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;BUT_quickrtl.Parent" xml:space="preserve">
-    <value>tabActions</value>
-  </data>
-  <data name="&gt;&gt;BUT_quickrtl.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="BUT_setwp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BUT_setwp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>226, 84</value>
-  </data>
-  <data name="BUT_setwp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>102, 21</value>
-  </data>
-  <data name="BUT_setwp.TabIndex" type="System.Int32, mscorlib">
-    <value>78</value>
-  </data>
-  <data name="BUT_setwp.Text" xml:space="preserve">
-    <value>Jump to WP</value>
-  </data>
-  <data name="BUT_setwp.ToolTip" xml:space="preserve">
-    <value>Changes the current target waypoint</value>
-  </data>
-  <data name="&gt;&gt;BUT_setwp.Name" xml:space="preserve">
-    <value>BUT_setwp</value>
-  </data>
-  <data name="&gt;&gt;BUT_setwp.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;BUT_setwp.Parent" xml:space="preserve">
-    <value>tabActions</value>
-  </data>
-  <data name="&gt;&gt;BUT_setwp.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="CMB_setwp.Items" xml:space="preserve">
-    <value>0 (Home)</value>
-  </data>
-  <data name="CMB_setwp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>157, 84</value>
-  </data>
-  <data name="CMB_setwp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 21</value>
-  </data>
-  <data name="CMB_setwp.TabIndex" type="System.Int32, mscorlib">
-    <value>77</value>
-  </data>
-  <data name="&gt;&gt;CMB_setwp.Name" xml:space="preserve">
-    <value>CMB_setwp</value>
-  </data>
-  <data name="&gt;&gt;CMB_setwp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;CMB_setwp.Parent" xml:space="preserve">
-    <value>tabActions</value>
-  </data>
-  <data name="&gt;&gt;CMB_setwp.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="modifyandSetLoiterRad.Location" type="System.Drawing.Point, System.Drawing">
-    <value>157, 6</value>
-  </data>
-  <data name="modifyandSetLoiterRad.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="modifyandSetLoiterRad.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 20</value>
-  </data>
-  <data name="modifyandSetLoiterRad.TabIndex" type="System.Int32, mscorlib">
-    <value>88</value>
-  </data>
-  <data name="&gt;&gt;modifyandSetLoiterRad.Name" xml:space="preserve">
-    <value>modifyandSetLoiterRad</value>
-  </data>
-  <data name="&gt;&gt;modifyandSetLoiterRad.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.ModifyandSet, MissionPlanner, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;modifyandSetLoiterRad.Parent" xml:space="preserve">
-    <value>tabActions</value>
-  </data>
-  <data name="&gt;&gt;modifyandSetLoiterRad.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="modifyandSetAlt.Location" type="System.Drawing.Point, System.Drawing">
-    <value>157, 32</value>
-  </data>
-  <data name="modifyandSetAlt.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="modifyandSetAlt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 20</value>
-  </data>
-  <data name="modifyandSetAlt.TabIndex" type="System.Int32, mscorlib">
-    <value>89</value>
-  </data>
-  <data name="&gt;&gt;modifyandSetAlt.Name" xml:space="preserve">
-    <value>modifyandSetAlt</value>
-  </data>
-  <data name="&gt;&gt;modifyandSetAlt.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.ModifyandSet, MissionPlanner, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;modifyandSetAlt.Parent" xml:space="preserve">
-    <value>tabActions</value>
-  </data>
-  <data name="&gt;&gt;modifyandSetAlt.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="modifyandSetSpeed.Location" type="System.Drawing.Point, System.Drawing">
-    <value>157, 58</value>
-  </data>
-  <data name="modifyandSetSpeed.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="modifyandSetSpeed.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 20</value>
-  </data>
-  <data name="modifyandSetSpeed.TabIndex" type="System.Int32, mscorlib">
-    <value>90</value>
-  </data>
-  <data name="&gt;&gt;modifyandSetSpeed.Name" xml:space="preserve">
-    <value>modifyandSetSpeed</value>
-  </data>
-  <data name="&gt;&gt;modifyandSetSpeed.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.ModifyandSet, MissionPlanner, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;modifyandSetSpeed.Parent" xml:space="preserve">
-    <value>tabActions</value>
-  </data>
-  <data name="&gt;&gt;modifyandSetSpeed.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="tabActions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 40</value>
-  </data>
-  <data name="tabActions.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="tabActions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 390</value>
-  </data>
-  <data name="tabActions.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="tabActions.Text" xml:space="preserve">
-    <value>Actions</value>
-  </data>
-  <data name="&gt;&gt;tabActions.Name" xml:space="preserve">
-    <value>tabActions</value>
-  </data>
-  <data name="&gt;&gt;tabActions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabActions.Parent" xml:space="preserve">
-    <value>tabControlactions</value>
-  </data>
-  <data name="&gt;&gt;tabActions.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="myButton1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="myButton1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>150, 49</value>
-  </data>
-  <data name="myButton1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 23</value>
-  </data>
-  <data name="myButton1.TabIndex" type="System.Int32, mscorlib">
-    <value>79</value>
-  </data>
-  <data name="myButton1.Text" xml:space="preserve">
-    <value>Loiter</value>
-  </data>
-  <data name="myButton1.ToolTip" xml:space="preserve">
-    <value>Change Mode to Manual/Stabalize</value>
-  </data>
-  <data name="&gt;&gt;myButton1.Name" xml:space="preserve">
-    <value>myButton1</value>
-  </data>
-  <data name="&gt;&gt;myButton1.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;myButton1.Parent" xml:space="preserve">
-    <value>tabActionsSimple</value>
-  </data>
-  <data name="&gt;&gt;myButton1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="myButton2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="myButton2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>150, 78</value>
-  </data>
-  <data name="myButton2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 23</value>
-  </data>
-  <data name="myButton2.TabIndex" type="System.Int32, mscorlib">
-    <value>78</value>
-  </data>
-  <data name="myButton2.Text" xml:space="preserve">
-    <value>RTL</value>
-  </data>
-  <data name="myButton2.ToolTip" xml:space="preserve">
-    <value>Change Mode to RTL</value>
-  </data>
-  <data name="&gt;&gt;myButton2.Name" xml:space="preserve">
-    <value>myButton2</value>
-  </data>
-  <data name="&gt;&gt;myButton2.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;myButton2.Parent" xml:space="preserve">
-    <value>tabActionsSimple</value>
-  </data>
-  <data name="&gt;&gt;myButton2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="myButton3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="myButton3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>150, 20</value>
-  </data>
-  <data name="myButton3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 23</value>
-  </data>
-  <data name="myButton3.TabIndex" type="System.Int32, mscorlib">
-    <value>77</value>
-  </data>
-  <data name="myButton3.Text" xml:space="preserve">
-    <value>Auto</value>
-  </data>
-  <data name="myButton3.ToolTip" xml:space="preserve">
-    <value>Change mode to Auto</value>
-  </data>
-  <data name="&gt;&gt;myButton3.Name" xml:space="preserve">
-    <value>myButton3</value>
-  </data>
-  <data name="&gt;&gt;myButton3.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;myButton3.Parent" xml:space="preserve">
-    <value>tabActionsSimple</value>
-  </data>
-  <data name="&gt;&gt;myButton3.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="tabActionsSimple.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 40</value>
-  </data>
-  <data name="tabActionsSimple.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 390</value>
-  </data>
-  <data name="tabActionsSimple.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="tabActionsSimple.Text" xml:space="preserve">
-    <value>Actions</value>
-  </data>
-  <data name="&gt;&gt;tabActionsSimple.Name" xml:space="preserve">
-    <value>tabActionsSimple</value>
-  </data>
-  <data name="&gt;&gt;tabActionsSimple.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabActionsSimple.Parent" xml:space="preserve">
-    <value>tabControlactions</value>
-  </data>
-  <data name="&gt;&gt;tabActionsSimple.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="checkListControl1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -1132,7 +661,7 @@
     <value>tabControlactions</value>
   </data>
   <data name="&gt;&gt;tabPagePreFlight.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>1</value>
   </data>
   <data name="Gvspeed.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
@@ -1285,7 +814,7 @@
     <value>tabControlactions</value>
   </data>
   <data name="&gt;&gt;tabGauges.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>2</value>
   </data>
   <data name="tabStatus.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1315,7 +844,7 @@
     <value>tabControlactions</value>
   </data>
   <data name="&gt;&gt;tabStatus.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>3</value>
   </data>
   <data name="flowLayoutPanelServos.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1579,7 +1108,7 @@
     <value>tabControlactions</value>
   </data>
   <data name="&gt;&gt;tabServo.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>4</value>
   </data>
   <data name="tableLayoutPaneltlogs.ColumnCount" type="System.Int32, mscorlib">
     <value>3</value>
@@ -2089,7 +1618,7 @@
     <value>tabControlactions</value>
   </data>
   <data name="&gt;&gt;tabTLogs.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>5</value>
   </data>
   <data name="BUT_loganalysis.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -2278,7 +1807,7 @@
     <value>tabControlactions</value>
   </data>
   <data name="&gt;&gt;tablogbrowse.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>6</value>
   </data>
   <data name="checkBoxRedirectOutput.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2512,7 +2041,7 @@
     <value>tabControlactions</value>
   </data>
   <data name="&gt;&gt;tabScripts.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>7</value>
   </data>
   <data name="tabPagemessages.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 40</value>
@@ -2539,7 +2068,7 @@
     <value>tabControlactions</value>
   </data>
   <data name="&gt;&gt;tabPagemessages.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>8</value>
   </data>
   <data name="PTC_Alt.Location" type="System.Drawing.Point, System.Drawing">
     <value>72, 74</value>
@@ -3190,7 +2719,7 @@
     <value>tabControlactions</value>
   </data>
   <data name="&gt;&gt;tabPageColibri.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>9</value>
   </data>
   <data name="tabControlactions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -3274,7 +2803,7 @@
     <value>Single</value>
   </data>
   <data name="tableMap.ColumnCount" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="splitContainer1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -3295,7 +2824,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="zg1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>728, 210</value>
+    <value>691, 210</value>
   </data>
   <data name="zg1.TabIndex" type="System.Int32, mscorlib">
     <value>67</value>
@@ -3304,7 +2833,7 @@
     <value>zg1</value>
   </data>
   <data name="&gt;&gt;zg1.Type" xml:space="preserve">
-    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.5.17428, Culture=neutral, PublicKeyToken=null</value>
+    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.5.23345, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;zg1.Parent" xml:space="preserve">
     <value>splitContainer1.Panel1</value>
@@ -3438,12 +2967,6 @@
   <data name="triggerCameraToolStripMenuItem.Text" xml:space="preserve">
     <value>Trigger Camera NOW</value>
   </data>
-  <data name="flightPlannerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>188, 22</value>
-  </data>
-  <data name="flightPlannerToolStripMenuItem.Text" xml:space="preserve">
-    <value>Flight Planner</value>
-  </data>
   <data name="setEKFHomeHereToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>176, 22</value>
   </data>
@@ -3472,7 +2995,7 @@
     <value>Camera Overlap</value>
   </data>
   <data name="contextMenuStripMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>189, 290</value>
+    <value>189, 268</value>
   </data>
   <data name="&gt;&gt;contextMenuStripMap.Name" xml:space="preserve">
     <value>contextMenuStripMap</value>
@@ -3517,7 +3040,7 @@
     <value>66, 0</value>
   </data>
   <data name="distanceBar1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>751, 22</value>
+    <value>574, 15</value>
   </data>
   <data name="distanceBar1.TabIndex" type="System.Int32, mscorlib">
     <value>76</value>
@@ -3769,7 +3292,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="gMapControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>823, 595</value>
+    <value>646, 595</value>
   </data>
   <data name="gMapControl1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -3793,7 +3316,7 @@
     <value>NoControl</value>
   </data>
   <data name="TRK_zoom.Location" type="System.Drawing.Point, System.Drawing">
-    <value>823, 0</value>
+    <value>646, 0</value>
   </data>
   <data name="TRK_zoom.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
     <value>Vertical</value>
@@ -3829,7 +3352,7 @@
     <value>1</value>
   </data>
   <data name="splitContainer1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>868, 595</value>
+    <value>691, 595</value>
   </data>
   <data name="splitContainer1.SplitterDistance" type="System.Int32, mscorlib">
     <value>210</value>
@@ -4009,7 +3532,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>874, 33</value>
+    <value>697, 33</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -4025,6 +3548,378 @@
   </data>
   <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="BUT_ChangeSpeed.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BUT_ChangeSpeed.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 137</value>
+  </data>
+  <data name="BUT_ChangeSpeed.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 23</value>
+  </data>
+  <data name="BUT_ChangeSpeed.TabIndex" type="System.Int32, mscorlib">
+    <value>92</value>
+  </data>
+  <data name="BUT_ChangeSpeed.Text" xml:space="preserve">
+    <value>Change Airspeed</value>
+  </data>
+  <data name="&gt;&gt;BUT_ChangeSpeed.Name" xml:space="preserve">
+    <value>BUT_ChangeSpeed</value>
+  </data>
+  <data name="&gt;&gt;BUT_ChangeSpeed.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BUT_ChangeSpeed.Parent" xml:space="preserve">
+    <value>quickActions</value>
+  </data>
+  <data name="&gt;&gt;BUT_ChangeSpeed.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="BUT_changeAltitude.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BUT_changeAltitude.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 108</value>
+  </data>
+  <data name="BUT_changeAltitude.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 23</value>
+  </data>
+  <data name="BUT_changeAltitude.TabIndex" type="System.Int32, mscorlib">
+    <value>91</value>
+  </data>
+  <data name="BUT_changeAltitude.Text" xml:space="preserve">
+    <value>Change Altitude</value>
+  </data>
+  <data name="&gt;&gt;BUT_changeAltitude.Name" xml:space="preserve">
+    <value>BUT_changeAltitude</value>
+  </data>
+  <data name="&gt;&gt;BUT_changeAltitude.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BUT_changeAltitude.Parent" xml:space="preserve">
+    <value>quickActions</value>
+  </data>
+  <data name="&gt;&gt;BUT_changeAltitude.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="BUT_quickauto.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BUT_quickauto.Location" type="System.Drawing.Point, System.Drawing">
+    <value>37, 544</value>
+  </data>
+  <data name="BUT_quickauto.Size" type="System.Drawing.Size, System.Drawing">
+    <value>102, 23</value>
+  </data>
+  <data name="BUT_quickauto.TabIndex" type="System.Int32, mscorlib">
+    <value>74</value>
+  </data>
+  <data name="BUT_quickauto.Text" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="BUT_quickauto.ToolTip" xml:space="preserve">
+    <value>Change mode to Auto</value>
+  </data>
+  <data name="BUT_quickauto.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;BUT_quickauto.Name" xml:space="preserve">
+    <value>BUT_quickauto</value>
+  </data>
+  <data name="&gt;&gt;BUT_quickauto.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BUT_quickauto.Parent" xml:space="preserve">
+    <value>quickActions</value>
+  </data>
+  <data name="&gt;&gt;BUT_quickauto.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="BUT_changeLoiterRad.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BUT_changeLoiterRad.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 79</value>
+  </data>
+  <data name="BUT_changeLoiterRad.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 23</value>
+  </data>
+  <data name="BUT_changeLoiterRad.TabIndex" type="System.Int32, mscorlib">
+    <value>86</value>
+  </data>
+  <data name="BUT_changeLoiterRad.Text" xml:space="preserve">
+    <value>Change Loiter Radius</value>
+  </data>
+  <data name="&gt;&gt;BUT_changeLoiterRad.Name" xml:space="preserve">
+    <value>BUT_changeLoiterRad</value>
+  </data>
+  <data name="&gt;&gt;BUT_changeLoiterRad.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BUT_changeLoiterRad.Parent" xml:space="preserve">
+    <value>quickActions</value>
+  </data>
+  <data name="&gt;&gt;BUT_changeLoiterRad.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="BUT_joystick.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BUT_joystick.Location" type="System.Drawing.Point, System.Drawing">
+    <value>37, 474</value>
+  </data>
+  <data name="BUT_joystick.Size" type="System.Drawing.Size, System.Drawing">
+    <value>102, 20</value>
+  </data>
+  <data name="BUT_joystick.TabIndex" type="System.Int32, mscorlib">
+    <value>77</value>
+  </data>
+  <data name="BUT_joystick.Text" xml:space="preserve">
+    <value>RC Joystick Setup</value>
+  </data>
+  <data name="BUT_joystick.ToolTip" xml:space="preserve">
+    <value>Setup and enable your joystick</value>
+  </data>
+  <data name="&gt;&gt;BUT_joystick.Name" xml:space="preserve">
+    <value>BUT_joystick</value>
+  </data>
+  <data name="&gt;&gt;BUT_joystick.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BUT_joystick.Parent" xml:space="preserve">
+    <value>quickActions</value>
+  </data>
+  <data name="&gt;&gt;BUT_joystick.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="BUT_clear_track.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BUT_clear_track.Location" type="System.Drawing.Point, System.Drawing">
+    <value>37, 500</value>
+  </data>
+  <data name="BUT_clear_track.Size" type="System.Drawing.Size, System.Drawing">
+    <value>102, 23</value>
+  </data>
+  <data name="BUT_clear_track.TabIndex" type="System.Int32, mscorlib">
+    <value>52</value>
+  </data>
+  <data name="BUT_clear_track.Text" xml:space="preserve">
+    <value>Clear Track</value>
+  </data>
+  <data name="BUT_clear_track.ToolTip" xml:space="preserve">
+    <value>Clear the recorded path on the map</value>
+  </data>
+  <data name="&gt;&gt;BUT_clear_track.Name" xml:space="preserve">
+    <value>BUT_clear_track</value>
+  </data>
+  <data name="&gt;&gt;BUT_clear_track.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BUT_clear_track.Parent" xml:space="preserve">
+    <value>quickActions</value>
+  </data>
+  <data name="&gt;&gt;BUT_clear_track.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="BUT_quickmanual.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BUT_quickmanual.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 25</value>
+  </data>
+  <data name="BUT_quickmanual.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 20</value>
+  </data>
+  <data name="BUT_quickmanual.TabIndex" type="System.Int32, mscorlib">
+    <value>80</value>
+  </data>
+  <data name="BUT_quickmanual.Text" xml:space="preserve">
+    <value>Start Loitering</value>
+  </data>
+  <data name="BUT_quickmanual.ToolTip" xml:space="preserve">
+    <value>Change Mode to Manual/Stabalize</value>
+  </data>
+  <data name="&gt;&gt;BUT_quickmanual.Name" xml:space="preserve">
+    <value>BUT_quickmanual</value>
+  </data>
+  <data name="&gt;&gt;BUT_quickmanual.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BUT_quickmanual.Parent" xml:space="preserve">
+    <value>quickActions</value>
+  </data>
+  <data name="&gt;&gt;BUT_quickmanual.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="BTN_ActionTriggerCamNow.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BTN_ActionTriggerCamNow.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 219</value>
+  </data>
+  <data name="BTN_ActionTriggerCamNow.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 21</value>
+  </data>
+  <data name="BTN_ActionTriggerCamNow.TabIndex" type="System.Int32, mscorlib">
+    <value>82</value>
+  </data>
+  <data name="BTN_ActionTriggerCamNow.Text" xml:space="preserve">
+    <value>Trigger Camera Now</value>
+  </data>
+  <data name="&gt;&gt;BTN_ActionTriggerCamNow.Name" xml:space="preserve">
+    <value>BTN_ActionTriggerCamNow</value>
+  </data>
+  <data name="&gt;&gt;BTN_ActionTriggerCamNow.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BTN_ActionTriggerCamNow.Parent" xml:space="preserve">
+    <value>quickActions</value>
+  </data>
+  <data name="&gt;&gt;BTN_ActionTriggerCamNow.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="BUT_setwp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BUT_setwp.Location" type="System.Drawing.Point, System.Drawing">
+    <value>83, 166</value>
+  </data>
+  <data name="BUT_setwp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>71, 21</value>
+  </data>
+  <data name="BUT_setwp.TabIndex" type="System.Int32, mscorlib">
+    <value>78</value>
+  </data>
+  <data name="BUT_setwp.Text" xml:space="preserve">
+    <value>Set WP</value>
+  </data>
+  <data name="BUT_setwp.ToolTip" xml:space="preserve">
+    <value>Changes the current target waypoint</value>
+  </data>
+  <data name="&gt;&gt;BUT_setwp.Name" xml:space="preserve">
+    <value>BUT_setwp</value>
+  </data>
+  <data name="&gt;&gt;BUT_setwp.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BUT_setwp.Parent" xml:space="preserve">
+    <value>quickActions</value>
+  </data>
+  <data name="&gt;&gt;BUT_setwp.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="CMB_setwp.Items" xml:space="preserve">
+    <value>0 (Home)</value>
+  </data>
+  <data name="CMB_setwp.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 166</value>
+  </data>
+  <data name="CMB_setwp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>63, 21</value>
+  </data>
+  <data name="CMB_setwp.TabIndex" type="System.Int32, mscorlib">
+    <value>77</value>
+  </data>
+  <data name="&gt;&gt;CMB_setwp.Name" xml:space="preserve">
+    <value>CMB_setwp</value>
+  </data>
+  <data name="&gt;&gt;CMB_setwp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;CMB_setwp.Parent" xml:space="preserve">
+    <value>quickActions</value>
+  </data>
+  <data name="&gt;&gt;CMB_setwp.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="BUT_resumemis.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BUT_resumemis.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 53</value>
+  </data>
+  <data name="BUT_resumemis.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 20</value>
+  </data>
+  <data name="BUT_resumemis.TabIndex" type="System.Int32, mscorlib">
+    <value>85</value>
+  </data>
+  <data name="BUT_resumemis.Text" xml:space="preserve">
+    <value>Resume Mission</value>
+  </data>
+  <data name="&gt;&gt;BUT_resumemis.Name" xml:space="preserve">
+    <value>BUT_resumemis</value>
+  </data>
+  <data name="&gt;&gt;BUT_resumemis.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BUT_resumemis.Parent" xml:space="preserve">
+    <value>quickActions</value>
+  </data>
+  <data name="&gt;&gt;BUT_resumemis.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="BUT_quickrtl.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BUT_quickrtl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 193</value>
+  </data>
+  <data name="BUT_quickrtl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 20</value>
+  </data>
+  <data name="BUT_quickrtl.TabIndex" type="System.Int32, mscorlib">
+    <value>79</value>
+  </data>
+  <data name="BUT_quickrtl.Text" xml:space="preserve">
+    <value>Return-to-Launch(RTL)</value>
+  </data>
+  <data name="BUT_quickrtl.ToolTip" xml:space="preserve">
+    <value>Change Mode to RTL</value>
+  </data>
+  <data name="&gt;&gt;BUT_quickrtl.Name" xml:space="preserve">
+    <value>BUT_quickrtl</value>
+  </data>
+  <data name="&gt;&gt;BUT_quickrtl.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BUT_quickrtl.Parent" xml:space="preserve">
+    <value>quickActions</value>
+  </data>
+  <data name="&gt;&gt;BUT_quickrtl.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="quickActions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="quickActions.Location" type="System.Drawing.Point, System.Drawing">
+    <value>702, 4</value>
+  </data>
+  <data name="quickActions.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>21, 21</value>
+  </data>
+  <data name="quickActions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>170, 595</value>
+  </data>
+  <data name="quickActions.TabIndex" type="System.Int32, mscorlib">
+    <value>77</value>
+  </data>
+  <data name="quickActions.Text" xml:space="preserve">
+    <value>Quick Actions</value>
+  </data>
+  <data name="&gt;&gt;quickActions.Name" xml:space="preserve">
+    <value>quickActions</value>
+  </data>
+  <data name="&gt;&gt;quickActions.Type" xml:space="preserve">
+    <value>BSE.Windows.Forms.Panel, BSE.Windows.Forms, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;quickActions.Parent" xml:space="preserve">
+    <value>tableMap</value>
+  </data>
+  <data name="&gt;&gt;quickActions.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="tableMap.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -4054,7 +3949,7 @@
     <value>0</value>
   </data>
   <data name="tableMap.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="splitContainer1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panel1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,100,Absolute,33,Absolute,22" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="splitContainer1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panel1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="quickActions" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,Absolute,176" /&gt;&lt;Rows Styles="Percent,100,Absolute,33,Absolute,22" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="&gt;&gt;MainH.Panel2.Name" xml:space="preserve">
     <value>MainH.Panel2</value>
@@ -4165,7 +4060,7 @@
     <value>True</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>71</value>
+    <value>64</value>
   </metadata>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -4181,12 +4076,6 @@
   </data>
   <data name="&gt;&gt;setViewCountToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bindingSourceQuickTab.Name" xml:space="preserve">
-    <value>bindingSourceQuickTab</value>
-  </data>
-  <data name="&gt;&gt;bindingSourceQuickTab.Type" xml:space="preserve">
-    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;videoToolStripMenuItem.Name" xml:space="preserve">
     <value>videoToolStripMenuItem</value>
@@ -4253,18 +4142,6 @@
   </data>
   <data name="&gt;&gt;swapWithMapToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bindingSourceHud.Name" xml:space="preserve">
-    <value>bindingSourceHud</value>
-  </data>
-  <data name="&gt;&gt;bindingSourceHud.Type" xml:space="preserve">
-    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bindingSourceGaugesTab.Name" xml:space="preserve">
-    <value>bindingSourceGaugesTab</value>
-  </data>
-  <data name="&gt;&gt;bindingSourceGaugesTab.Type" xml:space="preserve">
-    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;colibriModeToolStripMenuItem.Name" xml:space="preserve">
     <value>colibriModeToolStripMenuItem</value>
@@ -4374,12 +4251,6 @@
   <data name="&gt;&gt;triggerCameraToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;flightPlannerToolStripMenuItem.Name" xml:space="preserve">
-    <value>flightPlannerToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;flightPlannerToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;setHomeHereToolStripMenuItem.Name" xml:space="preserve">
     <value>setHomeHereToolStripMenuItem</value>
   </data>
@@ -4403,12 +4274,6 @@
   </data>
   <data name="&gt;&gt;onOffCameraOverlapToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bindingSource1.Name" xml:space="preserve">
-    <value>bindingSource1</value>
-  </data>
-  <data name="&gt;&gt;bindingSource1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;customizeToolStripMenuItem.Name" xml:space="preserve">
     <value>customizeToolStripMenuItem</value>
@@ -4457,6 +4322,30 @@
   </data>
   <data name="&gt;&gt;Messagetabtimer.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;bindingSourceHud.Name" xml:space="preserve">
+    <value>bindingSourceHud</value>
+  </data>
+  <data name="&gt;&gt;bindingSourceHud.Type" xml:space="preserve">
+    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;bindingSourceQuickTab.Name" xml:space="preserve">
+    <value>bindingSourceQuickTab</value>
+  </data>
+  <data name="&gt;&gt;bindingSourceQuickTab.Type" xml:space="preserve">
+    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;bindingSourceGaugesTab.Name" xml:space="preserve">
+    <value>bindingSourceGaugesTab</value>
+  </data>
+  <data name="&gt;&gt;bindingSourceGaugesTab.Type" xml:space="preserve">
+    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;bindingSource1.Name" xml:space="preserve">
+    <value>bindingSource1</value>
+  </data>
+  <data name="&gt;&gt;bindingSource1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;bindingSourceStatusTab.Name" xml:space="preserve">
     <value>bindingSourceStatusTab</value>

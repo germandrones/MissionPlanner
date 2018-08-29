@@ -377,24 +377,6 @@ namespace MissionPlanner
                 {
                     t.TabPages.Remove(FlightData.tabPagePreFlight);
                 }
-
-                if (DisplayConfiguration.displayAdvActionsTab && !t.TabPages.Contains(FlightData.tabActions))
-                {
-                    t.TabPages.Add(FlightData.tabActions);
-                }
-                else if (!DisplayConfiguration.displayAdvActionsTab && t.TabPages.Contains(FlightData.tabActions))
-                {
-                    t.TabPages.Remove(FlightData.tabActions);
-                }
-                if (DisplayConfiguration.displaySimpleActionsTab && !t.TabPages.Contains(FlightData.tabActionsSimple))
-                {
-                    t.TabPages.Add(FlightData.tabActionsSimple);
-                }
-                else if (!DisplayConfiguration.displaySimpleActionsTab && t.TabPages.Contains(FlightData.tabActionsSimple))
-                {
-                    t.TabPages.Remove(FlightData.tabActionsSimple);
-                }
-                
                 if (DisplayConfiguration.displayGaugesTab && !t.TabPages.Contains(FlightData.tabGauges))
                 {
                     t.TabPages.Add(FlightData.tabGauges);
@@ -1817,7 +1799,7 @@ namespace MissionPlanner
                 {
                     if (CamJoystickFound)
                     {
-                        MainV2.comPort.MAV.cs.messages.Add("Joystick found.");
+                        MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Joystick found.");
 
                         try
                         {
@@ -1832,14 +1814,14 @@ namespace MissionPlanner
                                 Settings.Instance["cam_joystick_name"] = devName;
                                 MainV2.Camjoystick = camJoystick;
                                 MainV2.Camjoystick.enabled = true;
-                                MainV2.comPort.MAV.cs.messages.Add(devName + " is active.");
+                                MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + devName + " is active.");
                             }
                         }
                         catch { }
                     }
                     else
                     {
-                        MainV2.comPort.MAV.cs.messages.Add("Joystick lost");
+                        MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Joystick lost");
                     }
                 }
 
