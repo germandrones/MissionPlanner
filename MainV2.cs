@@ -263,8 +263,6 @@ namespace MissionPlanner
         /// </summary>
         bool serialThread = false;
 
-        bool pluginthreadrun = false;
-
         bool joystickthreadrun = false;
 
         //Thread httpthread;
@@ -282,7 +280,6 @@ namespace MissionPlanner
 
         public static bool missionUploading = false;
         Thread serialreaderthread;
-        Thread pluginthread;
 
         /// <summary>
         /// track the last heartbeat sent
@@ -1526,12 +1523,6 @@ namespace MissionPlanner
             {
             }
 
-            log.Info("closing pluginthread");
-
-            pluginthreadrun = false;
-
-            if (pluginthread != null) pluginthread.Join();
-
             log.Info("closing serialthread");
 
             serialThread = false;
@@ -1599,13 +1590,8 @@ namespace MissionPlanner
             // save config
             SaveConfig();
 
-            //Console.WriteLine(httpthread?.IsAlive);
-            //Console.WriteLine(joystickthread?.IsAlive);
             Console.WriteLine(serialreaderthread?.IsAlive);
-            Console.WriteLine(pluginthread?.IsAlive);
-
             log.Info("MainV2_FormClosing done");
-
             if (MONO) this.Dispose();
         }
 
@@ -1963,69 +1949,6 @@ namespace MissionPlanner
                 }
             }
             this.CamjoysendThreadExited = true;
-        }
-        #endregion
-
-        #region Plugin Thread Runner
-        ManualResetEvent PluginThreadrunner = new ManualResetEvent(false);
-        private void PluginThread()
-        {
-            Hashtable nextrun = new Hashtable();
-
-            pluginthreadrun = true;
-
-            PluginThreadrunner.Reset();
-
-            while (pluginthreadrun)
-            {
-                try
-                {
-                    lock (Plugin.PluginLoader.Plugins)
-                    {
-                        foreach (var plugin in Plugin.PluginLoader.Plugins)
-                        {
-                            if (!nextrun.ContainsKey(plugin)) nextrun[plugin] = DateTime.MinValue;
-
-                            if (DateTime.Now > plugin.NextRun)
-                            {
-                                int msnext = (int) (1000/plugin.loopratehz);
-                                plugin.NextRun = DateTime.Now.AddMilliseconds(msnext);
-
-                                try
-                                {
-                                    bool ans = plugin.Loop();
-                                }
-                                catch (Exception ex)
-                                {
-                                    log.Error(ex);
-                                }
-                            }
-                        }
-                    }
-                }
-                catch
-                {
-                }
-                System.Threading.Thread.Sleep(10);
-            }
-
-            while (Plugin.PluginLoader.Plugins.Count > 0)
-            {
-                var plugin = Plugin.PluginLoader.Plugins[0];
-                try
-                {
-                    plugin.Exit();
-                }
-                catch (Exception ex)
-                {
-                    log.Error(ex);
-                }
-                Plugin.PluginLoader.Plugins.Remove(plugin);
-            }
-
-            PluginThreadrunner.Set();
-
-            return;
         }
         #endregion
 

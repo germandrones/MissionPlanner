@@ -3881,7 +3881,14 @@ Please check the following
                         if (ind != -1) logdata = logdata.Substring(0, ind);
                         log.Info(DateTime.Now + " " + sev + " " + logdata);
 
-                        MAVlist[sysid, compid].cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + logdata);
+                        if (!logreadmode)
+                        {   // Live log stream
+                            MAVlist[sysid, compid].cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + logdata);
+                        }
+                        else
+                        {   //log replay
+                            MAVlist[sysid, compid].cs.messages.Add(MAVlist[sysid, compid].cs.datetime.ToLongTimeString() + "    " + logdata);
+                        }
 
                         // gymbals etc are a child/slave to the main sysid, this displays the children messages under the current displayed vehicle
                         if (sysid == sysidcurrent && compid != compidcurrent)
