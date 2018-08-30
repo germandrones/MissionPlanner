@@ -42,12 +42,7 @@
             this.tabQuick = new System.Windows.Forms.TabPage();
             this.tabPagePreFlight = new System.Windows.Forms.TabPage();
             this.checkListControl1 = new MissionPlanner.Controls.PreFlight.CheckListControl();
-            this.tabGauges = new System.Windows.Forms.TabPage();
-            this.Gvspeed = new AGaugeApp.AGauge();
             this.bindingSourceGaugesTab = new System.Windows.Forms.BindingSource(this.components);
-            this.Gheading = new MissionPlanner.Controls.HSI();
-            this.Galt = new AGaugeApp.AGauge();
-            this.Gspeed = new AGaugeApp.AGauge();
             this.tabStatus = new System.Windows.Forms.TabPage();
             this.tabServo = new System.Windows.Forms.TabPage();
             this.flowLayoutPanelServos = new System.Windows.Forms.FlowLayoutPanel();
@@ -86,15 +81,6 @@
             this.but_bintolog = new MissionPlanner.Controls.MyButton();
             this.BUT_matlab = new MissionPlanner.Controls.MyButton();
             this.BUT_logbrowse = new MissionPlanner.Controls.MyButton();
-            this.tabScripts = new System.Windows.Forms.TabPage();
-            this.checkBoxRedirectOutput = new System.Windows.Forms.CheckBox();
-            this.BUT_edit_selected = new MissionPlanner.Controls.MyButton();
-            this.labelSelectedScript = new System.Windows.Forms.Label();
-            this.BUT_run_script = new MissionPlanner.Controls.MyButton();
-            this.BUT_abort_script = new MissionPlanner.Controls.MyButton();
-            this.labelScriptStatus = new System.Windows.Forms.Label();
-            this.BUT_select_script = new MissionPlanner.Controls.MyButton();
-            this.tabPagemessages = new System.Windows.Forms.TabPage();
             this.tabPageColibri = new System.Windows.Forms.TabPage();
             this.Colibri_GB4 = new System.Windows.Forms.GroupBox();
             this.PTC_Alt = new System.Windows.Forms.TextBox();
@@ -204,7 +190,6 @@
             this.tabControlactions.SuspendLayout();
             this.tabQuick.SuspendLayout();
             this.tabPagePreFlight.SuspendLayout();
-            this.tabGauges.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSourceGaugesTab)).BeginInit();
             this.tabServo.SuspendLayout();
             this.flowLayoutPanelServos.SuspendLayout();
@@ -213,7 +198,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.tracklog)).BeginInit();
             this.panel2.SuspendLayout();
             this.tablogbrowse.SuspendLayout();
-            this.tabScripts.SuspendLayout();
             this.tabPageColibri.SuspendLayout();
             this.Colibri_GB4.SuspendLayout();
             this.tableMap.SuspendLayout();
@@ -585,13 +569,10 @@
             // 
             this.tabControlactions.Controls.Add(this.tabQuick);
             this.tabControlactions.Controls.Add(this.tabPagePreFlight);
-            this.tabControlactions.Controls.Add(this.tabGauges);
             this.tabControlactions.Controls.Add(this.tabStatus);
             this.tabControlactions.Controls.Add(this.tabServo);
             this.tabControlactions.Controls.Add(this.tabTLogs);
             this.tabControlactions.Controls.Add(this.tablogbrowse);
-            this.tabControlactions.Controls.Add(this.tabScripts);
-            this.tabControlactions.Controls.Add(this.tabPagemessages);
             this.tabControlactions.Controls.Add(this.tabPageColibri);
             resources.ApplyResources(this.tabControlactions, "tabControlactions");
             this.tabControlactions.Multiline = true;
@@ -621,465 +602,9 @@
             resources.ApplyResources(this.checkListControl1, "checkListControl1");
             this.checkListControl1.Name = "checkListControl1";
             // 
-            // tabGauges
-            // 
-            this.tabGauges.Controls.Add(this.Gvspeed);
-            this.tabGauges.Controls.Add(this.Gheading);
-            this.tabGauges.Controls.Add(this.Galt);
-            this.tabGauges.Controls.Add(this.Gspeed);
-            resources.ApplyResources(this.tabGauges, "tabGauges");
-            this.tabGauges.Name = "tabGauges";
-            this.tabGauges.UseVisualStyleBackColor = true;
-            this.tabGauges.Resize += new System.EventHandler(this.tabPage1_Resize);
-            // 
-            // Gvspeed
-            // 
-            this.Gvspeed.BackColor = System.Drawing.Color.Transparent;
-            this.Gvspeed.BackgroundImage = global::MissionPlanner.Properties.Resources.Gaugebg;
-            resources.ApplyResources(this.Gvspeed, "Gvspeed");
-            this.Gvspeed.BaseArcColor = System.Drawing.Color.Transparent;
-            this.Gvspeed.BaseArcRadius = 60;
-            this.Gvspeed.BaseArcStart = 20;
-            this.Gvspeed.BaseArcSweep = 320;
-            this.Gvspeed.BaseArcWidth = 2;
-            this.Gvspeed.Cap_Idx = ((byte)(0));
-            this.Gvspeed.CapColor = System.Drawing.Color.White;
-            this.Gvspeed.CapColors = new System.Drawing.Color[] {
-        System.Drawing.Color.White,
-        System.Drawing.Color.Black,
-        System.Drawing.Color.Black,
-        System.Drawing.Color.Black,
-        System.Drawing.Color.Black};
-            this.Gvspeed.CapPosition = new System.Drawing.Point(65, 85);
-            this.Gvspeed.CapsPosition = new System.Drawing.Point[] {
-        new System.Drawing.Point(65, 85),
-        new System.Drawing.Point(30, 55),
-        new System.Drawing.Point(10, 10),
-        new System.Drawing.Point(10, 10),
-        new System.Drawing.Point(10, 10)};
-            this.Gvspeed.CapsText = new string[] {
-        "VSI",
-        "",
-        "",
-        "",
-        ""};
-            this.Gvspeed.CapText = "VSI";
-            this.Gvspeed.Center = new System.Drawing.Point(75, 75);
-            this.Gvspeed.DataBindings.Add(new System.Windows.Forms.Binding("Value0", this.bindingSourceGaugesTab, "verticalspeed", true));
-            this.Gvspeed.MaxValue = 10F;
-            this.Gvspeed.MinValue = -10F;
-            this.Gvspeed.Name = "Gvspeed";
-            this.Gvspeed.Need_Idx = ((byte)(3));
-            this.Gvspeed.NeedleColor1 = AGaugeApp.AGauge.NeedleColorEnum.Gray;
-            this.Gvspeed.NeedleColor2 = System.Drawing.Color.White;
-            this.Gvspeed.NeedleEnabled = false;
-            this.Gvspeed.NeedleRadius = 80;
-            this.Gvspeed.NeedlesColor1 = new AGaugeApp.AGauge.NeedleColorEnum[] {
-        AGaugeApp.AGauge.NeedleColorEnum.Gray,
-        AGaugeApp.AGauge.NeedleColorEnum.Gray,
-        AGaugeApp.AGauge.NeedleColorEnum.Gray,
-        AGaugeApp.AGauge.NeedleColorEnum.Gray};
-            this.Gvspeed.NeedlesColor2 = new System.Drawing.Color[] {
-        System.Drawing.Color.White,
-        System.Drawing.Color.White,
-        System.Drawing.Color.White,
-        System.Drawing.Color.White};
-            this.Gvspeed.NeedlesEnabled = new bool[] {
-        true,
-        false,
-        false,
-        false};
-            this.Gvspeed.NeedlesRadius = new int[] {
-        50,
-        30,
-        50,
-        80};
-            this.Gvspeed.NeedlesType = new int[] {
-        0,
-        0,
-        0,
-        0};
-            this.Gvspeed.NeedlesWidth = new int[] {
-        2,
-        2,
-        2,
-        2};
-            this.Gvspeed.NeedleType = 0;
-            this.Gvspeed.NeedleWidth = 2;
-            this.Gvspeed.Range_Idx = ((byte)(0));
-            this.Gvspeed.RangeColor = System.Drawing.Color.LightGreen;
-            this.Gvspeed.RangeEnabled = false;
-            this.Gvspeed.RangeEndValue = 360F;
-            this.Gvspeed.RangeInnerRadius = 1;
-            this.Gvspeed.RangeOuterRadius = 60;
-            this.Gvspeed.RangesColor = new System.Drawing.Color[] {
-        System.Drawing.Color.LightGreen,
-        System.Drawing.Color.Red,
-        System.Drawing.Color.Orange,
-        System.Drawing.SystemColors.Control,
-        System.Drawing.SystemColors.Control};
-            this.Gvspeed.RangesEnabled = new bool[] {
-        false,
-        false,
-        false,
-        false,
-        false};
-            this.Gvspeed.RangesEndValue = new float[] {
-        360F,
-        200F,
-        150F,
-        0F,
-        0F};
-            this.Gvspeed.RangesInnerRadius = new int[] {
-        1,
-        1,
-        1,
-        70,
-        70};
-            this.Gvspeed.RangesOuterRadius = new int[] {
-        60,
-        60,
-        60,
-        80,
-        80};
-            this.Gvspeed.RangesStartValue = new float[] {
-        0F,
-        150F,
-        75F,
-        0F,
-        0F};
-            this.Gvspeed.RangeStartValue = 0F;
-            this.Gvspeed.ScaleLinesInterColor = System.Drawing.Color.White;
-            this.Gvspeed.ScaleLinesInterInnerRadius = 52;
-            this.Gvspeed.ScaleLinesInterOuterRadius = 60;
-            this.Gvspeed.ScaleLinesInterWidth = 1;
-            this.Gvspeed.ScaleLinesMajorColor = System.Drawing.Color.White;
-            this.Gvspeed.ScaleLinesMajorInnerRadius = 50;
-            this.Gvspeed.ScaleLinesMajorOuterRadius = 60;
-            this.Gvspeed.ScaleLinesMajorStepValue = 2F;
-            this.Gvspeed.ScaleLinesMajorWidth = 2;
-            this.Gvspeed.ScaleLinesMinorColor = System.Drawing.Color.White;
-            this.Gvspeed.ScaleLinesMinorInnerRadius = 55;
-            this.Gvspeed.ScaleLinesMinorNumOf = 9;
-            this.Gvspeed.ScaleLinesMinorOuterRadius = 60;
-            this.Gvspeed.ScaleLinesMinorWidth = 1;
-            this.Gvspeed.ScaleNumbersColor = System.Drawing.Color.White;
-            this.Gvspeed.ScaleNumbersFormat = "";
-            this.Gvspeed.ScaleNumbersRadius = 42;
-            this.Gvspeed.ScaleNumbersRotation = 0;
-            this.Gvspeed.ScaleNumbersStartScaleLine = 1;
-            this.Gvspeed.ScaleNumbersStepScaleLines = 1;
-            this.Gvspeed.Value = 0F;
-            this.Gvspeed.Value0 = 0F;
-            this.Gvspeed.Value1 = 0F;
-            this.Gvspeed.Value2 = 0F;
-            this.Gvspeed.Value3 = 0F;
-            // 
             // bindingSourceGaugesTab
             // 
             this.bindingSourceGaugesTab.DataSource = typeof(MissionPlanner.CurrentState);
-            // 
-            // Gheading
-            // 
-            this.Gheading.BackColor = System.Drawing.Color.Transparent;
-            this.Gheading.BackgroundImage = global::MissionPlanner.Properties.Resources.Gaugebg;
-            resources.ApplyResources(this.Gheading, "Gheading");
-            this.Gheading.DataBindings.Add(new System.Windows.Forms.Binding("Heading", this.bindingSourceGaugesTab, "yaw", true));
-            this.Gheading.DataBindings.Add(new System.Windows.Forms.Binding("NavHeading", this.bindingSourceGaugesTab, "nav_bearing", true));
-            this.Gheading.Heading = 0;
-            this.Gheading.Name = "Gheading";
-            this.Gheading.NavHeading = 0;
-            // 
-            // Galt
-            // 
-            this.Galt.BackColor = System.Drawing.Color.Transparent;
-            this.Galt.BackgroundImage = global::MissionPlanner.Properties.Resources.Gaugebg;
-            resources.ApplyResources(this.Galt, "Galt");
-            this.Galt.BaseArcColor = System.Drawing.Color.Transparent;
-            this.Galt.BaseArcRadius = 60;
-            this.Galt.BaseArcStart = 270;
-            this.Galt.BaseArcSweep = 360;
-            this.Galt.BaseArcWidth = 2;
-            this.Galt.Cap_Idx = ((byte)(0));
-            this.Galt.CapColor = System.Drawing.Color.White;
-            this.Galt.CapColors = new System.Drawing.Color[] {
-        System.Drawing.Color.White,
-        System.Drawing.Color.Black,
-        System.Drawing.Color.Black,
-        System.Drawing.Color.Black,
-        System.Drawing.Color.Black};
-            this.Galt.CapPosition = new System.Drawing.Point(68, 85);
-            this.Galt.CapsPosition = new System.Drawing.Point[] {
-        new System.Drawing.Point(68, 85),
-        new System.Drawing.Point(30, 55),
-        new System.Drawing.Point(10, 10),
-        new System.Drawing.Point(10, 10),
-        new System.Drawing.Point(10, 10)};
-            this.Galt.CapsText = new string[] {
-        "Alt",
-        "",
-        "",
-        "",
-        ""};
-            this.Galt.CapText = "Alt";
-            this.Galt.Center = new System.Drawing.Point(75, 75);
-            this.Galt.DataBindings.Add(new System.Windows.Forms.Binding("Value0", this.bindingSourceGaugesTab, "altd100", true));
-            this.Galt.DataBindings.Add(new System.Windows.Forms.Binding("Value1", this.bindingSourceGaugesTab, "altd1000", true));
-            this.Galt.DataBindings.Add(new System.Windows.Forms.Binding("Value2", this.bindingSourceGaugesTab, "targetaltd100", true));
-            this.Galt.MaxValue = 9.99F;
-            this.Galt.MinValue = 0F;
-            this.Galt.Name = "Galt";
-            this.Galt.Need_Idx = ((byte)(3));
-            this.Galt.NeedleColor1 = AGaugeApp.AGauge.NeedleColorEnum.Gray;
-            this.Galt.NeedleColor2 = System.Drawing.Color.White;
-            this.Galt.NeedleEnabled = false;
-            this.Galt.NeedleRadius = 80;
-            this.Galt.NeedlesColor1 = new AGaugeApp.AGauge.NeedleColorEnum[] {
-        AGaugeApp.AGauge.NeedleColorEnum.Gray,
-        AGaugeApp.AGauge.NeedleColorEnum.Gray,
-        AGaugeApp.AGauge.NeedleColorEnum.Red,
-        AGaugeApp.AGauge.NeedleColorEnum.Gray};
-            this.Galt.NeedlesColor2 = new System.Drawing.Color[] {
-        System.Drawing.Color.White,
-        System.Drawing.Color.White,
-        System.Drawing.Color.White,
-        System.Drawing.Color.White};
-            this.Galt.NeedlesEnabled = new bool[] {
-        true,
-        true,
-        true,
-        false};
-            this.Galt.NeedlesRadius = new int[] {
-        50,
-        30,
-        50,
-        80};
-            this.Galt.NeedlesType = new int[] {
-        0,
-        0,
-        0,
-        0};
-            this.Galt.NeedlesWidth = new int[] {
-        2,
-        2,
-        2,
-        2};
-            this.Galt.NeedleType = 0;
-            this.Galt.NeedleWidth = 2;
-            this.Galt.Range_Idx = ((byte)(0));
-            this.Galt.RangeColor = System.Drawing.Color.LightGreen;
-            this.Galt.RangeEnabled = false;
-            this.Galt.RangeEndValue = 360F;
-            this.Galt.RangeInnerRadius = 1;
-            this.Galt.RangeOuterRadius = 60;
-            this.Galt.RangesColor = new System.Drawing.Color[] {
-        System.Drawing.Color.LightGreen,
-        System.Drawing.Color.Red,
-        System.Drawing.Color.Orange,
-        System.Drawing.SystemColors.Control,
-        System.Drawing.SystemColors.Control};
-            this.Galt.RangesEnabled = new bool[] {
-        false,
-        false,
-        false,
-        false,
-        false};
-            this.Galt.RangesEndValue = new float[] {
-        360F,
-        200F,
-        150F,
-        0F,
-        0F};
-            this.Galt.RangesInnerRadius = new int[] {
-        1,
-        1,
-        1,
-        70,
-        70};
-            this.Galt.RangesOuterRadius = new int[] {
-        60,
-        60,
-        60,
-        80,
-        80};
-            this.Galt.RangesStartValue = new float[] {
-        0F,
-        150F,
-        75F,
-        0F,
-        0F};
-            this.Galt.RangeStartValue = 0F;
-            this.Galt.ScaleLinesInterColor = System.Drawing.Color.White;
-            this.Galt.ScaleLinesInterInnerRadius = 52;
-            this.Galt.ScaleLinesInterOuterRadius = 60;
-            this.Galt.ScaleLinesInterWidth = 1;
-            this.Galt.ScaleLinesMajorColor = System.Drawing.Color.White;
-            this.Galt.ScaleLinesMajorInnerRadius = 50;
-            this.Galt.ScaleLinesMajorOuterRadius = 60;
-            this.Galt.ScaleLinesMajorStepValue = 1F;
-            this.Galt.ScaleLinesMajorWidth = 2;
-            this.Galt.ScaleLinesMinorColor = System.Drawing.Color.White;
-            this.Galt.ScaleLinesMinorInnerRadius = 55;
-            this.Galt.ScaleLinesMinorNumOf = 9;
-            this.Galt.ScaleLinesMinorOuterRadius = 60;
-            this.Galt.ScaleLinesMinorWidth = 1;
-            this.Galt.ScaleNumbersColor = System.Drawing.Color.White;
-            this.Galt.ScaleNumbersFormat = "";
-            this.Galt.ScaleNumbersRadius = 42;
-            this.Galt.ScaleNumbersRotation = 0;
-            this.Galt.ScaleNumbersStartScaleLine = 1;
-            this.Galt.ScaleNumbersStepScaleLines = 1;
-            this.Galt.Value = 0F;
-            this.Galt.Value0 = 0F;
-            this.Galt.Value1 = 0F;
-            this.Galt.Value2 = 0F;
-            this.Galt.Value3 = 0F;
-            // 
-            // Gspeed
-            // 
-            this.Gspeed.BackColor = System.Drawing.Color.Transparent;
-            this.Gspeed.BackgroundImage = global::MissionPlanner.Properties.Resources.Gaugebg;
-            resources.ApplyResources(this.Gspeed, "Gspeed");
-            this.Gspeed.BaseArcColor = System.Drawing.Color.Transparent;
-            this.Gspeed.BaseArcRadius = 70;
-            this.Gspeed.BaseArcStart = 135;
-            this.Gspeed.BaseArcSweep = 270;
-            this.Gspeed.BaseArcWidth = 2;
-            this.Gspeed.Cap_Idx = ((byte)(0));
-            this.Gspeed.CapColor = System.Drawing.Color.White;
-            this.Gspeed.CapColors = new System.Drawing.Color[] {
-        System.Drawing.Color.White,
-        System.Drawing.Color.White,
-        System.Drawing.Color.Black,
-        System.Drawing.Color.Black,
-        System.Drawing.Color.Black};
-            this.Gspeed.CapPosition = new System.Drawing.Point(58, 85);
-            this.Gspeed.CapsPosition = new System.Drawing.Point[] {
-        new System.Drawing.Point(58, 85),
-        new System.Drawing.Point(50, 110),
-        new System.Drawing.Point(10, 10),
-        new System.Drawing.Point(10, 10),
-        new System.Drawing.Point(10, 10)};
-            this.Gspeed.CapsText = new string[] {
-        "Speed",
-        "",
-        "",
-        "",
-        ""};
-            this.Gspeed.CapText = "Speed";
-            this.Gspeed.Center = new System.Drawing.Point(75, 75);
-            this.Gspeed.DataBindings.Add(new System.Windows.Forms.Binding("Value0", this.bindingSourceGaugesTab, "airspeed", true));
-            this.Gspeed.DataBindings.Add(new System.Windows.Forms.Binding("Value1", this.bindingSourceGaugesTab, "groundspeed", true));
-            this.Gspeed.MaxValue = 60F;
-            this.Gspeed.MinValue = 0F;
-            this.Gspeed.Name = "Gspeed";
-            this.Gspeed.Need_Idx = ((byte)(3));
-            this.Gspeed.NeedleColor1 = AGaugeApp.AGauge.NeedleColorEnum.Gray;
-            this.Gspeed.NeedleColor2 = System.Drawing.Color.Brown;
-            this.Gspeed.NeedleEnabled = false;
-            this.Gspeed.NeedleRadius = 70;
-            this.Gspeed.NeedlesColor1 = new AGaugeApp.AGauge.NeedleColorEnum[] {
-        AGaugeApp.AGauge.NeedleColorEnum.Gray,
-        AGaugeApp.AGauge.NeedleColorEnum.Red,
-        AGaugeApp.AGauge.NeedleColorEnum.Blue,
-        AGaugeApp.AGauge.NeedleColorEnum.Gray};
-            this.Gspeed.NeedlesColor2 = new System.Drawing.Color[] {
-        System.Drawing.Color.White,
-        System.Drawing.Color.White,
-        System.Drawing.Color.White,
-        System.Drawing.Color.Brown};
-            this.Gspeed.NeedlesEnabled = new bool[] {
-        true,
-        true,
-        false,
-        false};
-            this.Gspeed.NeedlesRadius = new int[] {
-        50,
-        50,
-        70,
-        70};
-            this.Gspeed.NeedlesType = new int[] {
-        0,
-        0,
-        0,
-        0};
-            this.Gspeed.NeedlesWidth = new int[] {
-        2,
-        1,
-        2,
-        2};
-            this.Gspeed.NeedleType = 0;
-            this.Gspeed.NeedleWidth = 2;
-            this.Gspeed.Range_Idx = ((byte)(2));
-            this.Gspeed.RangeColor = System.Drawing.Color.Orange;
-            this.Gspeed.RangeEnabled = false;
-            this.Gspeed.RangeEndValue = 50F;
-            this.Gspeed.RangeInnerRadius = 1;
-            this.Gspeed.RangeOuterRadius = 70;
-            this.Gspeed.RangesColor = new System.Drawing.Color[] {
-        System.Drawing.Color.LightGreen,
-        System.Drawing.Color.Red,
-        System.Drawing.Color.Orange,
-        System.Drawing.SystemColors.Control,
-        System.Drawing.SystemColors.Control};
-            this.Gspeed.RangesEnabled = new bool[] {
-        false,
-        false,
-        false,
-        false,
-        false};
-            this.Gspeed.RangesEndValue = new float[] {
-        35F,
-        60F,
-        50F,
-        0F,
-        0F};
-            this.Gspeed.RangesInnerRadius = new int[] {
-        1,
-        1,
-        1,
-        70,
-        70};
-            this.Gspeed.RangesOuterRadius = new int[] {
-        70,
-        70,
-        70,
-        80,
-        80};
-            this.Gspeed.RangesStartValue = new float[] {
-        0F,
-        50F,
-        35F,
-        0F,
-        0F};
-            this.Gspeed.RangeStartValue = 35F;
-            this.Gspeed.ScaleLinesInterColor = System.Drawing.Color.White;
-            this.Gspeed.ScaleLinesInterInnerRadius = 52;
-            this.Gspeed.ScaleLinesInterOuterRadius = 60;
-            this.Gspeed.ScaleLinesInterWidth = 1;
-            this.Gspeed.ScaleLinesMajorColor = System.Drawing.Color.White;
-            this.Gspeed.ScaleLinesMajorInnerRadius = 50;
-            this.Gspeed.ScaleLinesMajorOuterRadius = 60;
-            this.Gspeed.ScaleLinesMajorStepValue = 10F;
-            this.Gspeed.ScaleLinesMajorWidth = 2;
-            this.Gspeed.ScaleLinesMinorColor = System.Drawing.Color.White;
-            this.Gspeed.ScaleLinesMinorInnerRadius = 55;
-            this.Gspeed.ScaleLinesMinorNumOf = 9;
-            this.Gspeed.ScaleLinesMinorOuterRadius = 60;
-            this.Gspeed.ScaleLinesMinorWidth = 1;
-            this.Gspeed.ScaleNumbersColor = System.Drawing.Color.White;
-            this.Gspeed.ScaleNumbersFormat = null;
-            this.Gspeed.ScaleNumbersRadius = 42;
-            this.Gspeed.ScaleNumbersRotation = 0;
-            this.Gspeed.ScaleNumbersStartScaleLine = 1;
-            this.Gspeed.ScaleNumbersStepScaleLines = 1;
-            this.toolTip1.SetToolTip(this.Gspeed, resources.GetString("Gspeed.ToolTip"));
-            this.Gspeed.Value = 0F;
-            this.Gspeed.Value0 = 0F;
-            this.Gspeed.Value1 = 0F;
-            this.Gspeed.Value2 = 0F;
-            this.Gspeed.Value3 = 0F;
-            this.Gspeed.DoubleClick += new System.EventHandler(this.Gspeed_DoubleClick);
             // 
             // tabStatus
             // 
@@ -1412,83 +937,6 @@
             this.BUT_logbrowse.UseVisualStyleBackColor = true;
             this.BUT_logbrowse.Click += new System.EventHandler(this.BUT_logbrowse_Click);
             // 
-            // tabScripts
-            // 
-            this.tabScripts.Controls.Add(this.checkBoxRedirectOutput);
-            this.tabScripts.Controls.Add(this.BUT_edit_selected);
-            this.tabScripts.Controls.Add(this.labelSelectedScript);
-            this.tabScripts.Controls.Add(this.BUT_run_script);
-            this.tabScripts.Controls.Add(this.BUT_abort_script);
-            this.tabScripts.Controls.Add(this.labelScriptStatus);
-            this.tabScripts.Controls.Add(this.BUT_select_script);
-            resources.ApplyResources(this.tabScripts, "tabScripts");
-            this.tabScripts.Name = "tabScripts";
-            this.tabScripts.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxRedirectOutput
-            // 
-            resources.ApplyResources(this.checkBoxRedirectOutput, "checkBoxRedirectOutput");
-            this.checkBoxRedirectOutput.Checked = true;
-            this.checkBoxRedirectOutput.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxRedirectOutput.Name = "checkBoxRedirectOutput";
-            this.checkBoxRedirectOutput.UseVisualStyleBackColor = true;
-            // 
-            // BUT_edit_selected
-            // 
-            this.BUT_edit_selected.ColorMouseDown = System.Drawing.Color.Empty;
-            this.BUT_edit_selected.ColorMouseOver = System.Drawing.Color.Empty;
-            this.BUT_edit_selected.ColorNotEnabled = System.Drawing.Color.Empty;
-            resources.ApplyResources(this.BUT_edit_selected, "BUT_edit_selected");
-            this.BUT_edit_selected.Name = "BUT_edit_selected";
-            this.BUT_edit_selected.UseVisualStyleBackColor = true;
-            this.BUT_edit_selected.Click += new System.EventHandler(this.BUT_edit_selected_Click);
-            // 
-            // labelSelectedScript
-            // 
-            resources.ApplyResources(this.labelSelectedScript, "labelSelectedScript");
-            this.labelSelectedScript.Name = "labelSelectedScript";
-            // 
-            // BUT_run_script
-            // 
-            this.BUT_run_script.ColorMouseDown = System.Drawing.Color.Empty;
-            this.BUT_run_script.ColorMouseOver = System.Drawing.Color.Empty;
-            this.BUT_run_script.ColorNotEnabled = System.Drawing.Color.Empty;
-            resources.ApplyResources(this.BUT_run_script, "BUT_run_script");
-            this.BUT_run_script.Name = "BUT_run_script";
-            this.BUT_run_script.UseVisualStyleBackColor = true;
-            this.BUT_run_script.Click += new System.EventHandler(this.BUT_run_script_Click);
-            // 
-            // BUT_abort_script
-            // 
-            this.BUT_abort_script.ColorMouseDown = System.Drawing.Color.Empty;
-            this.BUT_abort_script.ColorMouseOver = System.Drawing.Color.Empty;
-            this.BUT_abort_script.ColorNotEnabled = System.Drawing.Color.Empty;
-            resources.ApplyResources(this.BUT_abort_script, "BUT_abort_script");
-            this.BUT_abort_script.Name = "BUT_abort_script";
-            this.BUT_abort_script.UseVisualStyleBackColor = true;
-            this.BUT_abort_script.Click += new System.EventHandler(this.BUT_abort_script_Click);
-            // 
-            // labelScriptStatus
-            // 
-            resources.ApplyResources(this.labelScriptStatus, "labelScriptStatus");
-            this.labelScriptStatus.Name = "labelScriptStatus";
-            // 
-            // BUT_select_script
-            // 
-            this.BUT_select_script.ColorMouseDown = System.Drawing.Color.Empty;
-            this.BUT_select_script.ColorMouseOver = System.Drawing.Color.Empty;
-            this.BUT_select_script.ColorNotEnabled = System.Drawing.Color.Empty;
-            resources.ApplyResources(this.BUT_select_script, "BUT_select_script");
-            this.BUT_select_script.Name = "BUT_select_script";
-            this.BUT_select_script.UseVisualStyleBackColor = true;
-            this.BUT_select_script.Click += new System.EventHandler(this.BUT_select_script_Click);
-            // 
-            // tabPagemessages
-            // 
-            resources.ApplyResources(this.tabPagemessages, "tabPagemessages");
-            this.tabPagemessages.Name = "tabPagemessages";
-            this.tabPagemessages.UseVisualStyleBackColor = true;
-            // 
             // tabPageColibri
             // 
             this.tabPageColibri.Controls.Add(this.Colibri_GB4);
@@ -1770,7 +1218,7 @@
             this.windDir1.BackColor = System.Drawing.Color.Transparent;
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Direction", this.bindingSource1, "wind_dir", true, System.Windows.Forms.DataSourceUpdateMode.Never));
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Speed", this.bindingSource1, "wind_vel", true, System.Windows.Forms.DataSourceUpdateMode.Never));
-            this.windDir1.Direction = 360D;
+            this.windDir1.Direction = 180D;
             resources.ApplyResources(this.windDir1, "windDir1");
             this.windDir1.Name = "windDir1";
             this.windDir1.Speed = 0D;
@@ -2209,10 +1657,6 @@
             // 
             resources.ApplyResources(this.openScriptDialog, "openScriptDialog");
             // 
-            // scriptChecker
-            // 
-            this.scriptChecker.Tick += new System.EventHandler(this.scriptChecker_Tick);
-            // 
             // dataGridViewImageColumn1
             // 
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
@@ -2279,7 +1723,6 @@
             this.tabControlactions.ResumeLayout(false);
             this.tabQuick.ResumeLayout(false);
             this.tabPagePreFlight.ResumeLayout(false);
-            this.tabGauges.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSourceGaugesTab)).EndInit();
             this.tabServo.ResumeLayout(false);
             this.flowLayoutPanelServos.ResumeLayout(false);
@@ -2290,8 +1733,6 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.tablogbrowse.ResumeLayout(false);
-            this.tabScripts.ResumeLayout(false);
-            this.tabScripts.PerformLayout();
             this.tabPageColibri.ResumeLayout(false);
             this.Colibri_GB4.ResumeLayout(false);
             this.Colibri_GB4.PerformLayout();
@@ -2330,9 +1771,6 @@
         private System.Windows.Forms.TrackBar tracklog;
         private Controls.MyButton BUT_playlog;
         private Controls.MyButton BUT_loadtelem;
-        private AGaugeApp.AGauge Galt;
-        private AGaugeApp.AGauge Gspeed;
-        private AGaugeApp.AGauge Gvspeed;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.NumericUpDown Zoomlevel;
         private Controls.MyLabel label1;
@@ -2340,7 +1778,6 @@
         public Controls.myGMAP gMapControl1;
         private ZedGraph.ZedGraphControl zg1;
         public System.Windows.Forms.TabControl tabControlactions;
-        public System.Windows.Forms.TabPage tabGauges;
         public System.Windows.Forms.TabPage tabStatus;
         public System.Windows.Forms.TabPage tabTLogs;
         private Controls.MyButton BUT_log2kml;
@@ -2351,7 +1788,6 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private Controls.MyLabel lbl_hdop;
         private Controls.MyLabel lbl_sats;
-        private Controls.HSI Gheading;
         private Controls.MyLabel lbl_playbackspeed;
         private System.Windows.Forms.ToolStripMenuItem setAspectRatioToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem flyToHereAltToolStripMenuItem;
@@ -2388,16 +1824,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        public System.Windows.Forms.TabPage tabScripts;
-        private Controls.MyButton BUT_edit_selected;
-        private System.Windows.Forms.Label labelSelectedScript;
-        private Controls.MyButton BUT_run_script;
-        private Controls.MyButton BUT_abort_script;
-        private System.Windows.Forms.Label labelScriptStatus;
-        private Controls.MyButton BUT_select_script;
         private System.Windows.Forms.OpenFileDialog openScriptDialog;
         private System.Windows.Forms.Timer scriptChecker;
-        private System.Windows.Forms.CheckBox checkBoxRedirectOutput;
         private System.Windows.Forms.ToolStripMenuItem russianHudToolStripMenuItem;
         public System.Windows.Forms.ContextMenuStrip contextMenuStripMap;
         public System.Windows.Forms.ContextMenuStrip contextMenuStripHud;
@@ -2411,7 +1839,6 @@
         private Controls.MyButton but_bintolog;
         private Controls.MyButton but_dflogtokml;
         private Controls.MyButton BUT_DFMavlink;
-        public System.Windows.Forms.TabPage tabPagemessages;
         private System.Windows.Forms.Timer Messagetabtimer;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripactionstab;
         private Controls.MyButton BUT_loganalysis;

@@ -7696,11 +7696,6 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             }
 
             // User defined parameters:
-            int Radius = 0;
-            int Points = 0;
-            int Repeats = 0;
-            int Direction = 0;
-
             string RadiusIn = "50";
             if (DialogResult.Cancel == InputBox.Show("Radius", "Radius", ref RadiusIn)) return;
 
@@ -7713,10 +7708,10 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             string Directionin = "1";
             if (DialogResult.Cancel == InputBox.Show("Points", "Direction of circle survey. CW or CCW (-1 or 1)", ref Directionin)) return;
 
-            if (!int.TryParse(RadiusIn, out Radius))        { CustomMessageBox.Show("Bad Radius value"); return; }
-            if (!int.TryParse(PointsIn, out Points))        { CustomMessageBox.Show("Bad Points value"); return; }
-            if (!int.TryParse(Directionin, out Direction))  { CustomMessageBox.Show("Bad Direction value"); return; }
-            if (!int.TryParse(RepeatsIn, out Repeats))      { CustomMessageBox.Show("Bad Repeat value"); return; }
+            if (!int.TryParse(RadiusIn, out int Radius))        { CustomMessageBox.Show("Bad Radius value"); return; }
+            if (!int.TryParse(PointsIn, out int Points))        { CustomMessageBox.Show("Bad Points value"); return; }
+            if (!int.TryParse(Directionin, out int Direction))  { CustomMessageBox.Show("Bad Direction value"); return; }
+            if (!int.TryParse(RepeatsIn, out int Repeats))      { CustomMessageBox.Show("Bad Repeat value"); return; }
             #endregion
 
             // where the mouse is clicked

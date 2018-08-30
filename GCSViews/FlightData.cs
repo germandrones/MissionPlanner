@@ -18,7 +18,6 @@ using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using log4net;
-using Microsoft.Scripting.Utils;
 using MissionPlanner.Controls;
 using MissionPlanner.Joystick;
 using MissionPlanner.Log;
@@ -99,8 +98,6 @@ namespace MissionPlanner.GCSViews
 
         Thread thisthread;
 
-        //      private DockStateSerializer _serializer = null;
-
         List<PointLatLng> trackPoints = new List<PointLatLng>();
 
         public static HUD myhud;
@@ -116,15 +113,6 @@ namespace MissionPlanner.GCSViews
         public SplitContainer MainHcopy;
 
         public static FlightData instance;
-
-        //The file path of the selected script
-        string selectedscript = "";
-        //the thread the script is running on
-        Thread scriptthread;
-        //whether or not a script is running
-        bool scriptrunning;
-        Script script;
-        //whether or not the output console has already started
         bool outputwindowstarted;
 
 
@@ -332,22 +320,8 @@ namespace MissionPlanner.GCSViews
             gMapControl1.Overlays.Add(rallypointoverlay);
 
             gMapControl1.Overlays.Add(poioverlay);
-
-            float gspeedMax = Settings.Instance.GetFloat("GspeedMAX");
-            if (gspeedMax != 0)
-            {
-                Gspeed.MaxValue = gspeedMax;
-            }
         }
         
-        
-
-
-        private void m_oTxTimer_TickEvent(object sender, EventArgs e)
-        {
-            
-        }
-
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
@@ -1011,8 +985,6 @@ namespace MissionPlanner.GCSViews
 
                 try
                 {
-                    CheckAndBindPreFlightData();
-                    //Console.WriteLine(DateTime.Now.Millisecond);
                     //int fixme;
                     updateBindingSource();
                     // Console.WriteLine(DateTime.Now.Millisecond + " done ");
@@ -1046,10 +1018,8 @@ namespace MissionPlanner.GCSViews
                     // update opengltest2
                     if (OpenGLtest2.instance != null)
                     {
-                        OpenGLtest2.instance.rpy = new OpenTK.Vector3(MainV2.comPort.MAV.cs.roll, MainV2.comPort.MAV.cs.pitch,
-                            MainV2.comPort.MAV.cs.yaw);
-                        OpenGLtest2.instance.LocationCenter = new PointLatLngAlt(MainV2.comPort.MAV.cs.lat,
-                            MainV2.comPort.MAV.cs.lng, MainV2.comPort.MAV.cs.altasl, "here");
+                        OpenGLtest2.instance.rpy = new OpenTK.Vector3(MainV2.comPort.MAV.cs.roll, MainV2.comPort.MAV.cs.pitch, MainV2.comPort.MAV.cs.yaw);
+                        OpenGLtest2.instance.LocationCenter = new PointLatLngAlt(MainV2.comPort.MAV.cs.lat, MainV2.comPort.MAV.cs.lng, MainV2.comPort.MAV.cs.altasl, "here");
                     }
 
                     // update vario info
@@ -1081,10 +1051,12 @@ namespace MissionPlanner.GCSViews
                             list10.Add(time, ConvertToDouble(list10item.GetValue(MainV2.comPort.MAV.cs, null)));
                     }
 
+
+
                     // update map
-                    if (tracklast.AddSeconds(0.3) < DateTime.Now) // check on 100ms 10 Hz update rate
+                    if (tracklast.AddSeconds(0.1) < DateTime.Now) // check on 100ms 10 Hz update rate
                     {
-                        // Check if HWP points are already generated and received
+                        // Check if HWP points updated
                         if (MainV2.comPort.MAV.cs.gotHWP == true)
                         {
                             // Set flag to true
@@ -1104,25 +1076,14 @@ namespace MissionPlanner.GCSViews
                             hwp4.lng = MainV2.comPort.MAV.cs.hwp4_lng;
 
                             // Before update Map send an ACK Handshake message to PX4, that we have the message received and parsed
-                            if (MainV2.comPort.BaseStream.IsOpen) MainV2.comPort.Send_HWP_Ack();
-
+                            if (MainV2.comPort.BaseStream.IsOpen)
+                            {
+                                ThreadPool.QueueUserWorkItem(MainV2.comPort.Send_HWP_Ack); // send Ack msg  as bg pool
+                            }
                             update_map();
-                            MainV2.comPort.MAV.cs.gotHWP = false;
                         }                        
 
-                        // show disable joystick button
-                        /*if (MainV2.joystick != null && MainV2.joystick.enabled)
-                        {
-                            this.Invoke((MethodInvoker) delegate {
-                                but_disablejoystick.Visible = true;
-                            });
-                        }*/
-
-                        if (Settings.Instance.GetBoolean("CHK_maprotation"))
-                        {
-                            // dont holdinvalidation here
-                            setMapBearing();
-                        }
+                        if (Settings.Instance.GetBoolean("CHK_maprotation")) { setMapBearing(); }
 
                         if (route == null)
                         {
@@ -1739,11 +1700,8 @@ namespace MissionPlanner.GCSViews
             {
                 if (this.Visible)
                 {
-                    //Console.Write("bindingSource1 ");
                     MainV2.comPort.MAV.cs.UpdateCurrentSettings(bindingSource1);
-                    //Console.Write("bindingSourceHud ");
                     MainV2.comPort.MAV.cs.UpdateCurrentSettings(bindingSourceHud);
-                    //Console.WriteLine("DONE ");
 
                     if (tabControlactions.SelectedTab == tabStatus)
                     {
@@ -1752,10 +1710,6 @@ namespace MissionPlanner.GCSViews
                     else if (tabControlactions.SelectedTab == tabQuick)
                     {
                         MainV2.comPort.MAV.cs.UpdateCurrentSettings(bindingSourceQuickTab);
-                    }
-                    else if (tabControlactions.SelectedTab == tabGauges)
-                    {
-                        MainV2.comPort.MAV.cs.UpdateCurrentSettings(bindingSourceGaugesTab);
                     }
                     else if (tabControlactions.SelectedTab == tabPagePreFlight)
                     {
@@ -2370,244 +2324,7 @@ namespace MissionPlanner.GCSViews
             } // ignore any invalid 
         }
 
-        private void tabPage1_Resize(object sender, EventArgs e)
-        {
-            int mywidth, myheight;
-
-            // localize it
-            Control tabGauges = sender as Control;
-
-            float scale = tabGauges.Width/(float) tabGauges.Height;
-
-            if (scale > 0.5 && scale < 1.9)
-            {
-// square
-                Gvspeed.Visible = true;
-
-                if (tabGauges.Height < tabGauges.Width)
-                    myheight = tabGauges.Height/2;
-                else
-                    myheight = tabGauges.Width/2;
-
-                Gvspeed.Height = myheight;
-                Gspeed.Height = myheight;
-                Galt.Height = myheight;
-                Gheading.Height = myheight;
-
-                Gvspeed.Location = new Point(0, 0);
-                Gspeed.Location = new Point(Gvspeed.Right, 0);
-
-
-                Galt.Location = new Point(0, Gspeed.Bottom);
-                Gheading.Location = new Point(Galt.Right, Gspeed.Bottom);
-
-                return;
-            }
-
-            if (tabGauges.Width < 500)
-            {
-                Gvspeed.Visible = false;
-                mywidth = tabGauges.Width/3;
-
-                Gspeed.Height = mywidth;
-                Galt.Height = mywidth;
-                Gheading.Height = mywidth;
-
-                Gspeed.Location = new Point(0, 0);
-            }
-            else
-            {
-                Gvspeed.Visible = true;
-                mywidth = tabGauges.Width/4;
-
-                Gvspeed.Height = mywidth;
-                Gspeed.Height = mywidth;
-                Galt.Height = mywidth;
-                Gheading.Height = mywidth;
-
-                Gvspeed.Location = new Point(0, 0);
-                Gspeed.Location = new Point(Gvspeed.Right, 0);
-            }
-
-            Galt.Location = new Point(Gspeed.Right, 0);
-            Gheading.Location = new Point(Galt.Right, 0);
-        }
-
-
-        private void CMB_setwp_Click(object sender, EventArgs e)
-        {
-            CMB_setwp.Items.Clear();
-
-            CMB_setwp.Items.Add("0 (Home)");
-
-            if (MainV2.comPort.MAV.param["CMD_TOTAL"] != null)
-            {
-                int wps = int.Parse(MainV2.comPort.MAV.param["CMD_TOTAL"].ToString());
-                for (int z = 1; z <= wps; z++)
-                {
-                    CMB_setwp.Items.Add(z.ToString());
-                }
-                return;
-            }
-
-            if (MainV2.comPort.MAV.param["WP_TOTAL"] != null)
-            {
-                int wps = int.Parse(MainV2.comPort.MAV.param["WP_TOTAL"].ToString());
-                for (int z = 1; z <= wps; z++)
-                {
-                    CMB_setwp.Items.Add(z.ToString());
-                }
-                return;
-            }
-
-            if (MainV2.comPort.MAV.param["MIS_TOTAL"] != null)
-            {
-                int wps = int.Parse(MainV2.comPort.MAV.param["MIS_TOTAL"].ToString());
-                for (int z = 1; z <= wps; z++)
-                {
-                    CMB_setwp.Items.Add(z.ToString());
-                }
-                return;
-            }
-
-            if (MainV2.comPort.MAV.wps.Count > 0)
-            {
-                int wps = MainV2.comPort.MAV.wps.Count;
-                for (int z = 1; z <= wps; z++)
-                {
-                    CMB_setwp.Items.Add(z.ToString());
-                }
-                return;
-            }
-        }
-
-        private void BUT_quickrtl_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                ((Button) sender).Enabled = false;
-                MainV2.comPort.setMode("RTL");
-            }
-            catch
-            {
-                CustomMessageBox.Show(Strings.CommandFailed, Strings.ERROR);
-            }
-            ((Button) sender).Enabled = true;
-        }
-
-        #region Action tab Buttons events. Threading no GUI stuck.
-
         
-
-        
-
-        
-
-        
-
-        
-
-        #region FlytoHere
-        Locationwp gotohere = new Locationwp();
-        private void goHereToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!MainV2.comPort.BaseStream.IsOpen)
-            {
-                CustomMessageBox.Show(Strings.PleaseConnect, Strings.ERROR);
-                return;
-            }
-
-            if (MainV2.comPort.MAV.GuidedMode.z == 0)
-            {
-                flyToHereAltToolStripMenuItem_Click(null, null);
-
-                if (MainV2.comPort.MAV.GuidedMode.z == 0) return;
-            }
-
-            if (MouseDownStart.Lat == 0 || MouseDownStart.Lng == 0)
-            {
-                CustomMessageBox.Show(Strings.BadCoords, Strings.ERROR);
-                return;
-            }
-
-            gotohere.id = (ushort)MAVLink.MAV_CMD.WAYPOINT;
-            gotohere.alt = MainV2.comPort.MAV.GuidedMode.z; // back to m
-            gotohere.lat = (MouseDownStart.Lat);
-            gotohere.lng = (MouseDownStart.Lng);
-
-            gotohereMarker = new PointLatLngAlt(gotohere);
-
-            Thread newThread = new Thread(new ThreadStart(FlyToHere_ThreadMethod));
-            newThread.Start();
-
-            update_map();
-        }
-
-        private void FlyToHere_ThreadMethod()
-        {
-            try
-            {
-                MainV2.comPort.setGuidedModeWP(gotohere);
-            }
-            catch (Exception ex)
-            {
-                MainV2.comPort.giveComport = false;
-                CustomMessageBox.Show(Strings.CommandFailed + ex.Message, Strings.ERROR);
-            }
-        }
-        #endregion
-
-        #region FlyToHereAlt
-        private void flyToHereAltToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string alt = "100";
-
-            if (MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduCopter2)
-            {
-                alt = (10 * CurrentState.multiplierdist).ToString("0");
-            }
-            else
-            {
-                alt = (100 * CurrentState.multiplierdist).ToString("0");
-            }
-
-            if (Settings.Instance.ContainsKey("guided_alt"))
-                alt = Settings.Instance["guided_alt"];
-
-            if (DialogResult.Cancel == InputBox.Show("Enter Alt", "Enter Guided Mode Alt", ref alt))
-                return;
-
-            Settings.Instance["guided_alt"] = alt;
-
-            int intalt = (int)(100 * CurrentState.multiplierdist);
-            if (!int.TryParse(alt, out intalt))
-            {
-                CustomMessageBox.Show("Bad Alt");
-                return;
-            }
-
-            MainV2.comPort.MAV.GuidedMode.z = intalt / CurrentState.multiplierdist;
-
-            Thread newThread = new Thread(new ThreadStart(FlyToHereAlt_ThreadMethod));
-            newThread.Start();
-        }
-
-        private void FlyToHereAlt_ThreadMethod()
-        {
-            if (MainV2.comPort.MAV.cs.mode == "Guided")
-            {
-                MainV2.comPort.setGuidedModeWP(new Locationwp
-                {
-                    alt = MainV2.comPort.MAV.GuidedMode.z,
-                    lat = MainV2.comPort.MAV.GuidedMode.x,
-                    lng = MainV2.comPort.MAV.GuidedMode.y
-                });
-            }
-        }
-        #endregion
-
-        #endregion
-
 
 
 
@@ -2704,21 +2421,6 @@ namespace MissionPlanner.GCSViews
                 if (tabControlactions.SelectedTab == tabQuick)
                 {
                 }
-            }
-        }
-
-        private void CheckAndBindPreFlightData()
-        {
-            //this.Invoke((Action) delegate { preFlightChecklist1.BindData(); });
-        }
-
-        private void Gspeed_DoubleClick(object sender, EventArgs e)
-        {
-            string max = "60";
-            if (DialogResult.OK == InputBox.Show("Enter Max", "Enter Max Speed", ref max))
-            {
-                Gspeed.MaxValue = float.Parse(max);
-                Settings.Instance["GspeedMAX"] = Gspeed.MaxValue.ToString();
             }
         }
 
@@ -3508,111 +3210,6 @@ namespace MissionPlanner.GCSViews
             Form logbrowse = new LogBrowse();
             ThemeManager.ApplyThemeTo(logbrowse);
             logbrowse.Show();
-        }
-
-        private void BUT_select_script_Click(object sender, EventArgs e)
-        {
-            if (openScriptDialog.ShowDialog() == DialogResult.OK)
-            {
-                selectedscript = openScriptDialog.FileName;
-                BUT_run_script.Visible = BUT_edit_selected.Visible = true;
-                labelSelectedScript.Text = "Selected Script: " + selectedscript;
-            }
-            else
-            {
-                selectedscript = "";
-            }
-        }
-
-        private void BUT_run_script_Click(object sender, EventArgs e)
-        {
-            if (File.Exists(selectedscript))
-            {
-                scriptthread = new Thread(run_selected_script)
-                {
-                    IsBackground = true,
-                    Name = "Script Thread (new)"
-                };
-                labelScriptStatus.Text = "Script Status: Running";
-
-                script = null;
-                outputwindowstarted = false;
-
-                scriptthread.Start();
-                scriptrunning = true;
-                BUT_run_script.Enabled = false;
-                BUT_select_script.Enabled = false;
-                BUT_abort_script.Visible = true;
-                BUT_edit_selected.Enabled = false;
-                scriptChecker.Enabled = true;
-                checkBoxRedirectOutput.Enabled = false;
-
-                while (script == null)
-                {
-                }
-
-                scriptChecker_Tick(null, null);
-
-                MissionPlanner.Utilities.Tracking.AddPage(
-                    System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString(),
-                    System.Reflection.MethodBase.GetCurrentMethod().Name);
-            }
-            else
-            {
-                CustomMessageBox.Show("Please select a valid script", "Bad Script");
-            }
-        }
-
-        void run_selected_script()
-        {
-            script = new Script(checkBoxRedirectOutput.Checked);
-            script.runScript(selectedscript);
-            scriptrunning = false;
-        }
-
-        private void scriptChecker_Tick(object sender, EventArgs e)
-        {
-            if (!scriptrunning)
-            {
-                labelScriptStatus.Text = "Script Status: Finished (or aborted)";
-                scriptChecker.Enabled = false;
-                BUT_select_script.Enabled = true;
-                BUT_run_script.Enabled = true;
-                BUT_abort_script.Visible = false;
-                BUT_edit_selected.Enabled = true;
-                checkBoxRedirectOutput.Enabled = true;
-            }
-            else if ((script != null) && (checkBoxRedirectOutput.Checked) && (!outputwindowstarted))
-            {
-                outputwindowstarted = true;
-
-                ScriptConsole console = new ScriptConsole();
-                console.SetScript(script);
-                ThemeManager.ApplyThemeTo(console);
-                console.Show();
-                console.BringToFront();
-                components.Add(console);
-            }
-        }
-
-        private void BUT_abort_script_Click(object sender, EventArgs e)
-        {
-            scriptthread.Abort();
-            scriptrunning = false;
-            BUT_abort_script.Visible = false;
-        }
-
-        private void BUT_edit_selected_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                ProcessStartInfo psi = new ProcessStartInfo(selectedscript);
-                psi.UseShellExecute = true;
-                Process.Start(psi);
-            }
-            catch
-            {
-            }
         }
 
         private void russianHudToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4591,241 +4188,307 @@ namespace MissionPlanner.GCSViews
         }
 
         #region StartLoitering
-        int newrad = 100;
         private void BUT_quickmanual_Click(object sender, EventArgs e)
         {
+            if (!MainV2.comPort.BaseStream.IsOpen) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Please Connect first"); return; }
+
             // Set loiter radius
-            newrad = (int)MainV2.comPort.GetParam("LOITER_RAD");
-
-            if (newrad < 50)
+            float _newLoiterRadius = (int)MainV2.comPort.GetParam("LOITER_RAD");
+            if (_newLoiterRadius < 50) // check Loiter Radius in Parameters, if dangerous, allow user modify it.
             {
-                if (MessageBox.Show("Loiter Radius is less than 50 meters. Continue?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No) { return; }
+                string inputValue = "";
+                if (DialogResult.Cancel == InputBox.Show("Change Loiter Radius", "Loiter Radius is dangerous, please enter new Radius(meter):", ref inputValue, false)) return;
+                if (!float.TryParse(inputValue, out _newLoiterRadius)) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Bad Radius"); return; }
             }
+
+            if (_newLoiterRadius < 50)
+            {
+                if (MessageBox.Show("Loiter Radius Parameter is less than 50 meters. Continue?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No) { return; }
+            }
+            
             ((Button)sender).Enabled = false;
-            Thread newThread = new Thread(new ThreadStart(quickmanual_ThreadMethod));
-            newThread.Start();
+            // Thread pool delegate
+            ThreadPool.QueueUserWorkItem(delegate (object state)
+            {
+                // Apply loiter radius
+                try { MainV2.comPort.setParam(new[] { "LOITER_RAD", "WP_LOITER_RAD" }, _newLoiterRadius / CurrentState.multiplierdist); }
+                catch { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + Strings.ErrorCommunicating); }
+                // switch to loiter
+                try
+                {
+                    if (MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduPlane ||
+                        MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.Ateryx ||
+                        MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduRover)
+                        MainV2.comPort.setMode("Loiter");
+                    if (MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduCopter2)
+                        MainV2.comPort.setMode("Loiter");
+                }
+                catch { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + Strings.CommandFailed); }
+            });
             ((Button)sender).Enabled = true;
-        }
-
-        private void quickmanual_ThreadMethod()
-        {
-            // Apply loiter radius
-            try
-            {
-                MainV2.comPort.setParam(new[] { "LOITER_RAD", "WP_LOITER_RAD" }, newrad / CurrentState.multiplierdist);
-            }
-            catch
-            {
-                CustomMessageBox.Show(Strings.ErrorCommunicating, Strings.ERROR);
-            }
-
-            // switch to loiter
-            try
-            {
-                if (MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduPlane ||
-                    MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.Ateryx ||
-                    MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduRover)
-                    MainV2.comPort.setMode("Loiter");
-                if (MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduCopter2)
-                    MainV2.comPort.setMode("Loiter");
-            }
-            catch
-            {
-                CustomMessageBox.Show(Strings.CommandFailed, Strings.ERROR);
-            }
         }
         #endregion
 
-        #region ResumeMission no threading
+        #region ResumeMission
         private void BUT_resumemis_Click(object sender, EventArgs e)
         {
-            try
+            if (!MainV2.comPort.BaseStream.IsOpen) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Please Connect first"); return; }
+
+            string lastAutoWP = MainV2.comPort.MAV.cs.lastautowp.ToString();
+            if (lastAutoWP == "-1") lastAutoWP = "1";
+            int lastAutoWP_int = int.Parse(lastAutoWP);
+
+            ((Button)sender).Enabled = false;
+            ThreadPool.QueueUserWorkItem(delegate (object state)
             {
-                if (MainV2.comPort.BaseStream.IsOpen)
+                if(MainV2.comPort.MAV.cs.wpno < 0 && MainV2.comPort.MAV.cs.wpno >= lastAutoWP_int)
                 {
-                    string lastAutoWP = MainV2.comPort.MAV.cs.lastautowp.ToString();
-                    if (lastAutoWP == "-1") lastAutoWP = "1";
-                    int lastAutoWP_int = int.Parse(lastAutoWP);
-
-
-                    string resumeToWP = "";
-                    if (InputBox.Show("Resume at", "Resume mission at waypoint#", ref resumeToWP) == DialogResult.OK)
-                    {
-                        int resumetoWP_int = int.Parse(resumeToWP);
-
-                        // don't allow user give wrong data
-                        if (resumetoWP_int < 0 && resumetoWP_int >= lastAutoWP_int)
-                        {
-                            // Show message Warning do nothing
-                            ((Button)sender).Enabled = true;
-                            return;
-                        }
-
-                        try
-                        {
-                            ((Button)sender).Enabled = false;
-                            MainV2.comPort.setWPCurrent((ushort)resumetoWP_int);
-                        }
-                        catch
-                        {
-                            CustomMessageBox.Show(Strings.CommandFailed, Strings.ERROR);
-                        }
-
-                        //switch back to auto mode
-                        int timeout = 0;
-                        while (MainV2.comPort.MAV.cs.mode.ToLower() != "AUTO".ToLower())
-                        {
-                            MainV2.comPort.setMode("AUTO");
-                            Thread.Sleep(1000);
-                            Application.DoEvents();
-                            timeout++;
-
-                            if (timeout > 30)
-                            {
-                                CustomMessageBox.Show(Strings.ERROR, Strings.ErrorNoResponce);
-                                return;
-                            }
-                        }
-
-                    }
+                    MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    Can't resume mission at WP#: " + MainV2.comPort.MAV.cs.wpno);
+                    return;
                 }
-            }
-            catch (Exception ex)
-            {
-                CustomMessageBox.Show(Strings.CommandFailed + "\n" + ex.ToString(), Strings.ERROR);
-            }
+
+                //switch back to auto mode
+                int timeout = 0;
+                while (MainV2.comPort.MAV.cs.mode.ToLower() != "AUTO".ToLower())
+                {
+                    MainV2.comPort.setMode("AUTO");
+                    Thread.Sleep(1000);
+                    Application.DoEvents();
+                    timeout++;
+                    if (timeout > 30) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    Can't switch back to auto mode."); return; }
+                }
+            });
             ((Button)sender).Enabled = true;
         }
         #endregion
 
         #region Change Loiter Radius
-        float _newLoiterRadius = 0;
         private void changeLoiterRad_Click(object sender, EventArgs e)
         {
+            if (!MainV2.comPort.BaseStream.IsOpen) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Please Connect first"); return; }
             string inputValue = MainV2.comPort.GetParam("LOITER_RADIUS").ToString();
             if (DialogResult.Cancel == InputBox.Show("Change Loiter Radius", "Enter new Loiter Radius(meter):", ref inputValue, false)) return;
-            if (!float.TryParse(inputValue, out _newLoiterRadius)) { CustomMessageBox.Show("Bad Radius"); return; }
+            if (!float.TryParse(inputValue, out float _newLoiterRadius)) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Bad Radius"); return; }
 
             ((Button)sender).Enabled = false;
-            Thread newThread = new Thread(new ThreadStart(ChangeLoiterRad_ThreadMethod));
-            newThread.Start();
+            // Thread pool delegate
+            ThreadPool.QueueUserWorkItem(delegate (object state)
+            {
+                try { MainV2.comPort.setParam(new[] { "LOITER_RAD", "WP_LOITER_RAD" }, _newLoiterRadius / CurrentState.multiplierdist); }
+                catch { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + Strings.ErrorCommunicating); }
+            });
             ((Button)sender).Enabled = true;
-        }
-
-        private void ChangeLoiterRad_ThreadMethod()
-        {
-            try
-            {
-                MainV2.comPort.setParam(new[] { "LOITER_RAD", "WP_LOITER_RAD" }, _newLoiterRadius / CurrentState.multiplierdist);
-            }
-            catch
-            {
-                CustomMessageBox.Show(Strings.ErrorCommunicating, Strings.ERROR);
-            }
         }
         #endregion
 
         #region SetAltitude
-        float _newAltitude = 100;
         private void modifyandSetAlt_Click(object sender, EventArgs e)
         {
+            if (!MainV2.comPort.BaseStream.IsOpen) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Please Connect first"); return; }
             string inputValue = "";
             if (DialogResult.Cancel == InputBox.Show("Change Altitude", "Enter new Altitude(meter):", ref inputValue, false)) return;
-            if (!float.TryParse(inputValue, out _newAltitude)) { CustomMessageBox.Show("Bad Altitude"); return; }
+            if (!float.TryParse(inputValue, out float _newAltitude)) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Bad Altitude"); return; }
 
-            ((Button)sender).Enabled = false;            
-            Thread newThread = new Thread(new ThreadStart(modifyandSetAlt_ThreadMethod));
-            newThread.Start();
+            ((Button)sender).Enabled = false;
+            ThreadPool.QueueUserWorkItem(delegate (object state)
+            {
+                try { MainV2.comPort.setNewWPAlt(new Locationwp { alt = _newAltitude / CurrentState.multiplierdist }); }
+                catch { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + Strings.ErrorCommunicating); }
+            });
             ((Button)sender).Enabled = true;
         }
+        #endregion
 
-        private void modifyandSetAlt_ThreadMethod()
+        #region SetMaxAirspeed
+        private void modifyandSetSpeed_Click(object sender, EventArgs e)
+        {
+            if (!MainV2.comPort.BaseStream.IsOpen) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Please Connect first"); return; }
+            string inputValue = "";
+            if (DialogResult.Cancel == InputBox.Show("Change Airspeed", "Enter new Airspeed(meter/s):", ref inputValue, false)) return;
+            if (!float.TryParse(inputValue, out float _newAirspeed)) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Bad Airspeed"); return; }
+            
+            ((Button)sender).Enabled = false;
+            ThreadPool.QueueUserWorkItem(delegate (object state)
+            {
+                if (MainV2.comPort.MAV.param.ContainsKey("TRIM_ARSPD_CM"))
+                {
+                    try { MainV2.comPort.setParam("TRIM_ARSPD_CM", ((float)_newAirspeed * 100.0f)); }
+                    catch { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + Strings.ErrorSetValueFailed); }
+                }
+            });
+            ((Button)sender).Enabled = true;
+        }
+        #endregion
+
+        #region SetWP
+
+        private void CMB_setwp_Click(object sender, EventArgs e)
+        {
+            CMB_setwp.Items.Clear();
+            CMB_setwp.Items.Add("0 (Home)");
+
+            if (MainV2.comPort.MAV.param["CMD_TOTAL"] != null)
+            {
+                int wps = int.Parse(MainV2.comPort.MAV.param["CMD_TOTAL"].ToString());
+                for (int z = 1; z <= wps; z++)
+                {
+                    CMB_setwp.Items.Add(z.ToString());
+                }
+                return;
+            }
+
+            if (MainV2.comPort.MAV.param["WP_TOTAL"] != null)
+            {
+                int wps = int.Parse(MainV2.comPort.MAV.param["WP_TOTAL"].ToString());
+                for (int z = 1; z <= wps; z++)
+                {
+                    CMB_setwp.Items.Add(z.ToString());
+                }
+                return;
+            }
+
+            if (MainV2.comPort.MAV.param["MIS_TOTAL"] != null)
+            {
+                int wps = int.Parse(MainV2.comPort.MAV.param["MIS_TOTAL"].ToString());
+                for (int z = 1; z <= wps; z++)
+                {
+                    CMB_setwp.Items.Add(z.ToString());
+                }
+                return;
+            }
+
+            if (MainV2.comPort.MAV.wps.Count > 0)
+            {
+                int wps = MainV2.comPort.MAV.wps.Count;
+                for (int z = 1; z <= wps; z++)
+                {
+                    CMB_setwp.Items.Add(z.ToString());
+                }
+                return;
+            }
+        }
+
+        private void BUT_setwp_Click(object sender, EventArgs e)
+        {
+            if (!MainV2.comPort.BaseStream.IsOpen) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Please Connect first"); return; }
+
+            string lastAutoWP = MainV2.comPort.MAV.cs.lastautowp.ToString();
+            if (lastAutoWP == "-1") lastAutoWP = "1";
+            int lastAutoWP_int = int.Parse(lastAutoWP);
+
+            ((Button)sender).Enabled = false;
+            ThreadPool.QueueUserWorkItem(delegate (object state)
+            {
+                try { MainV2.comPort.setWPCurrent((ushort)CMB_setwp.SelectedIndex); }
+                catch { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    Can't set current WP#: " + CMB_setwp.SelectedIndex); return; }
+                
+                //switch back to auto mode
+                int timeout = 0;
+                while (MainV2.comPort.MAV.cs.mode.ToLower() != "AUTO".ToLower())
+                {
+                    MainV2.comPort.setMode("AUTO");
+                    Thread.Sleep(1000);
+                    Application.DoEvents();
+                    timeout++;
+                    if (timeout > 30) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    Can't switch back to auto mode.");return; }
+                }
+            });
+            ((Button)sender).Enabled = true;
+        }
+        #endregion
+
+        private void BUT_quickrtl_Click(object sender, EventArgs e)
         {
             try
             {
-                MainV2.comPort.setNewWPAlt(new Locationwp { alt = _newAltitude / CurrentState.multiplierdist });
+                ((Button)sender).Enabled = false; MainV2.comPort.setMode("RTL");
             }
             catch
             {
-                CustomMessageBox.Show(Strings.ErrorCommunicating, Strings.ERROR);
-            }
-        }
-        #endregion
-
-        #region SetMaxAirspeed no threading
-        float _newAirspeed = 18;
-        private void modifyandSetSpeed_Click(object sender, EventArgs e)
-        {
-            string inputValue = "";
-            if (DialogResult.Cancel == InputBox.Show("Change Altitude", "Enter new Altitude(meter):", ref inputValue, false)) return;
-            if (!float.TryParse(inputValue, out _newAirspeed)) { CustomMessageBox.Show("Bad Altitude"); return; }
-
-            if (MainV2.comPort.MAV.param.ContainsKey("TRIM_ARSPD_CM"))
-            {
-                try
-                {
-                    MainV2.comPort.setParam("TRIM_ARSPD_CM", ((float)_newAirspeed * 100.0f));
-                }
-                catch
-                {
-                    CustomMessageBox.Show(String.Format(Strings.ErrorSetValueFailed, "TRIM_ARSPD_CM"), Strings.ERROR);
-                }
-            }
-        }
-        #endregion
-
-
-        #region SetWP
-        private void BUT_setwp_Click(object sender, EventArgs e)
-        {
-            /*((Button)sender).Enabled = false;
-            Thread newThread = new Thread(new ThreadStart(BUT_setwp_ThreadMethod));
-            newThread.Start();
-            ((Button)sender).Enabled = true;*/
-
-            try
-            {
-                if (MainV2.comPort.BaseStream.IsOpen)
-                {
-                    string lastAutoWP = MainV2.comPort.MAV.cs.lastautowp.ToString();
-                    if (lastAutoWP == "-1") lastAutoWP = "1";
-                    int lastAutoWP_int = int.Parse(lastAutoWP);
-
-                    try
-                    {
-                        ((Button)sender).Enabled = false;
-                        MainV2.comPort.setWPCurrent((ushort)CMB_setwp.SelectedIndex);
-                    }
-                    catch
-                    {
-                        CustomMessageBox.Show(Strings.CommandFailed, Strings.ERROR);
-                    }
-
-                    //switch back to auto mode
-                    int timeout = 0;
-                    while (MainV2.comPort.MAV.cs.mode.ToLower() != "AUTO".ToLower())
-                    {
-                        MainV2.comPort.setMode("AUTO");
-                        Thread.Sleep(1000);
-                        Application.DoEvents();
-                        timeout++;
-
-                        if (timeout > 30)
-                        {
-                            CustomMessageBox.Show(Strings.ERROR, Strings.ErrorNoResponce);
-                            return;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                CustomMessageBox.Show(Strings.CommandFailed + "\n" + ex.ToString(), Strings.ERROR);
+                CustomMessageBox.Show(Strings.CommandFailed, Strings.ERROR);
             }
             ((Button)sender).Enabled = true;
         }
+
+
+        #region FlytoHere
+        Locationwp gotohere = new Locationwp();
+        private void goHereToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!MainV2.comPort.BaseStream.IsOpen) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Please Connect first"); return; }
+
+            if (MainV2.comPort.MAV.GuidedMode.z == 0)
+            {
+                flyToHereAltToolStripMenuItem_Click(null, null);
+                if (MainV2.comPort.MAV.GuidedMode.z == 0) return;
+            }
+
+            if (MouseDownStart.Lat == 0 || MouseDownStart.Lng == 0){MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + Strings.BadCoords);return; }
+
+            gotohere.id = (ushort)MAVLink.MAV_CMD.WAYPOINT;
+            gotohere.alt = MainV2.comPort.MAV.GuidedMode.z; // back to m
+            gotohere.lat = (MouseDownStart.Lat);
+            gotohere.lng = (MouseDownStart.Lng);
+
+
+            ThreadPool.QueueUserWorkItem(delegate (object state)
+            {
+                try { MainV2.comPort.setGuidedModeWP(gotohere); }
+                catch
+                {
+                    MainV2.comPort.giveComport = false;
+                    MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + Strings.CommandFailed);
+                    return;
+                }
+
+                // if success
+                gotohereMarker = new PointLatLngAlt(gotohere);
+                update_map();
+            });
+        }
         #endregion
 
+        #region FlyToHereAlt
+        private void flyToHereAltToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!MainV2.comPort.BaseStream.IsOpen) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Please Connect first"); return; }
+
+            string alt = "100";
+            if (MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduCopter2) { alt = (10 * CurrentState.multiplierdist).ToString("0");}
+            else { alt = (100 * CurrentState.multiplierdist).ToString("0"); }
+
+            if (Settings.Instance.ContainsKey("guided_alt")) alt = Settings.Instance["guided_alt"];
+
+            if (DialogResult.Cancel == InputBox.Show("Enter Altitude", "Enter Guided Mode Altitude(meter)", ref alt))return;
+
+            Settings.Instance["guided_alt"] = alt;
+
+            int intalt = (int)(100 * CurrentState.multiplierdist);
+            if (!int.TryParse(alt, out intalt)) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    Bad Altitude"); return; }
+            MainV2.comPort.MAV.GuidedMode.z = intalt / CurrentState.multiplierdist;
+
+            if (MouseDownStart.Lat == 0 || MouseDownStart.Lng == 0) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + Strings.BadCoords); return; }
+
+            gotohere.id = (ushort)MAVLink.MAV_CMD.WAYPOINT;
+            gotohere.alt = MainV2.comPort.MAV.GuidedMode.z; // back to m
+            gotohere.lat = (MouseDownStart.Lat);
+            gotohere.lng = (MouseDownStart.Lng);
+
+            ThreadPool.QueueUserWorkItem(delegate (object state)
+            {
+                try { MainV2.comPort.setGuidedModeWP(gotohere); }
+                catch
+                {
+                    MainV2.comPort.giveComport = false;
+                    MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + Strings.CommandFailed);
+                    return;
+                }
+                // if success
+                gotohereMarker = new PointLatLngAlt(gotohere);
+                update_map();
+            });
+        }
+        #endregion
     }
 }
  

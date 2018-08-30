@@ -125,7 +125,7 @@ namespace MissionPlanner
             set
             {
                 _displayConfiguration = value;
-                if (LayoutChanged != null) LayoutChanged(null, EventArgs.Empty);
+                LayoutChanged?.Invoke(null, EventArgs.Empty);
             }
         }
 
@@ -310,15 +310,6 @@ namespace MissionPlanner
                 {
                     t.TabPages.Remove(FlightData.tabPagePreFlight);
                 }
-                if (DisplayConfiguration.displayGaugesTab && !t.TabPages.Contains(FlightData.tabGauges))
-                {
-                    t.TabPages.Add(FlightData.tabGauges);
-                }
-                else if (!DisplayConfiguration.displayGaugesTab && t.TabPages.Contains(FlightData.tabGauges))
-                {
-                    t.TabPages.Remove(FlightData.tabGauges);
-                }
-
                 if (DisplayConfiguration.displayStatusTab && !t.TabPages.Contains(FlightData.tabStatus))
                 {
                     t.TabPages.Add(FlightData.tabStatus);
@@ -335,16 +326,6 @@ namespace MissionPlanner
                 {
                     t.TabPages.Remove(FlightData.tabServo);
                 }
-
-                if (DisplayConfiguration.displayScriptsTab && !t.TabPages.Contains(FlightData.tabScripts))
-                {
-                    t.TabPages.Add(FlightData.tabScripts);
-                }
-                else if (!DisplayConfiguration.displayScriptsTab && t.TabPages.Contains(FlightData.tabScripts))
-                {
-                    t.TabPages.Remove(FlightData.tabScripts);
-                }
-
                 if (DisplayConfiguration.displayTelemetryTab && !t.TabPages.Contains(FlightData.tabTLogs))
                 {
                     t.TabPages.Add(FlightData.tabTLogs);
@@ -360,14 +341,6 @@ namespace MissionPlanner
                 else if (!DisplayConfiguration.displayDataflashTab && t.TabPages.Contains(FlightData.tablogbrowse))
                 {
                     t.TabPages.Remove(FlightData.tablogbrowse);
-                }
-                if (DisplayConfiguration.displayMessagesTab && !t.TabPages.Contains(FlightData.tabPagemessages))
-                {
-                    t.TabPages.Add(FlightData.tabPagemessages);
-                }
-                else if (!DisplayConfiguration.displayMessagesTab && t.TabPages.Contains(FlightData.tabPagemessages))
-                {
-                    t.TabPages.Remove(FlightData.tabPagemessages);
                 }
                 t.SelectedIndex = 0;
             }

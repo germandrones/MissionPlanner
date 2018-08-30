@@ -1591,9 +1591,6 @@ namespace MissionPlanner
                         hilch6 = hil.chan6_scaled;
                         hilch7 = hil.chan7_scaled;
                         hilch8 = hil.chan8_scaled;
-
-                        // Console.WriteLine("RC_CHANNELS_SCALED Packet");
-
                         MAV.clearPacket((uint) MAVLink.MAVLINK_MSG_ID.RC_CHANNELS_SCALED);
                     }
 
@@ -1601,14 +1598,10 @@ namespace MissionPlanner
                     if (mavLinkMessage != null)
                     {
                         var version = mavLinkMessage.ToStructure<MAVLink.mavlink_autopilot_version_t>();
-                        //#define FIRMWARE_VERSION 3,4,0,FIRMWARE_VERSION_TYPE_DEV
-                        //		flight_sw_version	0x03040000	uint
-
                         byte main = (byte) (version.flight_sw_version >> 24);
                         byte sub = (byte) ((version.flight_sw_version >> 16) & 0xff);
                         byte rev = (byte) ((version.flight_sw_version >> 8) & 0xff);
-                        MAVLink.FIRMWARE_VERSION_TYPE type =
-                            (MAVLink.FIRMWARE_VERSION_TYPE) (version.flight_sw_version & 0xff);
+                        MAVLink.FIRMWARE_VERSION_TYPE type = (MAVLink.FIRMWARE_VERSION_TYPE) (version.flight_sw_version & 0xff);
 
                         this.version = new Version(main, sub, rev, (int)type);
 
@@ -1628,14 +1621,11 @@ namespace MissionPlanner
                     if (mavLinkMessage != null)
                     {
                         var fence = mavLinkMessage.ToStructure<MAVLink.mavlink_fence_status_t>();
-
                         if (fence.breach_status != (byte) MAVLink.FENCE_BREACH.NONE)
                         {
-                            // fence breached
                             messageHigh = "Fence Breach";
                             messageHighTime = DateTime.Now;
                         }
-
                         MAV.clearPacket((uint)MAVLink.MAVLINK_MSG_ID.FENCE_STATUS);
                     }
 
@@ -1698,13 +1688,10 @@ namespace MissionPlanner
                     if (mavLinkMessage != null) // hil mavlink 0.9 and 1.0
                     {
                         var hil = mavLinkMessage.ToStructure<MAVLink.mavlink_hil_controls_t>();
-
                         hilch1 = (int) (hil.roll_ailerons*10000);
                         hilch2 = (int) (hil.pitch_elevator*10000);
                         hilch3 = (int) (hil.throttle*10000);
                         hilch4 = (int) (hil.yaw_rudder*10000);
-
-                        //MAVLink.packets[(byte)MAVLink.MSG_NAMES.HIL_CONTROLS);
                     }
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.OPTICAL_FLOW);
@@ -1771,33 +1758,21 @@ namespace MissionPlanner
                     if (mavLinkMessage != null)
                     {
                         var hwstatus = mavLinkMessage.ToStructure<MAVLink.mavlink_hwstatus_t>();
-
                         hwvoltage = hwstatus.Vcc/1000.0f;
                         i2cerrors = hwstatus.I2Cerr;
-
-                        //MAVLink.packets[(byte)MAVLink.MSG_NAMES.HWSTATUS);
                     }
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.EKF_STATUS_REPORT);
                     if (mavLinkMessage != null)
                     {
                         var ekfstatusm = mavLinkMessage.ToStructure<MAVLink.mavlink_ekf_status_report_t>();
-
-                        // > 1, between 0-1 typical > 1 = reject measurement - red
-                        // 0.5 > amber
-
                         ekfvelv = ekfstatusm.velocity_variance;
                         ekfcompv = ekfstatusm.compass_variance;
                         ekfposhor = ekfstatusm.pos_horiz_variance;
                         ekfposvert = ekfstatusm.pos_vert_variance;
                         ekfteralt = ekfstatusm.terrain_alt_variance;
-
                         ekfflags = ekfstatusm.flags;
-
-                        ekfstatus =
-                            (float)
-                                Math.Max(ekfvelv,
-                                    Math.Max(ekfcompv, Math.Max(ekfposhor, Math.Max(ekfposvert, ekfteralt))));
+                        ekfstatus = (float) Math.Max(ekfvelv, Math.Max(ekfcompv, Math.Max(ekfposhor, Math.Max(ekfposvert, ekfteralt))));
 
                         if (ekfvelv >= 1)
                         {
@@ -1839,15 +1814,9 @@ namespace MissionPlanner
                                     case MAVLink.EKF_STATUS_FLAGS.EKF_ATTITUDE: // step 1
                                     case MAVLink.EKF_STATUS_FLAGS.EKF_VELOCITY_HORIZ: // with pos
                                     case MAVLink.EKF_STATUS_FLAGS.EKF_VELOCITY_VERT: // with pos
-                                    //case MAVLink.EKF_STATUS_FLAGS.EKF_POS_HORIZ_REL: // optical flow
                                     case MAVLink.EKF_STATUS_FLAGS.EKF_POS_HORIZ_ABS: // step 1
                                     case MAVLink.EKF_STATUS_FLAGS.EKF_POS_VERT_ABS: // step 1
-                                    //case MAVLink.EKF_STATUS_FLAGS.EKF_POS_VERT_AGL: //  range finder
-                                    //case MAVLink.EKF_STATUS_FLAGS.EKF_CONST_POS_MODE:  // never true when absolute - non gps
-                                    //case MAVLink.EKF_STATUS_FLAGS.EKF_PRED_POS_HORIZ_REL: // optical flow
                                     case MAVLink.EKF_STATUS_FLAGS.EKF_PRED_POS_HORIZ_ABS: // ekf has origin - post arm
-                                        //messageHigh = Strings.ERROR + " " + currentflag.ToString().Replace("_", " ");
-                                        //messageHighTime = DateTime.Now;
                                         break;
                                     default:
                                         break;
@@ -1926,6 +1895,7 @@ namespace MissionPlanner
                     if(mavLinkMessage != null)
                     {
                         System.Diagnostics.Debug.WriteLine("V2_Extension RECEIVED!!!");
+
                         var cdata = mavLinkMessage.ToStructure<MAVLink.mavlink_v2_extension_t>();                        
                         // It sends no feedback at all!
                         MAV.clearPacket((uint)MAVLink.MAVLINK_MSG_ID.V2_EXTENSION);
@@ -1944,8 +1914,7 @@ namespace MissionPlanner
                         }
                         else
                         {
-                            armed = (hb.base_mode & (byte) MAVLink.MAV_MODE_FLAG.SAFETY_ARMED) ==
-                                    (byte) MAVLink.MAV_MODE_FLAG.SAFETY_ARMED;
+                            armed = (hb.base_mode & (byte) MAVLink.MAV_MODE_FLAG.SAFETY_ARMED) == (byte) MAVLink.MAV_MODE_FLAG.SAFETY_ARMED;
 
                             // saftey switch
                             if (armed && sensors_enabled.motor_control == false && sensors_enabled.seen)
@@ -2016,8 +1985,6 @@ namespace MissionPlanner
 
                         if (!sensors_health.gps && sensors_enabled.gps && sensors_present.gps)
                         {
-                            // throttle is up, or groundspeed is > 3 m/s or armed
-                            // need to test!
                             if (ch3percent > 12 || _groundspeed > 3.0 || armed)
                             {
                                 messageHigh = Strings.BadGPSHealth;
@@ -2192,19 +2159,12 @@ namespace MissionPlanner
                         roll = (float)(att.roll*MathHelper.rad2deg);
                         pitch = (float)(att.pitch*MathHelper.rad2deg);
                         yaw = (float)(att.yaw*MathHelper.rad2deg);
-
-                        //Console.WriteLine(MAV.sysid + " " +roll + " " + pitch + " " + yaw);
-
-                        //MAVLink.packets[(byte)MAVLink.MSG_NAMES.ATTITUDE);
                     }
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.GLOBAL_POSITION_INT);
                     if (mavLinkMessage != null)
                     {
                         var loc = mavLinkMessage.ToStructure<MAVLink.mavlink_global_position_int_t>();
-
-                        // the new arhs deadreckoning may send 0 alt and 0 long. check for and undo
-
                         alt = loc.relative_alt/1000.0f;
 
                         useLocation = true;
@@ -2543,17 +2503,7 @@ namespace MissionPlanner
                         ch3percent = vfr.throttle;
 
                         if (sensors_present.revthrottle && sensors_enabled.revthrottle && sensors_health.revthrottle)
-                            if (ch3percent > 0)
-                                ch3percent *= -1;
-
-                        //Console.WriteLine(alt);
-
-                        //climbrate = vfr.climb;
-
-                        // heading = vfr.heading;
-
-
-                        //MAVLink.packets[(byte)MAVLink.MSG_NAMES.VFR_HUD);
+                            if (ch3percent > 0) ch3percent *= -1;
                     }
 
                     mavLinkMessage = MAV.getPacket((uint)MAVLink.MAVLINK_MSG_ID.MEMINFO);
@@ -2576,66 +2526,19 @@ namespace MissionPlanner
 
                 try
                 {
-                    if (csCallBack != null)
-                        csCallBack(this, null);
+                    if (csCallBack != null) csCallBack(this, null);
                 }
                 catch
                 {
                 }
 
-                //Console.Write(DateTime.Now.Millisecond + " start ");
-                // update form
                 try
                 {
                     if (bs != null)
                     {
                         bs.DataSource = this;
                         bs.ResetBindings(false);
-
                         return;
-                        /*
-
-                        if (bs.Count > 200)
-                        {
-                            while (bs.Count > 3)
-                                bs.RemoveAt(1);
-                            //bs.Clear();
-                        }
-                        bs.Add(this);
-                        /*
-                        return;
-
-                        bs.DataSource = this;
-                        bs.ResetBindings(false);
-
-                        return;
-
-                        hires.Stopwatch sw = new hires.Stopwatch();
-
-                        sw.Start();
-                        bs.DataSource = this;
-                        bs.ResetBindings(false);
-                        sw.Stop();
-                        var elaps = sw.Elapsed;
-                        Console.WriteLine("1 " + elaps.ToString("0.#####") + " done ");
-
-                        sw.Start();
-                        bs.SuspendBinding();
-                        bs.Clear();
-                        bs.ResumeBinding();
-                        bs.Add(this);
-                        sw.Stop();
-                        elaps = sw.Elapsed;
-                        Console.WriteLine("2 " + elaps.ToString("0.#####") + " done ");
-                     
-                        sw.Start();
-                        if (bs.Count > 100)
-                            bs.Clear();
-                        bs.Add(this);
-                        sw.Stop();
-                        elaps = sw.Elapsed;
-                        Console.WriteLine("3 " + elaps.ToString("0.#####") + " done ");
-                        */
                     }
                 }
                 catch
@@ -2676,10 +2579,6 @@ namespace MissionPlanner
 
             this.wind_dir = (float) wind_dir; // (float)(wind_dir * 0.5 + this.wind_dir * 0.5);
             this.wind_vel = (float) wind_vel; // (float)(wind_vel * 0.5 + this.wind_vel * 0.5);
-
-            //Console.WriteLine("Wn_error = {0}\nWe_error = {1}\nWn_fgo =    {2}\nWe_fgo =  {3}\nWind_dir =    {4}\nWind_vel =    {5}\n",Wn_error,We_error,Wn_fgo,We_fgo,wind_dir,wind_vel);
-
-            //Console.WriteLine("wind_dir: {0} wind_vel: {1}    as {4} yaw {5} pitch {6} gs {7} cog {8}", wind_dir, wind_vel, Wn_fgo, We_fgo , airspeed,yaw,pitch,groundspeed,groundcourse);
 
             //low pass the outputs for better results!
         }

@@ -106,7 +106,7 @@ namespace MissionPlanner
                 if (_sysidcurrent == value)
                     return;
                 _sysidcurrent = value;
-                if (MavChanged != null) MavChanged(this, null);
+                MavChanged?.Invoke(this, null);
             }
         }
 
@@ -120,7 +120,7 @@ namespace MissionPlanner
                 if (_compidcurrent == value)
                     return;
                 _compidcurrent = value;
-                if (MavChanged != null) MavChanged(this, null);
+                MavChanged?.Invoke(this, null);
             }
         }
 
@@ -307,8 +307,7 @@ namespace MissionPlanner
 
             try
             {
-                if (CommsClose != null)
-                    CommsClose(this, null);
+                CommsClose?.Invoke(this, null);
             }
             catch
             {
@@ -349,10 +348,7 @@ namespace MissionPlanner
 
             frmProgressReporter.Dispose();
 
-            if (ParamListChanged != null)
-            {
-                ParamListChanged(this, null);
-            }
+            ParamListChanged?.Invoke(this, null);
         }
 
         void FrmProgressReporterDoWorkAndParams(object sender, ProgressWorkerEventArgs e, object passdata = null)
@@ -860,7 +856,6 @@ Please check the following
 
                 if (BaseStream.IsOpen)
                 {
-
                     BaseStream.Write(packet, 0, i);
                     _bytesSentSubj.OnNext(i);
                 }
@@ -871,9 +866,7 @@ Please check the following
                     {
                         lock (logfile)
                         {
-                            byte[] datearray =
-                                BitConverter.GetBytes(
-                                    (UInt64)((DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds * 1000));
+                            byte[] datearray = BitConverter.GetBytes((UInt64)((DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds * 1000));
                             Array.Reverse(datearray);
                             logfile.Write(datearray, 0, datearray.Length);
                             logfile.Write(packet, 0, i);
@@ -1154,10 +1147,7 @@ Please check the following
 
             frmProgressReporter.Dispose();
 
-            if (ParamListChanged != null)
-            {
-                ParamListChanged(this, null);
-            }
+            ParamListChanged?.Invoke(this, null);
         }
 
         void FrmProgressReporterGetParams(object sender, ProgressWorkerEventArgs e, object passdata = null)
@@ -1892,11 +1882,13 @@ Please check the following
         }
 
         // Method sends an empty HWP echo responce to pixhawk
-        public void Send_HWP_Ack()
+        public void Send_HWP_Ack(Object stateInfo)
         {
             mavlink_hwp_t ack = new mavlink_hwp_t();
             generatePacket(MAVLINK_MSG_ID.HWP, ack);
+            MainV2.comPort.MAV.cs.gotHWP = false;
         }
+
 
         public void SendSerialControl(SERIAL_CONTROL_DEV port, ushort timeoutms, byte[] data, uint baudrate = 0,
             bool close = false)
@@ -4353,10 +4345,7 @@ Please check the following
             giveComport = true;
             MAVLinkMessage buffer;
 
-            if (Progress != null)
-            {
-                Progress((int) 0, "");
-            }
+            Progress?.Invoke((int)0, "");
 
             uint totallength = 0;
             uint ofs = 0;
@@ -4421,10 +4410,7 @@ Please check the following
 
                         if (bpstimer.Second != DateTime.Now.Second)
                         {
-                            if (Progress != null)
-                            {
-                                Progress((int) req.ofs, "");
-                            }
+                            Progress?.Invoke((int)req.ofs, "");
 
                             //Console.WriteLine("log dl bps: " + bps.ToString());
                             bpstimer = DateTime.Now;
@@ -4509,10 +4495,7 @@ Please check the following
 
                         if (bpstimer.Second != DateTime.Now.Second)
                         {
-                            if (Progress != null)
-                            {
-                                Progress((int) req.ofs, "");
-                            }
+                            Progress?.Invoke((int)req.ofs, "");
 
                             //Console.WriteLine("log dl bps: " + bps.ToString());
                             bpstimer = DateTime.Now;
