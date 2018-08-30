@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Splash));
             this.label1 = new System.Windows.Forms.Label();
             this.TXT_version = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -39,7 +40,7 @@
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.SteelBlue;
-            this.label1.Location = new System.Drawing.Point(174, 221);
+            this.label1.Location = new System.Drawing.Point(566, 352);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(206, 13);
             this.label1.TabIndex = 0;
@@ -50,29 +51,42 @@
             // TXT_version
             // 
             this.TXT_version.BackColor = System.Drawing.Color.Transparent;
-            this.TXT_version.ForeColor = System.Drawing.Color.White;
-            this.TXT_version.Location = new System.Drawing.Point(417, 303);
+            this.TXT_version.ForeColor = System.Drawing.Color.Black;
+            this.TXT_version.Location = new System.Drawing.Point(617, 326);
             this.TXT_version.Name = "TXT_version";
             this.TXT_version.Size = new System.Drawing.Size(155, 25);
             this.TXT_version.TabIndex = 1;
             this.TXT_version.Text = "Version: ";
             this.TXT_version.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // label2
+            // 
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.SteelBlue;
+            this.label2.Location = new System.Drawing.Point(12, 9);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(257, 35);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Ground Control Station";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // Splash
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackgroundImage = global::MissionPlanner.Properties.Resources.splashdark;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(584, 337);
+            this.ClientSize = new System.Drawing.Size(784, 374);
             this.ControlBox = false;
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.TXT_version);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(600, 375);
+            this.MaximumSize = new System.Drawing.Size(800, 412);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(600, 375);
+            this.MinimumSize = new System.Drawing.Size(800, 412);
             this.Name = "Splash";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Germandrones GCS";
@@ -86,5 +100,6 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label TXT_version;
+        private System.Windows.Forms.Label label2;
     }
 }

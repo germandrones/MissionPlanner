@@ -1925,6 +1925,7 @@ namespace MissionPlanner
                     mavLinkMessage = MAV.getPacket((uint)MAVLink.MAVLINK_MSG_ID.V2_EXTENSION);
                     if(mavLinkMessage != null)
                     {
+                        System.Diagnostics.Debug.WriteLine("V2_Extension RECEIVED!!!");
                         var cdata = mavLinkMessage.ToStructure<MAVLink.mavlink_v2_extension_t>();                        
                         // It sends no feedback at all!
                         MAV.clearPacket((uint)MAVLink.MAVLINK_MSG_ID.V2_EXTENSION);
