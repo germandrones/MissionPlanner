@@ -627,7 +627,6 @@ Please check the following
                         if (hb.type != (byte)MAV_TYPE.GCS)
                         {
                             SetupMavConnect(buffer, hb);
-
                             giveComport = false;
                             return buffer;
                         }
@@ -3288,7 +3287,6 @@ Please check the following
         public void setMode(byte sysid, byte compid, mavlink_set_mode_t mode, MAV_MODE_FLAG base_mode = 0)
         {
             mode.base_mode |= (byte) base_mode;
-
             generatePacket((byte) (byte) MAVLINK_MSG_ID.SET_MODE, mode, sysid, compid);
             Thread.Sleep(10);
             generatePacket((byte) (byte) MAVLINK_MSG_ID.SET_MODE, mode, sysid, compid);
