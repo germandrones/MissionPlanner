@@ -1118,6 +1118,7 @@ namespace MissionPlanner
                 comPort.getAutopilotInformation(); // request data only in dev mode
 
                 comPort.getParamList();
+                comPort.getParamPoll();
 
                 _connectionControl.UpdateSysIDS();
 
@@ -1162,7 +1163,7 @@ namespace MissionPlanner
                     if (comPort.BaseStream.IsOpen)
                     {
                         MenuFlightPlanner_Click(null, null);
-                        FlightPlanner.BUT_read_Click(null, null);
+                        FlightPlanner.BUT_read_Click(null, null);                        
                     }
                 }
 
@@ -1565,11 +1566,6 @@ namespace MissionPlanner
                 this.CamjoysendThreadExited = false;
                 try
                 {
-                    if (MainV2.MONO)
-                    {
-                        MainV2.log.Error((object)"Mono: closing joystick thread");
-                        break;
-                    }
                     if (!MainV2.MONO && MainV2.Camjoystick != null && !MainV2.missionUploading) // on mission uploading do pause
                     {
                         MAVLink.mavlink_v2_extension_t mavlinkV2ExtensionT = new MAVLink.mavlink_v2_extension_t();
@@ -1683,7 +1679,7 @@ namespace MissionPlanner
                         MainV2.comPort.sendPacket((object)mavlinkV2ExtensionT, (int)MainV2.comPort.MAV.sysid, (int)MainV2.comPort.MAV.compid);                        
                         ++num;
                     }
-                    Thread.Sleep(40);
+                    Thread.Sleep(20);
                 }
                 catch (Exception ex)
                 {
@@ -1840,10 +1836,8 @@ namespace MissionPlanner
                                 try
                                 {
                                     // poll only when not armed
-                                    if (!port.MAV.cs.armed)
-                                    {
-                                        port.getParamPoll();
-                                    }
+                                    //if (!port.MAV.cs.armed)
+                                    { port.getParamPoll(); }
                                 }
                                 catch
                                 {

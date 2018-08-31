@@ -339,7 +339,7 @@ namespace MissionPlanner.CamJoystick
             {
                 try
                 {
-                    Thread.Sleep(100);
+                    Thread.Sleep(50); //20 Hz
                     this.Camjoystick.Poll();
                     this.state = this.Camjoystick.CurrentCamJoystickState();
                     if (this.getNumberPOV() > 0)
@@ -414,8 +414,6 @@ namespace MissionPlanner.CamJoystick
                 {
                     MissionPlanner.CamJoystick.CamJoystick.log.Error((object)ex);
                     int num;
-                    //MainV2.instance.Invoke((System.Action)delegate { CustomMessageBox.Show("Lost Camera Joystick", "Lost Camera Joystick"); });
-                    //break;
                 }
                 catch (Exception ex)
                 {

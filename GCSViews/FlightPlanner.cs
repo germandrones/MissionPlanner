@@ -2030,6 +2030,7 @@ namespace MissionPlanner.GCSViews
         /// <param name="e"></param>
         public void BUT_read_Click(object sender, EventArgs e)
         {
+            
             if (Commands.Rows.Count > 0)
             {
                 if (sender is FlightData)
@@ -2059,11 +2060,12 @@ namespace MissionPlanner.GCSViews
 
             frmProgressReporter.RunBackgroundOperationAsync();
 
-            frmProgressReporter.Dispose();
+            frmProgressReporter.Dispose();            
         }
 
         void getWPs(object sender, ProgressWorkerEventArgs e, object passdata = null)
         {
+            FlightData.isMapDirty = true;
             List<Locationwp> cmds = new List<Locationwp>();
             try
             {
@@ -2200,6 +2202,7 @@ namespace MissionPlanner.GCSViews
         /// <param name="e"></param>
         public void BUT_write_Click(object sender, EventArgs e)
         {
+            FlightData.isMapDirty = true;
             #region Common Checks on upload
             // Prevent upload mission if UAV is armed!
             if (MainV2.comPort.MAV.cs.armed && !Settings.isDevMode)

@@ -124,6 +124,10 @@ namespace MissionPlanner.GCSViews
         public static int m_forbidden_zone_param2 = 0;
 
         PointLatLngAlt gotohereMarker;
+        int _paramLoiterRadius = 50;
+        int _paramAirspeed = 0;
+        public static bool isMapDirty = false;
+
 
         /*Colibri Gimball control variables*/
         public int m_oTxTimerTicks = 0;
@@ -327,79 +331,17 @@ namespace MissionPlanner.GCSViews
 
         private void FlightData_ParentChanged(object sender, EventArgs e)
         {
-            // QUAD
-            /*if (MainV2.comPort.MAV.param.ContainsKey("WP_SPEED_MAX"))
+            try
             {
-                try
-                {
-                    modifyandSetSpeed.Value = (decimal)((float)MainV2.comPort.MAV.param["WP_SPEED_MAX"] / 100.0);
-                }
-                catch
-                {
-                    modifyandSetSpeed.Enabled = false;
-                }
+                if (MainV2.comPort.MAV.param.ContainsKey("LOITER_RAD")) _paramLoiterRadius = (int)((float)MainV2.comPort.MAV.param["LOITER_RAD"] * CurrentState.multiplierdist);
             }
-            // plane 3.7 and below with airspeed, uses ARSPD_ENABLE:
-            else if ((MainV2.comPort.MAV.param.ContainsKey("TRIM_ARSPD_CM") &&
-                     MainV2.comPort.MAV.param.ContainsKey("ARSPD_ENABLE")
-                     && MainV2.comPort.MAV.param.ContainsKey("ARSPD_USE") &&
-                     (float)MainV2.comPort.MAV.param["ARSPD_ENABLE"] == 1
-                     && (float)MainV2.comPort.MAV.param["ARSPD_USE"] == 1) ||
-                     // plane 3.8 and above with airspeed as per plane 3.7 to plane 3.8 migration wiki page, no longer uses ARSPD_ENABLE, uses ARSPD_TYPE instead:
-                     (MainV2.comPort.MAV.param.ContainsKey("TRIM_ARSPD_CM") &&
-                     MainV2.comPort.MAV.param.ContainsKey("ARSPD_TYPE")
-                     && MainV2.comPort.MAV.param.ContainsKey("ARSPD_USE") &&
-                     (float)MainV2.comPort.MAV.param["ARSPD_TYPE"] > 0
-                     && (float)MainV2.comPort.MAV.param["ARSPD_USE"] == 1))
-            {
-                try
-                {
-                    modifyandSetSpeed.Value = (decimal)((float)MainV2.comPort.MAV.param["TRIM_ARSPD_CM"] / 100.0);
-                }
-                catch
-                {
-                    modifyandSetSpeed.Enabled = false;
-                }
-            } // plane without airspeed
-            else if (MainV2.comPort.MAV.param.ContainsKey("TRIM_THROTTLE") &&
-                     MainV2.comPort.MAV.param.ContainsKey("ARSPD_USE")
-                     && (float)MainV2.comPort.MAV.param["ARSPD_USE"] == 0)
-            {
-                try
-                {
-                    modifyandSetSpeed.Value = (decimal)(float)MainV2.comPort.MAV.param["TRIM_THROTTLE"];
-                }
-                catch
-                {
-                    modifyandSetSpeed.Enabled = false;
-                }
-                // percent
-                modifyandSetSpeed.ButtonText = Strings.ChangeThrottle;
-            }
+            catch{}
 
             try
             {
-                if (MainV2.comPort.MAV.param.ContainsKey("LOITER_RAD"))
-                    modifyandSetLoiterRad.Value =
-                        (decimal)((float)MainV2.comPort.MAV.param["LOITER_RAD"] * CurrentState.multiplierdist);
+                if (MainV2.comPort.MAV.param.ContainsKey("TRIM_ARSPD_CM")) _paramAirspeed = (int)((float)MainV2.comPort.MAV.param["TRIM_ARSPD_CM"] / 100.0);
             }
-            catch
-            {
-                modifyandSetLoiterRad.Enabled = false;
-            }
-            try
-            {
-                if (MainV2.comPort.MAV.param.ContainsKey("WP_LOITER_RAD"))
-                {
-                    modifyandSetLoiterRad.Value =
-                        (decimal)((float)MainV2.comPort.MAV.param["WP_LOITER_RAD"] * CurrentState.multiplierdist);
-                }
-            }
-            catch
-            {
-                modifyandSetLoiterRad.Enabled = false;
-            }*/
-
+            catch{}
         }
 
 
@@ -1160,7 +1102,7 @@ namespace MissionPlanner.GCSViews
                             {
                                 ThreadPool.QueueUserWorkItem(MainV2.comPort.Send_HWP_Ack); // send Ack msg  as bg pool
                             }
-                            update_map();
+                            isMapDirty = true;
                         }                        
 
                         if (Settings.Instance.GetBoolean("CHK_maprotation")) { setMapBearing(); }
@@ -1193,13 +1135,8 @@ namespace MissionPlanner.GCSViews
 
                         updateRoutePosition();
 
-
-                        // update programed wp course
-                        if (waypoints.AddSeconds(1.0) < DateTime.Now)
-                        {
-                            update_map();                            
-                            waypoints = DateTime.Now;
-                        }
+                        if (isMapDirty) { update_map(); }
+                        //if (waypoints.AddSeconds(1.0) < DateTime.Now){ update_map();waypoints = DateTime.Now;}
 
                         updateClearRoutesMarkers();
 
@@ -1406,7 +1343,7 @@ namespace MissionPlanner.GCSViews
 
             // visualize guided mode marker            
             if (gotohereMarker != null) {
-                int gotohereRadius = int.Parse(MainV2.comPort.GetParam("LOITER_RAD").ToString());
+                int gotohereRadius = _paramLoiterRadius;
                 addpolygonmarkerCustom("Fly Here", gotohereMarker.Lng, gotohereMarker.Lat, (int)gotohereMarker.Alt, Color.Lime, GMarkerGoogleType.arrow, poioverlay, gotohereRadius);
             }
 
@@ -1575,6 +1512,8 @@ namespace MissionPlanner.GCSViews
                     }
                 }
             }
+
+            isMapDirty = false;
         }
 
 
@@ -4328,25 +4267,17 @@ namespace MissionPlanner.GCSViews
         private void changeLoiterRad_Click(object sender, EventArgs e)
         {
             if (!MainV2.comPort.BaseStream.IsOpen) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Please Connect first"); return; }
-
-
             string inputValue = "100";
-
             if (DialogResult.Cancel == InputBox.Show("Change Loiter Radius", "Enter new Loiter Radius(meter):", ref inputValue, false)) return;
-
             if (!int.TryParse(inputValue, out int _newLoiterRadius)) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Bad Radius"); return; }
 
-            try { MainV2.comPort.setParam(new[] { "LOITER_RAD", "WP_LOITER_RAD" }, _newLoiterRadius / CurrentState.multiplierdist); }
-            catch { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + Strings.ErrorCommunicating); }
-
-            /*((Button)sender).Enabled = false;
-            // Thread pool delegate
+            ((Button)sender).Enabled = false;
             ThreadPool.QueueUserWorkItem(delegate (object state)
             {
-                try { MainV2.comPort.setParam(new[] { "LOITER_RAD", "WP_LOITER_RAD" }, _newLoiterRadius / CurrentState.multiplierdist); }
+                try { MainV2.comPort.setParam(new[] { "LOITER_RAD", "WP_LOITER_RAD" }, _newLoiterRadius / CurrentState.multiplierdist); _paramLoiterRadius = (int)(_newLoiterRadius / CurrentState.multiplierdist); }
                 catch { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + Strings.ErrorCommunicating); }
             });
-            ((Button)sender).Enabled = true;*/
+            ((Button)sender).Enabled = true;
         }
         #endregion
 
@@ -4444,7 +4375,21 @@ namespace MissionPlanner.GCSViews
             if (lastAutoWP == "-1") lastAutoWP = "1";
             int lastAutoWP_int = int.Parse(lastAutoWP);
 
-            ((Button)sender).Enabled = false;
+            try { MainV2.comPort.setWPCurrent((ushort)CMB_setwp.SelectedIndex); }
+            catch { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    Can't set current WP#: " + CMB_setwp.SelectedIndex); return; }
+
+            //switch back to auto mode
+            int timeout = 0;
+            while (MainV2.comPort.MAV.cs.mode.ToLower() != "AUTO".ToLower())
+            {
+                MainV2.comPort.setMode("AUTO");
+                Thread.Sleep(1000);
+                Application.DoEvents();
+                timeout++;
+                if (timeout > 30) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    Can't switch back to auto mode."); return; }
+            }
+
+            /*((Button)sender).Enabled = false;
             ThreadPool.QueueUserWorkItem(delegate (object state)
             {
                 try { MainV2.comPort.setWPCurrent((ushort)CMB_setwp.SelectedIndex); }
@@ -4461,7 +4406,7 @@ namespace MissionPlanner.GCSViews
                     if (timeout > 30) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    Can't switch back to auto mode.");return; }
                 }
             });
-            ((Button)sender).Enabled = true;
+            ((Button)sender).Enabled = true;*/
         }
         #endregion
 
@@ -4478,7 +4423,7 @@ namespace MissionPlanner.GCSViews
             ((Button)sender).Enabled = true;
         }
 
-
+        
         #region FlytoHere
         Locationwp gotohere = new Locationwp();
         private void goHereToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4525,11 +4470,12 @@ namespace MissionPlanner.GCSViews
             else { alt = (100 * CurrentState.multiplierdist).ToString("0"); }
             if (Settings.Instance.ContainsKey("guided_alt")) alt = Settings.Instance["guided_alt"];
             if (DialogResult.Cancel == InputBox.Show("Enter Altitude", "Enter Guided Mode Altitude(meter)", ref alt))return;
+
             Settings.Instance["guided_alt"] = alt;
+
             int intalt = (int)(100 * CurrentState.multiplierdist);
             if (!int.TryParse(alt, out intalt)) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    Bad Altitude"); return; }
             MainV2.comPort.MAV.GuidedMode.z = intalt / CurrentState.multiplierdist;
-
 
             ThreadPool.QueueUserWorkItem(delegate (object state)
             {

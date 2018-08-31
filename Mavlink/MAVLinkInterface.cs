@@ -1124,10 +1124,14 @@ Please check the following
             }
         }
 
+
         // by default get just some necessary parameters
         public void getParamList(bool force_params_reading = false)
         {
-            if(!force_params_reading) { return; }
+            if(!force_params_reading)
+            {
+                return;
+            }
 
             log.InfoFormat("getParamList {0} {1}", sysidcurrent, compidcurrent);
             if (sysidcurrent > 1) return;
