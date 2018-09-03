@@ -847,6 +847,7 @@ namespace MissionPlanner
         private void MenuFlightData_Click(object sender, EventArgs e)
         {
             MyView.ShowScreen("FlightData");
+            GCSViews.FlightData.isMapDirty = true;
         }
 
         private void MenuFlightPlanner_Click(object sender, EventArgs e)
@@ -1550,6 +1551,7 @@ namespace MissionPlanner
                     else
                     {
                         MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Joystick lost");
+                        MainV2.Camjoystick.enabled = false;
                     }
                 }
 
@@ -1564,10 +1566,13 @@ namespace MissionPlanner
             while (this.Camjoystickthreadrun)
             {
                 this.CamjoysendThreadExited = false;
+               
                 try
                 {
                     if (!MainV2.MONO && MainV2.Camjoystick != null && !MainV2.missionUploading) // on mission uploading do pause
                     {
+                        if (!MainV2.Camjoystick.enabled) continue; // Don't send data while joystick is not enabled to reduce uplink
+
                         MAVLink.mavlink_v2_extension_t mavlinkV2ExtensionT = new MAVLink.mavlink_v2_extension_t();
                         mavlinkV2ExtensionT.v2_type = (byte)0;
                         mavlinkV2ExtensionT.ptc_cam_lat = 0;
@@ -1679,7 +1684,7 @@ namespace MissionPlanner
                         MainV2.comPort.sendPacket((object)mavlinkV2ExtensionT, (int)MainV2.comPort.MAV.sysid, (int)MainV2.comPort.MAV.compid);                        
                         ++num;
                     }
-                    Thread.Sleep(20);
+                    Thread.Sleep(100); //10 Hz update
                 }
                 catch (Exception ex)
                 {

@@ -126,8 +126,8 @@ namespace MissionPlanner.GCSViews
         PointLatLngAlt gotohereMarker;
         int _paramLoiterRadius = 50;
         int _paramAirspeed = 0;
-        public static bool isMapDirty = false;
 
+        public static bool isMapDirty = true;
 
         /*Colibri Gimball control variables*/
         public int m_oTxTimerTicks = 0;

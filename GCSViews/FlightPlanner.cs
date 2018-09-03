@@ -2030,7 +2030,8 @@ namespace MissionPlanner.GCSViews
         /// <param name="e"></param>
         public void BUT_read_Click(object sender, EventArgs e)
         {
-            
+            GCSViews.FlightData.isMapDirty = true;
+
             if (Commands.Rows.Count > 0)
             {
                 if (sender is FlightData)
@@ -2039,8 +2040,7 @@ namespace MissionPlanner.GCSViews
                 else
                 {
                     if (
-                        CustomMessageBox.Show("This will clear your existing planned mission, Continue?", "Confirm",
-                            MessageBoxButtons.OKCancel) != DialogResult.OK)
+                        CustomMessageBox.Show("This will clear your existing planned mission, Continue?", "Confirm", MessageBoxButtons.OKCancel) != DialogResult.OK)
                     {
                         return;
                     }
@@ -2065,7 +2065,6 @@ namespace MissionPlanner.GCSViews
 
         void getWPs(object sender, ProgressWorkerEventArgs e, object passdata = null)
         {
-            FlightData.isMapDirty = true;
             List<Locationwp> cmds = new List<Locationwp>();
             try
             {
@@ -2202,7 +2201,9 @@ namespace MissionPlanner.GCSViews
         /// <param name="e"></param>
         public void BUT_write_Click(object sender, EventArgs e)
         {
-            FlightData.isMapDirty = true;
+            
+            GCSViews.FlightData.isMapDirty = true;
+
             #region Common Checks on upload
             // Prevent upload mission if UAV is armed!
             if (MainV2.comPort.MAV.cs.armed && !Settings.isDevMode)

@@ -339,7 +339,7 @@ namespace MissionPlanner.CamJoystick
             {
                 try
                 {
-                    Thread.Sleep(50); //20 Hz
+                    Thread.Sleep(100); // The same 10 Hz as V2_Extension message
                     this.Camjoystick.Poll();
                     this.state = this.Camjoystick.CurrentCamJoystickState();
                     if (this.getNumberPOV() > 0)
@@ -407,8 +407,7 @@ namespace MissionPlanner.CamJoystick
                     if ((uint)this.getJoystickAxis(17) > 0U)
                         MainV2.comPort.MAV.cs.colibri_ch17 = this.pickchannel(17, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[17].axis, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[17].reverse, 0);
 
-                    if (MainV2.comPort.BaseStream.IsOpen)
-                        this.DoJoystickButtonFunction();
+                    if (MainV2.comPort.BaseStream.IsOpen) this.DoJoystickButtonFunction();
                 }
                 catch (SharpDXException ex)
                 {
