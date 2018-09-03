@@ -1102,12 +1102,6 @@ Please check the following
             }
         }
 
-        /*
-        public Bitmap getImage()
-        {
-            MemoryStream ms = new MemoryStream();
-        }
-        */
 
         // Method send Request to gather all information about GD
         public void getAutopilotInformation()
@@ -1125,6 +1119,41 @@ Please check the following
         }
 
 
+        public void getOnlyNecessaryParams()
+        {
+            frmProgressReporter = new ProgressReporterDialogue
+            {
+                StartPosition = FormStartPosition.CenterScreen,
+                Text = "Reading necessary Parameters"
+            };
+
+            frmProgressReporter.DoWork += FrmProgressNecessaryParams;
+            frmProgressReporter.UpdateProgressAndStatus(-1, "Reading necessary Parameters");
+            ThemeManager.ApplyThemeTo(frmProgressReporter);
+            frmProgressReporter.RunBackgroundOperationAsync();
+            frmProgressReporter.Dispose();
+        }
+
+        void FrmProgressNecessaryParams(object sender, ProgressWorkerEventArgs e, object passdata = null)
+        {
+            // Stream Rates
+            MainV2.comPort.GetParam("SR1_EXT_STAT");
+            MainV2.comPort.GetParam("SR1_EXTRA1");
+            MainV2.comPort.GetParam("SR1_EXTRA2");
+            MainV2.comPort.GetParam("SR1_EXTRA3");
+            MainV2.comPort.GetParam("SR1_PARAMS");
+            MainV2.comPort.GetParam("SR1_POSITION");
+            MainV2.comPort.GetParam("SR1_RAW_CTRL");
+            MainV2.comPort.GetParam("SR1_RAW_SENS");
+            MainV2.comPort.GetParam("SR1_RC_CHAN");
+
+            MainV2.comPort.GetParam("WP_LOITER_RAD");
+            MainV2.comPort.GetParam("WP_RADIUS");
+
+            MainV2.comPort.GetParam("TRIM_ARSPD_CM");
+        }
+
+
         // by default get just some necessary parameters
         public void getParamList(bool force_params_reading = false)
         {
@@ -1139,7 +1168,7 @@ Please check the following
             frmProgressReporter = new ProgressReporterDialogue
             {
                 StartPosition = FormStartPosition.CenterScreen,
-                Text = Strings.GettingParams + " " + sysidcurrent
+                Text = Strings.GettingParams
             };
 
             frmProgressReporter.DoWork += FrmProgressReporterGetParams;
@@ -1157,7 +1186,6 @@ Please check the following
         {
             getParamList(MAV.sysid, MAV.compid);
         }
-
 
         /// <summary>
         /// Get param list from apm
@@ -1445,8 +1473,7 @@ Please check the following
         /// <returns></returns>
         public float GetParam(byte sysid, byte compid, string name = "", short index = -1, bool requireresponce = true)
         {
-            if (name == "" && index == -1)
-                return 0;
+            if (name == "" && index == -1) return 0;
 
             log.Info("GetParam name: '" + name + "' or index: " + index + " " + sysid + ":" + compid);
 

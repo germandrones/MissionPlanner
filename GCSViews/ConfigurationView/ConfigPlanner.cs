@@ -89,12 +89,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             // setup other config state
             SetCheckboxFromConfig("CHK_resetapmonconnect", CHK_resetapmonconnect);
 
-            CMB_rateattitude.Text = MainV2.comPort.MAV.cs.rateattitude.ToString();
-            CMB_rateposition.Text = MainV2.comPort.MAV.cs.rateposition.ToString();
-            CMB_raterc.Text = MainV2.comPort.MAV.cs.raterc.ToString();
-            CMB_ratestatus.Text = MainV2.comPort.MAV.cs.ratestatus.ToString();
-            CMB_ratesensors.Text = MainV2.comPort.MAV.cs.ratesensors.ToString();
-
             SetCheckboxFromConfig("analyticsoptout", chk_analytics);
 
             SetCheckboxFromConfig("CHK_GDIPlus", CHK_GDIPlus);
@@ -301,65 +295,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             MainV2.instance.ChangeUnits();
         }
 
-        private void CMB_rateattitude_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (startup)
-                return;
-            Settings.Instance[((ComboBox) sender).Name] = ((ComboBox) sender).Text;
-            MainV2.comPort.MAV.cs.rateattitude = byte.Parse(((ComboBox) sender).Text);
-
-            MainV2.comPort.requestDatastream(MAVLink.MAV_DATA_STREAM.EXTRA1, MainV2.comPort.MAV.cs.rateattitude);
-            // request attitude
-            MainV2.comPort.requestDatastream(MAVLink.MAV_DATA_STREAM.EXTRA2, MainV2.comPort.MAV.cs.rateattitude);
-            // request vfr            
-        }
-
-        private void CMB_rateposition_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (startup)
-                return;
-            Settings.Instance[((ComboBox) sender).Name] = ((ComboBox) sender).Text;
-            MainV2.comPort.MAV.cs.rateposition = byte.Parse(((ComboBox) sender).Text);
-
-            MainV2.comPort.requestDatastream(MAVLink.MAV_DATA_STREAM.POSITION, MainV2.comPort.MAV.cs.rateposition);
-            // request gps
-        }
-
-        private void CMB_ratestatus_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (startup)
-                return;
-            Settings.Instance[((ComboBox) sender).Name] = ((ComboBox) sender).Text;
-            MainV2.comPort.MAV.cs.ratestatus = byte.Parse(((ComboBox) sender).Text);
-
-            MainV2.comPort.requestDatastream(MAVLink.MAV_DATA_STREAM.EXTENDED_STATUS, MainV2.comPort.MAV.cs.ratestatus);
-            // mode
-        }
-
-        private void CMB_raterc_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (startup)
-                return;
-            Settings.Instance[((ComboBox) sender).Name] = ((ComboBox) sender).Text;
-            MainV2.comPort.MAV.cs.raterc = byte.Parse(((ComboBox) sender).Text);
-
-            MainV2.comPort.requestDatastream(MAVLink.MAV_DATA_STREAM.RC_CHANNELS, MainV2.comPort.MAV.cs.raterc);
-            // request rc info
-        }
-
-        private void CMB_ratesensors_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (startup)
-                return;
-            Settings.Instance[((ComboBox) sender).Name] = ((ComboBox) sender).Text;
-            MainV2.comPort.MAV.cs.ratesensors = byte.Parse(((ComboBox) sender).Text);
-
-            MainV2.comPort.requestDatastream(MAVLink.MAV_DATA_STREAM.EXTRA3, MainV2.comPort.MAV.cs.ratesensors);
-            // request extra stuff - tridge
-            MainV2.comPort.requestDatastream(MAVLink.MAV_DATA_STREAM.RAW_SENSORS, MainV2.comPort.MAV.cs.ratesensors);
-            // request raw sensor
-        }
-
         private void CHK_mavdebug_CheckedChanged(object sender, EventArgs e)
         {
             MainV2.comPort.debugmavlink = CHK_mavdebug.Checked;
@@ -386,12 +321,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                 return;
             CustomMessageBox.Show("You need to restart the planner for this to take effect");
             Settings.Instance["CHK_GDIPlus"] = CHK_GDIPlus.Checked.ToString();
-        }
-
-        // This load handler now only contains code that should execute once
-        // on start up. See Activate() for the remainder
-        private void ConfigPlanner_Load(object sender, EventArgs e)
-        {
         }
 
         private void CMB_osdcolor_DrawItem(object sender, DrawItemEventArgs e)

@@ -575,12 +575,6 @@ namespace MissionPlanner
                 if (Settings.Instance["MainHeight"] != null) this.Height = Settings.Instance.GetInt32("MainHeight");
                 if (Settings.Instance["MainWidth"] != null) this.Width = Settings.Instance.GetInt32("MainWidth");
 
-                if (Settings.Instance["CMB_rateattitude"] != null) CurrentState.rateattitudebackup = Settings.Instance.GetByte("CMB_rateattitude");
-                if (Settings.Instance["CMB_rateposition"] != null) CurrentState.ratepositionbackup = Settings.Instance.GetByte("CMB_rateposition");
-                if (Settings.Instance["CMB_ratestatus"] != null) CurrentState.ratestatusbackup = Settings.Instance.GetByte("CMB_ratestatus");
-                if (Settings.Instance["CMB_raterc"] != null) CurrentState.ratercbackup = Settings.Instance.GetByte("CMB_raterc");
-                if (Settings.Instance["CMB_ratesensors"] != null) CurrentState.ratesensorsbackup = Settings.Instance.GetByte("CMB_ratesensors");
-
                 // make sure rates propogate
                 MainV2.comPort.MAV.cs.ResetInternals();
 
@@ -1117,8 +1111,9 @@ namespace MissionPlanner
 
                 comPort.getAutopilotInformation(); // request data only in dev mode
 
-                comPort.getParamList();
-                comPort.getParamPoll();
+                //comPort.getParamList();
+                //comPort.getParamPoll();
+                comPort.getOnlyNecessaryParams();
 
                 _connectionControl.UpdateSysIDS();
 

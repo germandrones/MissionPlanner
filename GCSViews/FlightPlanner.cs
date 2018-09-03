@@ -1351,7 +1351,6 @@ namespace MissionPlanner.GCSViews
 
             fullpointlist.Clear();
 
-            //Debug.WriteLine(DateTime.Now);
             try
             {
                 if (objectsoverlay != null) // hasnt been created yet
@@ -1487,14 +1486,33 @@ namespace MissionPlanner.GCSViews
                                         break;
                                     }
 
-                                case (ushort)MAVLink.MAV_CMD.LOITER_TIME:
                                 case (ushort)MAVLink.MAV_CMD.LOITER_TURNS:
+                                    {
+                                        int loiterRadius = int.Parse(cell_p3) != 0 ? int.Parse(cell_p3) : (int)MainV2.comPort.MAV.param["WP_LOITER_RAD"].Value;
+                                        pointlist.Add(new PointLatLngAlt(double.Parse(cell3), double.Parse(cell4), double.Parse(cell2) + gethomealt(double.Parse(cell3), double.Parse(cell4)), (a + 1).ToString())
+                                        { color = Color.LightBlue });
+                                        fullpointlist.Add(pointlist[pointlist.Count - 1]);
+                                        addpolygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), double.Parse(cell2), Color.LightBlue, loiterRadius);
+                                        break;
+                                    }
+
+                                case (ushort)MAVLink.MAV_CMD.LOITER_TIME:
                                 case (ushort)MAVLink.MAV_CMD.LOITER_UNLIM:
                                     {
                                         pointlist.Add(new PointLatLngAlt(double.Parse(cell3), double.Parse(cell4), double.Parse(cell2) + gethomealt(double.Parse(cell3), double.Parse(cell4)), (a + 1).ToString())
                                         { color = Color.LightBlue });
                                         fullpointlist.Add(pointlist[pointlist.Count - 1]);
-                                        addpolygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), double.Parse(cell2), Color.LightBlue);
+                                        addpolygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), double.Parse(cell2), Color.LightBlue, (int)MainV2.comPort.MAV.param["WP_LOITER_RAD"].Value);
+                                        break;
+                                    }
+
+                                case (ushort)MAVLink.MAV_CMD.LOITER_TO_ALT:
+                                    {
+                                        int loiterRadius = int.Parse(cell_p2) != 0 ? int.Parse(cell_p2) : (int)MainV2.comPort.MAV.param["WP_LOITER_RAD"].Value;
+                                        pointlist.Add(new PointLatLngAlt(double.Parse(cell3), double.Parse(cell4), double.Parse(cell2) + gethomealt(double.Parse(cell3), double.Parse(cell4)), (a + 1).ToString())
+                                        { color = Color.LightBlue });
+                                        fullpointlist.Add(pointlist[pointlist.Count - 1]);
+                                        addpolygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), double.Parse(cell2), Color.LightBlue, loiterRadius);
                                         break;
                                     }
 
@@ -1534,13 +1552,6 @@ namespace MissionPlanner.GCSViews
                                         break;
                                     }
 
-                                case (ushort)MAVLink.MAV_CMD.LOITER_TO_ALT:
-                                    {
-                                        pointlist.Add(new PointLatLngAlt(double.Parse(cell3), double.Parse(cell4), double.Parse(cell2) + gethomealt(double.Parse(cell3), double.Parse(cell4)), (a + 1).ToString()));
-                                        fullpointlist.Add(pointlist[pointlist.Count - 1]);
-                                        addpolygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), double.Parse(cell2), null, waypoint_radius: int.Parse(cell_p2));
-                                        break;
-                                    }
                                 // Normal waypoint
                                 default:
                                     {

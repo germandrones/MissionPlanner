@@ -1342,8 +1342,9 @@ namespace MissionPlanner.GCSViews
             #endregion
 
             // visualize guided mode marker            
-            if (gotohereMarker != null) {
-                int gotohereRadius = _paramLoiterRadius;
+            if (gotohereMarker != null)
+            {
+                int gotohereRadius = MainV2.comPort.MAV.param.ContainsKey("WP_LOITER_RAD") ? (int)((float)MainV2.comPort.MAV.param["WP_LOITER_RAD"] * CurrentState.multiplierdist) : _paramLoiterRadius;
                 addpolygonmarkerCustom("Fly Here", gotohereMarker.Lng, gotohereMarker.Lat, (int)gotohereMarker.Alt, Color.Lime, GMarkerGoogleType.arrow, poioverlay, gotohereRadius);
             }
 
@@ -1420,9 +1421,24 @@ namespace MissionPlanner.GCSViews
                             break;
                         }
 
+                    case (ushort)MAVLink.MAV_CMD.LOITER_TURNS:
+                        {
+                            int loiterRadius = plla.param3 != 0 ? (int)plla.param3 : (int)MainV2.comPort.MAV.param["WP_LOITER_RAD"].Value;
+                            addpolygonmarker("Loiter", plla.y, plla.x, (int)plla.z, Color.LightBlue, polygons, loiterRadius, toolTipVisible: true);
+                            break;
+                        }
+
+                    case (ushort)MAVLink.MAV_CMD.LOITER_TIME:
+                    case (ushort)MAVLink.MAV_CMD.LOITER_UNLIM:
+                        {
+                            addpolygonmarker("Loiter", plla.y, plla.x, (int)plla.z, Color.LightBlue, polygons, (int)MainV2.comPort.MAV.param["WP_LOITER_RAD"].Value, toolTipVisible: true);
+                            break;
+                        }
+
                     case (ushort)MAVLink.MAV_CMD.LOITER_TO_ALT:
                         {
-                            addpolygonmarker("LTA", plla.y, plla.x, (int)plla.z, Color.Gray, polygons, (int)plla.param2, toolTipVisible: true);
+                            int loiterRadius = plla.param2 != 0 ? (int)plla.param2 : (int)MainV2.comPort.MAV.param["WP_LOITER_RAD"].Value;
+                            addpolygonmarker("Loiter", plla.y, plla.x, (int)plla.z, Color.LightBlue, polygons, loiterRadius, toolTipVisible: true);
                             break;
                         }
                         
@@ -1469,7 +1485,7 @@ namespace MissionPlanner.GCSViews
                     default:
                         {
                             if(plla.y != 0 && plla.x != 0)
-                            addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.White, polygons, 0);
+                            addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.Gray, polygons, (int)MainV2.comPort.MAV.param["WP_RADIUS"].Value);
                             break;
                         }
 

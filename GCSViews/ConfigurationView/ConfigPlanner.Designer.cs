@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigPlanner));
-            this.label33 = new System.Windows.Forms.Label();
-            this.CMB_ratesensors = new System.Windows.Forms.ComboBox();
             this.label26 = new System.Windows.Forms.Label();
             this.CMB_videoresolutions = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -42,15 +40,6 @@
             this.label108 = new System.Windows.Forms.Label();
             this.CHK_resetapmonconnect = new System.Windows.Forms.CheckBox();
             this.CHK_mavdebug = new System.Windows.Forms.CheckBox();
-            this.label107 = new System.Windows.Forms.Label();
-            this.CMB_raterc = new System.Windows.Forms.ComboBox();
-            this.label104 = new System.Windows.Forms.Label();
-            this.label103 = new System.Windows.Forms.Label();
-            this.label102 = new System.Windows.Forms.Label();
-            this.label101 = new System.Windows.Forms.Label();
-            this.CMB_ratestatus = new System.Windows.Forms.ComboBox();
-            this.CMB_rateposition = new System.Windows.Forms.ComboBox();
-            this.CMB_rateattitude = new System.Windows.Forms.ComboBox();
             this.label99 = new System.Windows.Forms.Label();
             this.label98 = new System.Windows.Forms.Label();
             this.label97 = new System.Windows.Forms.Label();
@@ -86,32 +75,6 @@
             this.CHK_AutoParamCommit = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.NUM_tracklength)).BeginInit();
             this.SuspendLayout();
-            // 
-            // label33
-            // 
-            resources.ApplyResources(this.label33, "label33");
-            this.label33.Name = "label33";
-            // 
-            // CMB_ratesensors
-            // 
-            this.CMB_ratesensors.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.CMB_ratesensors.FormattingEnabled = true;
-            this.CMB_ratesensors.Items.AddRange(new object[] {
-            resources.GetString("CMB_ratesensors.Items"),
-            resources.GetString("CMB_ratesensors.Items1"),
-            resources.GetString("CMB_ratesensors.Items2"),
-            resources.GetString("CMB_ratesensors.Items3"),
-            resources.GetString("CMB_ratesensors.Items4"),
-            resources.GetString("CMB_ratesensors.Items5"),
-            resources.GetString("CMB_ratesensors.Items6"),
-            resources.GetString("CMB_ratesensors.Items7"),
-            resources.GetString("CMB_ratesensors.Items8"),
-            resources.GetString("CMB_ratesensors.Items9"),
-            resources.GetString("CMB_ratesensors.Items10"),
-            resources.GetString("CMB_ratesensors.Items11")});
-            resources.ApplyResources(this.CMB_ratesensors, "CMB_ratesensors");
-            this.CMB_ratesensors.Name = "CMB_ratesensors";
-            this.CMB_ratesensors.SelectedIndexChanged += new System.EventHandler(this.CMB_ratesensors_SelectedIndexChanged);
             // 
             // label26
             // 
@@ -200,111 +163,6 @@
             this.CHK_mavdebug.Name = "CHK_mavdebug";
             this.CHK_mavdebug.UseVisualStyleBackColor = true;
             this.CHK_mavdebug.CheckedChanged += new System.EventHandler(this.CHK_mavdebug_CheckedChanged);
-            // 
-            // label107
-            // 
-            resources.ApplyResources(this.label107, "label107");
-            this.label107.Name = "label107";
-            // 
-            // CMB_raterc
-            // 
-            this.CMB_raterc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.CMB_raterc.FormattingEnabled = true;
-            this.CMB_raterc.Items.AddRange(new object[] {
-            resources.GetString("CMB_raterc.Items"),
-            resources.GetString("CMB_raterc.Items1"),
-            resources.GetString("CMB_raterc.Items2"),
-            resources.GetString("CMB_raterc.Items3"),
-            resources.GetString("CMB_raterc.Items4"),
-            resources.GetString("CMB_raterc.Items5"),
-            resources.GetString("CMB_raterc.Items6"),
-            resources.GetString("CMB_raterc.Items7"),
-            resources.GetString("CMB_raterc.Items8"),
-            resources.GetString("CMB_raterc.Items9"),
-            resources.GetString("CMB_raterc.Items10")});
-            resources.ApplyResources(this.CMB_raterc, "CMB_raterc");
-            this.CMB_raterc.Name = "CMB_raterc";
-            this.CMB_raterc.SelectedIndexChanged += new System.EventHandler(this.CMB_raterc_SelectedIndexChanged);
-            // 
-            // label104
-            // 
-            resources.ApplyResources(this.label104, "label104");
-            this.label104.Name = "label104";
-            // 
-            // label103
-            // 
-            resources.ApplyResources(this.label103, "label103");
-            this.label103.Name = "label103";
-            // 
-            // label102
-            // 
-            resources.ApplyResources(this.label102, "label102");
-            this.label102.Name = "label102";
-            // 
-            // label101
-            // 
-            resources.ApplyResources(this.label101, "label101");
-            this.label101.Name = "label101";
-            // 
-            // CMB_ratestatus
-            // 
-            this.CMB_ratestatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.CMB_ratestatus.FormattingEnabled = true;
-            this.CMB_ratestatus.Items.AddRange(new object[] {
-            resources.GetString("CMB_ratestatus.Items"),
-            resources.GetString("CMB_ratestatus.Items1"),
-            resources.GetString("CMB_ratestatus.Items2"),
-            resources.GetString("CMB_ratestatus.Items3"),
-            resources.GetString("CMB_ratestatus.Items4"),
-            resources.GetString("CMB_ratestatus.Items5"),
-            resources.GetString("CMB_ratestatus.Items6"),
-            resources.GetString("CMB_ratestatus.Items7"),
-            resources.GetString("CMB_ratestatus.Items8"),
-            resources.GetString("CMB_ratestatus.Items9"),
-            resources.GetString("CMB_ratestatus.Items10")});
-            resources.ApplyResources(this.CMB_ratestatus, "CMB_ratestatus");
-            this.CMB_ratestatus.Name = "CMB_ratestatus";
-            this.CMB_ratestatus.SelectedIndexChanged += new System.EventHandler(this.CMB_ratestatus_SelectedIndexChanged);
-            // 
-            // CMB_rateposition
-            // 
-            this.CMB_rateposition.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.CMB_rateposition.FormattingEnabled = true;
-            this.CMB_rateposition.Items.AddRange(new object[] {
-            resources.GetString("CMB_rateposition.Items"),
-            resources.GetString("CMB_rateposition.Items1"),
-            resources.GetString("CMB_rateposition.Items2"),
-            resources.GetString("CMB_rateposition.Items3"),
-            resources.GetString("CMB_rateposition.Items4"),
-            resources.GetString("CMB_rateposition.Items5"),
-            resources.GetString("CMB_rateposition.Items6"),
-            resources.GetString("CMB_rateposition.Items7"),
-            resources.GetString("CMB_rateposition.Items8"),
-            resources.GetString("CMB_rateposition.Items9"),
-            resources.GetString("CMB_rateposition.Items10")});
-            resources.ApplyResources(this.CMB_rateposition, "CMB_rateposition");
-            this.CMB_rateposition.Name = "CMB_rateposition";
-            this.CMB_rateposition.SelectedIndexChanged += new System.EventHandler(this.CMB_rateposition_SelectedIndexChanged);
-            // 
-            // CMB_rateattitude
-            // 
-            this.CMB_rateattitude.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.CMB_rateattitude.FormattingEnabled = true;
-            this.CMB_rateattitude.Items.AddRange(new object[] {
-            resources.GetString("CMB_rateattitude.Items"),
-            resources.GetString("CMB_rateattitude.Items1"),
-            resources.GetString("CMB_rateattitude.Items2"),
-            resources.GetString("CMB_rateattitude.Items3"),
-            resources.GetString("CMB_rateattitude.Items4"),
-            resources.GetString("CMB_rateattitude.Items5"),
-            resources.GetString("CMB_rateattitude.Items6"),
-            resources.GetString("CMB_rateattitude.Items7"),
-            resources.GetString("CMB_rateattitude.Items8"),
-            resources.GetString("CMB_rateattitude.Items9"),
-            resources.GetString("CMB_rateattitude.Items10")});
-            resources.ApplyResources(this.CMB_rateattitude, "CMB_rateattitude");
-            this.CMB_rateattitude.Name = "CMB_rateattitude";
-            this.CMB_rateattitude.SelectedIndexChanged += new System.EventHandler(this.CMB_rateattitude_SelectedIndexChanged);
             // 
             // label99
             // 
@@ -554,8 +412,6 @@
             this.Controls.Add(this.CHK_disttohomeflightdata);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.CHK_maprotation);
-            this.Controls.Add(this.label33);
-            this.Controls.Add(this.CMB_ratesensors);
             this.Controls.Add(this.label26);
             this.Controls.Add(this.CMB_videoresolutions);
             this.Controls.Add(this.label12);
@@ -567,15 +423,6 @@
             this.Controls.Add(this.label108);
             this.Controls.Add(this.CHK_resetapmonconnect);
             this.Controls.Add(this.CHK_mavdebug);
-            this.Controls.Add(this.label107);
-            this.Controls.Add(this.CMB_raterc);
-            this.Controls.Add(this.label104);
-            this.Controls.Add(this.label103);
-            this.Controls.Add(this.label102);
-            this.Controls.Add(this.label101);
-            this.Controls.Add(this.CMB_ratestatus);
-            this.Controls.Add(this.CMB_rateposition);
-            this.Controls.Add(this.CMB_rateattitude);
             this.Controls.Add(this.label99);
             this.Controls.Add(this.label98);
             this.Controls.Add(this.label97);
@@ -592,7 +439,6 @@
             this.Controls.Add(this.BUT_Joystick);
             this.Name = "ConfigPlanner";
             resources.ApplyResources(this, "$this");
-            this.Load += new System.EventHandler(this.ConfigPlanner_Load);
             ((System.ComponentModel.ISupportInitialize)(this.NUM_tracklength)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -600,9 +446,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label33;
-        private System.Windows.Forms.ComboBox CMB_ratesensors;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.ComboBox CMB_videoresolutions;
         private System.Windows.Forms.Label label12;
@@ -614,15 +457,6 @@
         private System.Windows.Forms.Label label108;
         private System.Windows.Forms.CheckBox CHK_resetapmonconnect;
         private System.Windows.Forms.CheckBox CHK_mavdebug;
-        private System.Windows.Forms.Label label107;
-        private System.Windows.Forms.ComboBox CMB_raterc;
-        private System.Windows.Forms.Label label104;
-        private System.Windows.Forms.Label label103;
-        private System.Windows.Forms.Label label102;
-        private System.Windows.Forms.Label label101;
-        private System.Windows.Forms.ComboBox CMB_ratestatus;
-        private System.Windows.Forms.ComboBox CMB_rateposition;
-        private System.Windows.Forms.ComboBox CMB_rateattitude;
         private System.Windows.Forms.Label label99;
         private System.Windows.Forms.Label label98;
         private System.Windows.Forms.Label label97;
