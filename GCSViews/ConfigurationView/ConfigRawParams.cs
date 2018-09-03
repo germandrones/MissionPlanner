@@ -231,8 +231,7 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             }
 
 
-            if (Common.MessageShowAgain("Write Raw Params", "Are you Sure?") != DialogResult.OK)
-                return;
+            if (Common.MessageShowAgain("Write Raw Params", "Are you Sure?") != DialogResult.OK) return;
 
             // sort with enable at the bottom - this ensures params are set before the function is disabled
             var temp = new List<string>();
@@ -284,6 +283,8 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                     CustomMessageBox.Show("Set " + value + " Failed");
                 }
             }
+
+            MessageBox.Show("Parameters sent completely.", "Params Write");
         }
 
         private void BUT_compare_Click(object sender, EventArgs e)

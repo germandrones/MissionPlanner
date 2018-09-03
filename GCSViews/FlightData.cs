@@ -1449,7 +1449,6 @@ namespace MissionPlanner.GCSViews
                     case (ushort)MAVLink.MAV_CMD.DO_SET_CAM_TRIGG_DIST:
                     case (ushort)MAVLink.MAV_CMD.GUIDED_ENABLE:
                     case (ushort)MAVLink.MAV_CMD.DO_SET_SERVO:
-                    case (ushort)MAVLink.MAV_CMD.LIMIT_BANK_ANGLE:
                         {
                             // do nothing
                             break;

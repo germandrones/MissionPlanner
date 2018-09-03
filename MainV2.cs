@@ -1024,14 +1024,12 @@ namespace MissionPlanner
             {
                 log.Info("Set Portname");
                 // set port, then options
-                if(portname.ToLower() != "preset")
-                    comPort.BaseStream.PortName = portname;
+                if(portname.ToLower() != "preset") comPort.BaseStream.PortName = portname;
 
                 log.Info("Set Baudrate");
                 try
                 {
-                    if(baud != "" && baud != "0")
-                        comPort.BaseStream.BaudRate = int.Parse(baud);
+                    if(baud != "" && baud != "0") comPort.BaseStream.BaudRate = int.Parse(baud);
                 }
                 catch (Exception exp)
                 {
@@ -1042,6 +1040,7 @@ namespace MissionPlanner
                 comPort.giveComport = true;
 
                 log.Info("About to do dtr if needed");
+                
                 // reset on connect logic.
                 if (Settings.Instance.GetBoolean("CHK_resetapmonconnect") == true)
                 {
@@ -1681,6 +1680,9 @@ namespace MissionPlanner
                             Thread.Sleep(250);
                             continue;
                         }
+
+                        System.Diagnostics.Debug.WriteLine("V2_Extension sent");
+
                         MainV2.comPort.sendPacket((object)mavlinkV2ExtensionT, (int)MainV2.comPort.MAV.sysid, (int)MainV2.comPort.MAV.compid);                        
                         ++num;
                     }

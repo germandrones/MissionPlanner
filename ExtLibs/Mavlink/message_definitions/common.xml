@@ -793,17 +793,7 @@
         <param index="5">Empy</param>
         <param index="6">Empy</param>
         <param index="7">Empy</param>
-      </entry>
-      <entry value="87" name="LIMIT_BANK_ANGLE">
-        <description>Limits bank angle to a very small amount less than 5 degrees to maximize visual line of sight</description>
-        <param index="1">Is enabled(0 - false, 1 - true)</param>
-        <param index="2">Empty</param>
-        <param index="3">Empty</param>
-        <param index="4">Empty</param>
-        <param index="5">Empty</param>
-        <param index="6">Empty</param>
-        <param index="7">Empty</param>
-      </entry>
+      </entry>      
       <entry value="88" name="MAV_CMD_SET_FORBIDDEN_ZONE">
         <description>Mission command for defining the zone where the UAV cannt fly during landing</description>
         <param index="1">Beginning of sector (in centidegrees)</param>

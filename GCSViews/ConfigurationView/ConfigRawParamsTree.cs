@@ -233,6 +233,8 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             }
 
             Params.Refresh();
+            MessageBox.Show("Parameters sent completely.", "Params Write");
+
         }
 
         private void BUT_compare_Click(object sender, EventArgs e)
