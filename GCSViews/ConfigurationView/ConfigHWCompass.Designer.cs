@@ -29,8 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigHWCompass));
-            this.linkLabelmagdec = new System.Windows.Forms.LinkLabel();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigHWCompass));            
             this.TXT_declination_deg = new System.Windows.Forms.TextBox();
             this.CHK_autodec = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -90,14 +89,7 @@
             this.groupBoxCompass1.SuspendLayout();
             this.groupBoxCompass2.SuspendLayout();
             this.groupBoxCompass3.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // linkLabelmagdec
-            // 
-            resources.ApplyResources(this.linkLabelmagdec, "linkLabelmagdec");
-            this.linkLabelmagdec.Name = "linkLabelmagdec";
-            this.linkLabelmagdec.TabStop = true;
-            this.linkLabelmagdec.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            this.SuspendLayout();            
             // 
             // TXT_declination_deg
             // 
@@ -293,8 +285,7 @@
             this.groupBoxGeneralSettings.Controls.Add(this.label2);
             this.groupBoxGeneralSettings.Controls.Add(this.label3);
             this.groupBoxGeneralSettings.Controls.Add(this.TXT_declination_min);
-            this.groupBoxGeneralSettings.Controls.Add(this.TXT_declination_deg);
-            this.groupBoxGeneralSettings.Controls.Add(this.linkLabelmagdec);
+            this.groupBoxGeneralSettings.Controls.Add(this.TXT_declination_deg);            
             resources.ApplyResources(this.groupBoxGeneralSettings, "groupBoxGeneralSettings");
             this.groupBoxGeneralSettings.Name = "groupBoxGeneralSettings";
             this.groupBoxGeneralSettings.TabStop = false;
@@ -541,8 +532,7 @@
 
         #endregion
 
-        private Controls.MyButton BUT_MagCalibrationLive;
-        private System.Windows.Forms.LinkLabel linkLabelmagdec;
+        private Controls.MyButton BUT_MagCalibrationLive;        
         private System.Windows.Forms.TextBox TXT_declination_deg;
         private Controls.MavlinkCheckBox CHK_enablecompass;
         private System.Windows.Forms.CheckBox CHK_autodec;

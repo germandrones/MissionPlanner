@@ -1154,84 +1154,87 @@ Please check the following
             MainV2.comPort.GetParam("TRIM_ARSPD_CM");
 
 
-            // For magnetometer neede params download also
-            if (frmProgressReporter != null) this.frmProgressReporter.UpdateProgressAndStatus(90, "Getting Compas Settings");
-            MainV2.comPort.GetParam("MAG_ENABLE");
-            MainV2.comPort.GetParam("COMPASS_LEARN");
+            if (Settings.isDevMode) // load mag params only in dev mode
+            {
+                // For magnetometer neede params download also
+                if (frmProgressReporter != null) this.frmProgressReporter.UpdateProgressAndStatus(90, "Getting Compas Settings");
+                MainV2.comPort.GetParam("MAG_ENABLE");
+                MainV2.comPort.GetParam("COMPASS_LEARN");
 
-            MainV2.comPort.GetParam("COMPASS_AUTODEC");
-            MainV2.comPort.GetParam("COMPASS_CAL_FIT");
-            MainV2.comPort.GetParam("COMPASS_DEC");
-            MainV2.comPort.GetParam("COMPASS_DEV_ID");
-            MainV2.comPort.GetParam("COMPASS_DEV_ID2");
-            MainV2.comPort.GetParam("COMPASS_DEV_ID3");
+                MainV2.comPort.GetParam("COMPASS_AUTODEC");
+                MainV2.comPort.GetParam("COMPASS_CAL_FIT");
+                MainV2.comPort.GetParam("COMPASS_DEC");
+                MainV2.comPort.GetParam("COMPASS_DEV_ID");
+                MainV2.comPort.GetParam("COMPASS_DEV_ID2");
+                MainV2.comPort.GetParam("COMPASS_DEV_ID3");
 
-            MainV2.comPort.GetParam("COMPASS_DIA_X");
-            MainV2.comPort.GetParam("COMPASS_DIA_Y");
-            MainV2.comPort.GetParam("COMPASS_DIA_Z");
+                MainV2.comPort.GetParam("COMPASS_DIA_X");
+                MainV2.comPort.GetParam("COMPASS_DIA_Y");
+                MainV2.comPort.GetParam("COMPASS_DIA_Z");
 
-            MainV2.comPort.GetParam("COMPASS_DIA2_X");
-            MainV2.comPort.GetParam("COMPASS_DIA2_Y");
-            MainV2.comPort.GetParam("COMPASS_DIA2_Z");
+                MainV2.comPort.GetParam("COMPASS_DIA2_X");
+                MainV2.comPort.GetParam("COMPASS_DIA2_Y");
+                MainV2.comPort.GetParam("COMPASS_DIA2_Z");
 
-            MainV2.comPort.GetParam("COMPASS_DIA3_X");
-            MainV2.comPort.GetParam("COMPASS_DIA3_Y");
-            MainV2.comPort.GetParam("COMPASS_DIA3_Z");
+                MainV2.comPort.GetParam("COMPASS_DIA3_X");
+                MainV2.comPort.GetParam("COMPASS_DIA3_Y");
+                MainV2.comPort.GetParam("COMPASS_DIA3_Z");
 
-            MainV2.comPort.GetParam("COMPASS_EXTERN2");
-            MainV2.comPort.GetParam("COMPASS_EXTERN3");
-            MainV2.comPort.GetParam("COMPASS_EXTERNAL");
+                MainV2.comPort.GetParam("COMPASS_EXTERN2");
+                MainV2.comPort.GetParam("COMPASS_EXTERN3");
+                MainV2.comPort.GetParam("COMPASS_EXTERNAL");
 
-            MainV2.comPort.GetParam("COMPASS_MOT_X");
-            MainV2.comPort.GetParam("COMPASS_MOT_Y");
-            MainV2.comPort.GetParam("COMPASS_MOT_Z");
+                MainV2.comPort.GetParam("COMPASS_MOT_X");
+                MainV2.comPort.GetParam("COMPASS_MOT_Y");
+                MainV2.comPort.GetParam("COMPASS_MOT_Z");
 
-            MainV2.comPort.GetParam("COMPASS_MOT2_X");
-            MainV2.comPort.GetParam("COMPASS_MOT2_Y");
-            MainV2.comPort.GetParam("COMPASS_MOT2_Z");
+                MainV2.comPort.GetParam("COMPASS_MOT2_X");
+                MainV2.comPort.GetParam("COMPASS_MOT2_Y");
+                MainV2.comPort.GetParam("COMPASS_MOT2_Z");
 
-            MainV2.comPort.GetParam("COMPASS_MOT3_X");
-            MainV2.comPort.GetParam("COMPASS_MOT3_Y");
-            MainV2.comPort.GetParam("COMPASS_MOT3_Z");
+                MainV2.comPort.GetParam("COMPASS_MOT3_X");
+                MainV2.comPort.GetParam("COMPASS_MOT3_Y");
+                MainV2.comPort.GetParam("COMPASS_MOT3_Z");
 
-            MainV2.comPort.GetParam("COMPASS_MOTCT");
+                MainV2.comPort.GetParam("COMPASS_MOTCT");
 
-            MainV2.comPort.GetParam("COMPASS_ODI_X");
-            MainV2.comPort.GetParam("COMPASS_ODI_Y");
-            MainV2.comPort.GetParam("COMPASS_ODI_Z");
+                MainV2.comPort.GetParam("COMPASS_ODI_X");
+                MainV2.comPort.GetParam("COMPASS_ODI_Y");
+                MainV2.comPort.GetParam("COMPASS_ODI_Z");
 
-            MainV2.comPort.GetParam("COMPASS_ODI2_X");
-            MainV2.comPort.GetParam("COMPASS_ODI2_Y");
-            MainV2.comPort.GetParam("COMPASS_ODI2_Z");
+                MainV2.comPort.GetParam("COMPASS_ODI2_X");
+                MainV2.comPort.GetParam("COMPASS_ODI2_Y");
+                MainV2.comPort.GetParam("COMPASS_ODI2_Z");
 
-            MainV2.comPort.GetParam("COMPASS_ODI3_X");
-            MainV2.comPort.GetParam("COMPASS_ODI3_Y");
-            MainV2.comPort.GetParam("COMPASS_ODI3_Z");
+                MainV2.comPort.GetParam("COMPASS_ODI3_X");
+                MainV2.comPort.GetParam("COMPASS_ODI3_Y");
+                MainV2.comPort.GetParam("COMPASS_ODI3_Z");
 
-            MainV2.comPort.GetParam("COMPASS_OFFS_MAX");
+                MainV2.comPort.GetParam("COMPASS_OFFS_MAX");
 
-            MainV2.comPort.GetParam("COMPASS_OFS_X");
-            MainV2.comPort.GetParam("COMPASS_OFS_Y");
-            MainV2.comPort.GetParam("COMPASS_OFS_Z");
+                MainV2.comPort.GetParam("COMPASS_OFS_X");
+                MainV2.comPort.GetParam("COMPASS_OFS_Y");
+                MainV2.comPort.GetParam("COMPASS_OFS_Z");
 
-            MainV2.comPort.GetParam("COMPASS_OFS2_X");
-            MainV2.comPort.GetParam("COMPASS_OFS2_Y");
-            MainV2.comPort.GetParam("COMPASS_OFS2_Z");
+                MainV2.comPort.GetParam("COMPASS_OFS2_X");
+                MainV2.comPort.GetParam("COMPASS_OFS2_Y");
+                MainV2.comPort.GetParam("COMPASS_OFS2_Z");
 
-            MainV2.comPort.GetParam("COMPASS_OFS3_X");
-            MainV2.comPort.GetParam("COMPASS_OFS3_Y");
-            MainV2.comPort.GetParam("COMPASS_OFS3_Z");
+                MainV2.comPort.GetParam("COMPASS_OFS3_X");
+                MainV2.comPort.GetParam("COMPASS_OFS3_Y");
+                MainV2.comPort.GetParam("COMPASS_OFS3_Z");
 
-            MainV2.comPort.GetParam("COMPASS_ORIENT");
-            MainV2.comPort.GetParam("COMPASS_ORIENT2");
-            MainV2.comPort.GetParam("COMPASS_ORIENT3");
+                MainV2.comPort.GetParam("COMPASS_ORIENT");
+                MainV2.comPort.GetParam("COMPASS_ORIENT2");
+                MainV2.comPort.GetParam("COMPASS_ORIENT3");
 
-            MainV2.comPort.GetParam("COMPASS_PRIMARY");
-            MainV2.comPort.GetParam("COMPASS_TYPEMASK");
+                MainV2.comPort.GetParam("COMPASS_PRIMARY");
+                MainV2.comPort.GetParam("COMPASS_TYPEMASK");
 
-            MainV2.comPort.GetParam("COMPASS_USE");
-            MainV2.comPort.GetParam("COMPASS_USE2");
-            MainV2.comPort.GetParam("COMPASS_USE3");
+                MainV2.comPort.GetParam("COMPASS_USE");
+                MainV2.comPort.GetParam("COMPASS_USE2");
+                MainV2.comPort.GetParam("COMPASS_USE3");
+            }
             if (frmProgressReporter != null) this.frmProgressReporter.UpdateProgressAndStatus(100, "Done");
         }
 

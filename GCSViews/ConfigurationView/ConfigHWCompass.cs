@@ -260,20 +260,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             Activate(); // Necessary to refresh offset values displayed on form
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            try
-            {
-                //System.Diagnostics.Process.Start("http://www.ngdc.noaa.gov/geomagmodels/Declination.jsp");
-                Process.Start("http://www.magnetic-declination.com/");
-            }
-            catch
-            {
-                CustomMessageBox.Show(
-                    "Webpage open failed... do you have a virus?\nhttp://www.magnetic-declination.com/", "Mag");
-            }
-        }
-
         private void TXT_declination_Validating(object sender, CancelEventArgs e)
         {
             float ans = 0;
