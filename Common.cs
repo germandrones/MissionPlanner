@@ -370,7 +370,7 @@ namespace MissionPlanner
         public static GMapMarker getMAVMarker(MAVState MAV)
         {
             PointLatLng portlocation = new PointLatLng(MAV.cs.lat, MAV.cs.lng);
-            return (new GMapMarkerPlane(portlocation, MAV.cs.yaw, MAV.cs.groundcourse, MAV.cs.nav_bearing, MAV.cs.target_bearing, MAV.cs.radius, MainV2.gimbal_current_target)
+            return (new GMapMarkerPlane(portlocation, MAV.cs.yaw, MAV.cs.groundcourse, MAV.cs.nav_bearing, MAV.cs.target_bearing, MAV.cs.radius)
             {
                 ToolTipText = MAV.cs.alt.ToString("0") + "\n" + MAV.sysid.ToString("sysid: 0"),
                 ToolTipMode = MarkerTooltipMode.Always

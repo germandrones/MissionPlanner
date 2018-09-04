@@ -235,8 +235,6 @@
     <Compile Include="Magfitrotation.cs" />
     <Compile Include="MainV2.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="Maps\GMapMarkerLand.cs" />
-    <Compile Include="OpenGLtest.cs" />
-    <Compile Include="OpenGLtest2.cs" />
     <Compile Include="OSDVideo.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="paramcompare.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="Program.cs" />
@@ -581,8 +579,6 @@
     <EmbeddedResource Include="MainV2.zh-Hans.resx"><DependentUpon>MainV2.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="MainV2.zh-Hant.resx"><DependentUpon>MainV2.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="MainV2.zh-TW.resx"><DependentUpon>MainV2.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="OpenGLtest.resx"><DependentUpon>OpenGLtest.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="OpenGLtest2.resx"><DependentUpon>OpenGLtest2.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="OSDVideo.resx"><DependentUpon>OSDVideo.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="paramcompare.resx"><DependentUpon>paramcompare.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

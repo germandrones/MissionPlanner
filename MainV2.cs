@@ -220,7 +220,6 @@ namespace MissionPlanner
         bool serialThread = false;
 
         /*Camera control Joystick threads*/
-        public static float gimbal_current_target = 0;
         public Thread Camjoystickthread;
         public bool Camjoystickthreadrun = false;
         public Thread CamjoystickDetectThread;

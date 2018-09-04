@@ -1028,7 +1028,7 @@ namespace MissionPlanner.GCSViews
                         hud1.lowvoltagealert = false;
                     }
 
-                    // update opengltest
+                    /*// update opengltest
                     if (OpenGLtest.instance != null)
                     {
                         OpenGLtest.instance.rpy = new OpenTK.Vector3(MainV2.comPort.MAV.cs.roll, MainV2.comPort.MAV.cs.pitch,
@@ -1042,7 +1042,7 @@ namespace MissionPlanner.GCSViews
                     {
                         OpenGLtest2.instance.rpy = new OpenTK.Vector3(MainV2.comPort.MAV.cs.roll, MainV2.comPort.MAV.cs.pitch, MainV2.comPort.MAV.cs.yaw);
                         OpenGLtest2.instance.LocationCenter = new PointLatLngAlt(MainV2.comPort.MAV.cs.lat, MainV2.comPort.MAV.cs.lng, MainV2.comPort.MAV.cs.altasl, "here");
-                    }
+                    }*/
 
                     // update vario info
                     Vario.SetValue(MainV2.comPort.MAV.cs.climbrate);
@@ -1076,7 +1076,7 @@ namespace MissionPlanner.GCSViews
 
 
                     // update map
-                    if (tracklast.AddSeconds(0.1) < DateTime.Now) // check on 100ms 10 Hz update rate
+                    if (tracklast.AddSeconds(0.05) < DateTime.Now) // check on 100ms 10 Hz update rate
                     {
                         // Check if HWP points updated
                         if (MainV2.comPort.MAV.cs.gotHWP == true)
@@ -1102,6 +1102,8 @@ namespace MissionPlanner.GCSViews
                             {
                                 ThreadPool.QueueUserWorkItem(MainV2.comPort.Send_HWP_Ack); // send Ack msg  as bg pool
                             }
+
+                            MainV2.comPort.MAV.cs.gotHWP = false;
                             isMapDirty = true;
                         }                        
 
@@ -1135,13 +1137,43 @@ namespace MissionPlanner.GCSViews
 
                         updateRoutePosition();
 
-                        if (isMapDirty) { update_map(); }
+                        if (isMapDirty) { isMapDirty = false; update_map(); }
                         //if (waypoints.AddSeconds(1.0) < DateTime.Now){ update_map();waypoints = DateTime.Now;}
 
                         updateClearRoutesMarkers();
 
+                        // Draw Plane Marker
+                        if (route.Points.Count > 0)
+                        {
+                            // draw all icons for all connected mavs
+                            foreach (var port in MainV2.Comports.ToArray())
+                            {
+                                // draw the mavs seen on this port
+                                foreach (var MAV in port.MAVlist)
+                                {
+                                    var marker = Common.getMAVMarker(MAV);
+                                    if (marker.Position.Lat == 0 && marker.Position.Lng == 0) continue; // don't visualize the uav cemetery
+                                    addMissionRouteMarker(marker);
+                                }
+                            }
+
+                            if (route.Points.Count == 0 || route.Points[route.Points.Count - 1].Lat != 0 &&
+                                (mapupdate.AddSeconds(3) < DateTime.Now) && CHK_autopan.Checked)
+                            {
+                                updateMapPosition(currentloc);
+                                mapupdate = DateTime.Now;
+                            }
+
+                            if (route.Points.Count == 1 && gMapControl1.Zoom == 3) // 3 is the default load zoom
+                            {
+                                updateMapPosition(currentloc);
+                                updateMapZoom(17);
+                            }
+                        }
+
+
                         // add this after the mav icons are drawn
-                        if (MainV2.comPort.MAV.cs.MovingBase != null && MainV2.comPort.MAV.cs.MovingBase == PointLatLngAlt.Zero)
+                        /*if (MainV2.comPort.MAV.cs.MovingBase != null && MainV2.comPort.MAV.cs.MovingBase == PointLatLngAlt.Zero)
                         {
                             addMissionRouteMarker(new GMarkerGoogle(currentloc, GMarkerGoogleType.blue_dot)
                             {
@@ -1149,10 +1181,10 @@ namespace MissionPlanner.GCSViews
                                 ToolTipText = "Moving Base",
                                 ToolTipMode = MarkerTooltipMode.OnMouseOver
                             });
-                        }
+                        }*/
 
                         // add gimbal point center
-                        try
+                        /*try
                         {
                             if (MainV2.comPort.MAV.param.ContainsKey("MNT_STAB_TILT") 
                                 && MainV2.comPort.MAV.param.ContainsKey("MNT_STAB_ROLL")
@@ -1185,8 +1217,7 @@ namespace MissionPlanner.GCSViews
                             }
                             
                             // cleanup old - no markers where added, so remove all old 
-                            if (MainV2.comPort.MAV.camerapoints.Count == 0)
-                                photosoverlay.Markers.Clear();
+                            if (MainV2.comPort.MAV.camerapoints.Count == 0) photosoverlay.Markers.Clear();
 
                             var min_interval = 0.0;
                             if (MainV2.comPort.MAV.param.ContainsKey("CAM_MIN_INTERVAL"))
@@ -1255,37 +1286,9 @@ namespace MissionPlanner.GCSViews
                         }
                         catch
                         {
-                        }
+                        }*/
 
-                        if (route.Points.Count > 0)
-                        {
-                            // draw all icons for all connected mavs
-                            foreach (var port in MainV2.Comports.ToArray())
-                            {
-                                // draw the mavs seen on this port
-                                foreach (var MAV in port.MAVlist)
-                                {
-                                    var marker = Common.getMAVMarker(MAV);
-
-                                    if(marker.Position.Lat == 0 && marker.Position.Lng == 0) continue; // don't visualize the uav cemetery
-
-                                    addMissionRouteMarker(marker);
-                                }
-                            }
-
-                            if (route.Points.Count == 0 || route.Points[route.Points.Count - 1].Lat != 0 &&
-                                (mapupdate.AddSeconds(3) < DateTime.Now) && CHK_autopan.Checked)
-                            {
-                                updateMapPosition(currentloc);
-                                mapupdate = DateTime.Now;
-                            }
-
-                            if (route.Points.Count == 1 && gMapControl1.Zoom == 3) // 3 is the default load zoom
-                            {
-                                updateMapPosition(currentloc);
-                                updateMapZoom(17);
-                            }
-                        }
+                        
 
                         gMapControl1.HoldInvalidation = false;
 
@@ -1484,8 +1487,14 @@ namespace MissionPlanner.GCSViews
 
                     default:
                         {
-                            if(plla.y != 0 && plla.x != 0)
-                            addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.Gray, polygons, (int)MainV2.comPort.MAV.param["WP_RADIUS"].Value);
+                            int wp_rad = 30;
+                            try
+                            {
+                                if (MainV2.comPort.MAV.param.ContainsKey("WP_RADIUS")) wp_rad = (int)MainV2.comPort.MAV.param["WP_RADIUS"].Value;
+                            }
+                            catch { }
+
+                            if (plla.y != 0 && plla.x != 0) addpolygonmarker(tag, plla.y, plla.x, (int)plla.z, Color.Gray, polygons, wp_rad );
                             break;
                         }
 
@@ -1527,8 +1536,6 @@ namespace MissionPlanner.GCSViews
                     }
                 }
             }
-
-            isMapDirty = false;
         }
 
 
@@ -1621,7 +1628,7 @@ namespace MissionPlanner.GCSViews
             {
                 polygons.Routes.Clear();
                 polygons.Markers.Clear();
-                routes.Markers.Clear();
+                //routes.Markers.Clear();
                 poioverlay.Markers.Clear();
                 
             });

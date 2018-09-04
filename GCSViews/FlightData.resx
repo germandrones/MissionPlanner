@@ -1975,7 +1975,7 @@
     <value>zg1</value>
   </data>
   <data name="&gt;&gt;zg1.Type" xml:space="preserve">
-    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.5.16328, Culture=neutral, PublicKeyToken=null</value>
+    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.5.28787, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;zg1.Parent" xml:space="preserve">
     <value>splitContainer1.Panel1</value>
@@ -1999,37 +1999,37 @@
     <value>444, 17</value>
   </metadata>
   <data name="stowToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>138, 22</value>
   </data>
   <data name="stowToolStripMenuItem.Text" xml:space="preserve">
     <value>Stow</value>
   </data>
   <data name="gRRToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>138, 22</value>
   </data>
   <data name="gRRToolStripMenuItem.Text" xml:space="preserve">
     <value>GRR</value>
   </data>
   <data name="pTCToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>138, 22</value>
   </data>
   <data name="pTCToolStripMenuItem.Text" xml:space="preserve">
     <value>PTC</value>
   </data>
   <data name="holdToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>138, 22</value>
   </data>
   <data name="holdToolStripMenuItem.Text" xml:space="preserve">
     <value>Hold</value>
   </data>
   <data name="positionToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>138, 22</value>
   </data>
   <data name="positionToolStripMenuItem.Text" xml:space="preserve">
     <value>Position</value>
   </data>
   <data name="observationToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>138, 22</value>
   </data>
   <data name="observationToolStripMenuItem.Text" xml:space="preserve">
     <value>Observation</value>
@@ -2071,19 +2071,19 @@
     <value>False</value>
   </data>
   <data name="deleteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>121, 22</value>
   </data>
   <data name="deleteToolStripMenuItem.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
   <data name="saveFileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>121, 22</value>
   </data>
   <data name="saveFileToolStripMenuItem.Text" xml:space="preserve">
     <value>Save File</value>
   </data>
   <data name="loadFileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>121, 22</value>
   </data>
   <data name="loadFileToolStripMenuItem.Text" xml:space="preserve">
     <value>Load File</value>
@@ -2152,7 +2152,7 @@
     <value>False</value>
   </data>
   <data name="contextMenuStripMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>189, 290</value>
+    <value>189, 268</value>
   </data>
   <data name="&gt;&gt;contextMenuStripMap.Name" xml:space="preserve">
     <value>contextMenuStripMap</value>
@@ -2547,6 +2547,9 @@
   <data name="BTN_tlogOpen.Text" xml:space="preserve">
     <value>Open Log</value>
   </data>
+  <data name="BTN_tlogOpen.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="&gt;&gt;BTN_tlogOpen.Name" xml:space="preserve">
     <value>BTN_tlogOpen</value>
   </data>
@@ -2597,6 +2600,9 @@
   </data>
   <data name="button1.Text" xml:space="preserve">
     <value>Play/Pause</value>
+  </data>
+  <data name="button1.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="&gt;&gt;button1.Name" xml:space="preserve">
     <value>button1</value>

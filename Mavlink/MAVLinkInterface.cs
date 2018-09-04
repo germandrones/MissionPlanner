@@ -2001,7 +2001,6 @@ Please check the following
         {
             mavlink_hwp_t ack = new mavlink_hwp_t();
             generatePacket(MAVLINK_MSG_ID.HWP, ack);
-            MainV2.comPort.MAV.cs.gotHWP = false;
         }
 
 

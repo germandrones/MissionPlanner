@@ -134,7 +134,7 @@ namespace MissionPlanner.Utilities
             temp.Add(new MissionPlanner.Controls.MyLabel());
             temp.Add(new MissionPlanner.Controls.MyProgressBar());
             temp.Add(new MissionPlanner.Controls.MyTrackBar());
-            temp.Add(new MissionPlanner.Controls.OpenGLtest());
+            //temp.Add(new MissionPlanner.Controls.OpenGLtest());
             temp.Add(new MissionPlanner.Controls.OptionForm());
             temp.Add(new MissionPlanner.Controls.PictureBoxMouseOver());
             temp.Add(new MissionPlanner.Controls.PictureBoxWithPseudoOpacity());
