@@ -3877,15 +3877,7 @@
       <field type="float" name="time_to_minimum_delta" units="s">Estimated time until collision occurs (seconds)</field>
       <field type="float" name="altitude_minimum_delta" units="m">Closest vertical distance in meters between vehicle and object</field>
       <field type="float" name="horizontal_minimum_delta" units="m">Closest horizontal distance in meteres between vehicle and object</field>
-    </message>
-    <message id="248" name="V2_EXTENSION">
-      <description>Message implementing parts of the V2 payload specs in V1 frames for transitional support.</description>
-      <field type="uint8_t" name="target_network">Network ID (0 for broadcast)</field>
-      <field type="uint8_t" name="target_system">System ID (0 for broadcast)</field>
-      <field type="uint8_t" name="target_component">Component ID (0 for broadcast)</field>
-      <field type="uint16_t" name="message_type">A code that identifies the software component that understands this message (analogous to usb device classes or mime type strings).  If this code is less than 32768, it is considered a 'registered' protocol extension and the corresponding entry should be added to https://github.com/mavlink/mavlink/extension-message-ids.xml.  Software creators can register blocks of message IDs as needed (useful for GCS specific metadata, etc...). Message_types greater than 32767 are considered local experiments and should not be checked in to any widely distributed codebase.</field>
-      <field type="uint8_t[249]" name="payload">Variable length payload. The length is defined by the remaining message length when subtracting the header and other fields.  The entire content of this block is opaque unless you understand any the encoding message_type.  The particular encoding used can be extension specific and might not always be documented as part of the mavlink specification.</field>
-    </message>
+    </message>    
     <message id="249" name="MEMORY_VECT">
       <description>Send raw controller memory. The use of this message is discouraged for normal packets, but a quite efficient way for testing new messages and getting experimental debug output.</description>
       <field type="uint16_t" name="address">Starting address of the debug variables</field>

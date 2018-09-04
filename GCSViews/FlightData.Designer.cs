@@ -127,7 +127,9 @@
             this.gMapControl1 = new MissionPlanner.Controls.myGMAP();
             this.TRK_zoom = new MissionPlanner.Controls.MyTrackBar();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.BTN_tlogOpen = new System.Windows.Forms.Button();
             this.coords1 = new MissionPlanner.Controls.Coords();
+            this.button1 = new System.Windows.Forms.Button();
             this.Zoomlevel = new System.Windows.Forms.NumericUpDown();
             this.label1 = new MissionPlanner.Controls.MyLabel();
             this.CHK_autopan = new System.Windows.Forms.CheckBox();
@@ -158,8 +160,6 @@
             this.BUT_resumemis = new MissionPlanner.Controls.MyButton();
             this.BUT_quickrtl = new MissionPlanner.Controls.MyButton();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.BTN_tlogOpen = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.contextMenuStripactionstab = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.customizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ZedGraphTimer = new System.Windows.Forms.Timer(this.components);
@@ -1218,7 +1218,7 @@
             this.windDir1.BackColor = System.Drawing.Color.Transparent;
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Direction", this.bindingSource1, "wind_dir", true, System.Windows.Forms.DataSourceUpdateMode.Never));
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Speed", this.bindingSource1, "wind_vel", true, System.Windows.Forms.DataSourceUpdateMode.Never));
-            this.windDir1.Direction = 180D;
+            this.windDir1.Direction = 360D;
             resources.ApplyResources(this.windDir1, "windDir1");
             this.windDir1.Name = "windDir1";
             this.windDir1.Speed = 0D;
@@ -1329,6 +1329,13 @@
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
+            // BTN_tlogOpen
+            // 
+            resources.ApplyResources(this.BTN_tlogOpen, "BTN_tlogOpen");
+            this.BTN_tlogOpen.Name = "BTN_tlogOpen";
+            this.BTN_tlogOpen.UseVisualStyleBackColor = true;
+            this.BTN_tlogOpen.Click += new System.EventHandler(this.BUT_loadtelem_Click);
+            // 
             // coords1
             // 
             this.coords1.Alt = 0D;
@@ -1342,6 +1349,13 @@
             resources.ApplyResources(this.coords1, "coords1");
             this.coords1.Name = "coords1";
             this.coords1.Vertical = false;
+            // 
+            // button1
+            // 
+            resources.ApplyResources(this.button1, "button1");
+            this.button1.Name = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.BUT_playlog_Click);
             // 
             // Zoomlevel
             // 
@@ -1637,20 +1651,6 @@
             // 
             resources.ApplyResources(this.panel3, "panel3");
             this.panel3.Name = "panel3";
-            // 
-            // BTN_tlogOpen
-            // 
-            resources.ApplyResources(this.BTN_tlogOpen, "BTN_tlogOpen");
-            this.BTN_tlogOpen.Name = "BTN_tlogOpen";
-            this.BTN_tlogOpen.UseVisualStyleBackColor = true;
-            this.BTN_tlogOpen.Click += new System.EventHandler(this.BUT_loadtelem_Click);
-            // 
-            // button1
-            // 
-            resources.ApplyResources(this.button1, "button1");
-            this.button1.Name = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.BUT_playlog_Click);
             // 
             // contextMenuStripactionstab
             // 
