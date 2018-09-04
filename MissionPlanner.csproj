@@ -226,34 +226,6 @@
     <Compile Include="GCSViews\ConfigurationView\ConfigGimbalJoystick.cs">
       <SubType>Control</SubType>
     </Compile>
-    <Compile Include="Joystick\Joy_Button_axis.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Joystick\Joy_Button_axis.Designer.cs" />
-    <Compile Include="Joystick\Joy_ChangeMode.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Joystick\Joy_ChangeMode.Designer.cs" />
-    <Compile Include="Joystick\Joy_Do_Repeat_Relay.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Joystick\Joy_Do_Repeat_Relay.Designer.cs" />
-    <Compile Include="Joystick\Joy_Do_Repeat_Servo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Joystick\Joy_Do_Repeat_Servo.Designer.cs" />
-    <Compile Include="Joystick\Joy_Do_Set_Relay.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Joystick\Joy_Do_Set_Relay.Designer.cs" />
-    <Compile Include="Joystick\Joy_Do_Set_Servo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Joystick\Joy_Do_Set_Servo.Designer.cs" />
-    <Compile Include="Joystick\Joy_Mount_Mode.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Joystick\Joy_Mount_Mode.Designer.cs" />
     <Compile Include="Log\LogStrings.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -275,8 +247,6 @@
     </Compile>
     <Compile Include="RAW_Sensor.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="ResEdit.cs"> <SubType>Control</SubType> </Compile>
-    <Compile Include="Script.cs" />
-    <Compile Include="ScriptConsole.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="SerialInjectGPS.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="SerialOutputMD.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="SerialOutputNMEA.cs"> <SubType>Control</SubType> </Compile>
@@ -367,8 +337,6 @@
     <Compile Include="GeoRef\VehicleLocation.cs" />
     <Compile Include="Grid\GridPlugin.cs" />
     <Compile Include="Grid\GridUI.cs"> <SubType>Control</SubType> </Compile>
-    <Compile Include="Joystick\Joystick.cs" />
-    <Compile Include="Joystick\JoystickSetup.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="Log\DFLogScript.cs" />
     <Compile Include="Log\LogBrowse.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="Log\LogDownload.cs"> <SubType>Control</SubType> </Compile>
@@ -460,7 +428,6 @@
     <Compile Include="paramcompare.Designer.cs"><DependentUpon>paramcompare.cs</DependentUpon> </Compile>
     <Compile Include="RAW_Sensor.Designer.cs"><DependentUpon>RAW_Sensor.cs</DependentUpon> </Compile>
     <Compile Include="ResEdit.Designer.cs"><DependentUpon>ResEdit.cs</DependentUpon> </Compile>
-    <Compile Include="ScriptConsole.Designer.cs"><DependentUpon>ScriptConsole.cs</DependentUpon> </Compile>
     <Compile Include="SerialInjectGPS.Designer.cs"><DependentUpon>SerialInjectGPS.cs</DependentUpon> </Compile>
     <Compile Include="SerialOutputMD.Designer.cs"><DependentUpon>SerialOutputMD.cs</DependentUpon> </Compile>
     <Compile Include="SerialOutputNMEA.Designer.cs"><DependentUpon>SerialOutputNMEA.cs</DependentUpon> </Compile>
@@ -527,7 +494,6 @@
     <Compile Include="GCSViews\ConfigurationView\ConfigSimplePids.Designer.cs"><DependentUpon>ConfigSimplePids.cs</DependentUpon> </Compile>
     <Compile Include="GeoRef\georefimage.Designer.cs"><DependentUpon>georefimage.cs</DependentUpon> </Compile>
     <Compile Include="Grid\GridUI.Designer.cs"><DependentUpon>GridUI.cs</DependentUpon> </Compile>
-    <Compile Include="Joystick\JoystickSetup.Designer.cs"><DependentUpon>JoystickSetup.cs</DependentUpon> </Compile>
     <Compile Include="Log\LogBrowse.Designer.cs"><DependentUpon>LogBrowse.cs</DependentUpon> </Compile>
     <Compile Include="Log\LogDownload.Designer.cs"><DependentUpon>LogDownload.cs</DependentUpon> </Compile>
     <Compile Include="Log\LogDownloadMavLink.Designer.cs"><DependentUpon>LogDownloadMavLink.cs</DependentUpon> </Compile>
@@ -642,16 +608,6 @@
     <EmbeddedResource Include="resedit.zh-Hans.resx"><DependentUpon>ResEdit.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="resedit.zh-Hant.resx"><DependentUpon>ResEdit.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="resedit.zh-TW.resx"><DependentUpon>ResEdit.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="ScriptConsole.resx"><DependentUpon>ScriptConsole.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="ScriptConsole.ar.resx"><DependentUpon>ScriptConsole.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="ScriptConsole.az-Latn-AZ.resx"><DependentUpon>ScriptConsole.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="ScriptConsole.id-ID.resx"><DependentUpon>ScriptConsole.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="ScriptConsole.ja-JP.resx"><DependentUpon>ScriptConsole.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="ScriptConsole.ko-KR.resx"><DependentUpon>ScriptConsole.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="ScriptConsole.pt.resx"><DependentUpon>ScriptConsole.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="ScriptConsole.zh-Hans.resx"><DependentUpon>ScriptConsole.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="ScriptConsole.zh-Hant.resx"><DependentUpon>ScriptConsole.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="ScriptConsole.zh-TW.resx"><DependentUpon>ScriptConsole.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="SerialInjectGPS.resx"><DependentUpon>SerialInjectGPS.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="SerialInjectGPS.ar.resx"><DependentUpon>SerialInjectGPS.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="SerialInjectGPS.az-Latn-AZ.resx"><DependentUpon>SerialInjectGPS.cs</DependentUpon> </EmbeddedResource>
@@ -1255,21 +1211,6 @@
     <EmbeddedResource Include="GeoRef\georefimage.zh-Hant.resx"><DependentUpon>georefimage.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="GeoRef\georefimage.zh-TW.resx"><DependentUpon>georefimage.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="Grid\GridUI.resx"><DependentUpon>GridUI.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.resx"><DependentUpon>JoystickSetup.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.ar.resx"><DependentUpon>JoystickSetup.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.az-Latn-AZ.resx"><DependentUpon>JoystickSetup.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.de-DE.resx"><DependentUpon>JoystickSetup.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.es-ES.resx"><DependentUpon>JoystickSetup.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.fr.resx"><DependentUpon>JoystickSetup.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.id-ID.resx"><DependentUpon>JoystickSetup.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.it-IT.resx"><DependentUpon>JoystickSetup.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.ko-KR.resx"><DependentUpon>JoystickSetup.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.pl.resx"><DependentUpon>JoystickSetup.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.pt.resx"><DependentUpon>JoystickSetup.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.ru-RU.resx"><DependentUpon>JoystickSetup.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.zh-Hans.resx"><DependentUpon>JoystickSetup.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.zh-Hant.resx"><DependentUpon>JoystickSetup.cs</DependentUpon> </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.zh-TW.resx"><DependentUpon>JoystickSetup.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="Log\LogBrowse.resx"><DependentUpon>LogBrowse.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="Log\LogBrowse.ar.resx"><DependentUpon>LogBrowse.cs</DependentUpon> </EmbeddedResource>
     <EmbeddedResource Include="Log\LogBrowse.az-Latn-AZ.resx"><DependentUpon>LogBrowse.cs</DependentUpon> </EmbeddedResource>
@@ -1485,48 +1426,6 @@
     </None>
     <None Include="ph2_serial.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\datetime.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\example1.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\example2.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\example3.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\example4 wp.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\example5 inject data.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\example6.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\example7.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\example8 - speech.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\example9 - sitl.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\PARACHUTE LANDING APPROACH.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\rc - heli.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\rc.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\TAKEOFF.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="version.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

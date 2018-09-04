@@ -2056,7 +2056,7 @@ Please check the following
             }
         }
 
-        public void SendRCOverride(byte sysid, byte compid, UInt16 rc1, UInt16 rc2, UInt16 rc3, UInt16 rc4, UInt16 rc5, UInt16 rc6, UInt16 rc7, UInt16 rc8)
+        /*public void SendRCOverride(byte sysid, byte compid, UInt16 rc1, UInt16 rc2, UInt16 rc3, UInt16 rc4, UInt16 rc5, UInt16 rc6, UInt16 rc7, UInt16 rc8)
         {
             mavlink_rc_channels_override_t rc = new mavlink_rc_channels_override_t();
 
@@ -2089,7 +2089,7 @@ Please check the following
             mc.buttons = buttons;
 
             sendPacket(mc, sysid, compid);
-        }
+        }*/
 
         public void requestDatastream(MAV_DATA_STREAM id, byte hzrate, int sysid = -1, int compid = -1)
         {

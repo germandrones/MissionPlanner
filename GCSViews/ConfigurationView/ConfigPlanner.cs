@@ -8,7 +8,7 @@ using System.Threading;
 using System.Windows.Forms;
 using DirectShowLib;
 using MissionPlanner.Controls;
-using MissionPlanner.Joystick;
+//using MissionPlanner.Joystick;
 using MissionPlanner.Utilities;
 using WebCamService;
 
@@ -274,9 +274,9 @@ namespace MissionPlanner.GCSViews.ConfigurationView
 
         private void BUT_Joystick_Click(object sender, EventArgs e)
         {
-            Form joy = new JoystickSetup();
+            /*Form joy = new JoystickSetup();
             ThemeManager.ApplyThemeTo(joy);
-            joy.Show();
+            joy.Show();*/
         }
 
         private void CMB_distunits_SelectedIndexChanged(object sender, EventArgs e)

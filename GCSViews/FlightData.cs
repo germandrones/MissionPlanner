@@ -19,7 +19,7 @@ using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using log4net;
 using MissionPlanner.Controls;
-using MissionPlanner.Joystick;
+//using MissionPlanner.Joystick;
 using MissionPlanner.Log;
 using MissionPlanner.Utilities;
 using MissionPlanner.Warnings;
@@ -2372,9 +2372,9 @@ namespace MissionPlanner.GCSViews
 
         private void BUT_joystick_Click(object sender, EventArgs e)
         {
-            Form joy = new JoystickSetup();
+            /*Form joy = new JoystickSetup();
             ThemeManager.ApplyThemeTo(joy);
-            joy.Show();
+            joy.Show();*/
         }
 
 
@@ -3565,11 +3565,11 @@ namespace MissionPlanner.GCSViews
 
         private void but_disablejoystick_Click(object sender, EventArgs e)
         {
-            if (MainV2.joystick != null && MainV2.joystick.enabled)
+            /*if (MainV2.joystick != null && MainV2.joystick.enabled)
             {
                 MainV2.joystick.enabled = false;
                 but_disablejoystick.Visible = false;
-            }
+            }*/
         }
 
         private void customizeToolStripMenuItem_Click(object sender, EventArgs e)

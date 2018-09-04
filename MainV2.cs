@@ -201,7 +201,7 @@ namespace MissionPlanner
         /// <summary>
         /// joystick static class
         /// </summary>
-        public static Joystick.Joystick joystick { get; set; }
+        //public static Joystick.Joystick joystick { get; set; }
 
         /// <summary>
         /// camera joystick static class
@@ -2194,7 +2194,7 @@ namespace MissionPlanner
                         MainV2.comPort.MAV.cs.firmware = Firmwares.ArduSub;
                     }
 
-                    var joy = new Joystick.Joystick();
+                    /*var joy = new Joystick.Joystick();
 
                     if (joy.start(cmds["joy"]))
                     {
@@ -2204,7 +2204,7 @@ namespace MissionPlanner
                     else
                     {
                         CustomMessageBox.Show("Failed to start joystick");
-                    }
+                    }*/
                 }
 
                 if (cmds.ContainsKey("port") && cmds.ContainsKey("baud"))
