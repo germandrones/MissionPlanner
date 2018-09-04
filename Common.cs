@@ -109,19 +109,6 @@ namespace MissionPlanner
 
             if (firmware == MainV2.Firmwares.PX4)
             {
-                /*
-union px4_custom_mode {
-    struct {
-        uint16_t reserved;
-        uint8_t main_mode;
-        uint8_t sub_mode;
-    };
-    uint32_t data;
-    float data_float;
-};
-                 */
-
-
                 var temp = new List<KeyValuePair<int, string>>()
                 {
                     new KeyValuePair<int, string>((int) PX4_CUSTOM_MAIN_MODE.PX4_CUSTOM_MAIN_MODE_MANUAL << 16, "Manual"),
@@ -160,10 +147,8 @@ union px4_custom_mode {
             }
             else if (firmware == MainV2.Firmwares.ArduPlane)
             {
-                var flightModes = Utilities.ParameterMetaDataRepository.GetParameterOptionsInt("FLTMODE1",
-                    firmware.ToString());
+                var flightModes = Utilities.ParameterMetaDataRepository.GetParameterOptionsInt("FLTMODE1", firmware.ToString());
                 flightModes.Add(new KeyValuePair<int, string>(16, "INITIALISING"));
-
                 flightModes.Add(new KeyValuePair<int, string>(17, "QStabilize"));
                 flightModes.Add(new KeyValuePair<int, string>(18, "QHover"));
                 flightModes.Add(new KeyValuePair<int, string>(19, "QLoiter"));

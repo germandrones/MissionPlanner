@@ -7016,27 +7016,6 @@ AOA_SSA = 11020,
         public float los_z;
     }
 
-    [StructLayout(LayoutKind.Sequential, Size = 60, Pack = 1)]
-    public struct mavlink_v2_extension_t2
-    {
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
-        public byte[] payload;
-        public byte v2_type;
-        public byte go_indication;
-        public byte NA_0;
-        public byte trip_ext_mode;
-        public int los_upper_left_corner_lat;
-        public int los_upper_left_corner_lon;
-        public int los_upper_right_corner_lat;
-        public int los_upper_right_corner_lon;
-        public int los_lower_right_corner_lat;
-        public int los_lower_right_corner_lon;
-        public int los_lower_left_corner_lat;
-        public int los_lower_left_corner_lon;
-        public float los_el;
-    }
-
-
     [StructLayout(LayoutKind.Sequential,Pack=1,Size=36)]
     ///<summary> Send raw controller memory. The use of this message is discouraged for normal packets, but a quite efficient way for testing new messages and getting experimental debug output. </summary>
     public struct mavlink_memory_vect_t
