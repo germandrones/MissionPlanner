@@ -121,7 +121,6 @@ namespace MissionPlanner.Comms
                     .Select(FixBlueToothPortNameBug)
                     .ToArray();
 
-                    // UPD: GDMP-9                     
                     #region find all FTDI
                     ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PnPEntity  WHERE Caption like '%(COM%'");
                     List<string> ftdi_ports = new List<string>();
@@ -137,7 +136,7 @@ namespace MissionPlanner.Comms
                                 if (devCaption.Contains(p))
                                 {
                                     ftdi_ports.Add(p);
-                                    allPorts.Add(p);
+                                    //allPorts.Add(p);
                                 }
                             }
                         }
@@ -189,7 +188,7 @@ namespace MissionPlanner.Comms
         {
             try
             {
-                /*
+                
                 ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_SerialPort");                // Win32_USBControllerDevice
                 using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
                 {
@@ -203,7 +202,7 @@ namespace MissionPlanner.Comms
                         }
                     }
                 }
-                */
+                
             }
             catch { }
 
