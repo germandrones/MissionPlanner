@@ -4445,7 +4445,29 @@ namespace MissionPlanner.GCSViews
             ((Button)sender).Enabled = true;
         }
 
-        
+        private void BUT_8ShapeMode_Click(object sender, EventArgs e)
+        {
+            if (!MainV2.comPort.BaseStream.IsOpen) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Please Connect first"); return; }
+
+            ((Button)sender).Enabled = false;
+            // Thread pool delegate
+            ThreadPool.QueueUserWorkItem(delegate (object state)
+            {
+                try
+                {
+                    if (MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduPlane ||
+                        MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.Ateryx ||
+                        MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduRover)
+                        MainV2.comPort.setMode("SHAPE8");
+                    if (MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduCopter2)
+                        MainV2.comPort.setMode("SHAPE8");
+                }
+                catch { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + Strings.CommandFailed); }
+            });
+            ((Button)sender).Enabled = true;
+        }
+
+
         #region FlytoHere
         Locationwp gotohere = new Locationwp();
         private void goHereToolStripMenuItem_Click(object sender, EventArgs e)

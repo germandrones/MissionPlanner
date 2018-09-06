@@ -154,6 +154,7 @@ namespace MissionPlanner
                 flightModes.Add(new KeyValuePair<int, string>(19, "QLoiter"));
                 flightModes.Add(new KeyValuePair<int, string>(20, "QLand"));
                 flightModes.Add(new KeyValuePair<int, string>(21, "QRTL"));
+                flightModes.Add(new KeyValuePair<int, string>(22, "SHAPE8"));
 
                 return flightModes;
             }

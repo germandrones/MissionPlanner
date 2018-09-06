@@ -1369,11 +1369,21 @@ namespace MissionPlanner
 
         static CurrentState()
         {
+            /*if(Settings.isDevMode)
+            {
+                // set default telemrates old
+                rateattitudebackup = 4;
+                ratepositionbackup = 2;
+                ratestatusbackup = 2;
+                ratesensorsbackup = 2;
+                ratercbackup = 2;
+                return; // For dev mode compas calibration allowed
+            }*/
             // set default telemrates
             rateattitudebackup = 4;
             ratepositionbackup = 4;
             ratestatusbackup = 2;
-            ratesensorsbackup = 0;
+            ratesensorsbackup = 2;
             ratercbackup = 0;
         }
 

@@ -173,6 +173,7 @@
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.bindingSourceGaugesTab = new System.Windows.Forms.BindingSource(this.components);
             this.bindingSourceStatusTab = new System.Windows.Forms.BindingSource(this.components);
+            this.BUT_8ShapeMode = new MissionPlanner.Controls.MyButton();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -1218,7 +1219,7 @@
             this.windDir1.BackColor = System.Drawing.Color.Transparent;
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Direction", this.bindingSource1, "wind_dir", true, System.Windows.Forms.DataSourceUpdateMode.Never));
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Speed", this.bindingSource1, "wind_vel", true, System.Windows.Forms.DataSourceUpdateMode.Never));
-            this.windDir1.Direction = 180D;
+            this.windDir1.Direction = 360D;
             resources.ApplyResources(this.windDir1, "windDir1");
             this.windDir1.Name = "windDir1";
             this.windDir1.Speed = 0D;
@@ -1415,6 +1416,7 @@
             this.quickActions.BackColor = System.Drawing.Color.Transparent;
             this.quickActions.CaptionFont = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.quickActions.CaptionHeight = 21;
+            this.quickActions.Controls.Add(this.BUT_8ShapeMode);
             this.quickActions.Controls.Add(this.BUT_ChangeSpeed);
             this.quickActions.Controls.Add(this.Colibri_GB1);
             this.quickActions.Controls.Add(this.BUT_changeAltitude);
@@ -1719,6 +1721,13 @@
             // 
             this.bindingSourceStatusTab.DataSource = typeof(MissionPlanner.CurrentState);
             // 
+            // BUT_8ShapeMode
+            // 
+            resources.ApplyResources(this.BUT_8ShapeMode, "BUT_8ShapeMode");
+            this.BUT_8ShapeMode.Name = "BUT_8ShapeMode";
+            this.BUT_8ShapeMode.UseVisualStyleBackColor = true;
+            this.BUT_8ShapeMode.Click += new System.EventHandler(this.BUT_8ShapeMode_Click);
+            // 
             // FlightData
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1950,5 +1959,6 @@
         private System.Windows.Forms.Button BTN_tlogOpen;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Panel panel3;
+        private Controls.MyButton BUT_8ShapeMode;
     }
 }

@@ -1975,7 +1975,7 @@
     <value>zg1</value>
   </data>
   <data name="&gt;&gt;zg1.Type" xml:space="preserve">
-    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.5.28787, Culture=neutral, PublicKeyToken=null</value>
+    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.5.30243, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;zg1.Parent" xml:space="preserve">
     <value>splitContainer1.Panel1</value>
@@ -2772,6 +2772,30 @@
   <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="BUT_8ShapeMode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 521</value>
+  </data>
+  <data name="BUT_8ShapeMode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 27</value>
+  </data>
+  <data name="BUT_8ShapeMode.TabIndex" type="System.Int32, mscorlib">
+    <value>93</value>
+  </data>
+  <data name="BUT_8ShapeMode.Text" xml:space="preserve">
+    <value>Do 8 Shape Loitering</value>
+  </data>
+  <data name="&gt;&gt;BUT_8ShapeMode.Name" xml:space="preserve">
+    <value>BUT_8ShapeMode</value>
+  </data>
+  <data name="&gt;&gt;BUT_8ShapeMode.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;BUT_8ShapeMode.Parent" xml:space="preserve">
+    <value>quickActions</value>
+  </data>
+  <data name="&gt;&gt;BUT_8ShapeMode.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="BUT_ChangeSpeed.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -2797,7 +2821,7 @@
     <value>quickActions</value>
   </data>
   <data name="&gt;&gt;BUT_ChangeSpeed.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="BTN_ColibriStow.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
@@ -3211,7 +3235,7 @@
     <value>quickActions</value>
   </data>
   <data name="&gt;&gt;Colibri_GB1.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="BUT_changeAltitude.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -3238,7 +3262,7 @@
     <value>quickActions</value>
   </data>
   <data name="&gt;&gt;BUT_changeAltitude.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="BUT_changeLoiterRad.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -3265,7 +3289,7 @@
     <value>quickActions</value>
   </data>
   <data name="&gt;&gt;BUT_changeLoiterRad.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="BUT_joystick.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -3298,7 +3322,7 @@
     <value>quickActions</value>
   </data>
   <data name="&gt;&gt;BUT_joystick.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="BUT_quickmanual.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -3328,7 +3352,7 @@
     <value>quickActions</value>
   </data>
   <data name="&gt;&gt;BUT_quickmanual.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="BTN_ActionTriggerCamNow.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -3355,7 +3379,7 @@
     <value>quickActions</value>
   </data>
   <data name="&gt;&gt;BTN_ActionTriggerCamNow.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="BUT_setwp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -3385,7 +3409,7 @@
     <value>quickActions</value>
   </data>
   <data name="&gt;&gt;BUT_setwp.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="CMB_setwp.Items" xml:space="preserve">
     <value>0 (Home)</value>
@@ -3409,7 +3433,7 @@
     <value>quickActions</value>
   </data>
   <data name="&gt;&gt;CMB_setwp.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="BUT_resumemis.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -3436,7 +3460,7 @@
     <value>quickActions</value>
   </data>
   <data name="&gt;&gt;BUT_resumemis.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="BUT_quickrtl.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -3466,7 +3490,7 @@
     <value>quickActions</value>
   </data>
   <data name="&gt;&gt;BUT_quickrtl.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="quickActions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Right</value>
