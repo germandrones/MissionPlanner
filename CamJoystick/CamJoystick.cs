@@ -39,7 +39,7 @@ namespace MissionPlanner.CamJoystick
         private static bool m_iSwitchMode_bool = false;
         private static byte prev_SwitchMode = byte.MaxValue;
 
-        public bool enabled = false;
+        //public bool enabled = false;
         private bool[] buttonpressed = new bool[128];
         public bool elevons = false;
         private string joystickconfigbutton = "Camjoystickbuttons.xml";
@@ -173,7 +173,8 @@ namespace MissionPlanner.CamJoystick
             this.Camjoystick = this.AcquireJoystick(name);
             if (this.Camjoystick == null)
                 return false;
-            this.enabled = true;
+            //this.enabled = true;
+            MainV2.JoystickControl = true;
             new Thread(new ThreadStart(this.mainloop))
             {
                 Name = "CamJoystick loop",
@@ -335,7 +336,7 @@ namespace MissionPlanner.CamJoystick
 
         private void mainloop()
         {
-            while (this.enabled && this.Camjoystick != null)
+            while (MainV2.JoystickControl && this.Camjoystick != null)
             {
                 try
                 {

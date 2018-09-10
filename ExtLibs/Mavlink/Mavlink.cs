@@ -218,7 +218,7 @@ public partial class MAVLink
 		new message_info(245, "EXTENDED_SYS_STATE", 130, 2, 2, typeof( mavlink_extended_sys_state_t )),
 		new message_info(246, "ADSB_VEHICLE", 184, 38, 38, typeof( mavlink_adsb_vehicle_t )),
 		new message_info(247, "COLLISION", 81, 19, 19, typeof( mavlink_collision_t )),
-        new message_info(248, "V2_EXTENSION", (byte) 8, 60U, 60U, typeof (mavlink_v2_extension_t)),
+        new message_info(248, "V2_EXTENSION", (byte) 8, 60U, 60U, typeof (mavlink_v2_extension_t)),        
         new message_info(249, "MEMORY_VECT", 204, 36, 36, typeof( mavlink_memory_vect_t )),
 		new message_info(250, "DEBUG_VECT", 49, 30, 30, typeof( mavlink_debug_vect_t )),
 		new message_info(251, "NAMED_VALUE_FLOAT", 170, 18, 18, typeof( mavlink_named_value_float_t )),
@@ -7014,6 +7014,26 @@ AOA_SSA = 11020,
         public float pos_pitch_los_x;
         public float pos_roll_los_y;
         public float los_z;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Size = 60, Pack = 1)]
+    public struct mavlink_v2_extension_t2
+    {
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
+        public byte[] payload;
+        public byte v2_type;
+        public byte go_indication;
+        public byte NA_0;
+        public byte trip_ext_mode;
+        public int los_upper_left_corner_lat;
+        public int los_upper_left_corner_lon;
+        public int los_upper_right_corner_lat;
+        public int los_upper_right_corner_lon;
+        public int los_lower_right_corner_lat;
+        public int los_lower_right_corner_lon;
+        public int los_lower_left_corner_lat;
+        public int los_lower_left_corner_lon;
+        public float los_el;
     }
 
     [StructLayout(LayoutKind.Sequential,Pack=1,Size=36)]

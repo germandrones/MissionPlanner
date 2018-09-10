@@ -679,6 +679,14 @@ namespace MissionPlanner
         public bool gotHWP = false;
         #endregion
 
+        #region TRIP2 Feedback
+        public float trip_pitch { get; set; } = 0;
+        public float trip_roll { get; set; } = 0;
+        public float trip_cam_lat { get; set; } = 0;
+        public float trip_cam_lng { get; set; } = 0;
+
+        #endregion
+
         public float targetaltd100
         {
             get { return (_targetalt/100)%10; }
@@ -1615,6 +1623,34 @@ namespace MissionPlanner
                         MAV.clearPacket((uint) MAVLink.MAVLINK_MSG_ID.RC_CHANNELS_SCALED);
                     }
 
+                    //TRIP2 status messsage feedback
+                    mavLinkMessage = MAV.getPacket((uint)MAVLink.MAVLINK_MSG_ID.V2_EXTENSION);
+                    if (mavLinkMessage != null)
+                    {
+                        MAVLink.mavlink_v2_extension_t mavlinkV2ExtensionT1 = mavLinkMessage.ToStructure<MAVLink.mavlink_v2_extension_t>();
+                        object instance = (object)(MAVLink.mavlink_v2_extension_t2)Activator.CreateInstance(typeof(MAVLink.mavlink_v2_extension_t2));
+                        MAVLink.mavlink_v2_extension_t2 mavlinkV2ExtensionT2 = (MAVLink.mavlink_v2_extension_t2)instance;
+
+                        switch (mavlinkV2ExtensionT1.v2_type)
+                        {
+                            case 0:
+                                {
+                                    trip_pitch = mavlinkV2ExtensionT1.pos_pitch_los_x;
+                                    trip_roll = mavlinkV2ExtensionT1.pos_roll_los_y;
+                                    trip_cam_lat = (float)(mavlinkV2ExtensionT1.ptc_cam_lat / 10000000.0);
+                                    trip_cam_lng = (float)(mavlinkV2ExtensionT1.ptc_cam_lng / 10000000.0);
+                                    break;
+                                }
+                            case 1:
+                                {
+
+                                    break;
+                                }
+                        }
+
+                        MAV.clearPacket((uint)MAVLink.MAVLINK_MSG_ID.V2_EXTENSION);
+                    }
+
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.AUTOPILOT_VERSION);
                     if (mavLinkMessage != null)
                     {
@@ -1908,21 +1944,7 @@ namespace MissionPlanner
 
                         MAV.clearPacket((uint)MAVLink.MAVLINK_MSG_ID.HWP);
                         gotHWP = true; // modify a flag on each receive of HWP
-                    }
-
-
-                    //Colibri status messsage feedback
-                    mavLinkMessage = MAV.getPacket((uint)MAVLink.MAVLINK_MSG_ID.V2_EXTENSION);
-                    if(mavLinkMessage != null)
-                    {
-                        System.Diagnostics.Debug.WriteLine("V2_Extension RECEIVED!!!");
-
-                        var cdata = mavLinkMessage.ToStructure<MAVLink.mavlink_v2_extension_t>();   
-                        
-                        // It sends no feedback at all!
-                        MAV.clearPacket((uint)MAVLink.MAVLINK_MSG_ID.V2_EXTENSION);
-                    }
-
+                    }               
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.HEARTBEAT);
                     if (mavLinkMessage != null)

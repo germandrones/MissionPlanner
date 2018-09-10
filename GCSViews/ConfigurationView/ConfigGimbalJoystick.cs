@@ -204,7 +204,7 @@ namespace GCSViews.ConfigurationView.ConfigGimbalJoystick
             this.RevChFollowTarget.Checked = !(camJoystick.getChannel(16).reverse.ToString().ToLower() == "false");
             this.startup = false;
 
-            if (MainV2.Camjoystick != null && MainV2.Camjoystick.enabled) this.timer1.Start();
+            if (MainV2.Camjoystick != null && MainV2.JoystickControl) this.timer1.Start();
         }
 
 
@@ -229,7 +229,8 @@ namespace GCSViews.ConfigurationView.ConfigGimbalJoystick
             {
                 Settings.Instance["cam_joystick_name"] = this.CMB_joysticks.Text;
                 MainV2.Camjoystick = camJoystick;
-                MainV2.Camjoystick.enabled = true;
+                //MainV2.Camjoystick.enabled = true;
+                MainV2.JoystickControl = true;
                 myButton1.Text = "Disable";
                 this.timer1.Start();
             }
@@ -489,7 +490,7 @@ namespace GCSViews.ConfigurationView.ConfigGimbalJoystick
             catch (SharpDXException ex)
             {
                 ex.ToString();
-                if (MainV2.Camjoystick != null && MainV2.Camjoystick.enabled)
+                if (MainV2.Camjoystick != null && MainV2.JoystickControl)
                     this.BUT_enable_Click();
             }
             catch
@@ -831,7 +832,8 @@ namespace GCSViews.ConfigurationView.ConfigGimbalJoystick
                 return;
             try
             {
-                MainV2.Camjoystick.enabled = false;
+                //MainV2.Camjoystick.enabled = false;
+                MainV2.JoystickControl = false;
                 MainV2.Camjoystick.UnAcquireJoyStick();
                 MainV2.Camjoystick = (MissionPlanner.CamJoystick.CamJoystick)null;
             }

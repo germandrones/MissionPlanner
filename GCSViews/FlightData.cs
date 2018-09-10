@@ -4002,6 +4002,7 @@ namespace MissionPlanner.GCSViews
                 PTC_Lat.Text = MouseDownStart.Lat.ToString();
                 PTC_Lon.Text = MouseDownStart.Lng.ToString();
                 PTC_Alt.Text = alt.ToString();
+                MainV2.ManualControl = true;
             }
         }
 
@@ -4009,32 +4010,6 @@ namespace MissionPlanner.GCSViews
         #region Colibri control Tab
 
         #region Arrow Buttons
-
-        private void sendColibriActions()
-        {
-            MAVLink.mavlink_v2_extension_t mavlinkV2ExtensionT = new MAVLink.mavlink_v2_extension_t();
-            mavlinkV2ExtensionT.v2_type = (byte)0;
-            mavlinkV2ExtensionT.ptc_cam_lat = 0;
-            mavlinkV2ExtensionT.ptc_cam_lng = 0;
-            mavlinkV2ExtensionT.ptc_cam_alt = 0;
-            mavlinkV2ExtensionT.los_gnd_lat = 0;
-            mavlinkV2ExtensionT.los_gnd_lng = 0;
-            mavlinkV2ExtensionT.los_gnd_alt = 0;
-            mavlinkV2ExtensionT.pos_pitch_los_x = 0.0f;
-            mavlinkV2ExtensionT.pos_roll_los_y = 0.0f;
-            mavlinkV2ExtensionT.los_z = 0.0f;
-
-            MainV2.Colibri.EditingControlYaw = (ushort)512;
-            MainV2.Colibri.EditingControlRoll = MainV2.comPort.MAV.cs.colibri_ch1;
-            MainV2.Colibri.EditingControlPitch = MainV2.comPort.MAV.cs.colibri_ch2;
-            MainV2.Colibri.EditingControlZoomIn = MainV2.comPort.MAV.cs.colibri_ch3 > (ushort)1300 ? (byte)1 : (byte)0;
-            MainV2.Colibri.EditingControlZoomOut = MainV2.comPort.MAV.cs.colibri_ch4 > (ushort)1300 ? (byte)1 : (byte)0;
-
-            byte[] a_pBuffer = new byte[20];
-            MainV2.Colibri.GetransmitPacket(a_pBuffer);
-            mavlinkV2ExtensionT.payload = a_pBuffer;            
-            MainV2.comPort.sendPacket((object)mavlinkV2ExtensionT, (int)MainV2.comPort.MAV.sysid, (int)MainV2.comPort.MAV.compid);
-        }
 
         private void resetButtonsState()
         {
@@ -4048,76 +4023,69 @@ namespace MissionPlanner.GCSViews
         private void BTN_ColibriUp_MouseDown(object sender, MouseEventArgs e)
         {
             MainV2.comPort.MAV.cs.colibri_ch2 = 0;
-            sendColibriActions();
+            MainV2.ManualControl = true;            
         }
         private void BTN_ColibriUp_MouseUp(object sender, MouseEventArgs e)
         {
             resetButtonsState();
-            sendColibriActions();
         }
 
         //DOWN
         private void BTN_ColibriDown_MouseDown(object sender, MouseEventArgs e)
         {
             MainV2.comPort.MAV.cs.colibri_ch2 = 1023;
-            sendColibriActions();
+            MainV2.ManualControl = true;
         }
         private void BTN_ColibriDown_MouseUp(object sender, MouseEventArgs e)
         {
             resetButtonsState();
-            sendColibriActions();
         }
 
         //LEFT
         private void BTN_ColibriLeft_MouseDown(object sender, MouseEventArgs e)
         {
             MainV2.comPort.MAV.cs.colibri_ch1 = 1023;
-            sendColibriActions();
+            MainV2.ManualControl = true;
         }
         private void BTN_ColibriLeft_MouseUp(object sender, MouseEventArgs e)
         {
             resetButtonsState();
-            sendColibriActions();
         }
 
         // RIGHT
         private void BTN_ColibriRight_MouseDown(object sender, MouseEventArgs e)
         {
             MainV2.comPort.MAV.cs.colibri_ch1 = 0;
-            sendColibriActions();
+            MainV2.ManualControl = true;
         }
         private void BTN_ColibriRight_MouseUp(object sender, MouseEventArgs e)
         {
             resetButtonsState();
-            sendColibriActions();
         }
 
         //ZoomIN Action button
         private void BTN_ColibriZoomIn_MouseDown(object sender, MouseEventArgs e)
         {
             MainV2.comPort.MAV.cs.colibri_ch3 = 2000;
-            sendColibriActions();
+            MainV2.ManualControl = true;
         }
 
         private void BTN_ColibriZoomIn_MouseUp(object sender, MouseEventArgs e)
         {
             resetButtonsState();
-            sendColibriActions();
         }
         
         //ZoomOUT Action button
         private void BTN_ColibriZoomOut_MouseDown(object sender, MouseEventArgs e)
         {
             MainV2.comPort.MAV.cs.colibri_ch4 = 2000;
-            sendColibriActions();
+            MainV2.ManualControl = true;
         }
 
         private void BTN_ColibriZoomOut_MouseUp(object sender, MouseEventArgs e)
         {
             resetButtonsState();
-            sendColibriActions();
         }
-
         
         #endregion
 
@@ -4125,12 +4093,14 @@ namespace MissionPlanner.GCSViews
         {
             RadioBtnObs.Checked = true;
             this.ColibriCamMode = (byte)6;
+            MainV2.ManualControl = true;
         }
 
         private void gRRToolStripMenuItem_Click(object sender, EventArgs e)
         {
             RadioBtnGRR.Checked = true;
             this.ColibriCamMode = (byte)17;
+            MainV2.ManualControl = true;
         }
 
         private void positionToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4166,6 +4136,7 @@ namespace MissionPlanner.GCSViews
                     this.ColibriPositionRoll = result2;
                     this.ColibriPositionPitch = result1;
                     this.ColibriCamMode = (byte)12;
+                    MainV2.ManualControl = true;
                 }
             }
         }
@@ -4188,6 +4159,8 @@ namespace MissionPlanner.GCSViews
                 PTC_Lat.Text = MouseDownStart.Lat.ToString();
                 PTC_Lon.Text = MouseDownStart.Lng.ToString();
                 PTC_Alt.Text = alt.ToString();
+                MainV2.ManualControl = true;
+
             }
         }
 
@@ -4205,6 +4178,7 @@ namespace MissionPlanner.GCSViews
                 this.ColibriPTCLng = this.MouseDownStart.Lng;
                 this.ColibriPTCASL = alt;
                 this.ColibriCamMode = (byte)2;
+                MainV2.ManualControl = true;
             }
         }
 
@@ -4212,6 +4186,7 @@ namespace MissionPlanner.GCSViews
         {
             RadioBtnStow.Checked = true;
             this.ColibriCamMode = (byte)4;
+            MainV2.ManualControl = true;
         }
         #endregion
 
@@ -4474,7 +4449,7 @@ namespace MissionPlanner.GCSViews
         {
             if (!MainV2.comPort.BaseStream.IsOpen) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Please Connect first"); return; }
 
-            if (MainV2.comPort.MAV.GuidedMode.z == 0)
+            //if (MainV2.comPort.MAV.GuidedMode.z == 0) Always ask altitude
             {
                 flyToHereAltToolStripMenuItem_Click(null, null);
                 if (MainV2.comPort.MAV.GuidedMode.z == 0) return;

@@ -1535,7 +1535,8 @@ namespace MissionPlanner
                             {
                                 Settings.Instance["cam_joystick_name"] = devName;
                                 MainV2.Camjoystick = camJoystick;
-                                MainV2.Camjoystick.enabled = true;
+                                //MainV2.Camjoystick.enabled = true;
+                                MainV2.JoystickControl = true;
                                 MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + devName + " is active.");
                             }
                         }
@@ -1544,12 +1545,16 @@ namespace MissionPlanner
                     else
                     {
                         MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Joystick lost");
-                        MainV2.Camjoystick.enabled = false;
+                        //MainV2.Camjoystick.enabled = false;
+                        MainV2.JoystickControl = false;
                     }
                 }
 
             }
         }
+
+        public static bool ManualControl = false;
+        public static bool JoystickControl = false;
 
         private void Camjoysticksend()
         {
@@ -1562,123 +1567,144 @@ namespace MissionPlanner
                
                 try
                 {
-                    if (!MainV2.MONO && MainV2.Camjoystick != null && !MainV2.missionUploading) // on mission uploading do pause
+                    if (!MainV2.MONO && !MainV2.missionUploading) // on mission uploading do pause
                     {
-                        if (!MainV2.Camjoystick.enabled) continue; // Don't send data while joystick is not enabled to reduce uplink
+                        if (ManualControl) // no joystick used
+                        {
+                            MAVLink.mavlink_v2_extension_t mavlinkV2ExtensionT = new MAVLink.mavlink_v2_extension_t();
+                            mavlinkV2ExtensionT.v2_type = (byte)0;
+                            mavlinkV2ExtensionT.ptc_cam_lat = 0;
+                            mavlinkV2ExtensionT.ptc_cam_lng = 0;
+                            mavlinkV2ExtensionT.ptc_cam_alt = 0;
+                            mavlinkV2ExtensionT.los_gnd_lat = 0;
+                            mavlinkV2ExtensionT.los_gnd_lng = 0;
+                            mavlinkV2ExtensionT.los_gnd_alt = 0;
+                            mavlinkV2ExtensionT.pos_pitch_los_x = 0.0f;
+                            mavlinkV2ExtensionT.pos_roll_los_y = 0.0f;
+                            mavlinkV2ExtensionT.los_z = 0.0f;
 
-                        MAVLink.mavlink_v2_extension_t mavlinkV2ExtensionT = new MAVLink.mavlink_v2_extension_t();
-                        mavlinkV2ExtensionT.v2_type = (byte)0;
-                        mavlinkV2ExtensionT.ptc_cam_lat = 0;
-                        mavlinkV2ExtensionT.ptc_cam_lng = 0;
-                        mavlinkV2ExtensionT.ptc_cam_alt = 0;
-                        mavlinkV2ExtensionT.los_gnd_lat = 0;
-                        mavlinkV2ExtensionT.los_gnd_lng = 0;
-                        mavlinkV2ExtensionT.los_gnd_alt = 0;
-                        mavlinkV2ExtensionT.pos_pitch_los_x = 0.0f;
-                        mavlinkV2ExtensionT.pos_roll_los_y = 0.0f;
-                        mavlinkV2ExtensionT.los_z = 0.0f;
-                        bool flag = false;
-                        if ((uint)MainV2.Camjoystick.getJoystickAxis(2) > 0U)
+                            MainV2.Colibri.EditingControlYaw = (ushort)512;
+                            MainV2.Colibri.EditingControlRoll = MainV2.comPort.MAV.cs.colibri_ch1;
                             MainV2.Colibri.EditingControlPitch = MainV2.comPort.MAV.cs.colibri_ch2;
-                        if ((uint)MainV2.Camjoystick.getJoystickAxis(3) > 0U)
                             MainV2.Colibri.EditingControlZoomIn = MainV2.comPort.MAV.cs.colibri_ch3 > (ushort)1300 ? (byte)1 : (byte)0;
-                        if ((uint)MainV2.Camjoystick.getJoystickAxis(4) > 0U)
                             MainV2.Colibri.EditingControlZoomOut = MainV2.comPort.MAV.cs.colibri_ch4 > (ushort)1300 ? (byte)1 : (byte)0;
-                        if ((uint)MainV2.Camjoystick.getJoystickAxis(5) > 0U)
                             MainV2.Colibri.EditingControlNuc = MainV2.comPort.MAV.cs.colibri_ch5 > (ushort)1300 ? (byte)1 : (byte)0;
-                        if ((uint)MainV2.Camjoystick.getJoystickAxis(6) > 0U)
                             MainV2.Colibri.EditingControlPolarity = MainV2.comPort.MAV.cs.colibri_ch6 > (ushort)1300 ? (byte)1 : (byte)0;
-                        if ((uint)MainV2.Camjoystick.getJoystickAxis(7) > 0U)
                             MainV2.Colibri.EditingControlCameraType = MainV2.comPort.MAV.cs.colibri_ch7 > (ushort)1300 ? (byte)1 : (byte)0;
-                        if ((uint)MainV2.Camjoystick.getJoystickAxis(8) > 0U)
                             MainV2.Colibri.EditingControlRecord = MainV2.comPort.MAV.cs.colibri_ch8 > (ushort)1300 ? (byte)1 : (byte)0;
-                        if ((uint)MainV2.Camjoystick.getJoystickAxis(9) > 0U)
                             MainV2.Colibri.EditingPictureCapture = MainV2.comPort.MAV.cs.colibri_ch9 > (ushort)1300 ? (byte)1 : (byte)0;
-                        if ((uint)MainV2.Camjoystick.getJoystickAxis(10) > 0U)
                             MainV2.Colibri.EditingControlLaserMode = (byte)0;
-                        if ((uint)MainV2.Camjoystick.getJoystickAxis(11) > 0U)
                             MainV2.Colibri.EditingControlTracker = MainV2.comPort.MAV.cs.colibri_ch11 > (ushort)1300 ? (byte)1 : (byte)0;
-                        if ((uint)MainV2.Camjoystick.getJoystickAxis(12) > 0U)
                             MainV2.Colibri.EditingControlReTracker = MainV2.comPort.MAV.cs.colibri_ch12 > (ushort)1300 ? (byte)1 : (byte)0;
-                        if ((uint)MainV2.Camjoystick.getJoystickAxis(13) > 0U)
                             MainV2.Colibri.EditingControlSingleYaw = MainV2.comPort.MAV.cs.colibri_ch13 > (ushort)1300 ? (byte)1 : (byte)0;
-                        if ((uint)MainV2.Camjoystick.getJoystickAxis(14) > 0U)
-                            flag = MainV2.comPort.MAV.cs.colibri_ch14 > (ushort)1300;
-                        if ((uint)MainV2.Camjoystick.getJoystickAxis(15) > 0U)
                             MainV2.Colibri.EditingControlRetracting = MainV2.comPort.MAV.cs.colibri_ch15 > (ushort)1300 ? (byte)1 : (byte)0;
-                        if ((uint)MainV2.Camjoystick.getJoystickAxis(16) > 0U)
                             MainV2.Colibri.EditingControlFollowTarget = MainV2.comPort.MAV.cs.colibri_ch16 > (ushort)1300 ? (byte)1 : (byte)0;
 
-                        if ((uint)MainV2.Camjoystick.getJoystickAxis(17) > 0U)
-                        {
-                            // mode changed by joystick action
-                            MainV2.Colibri.EditingSwitchMode = MainV2.comPort.MAV.cs.colibri_ch17 > (ushort)1300 ? (byte)1 : (byte)0;
-                            if(MainV2.Colibri.EditingSwitchMode == (byte)1)
-                            {
-                                this.FlightData.RadioBtnStow.Checked = true;
-                                this.FlightData.ColibriCamMode = (byte)4;
-                            }
-                            else
-                            {
-                                this.FlightData.RadioBtnObs.Checked = true;
-                                this.FlightData.ColibriCamMode = (byte)6;
-                            }
-                        }
-
-                        // if mode switch joystick button is pressed...
-                        if ((uint)MainV2.Camjoystick.getJoystickAxis(1) > 0U)
-                        {
-                            byte controlSingleYaw = MainV2.Colibri.EditingControlSingleYaw;
-                            if (Convert.ToBoolean(MainV2.Colibri.EditingControlSingleYaw))
-                            {
-                                MainV2.Colibri.EditingControlRoll = MainV2.comPort.MAV.cs.colibri_ch1;
-                                MainV2.Colibri.EditingControlYaw = MainV2.comPort.MAV.cs.colibri_ch1;
-                            }
-                            else
-                            {
-                                MainV2.Colibri.EditingControlYaw = (ushort)512;
-                                MainV2.Colibri.EditingControlRoll = MainV2.comPort.MAV.cs.colibri_ch1;
-                            }
-                        }
-
-                        if (Convert.ToBoolean(MainV2.Colibri.EditingControlRetracting)) MainV2.Colibri.EditingControlCameraMode = (byte)8;
-                        else if (flag)
-                        {
-                            MainV2.Colibri.EditingControlCameraMode = (byte)10;
-                        }
-                        else
-                        {
-                            mavlinkV2ExtensionT.ptc_cam_alt = (int)(this.FlightData.ColibriPTCASL * 1000.0);
-                            mavlinkV2ExtensionT.ptc_cam_lat = (int)(this.FlightData.ColibriPTCLat * 10000000.0);
-                            mavlinkV2ExtensionT.ptc_cam_lng = (int)(this.FlightData.ColibriPTCLng * 10000000.0);
-                            mavlinkV2ExtensionT.pos_pitch_los_x = this.FlightData.ColibriPositionPitch;
-                            mavlinkV2ExtensionT.pos_roll_los_y = this.FlightData.ColibriPositionRoll;
-                            mavlinkV2ExtensionT.los_z = 0.0f;
-                            
                             MainV2.Colibri.EditingControlCameraMode = this.FlightData.ColibriCamMode;
-                        }
-                        if (MainV2.Colibri.EditingControlSingleYaw == (byte)1)
-                        {
-                            mavlinkV2ExtensionT.trip_ext_mode = MainV2.Colibri.EditingControlFollowTarget;
-                        }
-                        else
-                        {
-                            MainV2.Colibri.EditingControlFollowTargetClear = (byte)0;
-                            mavlinkV2ExtensionT.trip_ext_mode = (byte)0;
-                        }
-                        byte[] a_pBuffer = new byte[20];
-                        MainV2.Colibri.GetransmitPacket(a_pBuffer);
-                        mavlinkV2ExtensionT.payload = a_pBuffer;
-                        if (!MainV2.comPort.BaseStream.IsOpen)
-                        {
-                            Thread.Sleep(250);
+                            byte[] a_pBuffer = new byte[20];
+                            MainV2.Colibri.GetransmitPacket(a_pBuffer);
+                            mavlinkV2ExtensionT.payload = a_pBuffer;
+                            if (!MainV2.comPort.BaseStream.IsOpen) { Thread.Sleep(250); continue; }
+                            MainV2.comPort.sendPacket((object)mavlinkV2ExtensionT, (int)MainV2.comPort.MAV.sysid, (int)MainV2.comPort.MAV.compid);
+                            ++num;
+                            MainV2.ManualControl = false; // do only once!
                             continue;
                         }
 
-                        System.Diagnostics.Debug.WriteLine("V2_Extension sent");
+                        if (JoystickControl)
+                        {
+                            MAVLink.mavlink_v2_extension_t mavlinkV2ExtensionT = new MAVLink.mavlink_v2_extension_t();
+                            mavlinkV2ExtensionT.v2_type = (byte)0;
+                            mavlinkV2ExtensionT.ptc_cam_lat = 0;
+                            mavlinkV2ExtensionT.ptc_cam_lng = 0;
+                            mavlinkV2ExtensionT.ptc_cam_alt = 0;
+                            mavlinkV2ExtensionT.los_gnd_lat = 0;
+                            mavlinkV2ExtensionT.los_gnd_lng = 0;
+                            mavlinkV2ExtensionT.los_gnd_alt = 0;
+                            mavlinkV2ExtensionT.pos_pitch_los_x = 0.0f;
+                            mavlinkV2ExtensionT.pos_roll_los_y = 0.0f;
+                            mavlinkV2ExtensionT.los_z = 0.0f;
+                            bool flag = false;
+                            if ((uint)MainV2.Camjoystick.getJoystickAxis(2) > 0U) MainV2.Colibri.EditingControlPitch = MainV2.comPort.MAV.cs.colibri_ch2;
+                            if ((uint)MainV2.Camjoystick.getJoystickAxis(3) > 0U) MainV2.Colibri.EditingControlZoomIn = MainV2.comPort.MAV.cs.colibri_ch3 > (ushort)1300 ? (byte)1 : (byte)0;
+                            if ((uint)MainV2.Camjoystick.getJoystickAxis(4) > 0U) MainV2.Colibri.EditingControlZoomOut = MainV2.comPort.MAV.cs.colibri_ch4 > (ushort)1300 ? (byte)1 : (byte)0;
+                            if ((uint)MainV2.Camjoystick.getJoystickAxis(5) > 0U) MainV2.Colibri.EditingControlNuc = MainV2.comPort.MAV.cs.colibri_ch5 > (ushort)1300 ? (byte)1 : (byte)0;
+                            if ((uint)MainV2.Camjoystick.getJoystickAxis(6) > 0U) MainV2.Colibri.EditingControlPolarity = MainV2.comPort.MAV.cs.colibri_ch6 > (ushort)1300 ? (byte)1 : (byte)0;
+                            if ((uint)MainV2.Camjoystick.getJoystickAxis(7) > 0U) MainV2.Colibri.EditingControlCameraType = MainV2.comPort.MAV.cs.colibri_ch7 > (ushort)1300 ? (byte)1 : (byte)0;
+                            if ((uint)MainV2.Camjoystick.getJoystickAxis(8) > 0U) MainV2.Colibri.EditingControlRecord = MainV2.comPort.MAV.cs.colibri_ch8 > (ushort)1300 ? (byte)1 : (byte)0;
+                            if ((uint)MainV2.Camjoystick.getJoystickAxis(9) > 0U) MainV2.Colibri.EditingPictureCapture = MainV2.comPort.MAV.cs.colibri_ch9 > (ushort)1300 ? (byte)1 : (byte)0;
+                            if ((uint)MainV2.Camjoystick.getJoystickAxis(10) > 0U) MainV2.Colibri.EditingControlLaserMode = (byte)0;
+                            if ((uint)MainV2.Camjoystick.getJoystickAxis(11) > 0U) MainV2.Colibri.EditingControlTracker = MainV2.comPort.MAV.cs.colibri_ch11 > (ushort)1300 ? (byte)1 : (byte)0;
+                            if ((uint)MainV2.Camjoystick.getJoystickAxis(12) > 0U) MainV2.Colibri.EditingControlReTracker = MainV2.comPort.MAV.cs.colibri_ch12 > (ushort)1300 ? (byte)1 : (byte)0;
+                            if ((uint)MainV2.Camjoystick.getJoystickAxis(13) > 0U) MainV2.Colibri.EditingControlSingleYaw = MainV2.comPort.MAV.cs.colibri_ch13 > (ushort)1300 ? (byte)1 : (byte)0;
+                            if ((uint)MainV2.Camjoystick.getJoystickAxis(14) > 0U) flag = MainV2.comPort.MAV.cs.colibri_ch14 > (ushort)1300;
+                            if ((uint)MainV2.Camjoystick.getJoystickAxis(15) > 0U) MainV2.Colibri.EditingControlRetracting = MainV2.comPort.MAV.cs.colibri_ch15 > (ushort)1300 ? (byte)1 : (byte)0;
+                            if ((uint)MainV2.Camjoystick.getJoystickAxis(16) > 0U) MainV2.Colibri.EditingControlFollowTarget = MainV2.comPort.MAV.cs.colibri_ch16 > (ushort)1300 ? (byte)1 : (byte)0;
 
-                        MainV2.comPort.sendPacket((object)mavlinkV2ExtensionT, (int)MainV2.comPort.MAV.sysid, (int)MainV2.comPort.MAV.compid);                        
-                        ++num;
+                            /*if ((uint)MainV2.Camjoystick.getJoystickAxis(17) > 0U)
+                            {
+                                // mode changed by joystick action
+                                MainV2.Colibri.EditingSwitchMode = MainV2.comPort.MAV.cs.colibri_ch17 > (ushort)1300 ? (byte)1 : (byte)0;
+                                if(MainV2.Colibri.EditingSwitchMode == (byte)1)
+                                {
+                                    //this.FlightData.RadioBtnStow.Checked = true;
+                                    this.FlightData.ColibriCamMode = (byte)4;
+                                }
+                                else
+                                {
+                                    //this.FlightData.RadioBtnObs.Checked = true;
+                                    this.FlightData.ColibriCamMode = (byte)6;
+                                }
+                            }*/
+
+                            // if mode switch joystick button is pressed...
+                            if ((uint)MainV2.Camjoystick.getJoystickAxis(1) > 0U)
+                            {
+                                byte controlSingleYaw = MainV2.Colibri.EditingControlSingleYaw;
+                                if (Convert.ToBoolean(MainV2.Colibri.EditingControlSingleYaw))
+                                {
+                                    MainV2.Colibri.EditingControlRoll = MainV2.comPort.MAV.cs.colibri_ch1;
+                                    MainV2.Colibri.EditingControlYaw = MainV2.comPort.MAV.cs.colibri_ch1;
+                                }
+                                else
+                                {
+                                    MainV2.Colibri.EditingControlYaw = (ushort)512;
+                                    MainV2.Colibri.EditingControlRoll = MainV2.comPort.MAV.cs.colibri_ch1;
+                                }
+                            }
+
+                            if (Convert.ToBoolean(MainV2.Colibri.EditingControlRetracting)) MainV2.Colibri.EditingControlCameraMode = (byte)8;
+                            else if (flag)
+                            {
+                                MainV2.Colibri.EditingControlCameraMode = (byte)10;
+                            }
+                            else
+                            {
+                                mavlinkV2ExtensionT.ptc_cam_alt = (int)(this.FlightData.ColibriPTCASL * 1000.0);
+                                mavlinkV2ExtensionT.ptc_cam_lat = (int)(this.FlightData.ColibriPTCLat * 10000000.0);
+                                mavlinkV2ExtensionT.ptc_cam_lng = (int)(this.FlightData.ColibriPTCLng * 10000000.0);
+                                mavlinkV2ExtensionT.pos_pitch_los_x = this.FlightData.ColibriPositionPitch;
+                                mavlinkV2ExtensionT.pos_roll_los_y = this.FlightData.ColibriPositionRoll;
+                                mavlinkV2ExtensionT.los_z = 0.0f;
+
+                                MainV2.Colibri.EditingControlCameraMode = this.FlightData.ColibriCamMode;
+                            }
+                            if (MainV2.Colibri.EditingControlSingleYaw == (byte)1)
+                            {
+                                mavlinkV2ExtensionT.trip_ext_mode = MainV2.Colibri.EditingControlFollowTarget;
+                            }
+                            else
+                            {
+                                MainV2.Colibri.EditingControlFollowTargetClear = (byte)0;
+                                mavlinkV2ExtensionT.trip_ext_mode = (byte)0;
+                            }
+                            byte[] a_pBuffer = new byte[20];
+                            MainV2.Colibri.GetransmitPacket(a_pBuffer);
+                            mavlinkV2ExtensionT.payload = a_pBuffer;
+                            if (!MainV2.comPort.BaseStream.IsOpen) { Thread.Sleep(250); continue; }
+                            MainV2.comPort.sendPacket((object)mavlinkV2ExtensionT, (int)MainV2.comPort.MAV.sysid, (int)MainV2.comPort.MAV.compid);
+                            ++num;                            
+                        }
                     }
                     Thread.Sleep(100); //10 Hz update
                 }

@@ -3853,6 +3853,7 @@ Please check the following
 
                     MAVlist[sysid, compid].packetspersecondbuild[msgid] = DateTime.Now;
 
+
                     //Console.WriteLine("Packet {0}",temp[5]);
                     // store packet history
                     lock (objlock)
@@ -3915,6 +3916,11 @@ Please check the following
                             {
                                 ((adsb.PointLatLngAltHdg) MainV2.instance.adsbPlanes[id]).ThreatLevel = threat_level;
                             }
+                        }
+
+                        if (msgid == (byte)MAVLINK_MSG_ID.V2_EXTENSION)
+                        {
+                            MAVlist[MAV.sysid, MAV.compid].addPacket(message);
                         }
                     }
 
