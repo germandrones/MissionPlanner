@@ -6,14 +6,12 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-using log4net;
 using Microsoft.Win32.SafeHandles;
 
 namespace MissionPlanner.Comms
 {
     public class CommsSerialPipe : ICommsSerial
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(CommsSerialPipe));
         private static readonly object locker = new object();
         private COMMTIMEOUTS commTimeouts = default(COMMTIMEOUTS);
         private SafeFileHandle safeFileHandle;
@@ -260,7 +258,6 @@ namespace MissionPlanner.Comms
         public void Close()
         {
             IsOpen = false;
-            log.Info("Closing port " + PortName);
             BaseStream.Dispose();
             safeFileHandle.Dispose();
         }

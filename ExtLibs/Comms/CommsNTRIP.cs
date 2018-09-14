@@ -7,7 +7,6 @@ using System.IO.Ports;
 using System.Threading;
 using System.Net; // dns, ip address
 using System.Net.Sockets; // tcplistner
-using log4net;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
@@ -16,7 +15,6 @@ namespace MissionPlanner.Comms
 {
     public class CommsNTRIP : CommsBase, ICommsSerial, IDisposable
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(CommsNTRIP));
         public TcpClient client = new TcpClient();
         IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
         private Uri remoteUri;
@@ -100,11 +98,8 @@ namespace MissionPlanner.Comms
         {
             if (client.Client.Connected)
             {
-                log.Warn("ntrip socket already open");
                 return;
             }
-
-            log.Info("ntrip Open");
 
             string url = OnSettings("NTRIP_url", "");
 
@@ -171,13 +166,9 @@ namespace MissionPlanner.Comms
 
             sw.Write(line);
 
-            log.Info(line);
-
             sw.Flush();
 
             line = sr.ReadLine();
-
-            log.Info(line);
 
             if (!line.Contains("200"))
             {
@@ -213,8 +204,6 @@ namespace MissionPlanner.Comms
 
                     string checksum = GetChecksum(line);
                     WriteLine(line + "*" + checksum);
-
-                    log.Info(line + "*" + checksum);
 
                     _lastnmea = DateTime.Now;
                 }
@@ -270,7 +259,6 @@ namespace MissionPlanner.Comms
                 // this should only happen if we have established a connection in the first place
                 if (client != null && retrys > 0)
                 {
-                    log.Info("ntrip reconnect");
                     doConnect();
                     retrys--;
                 }
@@ -363,7 +351,6 @@ namespace MissionPlanner.Comms
             VerifyConnected();
             int size = (int)client.Available;
             byte[] crap = new byte[size];
-            log.InfoFormat("ntrip DiscardInBuffer {0}",size);
             Read(crap, 0, size);
         }
 

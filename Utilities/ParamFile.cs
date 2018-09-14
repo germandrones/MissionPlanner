@@ -5,16 +5,12 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using log4net;
 using MissionPlanner.Controls;
 
 namespace MissionPlanner.Utilities
 {
     public class ParamFile
     {
-        private static readonly ILog log =
-            LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         public static string FileMask = "Parameter File|*.param;*.parm|All Files|*.*";
 
         public static Dictionary<string, double> loadParamFile(string Filename)
@@ -49,7 +45,6 @@ namespace MissionPlanner.Utilities
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                         throw new FormatException("Invalid number on param " + name + " : " + items[1].ToString());
                     }
 

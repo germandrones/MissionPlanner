@@ -8,7 +8,6 @@ using System.Management;
 using System.Net;
 using System.Reflection;
 using System.Windows.Forms;
-using log4net;
 using MissionPlanner.Arduino;
 using MissionPlanner.Controls;
 using MissionPlanner.Utilities;
@@ -17,7 +16,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
 {
     partial class ConfigFirmware : MyUserControl, IActivate
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly Firmware fw = new Firmware();
 
         string PX4_Serial_Port = "";

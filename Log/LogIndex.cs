@@ -11,7 +11,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
-using log4net;
 using MissionPlanner.Controls;
 using MissionPlanner.Utilities;
 
@@ -19,11 +18,6 @@ namespace MissionPlanner.Log
 {
     public partial class LogIndex : Form
     {
-        private static readonly ILog log =
-            LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-
-
         public LogIndex()
         {
             InitializeComponent();
@@ -113,7 +107,6 @@ namespace MissionPlanner.Log
                     }
                     catch (Exception ex)
                     {
-                        log.Debug(ex.ToString());
                         CustomMessageBox.Show("Log Can not be opened. Are you still connected?");
                         return;
                     }

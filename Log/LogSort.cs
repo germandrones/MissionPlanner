@@ -1,5 +1,4 @@
-﻿using log4net;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,8 +10,6 @@ namespace MissionPlanner.Log
 {
     class LogSort
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         static bool issitl = false;
 
         public static void SortLogs(string[] logs, string masterdestdir = "")
@@ -51,8 +48,6 @@ namespace MissionPlanner.Log
 
                         if (!Directory.Exists(destdir))
                             Directory.CreateDirectory(destdir);
-
-                        log.Info("Move log small " + logfile + " to " + destdir + Path.GetFileName(logfile));
 
                         MoveFileUsingMask(logfile, destdir);
                     }
@@ -95,10 +90,6 @@ namespace MissionPlanner.Log
                             if (!Directory.Exists(masterdestdir + Path.DirectorySeparatorChar + "BAD"))
                                 Directory.CreateDirectory(masterdestdir + Path.DirectorySeparatorChar +
                                                           "BAD");
-
-                            log.Info("Move log bad " + logfile + " to " + masterdestdir +
-                                     Path.DirectorySeparatorChar + "BAD" + Path.DirectorySeparatorChar +
-                                     Path.GetFileName(logfile));
 
                             MoveFileUsingMask(logfile,
                                 masterdestdir + Path.DirectorySeparatorChar + "BAD" +
@@ -184,8 +175,6 @@ namespace MissionPlanner.Log
             string[] files = Directory.GetFiles(dir, filter);
             foreach (var file in files)
             {
-                log.Info("Move log " + file + " to " + destdir + Path.GetFileName(file));
-
                 if (file == destdir + Path.GetFileName(file))
                     continue;
 

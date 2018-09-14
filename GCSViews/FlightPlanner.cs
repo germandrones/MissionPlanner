@@ -1,4 +1,23 @@
-﻿using System;
+﻿using DotSpatial.Data;
+using DotSpatial.Projections;
+using GeoUtility.GeoSystem;
+using GeoUtility.GeoSystem.Base;
+using GMap.NET;
+using GMap.NET.MapProviders;
+using GMap.NET.WindowsForms;
+using GMap.NET.WindowsForms.Markers;
+using Ionic.Zip;
+using MissionPlanner.Controls;
+using MissionPlanner.Controls.Waypoints;
+using MissionPlanner.Maps;
+using MissionPlanner.Plugin;
+using MissionPlanner.Properties;
+using MissionPlanner.Utilities;
+using ProjNet.CoordinateSystems;
+using ProjNet.CoordinateSystems.Transformations;
+using SharpKml.Base;
+using SharpKml.Dom;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,42 +28,17 @@ using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.IO;
 using System.Net;
-using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
-using DotSpatial.Data;
-using DotSpatial.Projections;
-using GeoUtility.GeoSystem;
-using GeoUtility.GeoSystem.Base;
-using GMap.NET;
-using GMap.NET.MapProviders;
-using GMap.NET.WindowsForms;
-using GMap.NET.WindowsForms.Markers;
-using Ionic.Zip;
-using log4net;
-using MissionPlanner.Controls;
-using MissionPlanner.Controls.Waypoints;
-using MissionPlanner.Maps;
-using MissionPlanner.Properties;
-using MissionPlanner.Utilities;
-using ProjNet.CoordinateSystems;
-using ProjNet.CoordinateSystems.Transformations;
-using SharpKml.Base;
-using SharpKml.Dom;
 using Feature = SharpKml.Dom.Feature;
-using ILog = log4net.ILog;
 using Placemark = SharpKml.Dom.Placemark;
 using Point = System.Drawing.Point;
-using System.Text.RegularExpressions;
-using MissionPlanner.Plugin;
 
 namespace MissionPlanner.GCSViews
 {
     public partial class FlightPlanner : MyUserControl, IDeactivate, IActivate
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         int selectedrow;
         int m_selectedPoint = -1; // default value initializing
         public bool quickadd;        
@@ -343,7 +337,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
             try
             {
@@ -352,7 +345,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -379,7 +371,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
                 return;
             }
         }
@@ -403,7 +394,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
                 return;
             }
         }
@@ -459,7 +449,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -702,8 +691,6 @@ namespace MissionPlanner.GCSViews
 
         void updateMapType(object sender, System.Timers.ElapsedEventArgs e)
         {
-            log.Info("updateMapType invoke req? " + comboBoxMapType.InvokeRequired);
-
             if (sender is System.Timers.Timer)
                 ((System.Timers.Timer)sender).Stop();
 
@@ -719,7 +706,6 @@ namespace MissionPlanner.GCSViews
                 }
                 catch (Exception ex)
                 {
-                    log.Error(ex);
                 }
             }
         }
@@ -755,8 +741,6 @@ namespace MissionPlanner.GCSViews
                 CustomMessageBox.Show("Missing mavcmd.xml file");
                 return cmd;
             }
-
-            log.Info("Reading MAV_CMD for " + MainV2.comPort.MAV.cs.firmware);
 
             using (XmlReader reader = XmlReader.Create(file))
             {
@@ -804,7 +788,6 @@ namespace MissionPlanner.GCSViews
 
         void Commands_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
-            log.Info(e.Exception + " " + e.Context + " col " + e.ColumnIndex);
             e.Cancel = false;
             e.ThrowException = false;
             //throw new NotImplementedException();
@@ -898,7 +881,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
 
             panelMap.Refresh();
@@ -1289,7 +1271,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Info(ex.ToString());
             }
         }
 
@@ -1304,7 +1285,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Info(ex.ToString());
             }
         }
 
@@ -1385,7 +1365,6 @@ namespace MissionPlanner.GCSViews
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                     }
 
                     return 0;
@@ -1602,7 +1581,6 @@ namespace MissionPlanner.GCSViews
                     }
                     catch (Exception e)
                     {
-                        log.Info("writekml - bad wp data " + e);
                     }
                 }
 
@@ -1688,7 +1666,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Info(ex.ToString());
             }
 
             //Debug.WriteLine(DateTime.Now);
@@ -1910,7 +1887,6 @@ namespace MissionPlanner.GCSViews
                 }
                 catch (Exception ex)
                 {
-                    log.Error(ex);
                 }
                 a++;
                 last = lla;
@@ -1968,7 +1944,6 @@ namespace MissionPlanner.GCSViews
                         }
                         catch (Exception ex)
                         {
-                            log.Error(ex);
                             sw.WriteLine("0\t1\t0\t0\t0\t0\t0\t0\t0\t0\t0\t1");
                         }
                         for (int a = 0; a < Commands.Rows.Count - 0; a++)
@@ -2087,8 +2062,6 @@ namespace MissionPlanner.GCSViews
 
                 MainV2.comPort.giveComport = true;
 
-                log.Info("Getting Home");
-
                 ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(0, "Getting WP count");
 
                 if (port.MAV.apname == MAVLink.MAV_AUTOPILOT.PX4)
@@ -2104,8 +2077,6 @@ namespace MissionPlanner.GCSViews
                     }
                 }
 
-                log.Info("Getting WP #");
-
                 int cmdcount = port.getWPCount();
 
                 for (ushort a = 0; a < cmdcount; a++)
@@ -2116,7 +2087,6 @@ namespace MissionPlanner.GCSViews
                         throw new Exception("Cancel Requested");
                     }
 
-                    log.Info("Getting WP" + a);
                     ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(a * 100 / cmdcount, "Getting WP " + a);
                     cmds.Add(port.getWP(a));
 
@@ -2125,10 +2095,6 @@ namespace MissionPlanner.GCSViews
                 port.setWPACK();
 
                 ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(100, "Done");
-
-                log.Info("Done");
-
-                
             }
             catch
             {
@@ -2173,12 +2139,10 @@ namespace MissionPlanner.GCSViews
                 {
                     try
                     {
-                        log.Info("Process " + cmds.Count);
                         processToScreen(cmds);
                     }
                     catch (Exception exx)
                     {
-                        log.Info(exx.ToString());
                     }
 
                     try
@@ -2200,7 +2164,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception exx)
             {
-                log.Info(exx.ToString());
             }
         }
 
@@ -2459,11 +2422,6 @@ namespace MissionPlanner.GCSViews
                     throw new Exception("Your home location is invalid");
                 }
 
-                // log
-                log.Info("wps values " + MainV2.comPort.MAV.wps.Values.Count);
-                log.Info("cmd rows " + (Commands.Rows.Count + 1)); // + home
-
-
                 // check for changes / future mod to send just changed wp's
                 if (MainV2.comPort.MAV.wps.Values.Count == (Commands.Rows.Count + 1))
                 {
@@ -2491,11 +2449,9 @@ namespace MissionPlanner.GCSViews
                             temp.param4 == item.param4
                             )
                         {
-                            log.Info("wp match " + (a + 1));
                         }
                         else
                         {
-                            log.Info("wp no match" + (a + 1));
                             wpstoupload[a] = "";
                         }
 
@@ -2667,7 +2623,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
                 MainV2.comPort.giveComport = false;
                 throw;
             }
@@ -2830,12 +2785,10 @@ namespace MissionPlanner.GCSViews
                 }
                 catch (Exception ex)
                 {
-                    log.Error(ex.ToString());
                 } // if there is no valid home
 
                 if (Commands.RowCount > 0)
                 {
-                    log.Info("remove home from list");
                     Commands.Rows.Remove(Commands.Rows[0]); // remove home row
                 }
             }
@@ -2853,8 +2806,6 @@ namespace MissionPlanner.GCSViews
         {
             try
             {
-                log.Info("Loading wp params");
-
                 Dictionary<string, double> param = new Dictionary<string, double>((Dictionary<string, double>)MainV2.comPort.MAV.param);
 
                 if (param.ContainsKey("WP_RADIUS"))
@@ -2866,8 +2817,6 @@ namespace MissionPlanner.GCSViews
                 {
                     TXT_WPRad.Text = (((double)param["WPNAV_RADIUS"] * CurrentState.multiplierdist / 100.0)).ToString();
                 }
-
-                log.Info("param WP_RADIUS " + TXT_WPRad.Text);
 
                 try
                 {
@@ -2882,19 +2831,15 @@ namespace MissionPlanner.GCSViews
                         TXT_loiterrad.Text = (((double)param["WP_LOITER_RAD"] * CurrentState.multiplierdist)).ToString();
                         TXT_loiterrad.Enabled = true;
                     }
-
-                    log.Info("param LOITER_RADIUS " + TXT_loiterrad.Text);
                 }
                 catch (Exception ex)
                 {
-                    log.Error(ex);
                 }
 
                 writeKML();// update points
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -3074,7 +3019,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
             writeKML();
         }
@@ -3088,7 +3032,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
             writeKML();
         }
@@ -3102,7 +3045,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
             writeKML();
         }
@@ -3231,7 +3173,6 @@ namespace MissionPlanner.GCSViews
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                         CustomMessageBox.Show("Line invalid\n" + line);
                     }
                 }
@@ -3261,7 +3202,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -3407,7 +3347,6 @@ namespace MissionPlanner.GCSViews
                         }
                         catch (Exception ex)
                         {
-                            log.Error(ex);
                         }
                         
                     }
@@ -3458,12 +3397,9 @@ namespace MissionPlanner.GCSViews
                     try
                     {
                         groupmarkeradd(item);
-
-                        log.Info("add marker to group");
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                     }
                 }
                 if (int.TryParse(item.Tag.ToString(), out answer))
@@ -3473,7 +3409,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -3677,7 +3612,6 @@ namespace MissionPlanner.GCSViews
                 }
                 catch (Exception ex)
                 {
-                    log.Error(ex);
                     iUserSelection = 0; //ignore all errors and default to first layer
                 }
 
@@ -3779,7 +3713,6 @@ namespace MissionPlanner.GCSViews
                             }
                             catch (Exception ex)
                             {
-                                log.Error(ex);
                             }
                         }
                     }
@@ -3868,7 +3801,6 @@ namespace MissionPlanner.GCSViews
                             }
                             catch (Exception ex)
                             {
-                                log.Error(ex);
                             }
                         }
                         else
@@ -4035,7 +3967,6 @@ namespace MissionPlanner.GCSViews
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                     }
 
                     PointLatLng pnew = MainMap.FromLocalToLatLng(e.X, e.Y);
@@ -4061,7 +3992,6 @@ namespace MissionPlanner.GCSViews
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                     }
 
                     // update rect and marker pos.
@@ -4124,7 +4054,6 @@ namespace MissionPlanner.GCSViews
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                     }
                 }
             }
@@ -4145,7 +4074,6 @@ namespace MissionPlanner.GCSViews
                 }
                 catch (Exception ex)
                 {
-                    log.Error(ex);
                 }
                 //textBoxZoomCurrent.Text = MainMap.Zoom.ToString();
                 center.Position = MainMap.Position;
@@ -4164,7 +4092,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -4188,7 +4115,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -4257,7 +4183,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
                 CustomMessageBox.Show("Map change failed. try zooming out first.");
             }
         }
@@ -4323,7 +4248,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -4362,7 +4286,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
 
             return alt * CurrentState.multiplierdist;
@@ -4419,7 +4342,6 @@ namespace MissionPlanner.GCSViews
                 }
                 catch (Exception ex)
                 {
-                    log.Error(ex);
                     CustomMessageBox.Show("Invalid Lat/Lng, please fix", Strings.ERROR);
                 }
             }
@@ -4445,7 +4367,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -4775,7 +4696,6 @@ namespace MissionPlanner.GCSViews
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                         CustomMessageBox.Show("error selecting wp, please try again.");
                     }
                 }
@@ -4799,7 +4719,6 @@ namespace MissionPlanner.GCSViews
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                         CustomMessageBox.Show("Remove point Failed. Please try again.");
                     }
                 }
@@ -4822,7 +4741,6 @@ namespace MissionPlanner.GCSViews
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                         CustomMessageBox.Show("error selecting wp, please try again.");
                     }
                 }
@@ -4934,7 +4852,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Warn(ex);
             }
         }
 
@@ -4957,7 +4874,6 @@ namespace MissionPlanner.GCSViews
                 }
                 catch (Exception ex)
                 {
-                    log.Error(ex);
                 }
             });
         }
@@ -4982,7 +4898,6 @@ namespace MissionPlanner.GCSViews
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                     }
                     if (color.HasValue)
                     {
@@ -5083,7 +4998,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
                 CustomMessageBox.Show("Failed to set min/max fence alt");
                 return;
             }
@@ -6621,7 +6535,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
             rallypointoverlay.Markers.Clear();
             MainV2.comPort.MAV.rallypoints.Clear();
@@ -6694,7 +6607,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
 
             Document doc = element as Document;
@@ -6988,7 +6900,6 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                     }
 
                     try
@@ -6998,7 +6909,6 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                     }
 
                     try
@@ -7008,7 +6918,6 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                     }
 
 
@@ -7022,7 +6931,6 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                     }
 
                     if (reproject)

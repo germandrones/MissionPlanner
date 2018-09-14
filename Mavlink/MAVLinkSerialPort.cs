@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using log4net;
 using System.Threading;
 
 namespace MissionPlanner.Comms
@@ -13,8 +12,6 @@ namespace MissionPlanner.Comms
     /// </summary>
     public class MAVLinkSerialPort : ICommsSerial
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         MAVLinkInterface mavint;
 
         static KeyValuePair<MAVLink.MAVLINK_MSG_ID, Func<MAVLink.MAVLinkMessage, bool>> subscription;
@@ -35,7 +32,6 @@ namespace MissionPlanner.Comms
             {
                 if (open)
                 {
-                    log.Info("MAVLinkSerialPort baudrate " + value);
                     mavint.SendSerialControl(port, timeout, null, (uint) value);
                 }
                 baud = (uint) value;
@@ -92,8 +88,6 @@ namespace MissionPlanner.Comms
 
         ~MAVLinkSerialPort()
         {
-            log.Info("Destroy");
-
             if (bgdata != null && bgdata.IsAlive)
                 bgdata.Abort();
             //mavint.UnSubscribeToPacketType(subscription);
@@ -107,7 +101,6 @@ namespace MissionPlanner.Comms
         {
             if (packetcounttimer.Second != DateTime.Now.Second)
             {
-                log.Info("packet count " + packetcount + " with data " + packetwithdata + " " + buffer.Size);
                 packetcount = 0;
                 packetwithdata = 0;
                 packetcounttimer = DateTime.Now;
@@ -184,7 +177,6 @@ namespace MissionPlanner.Comms
             if (bgdata.IsAlive)
                 bgdata.Abort();
 
-            log.Info("Close");
             mavint.SendSerialControl(port, 0, null, 0, true);
         }
 
@@ -195,7 +187,6 @@ namespace MissionPlanner.Comms
 
         public void Open()
         {
-            log.Info("Open");
             mavint.SendSerialControl(port, timeout, null, baud, false);
             System.Threading.Thread.Sleep(1000);
             open = true;

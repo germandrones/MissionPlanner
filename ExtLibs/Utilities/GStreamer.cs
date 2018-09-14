@@ -11,7 +11,6 @@ using System.IO;
 using System.IO.Pipes;
 using System.Runtime.InteropServices;
 using System.Threading;
-using log4net;
 using guint = System.UInt32;
 using GstClockTime = System.UInt64;
 using gsize = System.UInt64;
@@ -20,9 +19,6 @@ namespace MissionPlanner.Utilities
 {
     public class GStreamer
     {
-        private static readonly ILog log =
-            LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private static List<Process> processList = new List<Process>();
 
         static object _lock = new object();
@@ -400,7 +396,6 @@ namespace MissionPlanner.Utilities
 
                     if (ans.Length > 0)
                     {
-                        log.Info("Found gstreamer " + ans.First());
                         return ans.First();
                     }
                 }
@@ -436,7 +431,6 @@ namespace MissionPlanner.Utilities
             {
                 if (!allowmultiple && isrunning)
                 {
-                    log.Info("already running");
                     return null;
                 }
 
@@ -471,8 +465,6 @@ namespace MissionPlanner.Utilities
 
                     psi.UseShellExecute = false;
 
-                    log.Info("Starting " + psi.FileName + " " + psi.Arguments);
-
                     psi.RedirectStandardOutput = true;
 
                     var process = Process.Start(psi);
@@ -486,7 +478,6 @@ namespace MissionPlanner.Utilities
                             {
                                 while (process != null && !process.HasExited)
                                 {
-                                    log.Info(sr.ReadLine());
                                 }
                             }
                             catch
@@ -544,8 +535,6 @@ namespace MissionPlanner.Utilities
             {
                 var deadline = DateTime.Now.AddSeconds(20);
 
-                log.Info("_Start");
-
                 while (DateTime.Now < deadline)
                 {
                     try
@@ -597,7 +586,6 @@ namespace MissionPlanner.Utilities
             catch (Exception ex)
             {
                 _onNewImage?.Invoke(null, null);
-                log.Error(ex);
             }
         }
 
@@ -919,8 +907,6 @@ namespace MissionPlanner.Utilities
         {
             try
             {
-                log.Info("Stop");
-
                 if (run != null)
                 {
                     if (!run.CloseMainWindow())

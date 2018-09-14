@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using log4net;
 using MissionPlanner.Controls.BackstageView;
 
 namespace MissionPlanner.Controls.BackstageView
@@ -17,8 +16,6 @@ namespace MissionPlanner.Controls.BackstageView
     /// </remarks>
     public partial class BackstageView : UserControl, IContainerControl
     {
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private Color _buttonsAreaBgColor = Color.White;
         private Color _buttonsAreaPencilColor = Color.DarkGray;
         private Color _selectedTextColor = Color.White;
@@ -464,7 +461,6 @@ namespace MissionPlanner.Controls.BackstageView
                 }
                 catch (Exception ex)
                 {
-                    log.Error(ex);
                 }
             }
 
@@ -484,7 +480,6 @@ namespace MissionPlanner.Controls.BackstageView
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
 
             associatedPage.Page.ResumeLayout(false);
@@ -509,7 +504,6 @@ namespace MissionPlanner.Controls.BackstageView
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
 
             _activePage = associatedPage;
@@ -538,7 +532,6 @@ namespace MissionPlanner.Controls.BackstageView
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                     }
 
                     try
@@ -547,7 +540,6 @@ namespace MissionPlanner.Controls.BackstageView
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                     }
                 }
                 else
@@ -558,7 +550,6 @@ namespace MissionPlanner.Controls.BackstageView
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                     }
                 }
             }

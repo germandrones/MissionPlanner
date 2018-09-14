@@ -8,7 +8,6 @@ using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using System.Security.Cryptography.X509Certificates;
 using System.Net;
-using log4net;
 using System.Reflection;
 using MissionPlanner.Utilities;
 using System.IO;
@@ -16,12 +15,8 @@ using MissionPlanner.Maps;
 
 namespace MissionPlanner
 {
-
-
     public class Common
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         public enum distances
         {
             Meters,
@@ -105,8 +100,6 @@ namespace MissionPlanner
 
         public static List<KeyValuePair<int, string>> getModesList(MainV2.Firmwares firmware)
         {
-            log.Info("getModesList Called");
-
             if (firmware == MainV2.Firmwares.PX4)
             {
                 var temp = new List<KeyValuePair<int, string>>()

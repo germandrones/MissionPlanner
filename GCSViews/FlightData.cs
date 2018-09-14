@@ -17,7 +17,6 @@ using GMap.NET;
 using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
-using log4net;
 using MissionPlanner.Controls;
 //using MissionPlanner.Joystick;
 using MissionPlanner.Log;
@@ -37,11 +36,6 @@ namespace MissionPlanner.GCSViews
 {
     public partial class FlightData : MyUserControl, IActivate, IDeactivate
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        //public VideoPlayer _videoPlayer;
-        //private Form VideoPlayerForm;
-
         public static bool threadrun;
         int tickStart;
         RollingPointPairList list1 = new RollingPointPairList(1200);
@@ -186,12 +180,7 @@ namespace MissionPlanner.GCSViews
 
         public FlightData()
         {
-            log.Info("Ctor Start");
-
             InitializeComponent();
-
-            log.Info("Components Done");
-
             instance = this;
             //    _serializer = new DockStateSerializer(dockContainer1);
             //    _serializer.SavePath = Application.StartupPath + Path.DirectorySeparatorChar + "FDscreen.xml";
@@ -208,7 +197,6 @@ namespace MissionPlanner.GCSViews
 
             //  mymap.Manager.UseMemoryCache = false;
 
-            log.Info("Tunning Graph Settings");
             // setup default tuning graph
             if (Settings.Instance["Tuning_Graph_Selected"] != null)
             {
@@ -247,7 +235,6 @@ namespace MissionPlanner.GCSViews
                 hud1.hudcolor = Color.FromName(Settings.Instance["hudcolor"]);
             }
 
-            log.Info("HUD Settings");
             foreach (string item in Settings.Instance.Keys)
             {
                 if (item.StartsWith("hud1_useritem_"))
@@ -282,11 +269,8 @@ namespace MissionPlanner.GCSViews
 
             CMB_setwp.SelectedIndex = 0;
 
-            log.Info("Graph Setup");
             CreateChart(zg1);
 
-            // config map      
-            log.Info("Map Setup");
             gMapControl1.CacheLocation = Settings.GetDataDirectory() +
                                          "gmapcache" + Path.DirectorySeparatorChar;
             gMapControl1.MinZoom = 0;
@@ -478,8 +462,6 @@ namespace MissionPlanner.GCSViews
 
         public void Activate()
         {
-            log.Info("Activate Called");
-
             OnResize(EventArgs.Empty);
 
             if (CB_tuning.Checked)
@@ -528,7 +510,6 @@ namespace MissionPlanner.GCSViews
                         }
                         catch (Exception ex)
                         {
-                            log.Debug(ex);
                         }
                     }
                 }
@@ -548,7 +529,6 @@ namespace MissionPlanner.GCSViews
                     }
                     catch (Exception ex)
                     {
-                        log.Debug(ex);
                     }
                 }
             }
@@ -886,7 +866,6 @@ namespace MissionPlanner.GCSViews
                         }
                         catch
                         {
-                            log.Error("Failed to close logfile");
                         }
                         MainV2.comPort.logplaybackfile = null;
                     }
@@ -903,7 +882,6 @@ namespace MissionPlanner.GCSViews
                         }
                         catch
                         {
-                            log.Error("Failed to update log playback pos");
                         }
                         updatescreen = DateTime.Now;
                     }
@@ -925,13 +903,11 @@ namespace MissionPlanner.GCSViews
                             }
                             catch (Exception ex)
                             {
-                                log.Error(ex);
                             }
                         }
                     }
                     catch
                     {
-                        log.Error("Failed to read log packet");
                     }
 
                     double act = (MainV2.comPort.lastlogread - logplayback).TotalMilliseconds;
@@ -1420,7 +1396,6 @@ namespace MissionPlanner.GCSViews
                 }
                 catch (Exception ex)
                 {
-                    log.Error(ex);
                     Tracking.AddException(ex);
                     Console.WriteLine("FD Main loop exception " + ex);
                 }
@@ -1650,7 +1625,6 @@ namespace MissionPlanner.GCSViews
                     }
                     catch (Exception e)
                     {
-                        log.Error(e);
                     }
                 }
             }
@@ -1884,7 +1858,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
                 Tracking.AddException(ex);
             }
         }
@@ -2415,9 +2388,6 @@ namespace MissionPlanner.GCSViews
                     MainV2.comPort.lastlogread = DateTime.MinValue;
 
                     LBL_logfn.Text = Path.GetFileName(file);
-
-                    log.Info("Open logfile " + file);
-
                     MainV2.comPort.getHeartBeat();
 
                     tracklog.Value = 0;

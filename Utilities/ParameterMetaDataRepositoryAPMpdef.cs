@@ -7,15 +7,11 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using log4net;
 
 namespace MissionPlanner.Utilities
 {
     public static class ParameterMetaDataRepositoryAPMpdef
     {
-        private static readonly ILog log =
-            LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private static XDocument _parameterMetaDataXML;
 
         //http://autotest.ardupilot.org/Parameters/apm.pdef.xml
@@ -41,7 +37,6 @@ namespace MissionPlanner.Utilities
             }
             catch (Exception ex)
             {
-                log.Error(ex);
                 Tracking.AddException(ex);
             }
         }
@@ -124,7 +119,6 @@ namespace MissionPlanner.Utilities
                 }
                 catch (Exception ex)
                 {
-                    log.Error(ex);
                 } 
             }
 

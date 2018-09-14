@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Collections;
 using System;
-using log4net;
 
 namespace System.Drawing
 {
@@ -34,19 +33,14 @@ namespace System.Drawing
 
 internal class FontData
 {
-    private static readonly ILog log =
-        LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
     private const TextFormatFlags FormatFlags =
         TextFormatFlags.Left | TextFormatFlags.NoPrefix | TextFormatFlags.NoPadding | TextFormatFlags.NoClipping;
 
     public FontData(IDeviceContext g, Font font)
     {
-        log.Info("Build Font Table " + font.Name + " " + font.Size);
         BuildLookupList(g, font, ref NormalCharacter);
         BuildLookupList(g, new Font(font, FontStyle.Bold), ref BoldCharacter);
         BuildLookupList(g, new Font(font, FontStyle.Italic), ref ItalicCharacter);
-        log.Info("Build Font Table... done");
     }
 
     public SizeF[] NormalCharacter;

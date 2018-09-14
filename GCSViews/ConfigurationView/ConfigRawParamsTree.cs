@@ -10,7 +10,6 @@ using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
-using log4net;
 using MissionPlanner.Controls;
 using MissionPlanner.Utilities;
 
@@ -20,9 +19,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
     {
         // from http://stackoverflow.com/questions/2512781/winforms-big-paragraph-tooltip/2512895#2512895
         private const int maximumSingleLineTooltipLength = 50;
-
-        private static readonly ILog log =
-            LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private static Hashtable tooltips = new Hashtable();
         // Changes made to the params between writing to the copter
@@ -281,7 +277,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                 }
                 catch (Exception ex)
                 {
-                    log.Error("Exception getting param list", ex);
                     CustomMessageBox.Show(Strings.ErrorReceivingParams, Strings.ERROR);
                 }
 
@@ -447,7 +442,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                 }
                 catch (Exception ex)
                 {
-                    log.Error(ex);
                 }
             }
 
@@ -483,7 +477,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 

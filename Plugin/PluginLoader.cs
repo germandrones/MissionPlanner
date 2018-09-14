@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using log4net;
 using Microsoft.Scripting.Utils;
 using MissionPlanner.Properties;
 using MissionPlanner.Utilities;
@@ -17,8 +16,6 @@ namespace MissionPlanner.Plugin
 {
     public class PluginLoader
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         public static List<Plugin> Plugins = new List<Plugin>();
 
         static Assembly LoadFromSameFolder(object sender, ResolveEventArgs args)
@@ -73,8 +70,6 @@ namespace MissionPlanner.Plugin
 
                 if (pluginInfo != null)
                 {
-                    log.Info("Plugin Load " + file);
-
                     Object o = Activator.CreateInstance(pluginInfo, BindingFlags.Default, null, null, CultureInfo.CurrentUICulture);
                     Plugin plugin = (Plugin) o;
 
@@ -84,7 +79,6 @@ namespace MissionPlanner.Plugin
 
                     if (plugin.Init())
                     {
-                        log.InfoFormat("Plugin Init {0} {1} by {2}", plugin.Name, plugin.Version, plugin.Author);
                         lock (Plugins)
                         {
                             Plugins.Add(plugin);
@@ -94,7 +88,6 @@ namespace MissionPlanner.Plugin
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -125,7 +118,6 @@ namespace MissionPlanner.Plugin
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                         Plugins.RemoveAt(i);
                         --i;
                     }

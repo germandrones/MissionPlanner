@@ -7,15 +7,11 @@ using System.Net;
 using System.Text;
 using System.Web;
 using System.Windows.Forms;
-using log4net;
 
 namespace MissionPlanner.Utilities
 {
     public class Tracking
     {
-        private static readonly ILog log =
-     LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         static string currentscreen = "";
 
         //https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters
@@ -282,8 +278,6 @@ namespace MissionPlanner.Utilities
 
                 httpWebRequest.ContentLength = data.Length;
 
-                log.Debug(data);
-
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                 {
 
@@ -294,12 +288,9 @@ namespace MissionPlanner.Utilities
                     {
                         if (httpResponse.StatusCode >= HttpStatusCode.OK && (int) httpResponse.StatusCode < 300)
                         {
-                            // response is a gif file
-                            log.Debug(httpResponse.StatusCode);
                         }
                         else
                         {
-                            log.Debug(httpResponse.StatusCode);
                         }
                     }
                 }

@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using log4net;
 
 namespace MissionPlanner.Utilities
 {
@@ -13,8 +12,6 @@ namespace MissionPlanner.Utilities
     /// </summary>
     public class DFLog
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         public struct Label
         {
             public int Id;
@@ -214,8 +211,6 @@ namespace MissionPlanner.Utilities
             int lineno = 0;
             msoffset = 0;
 
-            log.Info("loading log " + (GC.GetTotalMemory(false)/1024.0/1024.0));
-
             using (StreamReader sr = new StreamReader(fn))
             {
                 while (!sr.EndOfStream)
@@ -232,7 +227,6 @@ namespace MissionPlanner.Utilities
                     }
                     catch (OutOfMemoryException ex)
                     {
-                        log.Error(ex);
                         return answer;
                     }
                     catch
@@ -240,8 +234,6 @@ namespace MissionPlanner.Utilities
                     }
                 }
             }
-
-            log.Info("loaded log " + (GC.GetTotalMemory(false)/1024.0/1024.0));
 
             return answer;
         }

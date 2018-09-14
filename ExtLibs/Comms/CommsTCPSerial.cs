@@ -7,14 +7,12 @@ using System.IO.Ports;
 using System.Threading;
 using System.Net; // dns, ip address
 using System.Net.Sockets; // tcplistner
-using log4net;
 using System.IO;
 
 namespace MissionPlanner.Comms
 {
     public class TcpSerial : CommsBase,  ICommsSerial, IDisposable
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(TcpSerial));
         public TcpClient client = new TcpClient();
         IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
 
@@ -111,7 +109,6 @@ namespace MissionPlanner.Comms
 
                 if (client.Client.Connected)
                 {
-                    log.Warn("tcpserial socket already open");
                     return;
                 }
 
@@ -137,7 +134,6 @@ namespace MissionPlanner.Comms
 
                 Port = dest;
 
-                log.InfoFormat("TCP Open {0} {1}", host, Port);
 
                 OnSettings("TCP_port", Port, true);
                 OnSettings("TCP_host", host, true);
@@ -182,7 +178,6 @@ namespace MissionPlanner.Comms
                     var host = OnSettings("TCP_host", "");
                     var port = int.Parse(OnSettings("TCP_port", ""));
 
-                    log.InfoFormat("doAutoReconnect {0} {1}", host,port);
 
                     var task = client.ConnectAsync(host, port);
 
@@ -205,7 +200,6 @@ namespace MissionPlanner.Comms
                 // this should only happen if we have established a connection in the first place
                 if (client != null && retrys > 0)
                 {
-                    log.Info("tcp reconnect");
                     client = new TcpClient();
                     client.Connect(OnSettings("TCP_host", ""), int.Parse(OnSettings("TCP_port", "")));
                     retrys--;
@@ -296,7 +290,6 @@ namespace MissionPlanner.Comms
             VerifyConnected();
             int size = (int)client.Available;
             byte[] crap = new byte[size];
-            log.InfoFormat("TcpSerial DiscardInBuffer {0}",size);
             Read(crap, 0, size);
         }
 

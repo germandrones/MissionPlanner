@@ -10,7 +10,6 @@ using MissionPlanner.Comms;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Threading;
-using log4net;
 using System.Collections;
 using System.Runtime.InteropServices;
 using MissionPlanner.Controls;
@@ -25,8 +24,6 @@ namespace MissionPlanner
 {
     public partial class SerialInjectGPS : UserControl, IActivate, IDeactivate
     {
-        private static ILog log = LogManager.GetLogger(typeof (SerialInjectGPS).FullName);
-
         // serialport
         internal static ICommsSerial comPort = new SerialPort();
         // rtcm detection
@@ -200,7 +197,6 @@ namespace MissionPlanner
 
         ~SerialInjectGPS()
         {
-            log.Info("destroy");
         }
 
         void loadBasePosList()
@@ -219,7 +215,6 @@ namespace MissionPlanner
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                         CustomMessageBox.Show("Failed to load Base Position List\n" + ex.ToString(), Strings.ERROR);
                     }
                 }
@@ -325,7 +320,6 @@ namespace MissionPlanner
                     }
                     catch (ArgumentException ex)
                     {
-                        log.Error(ex);
                         // try pipe method
                         comPort = new CommsSerialPipe();
                         comPort.PortName = CMB_serialport.Text;
@@ -448,7 +442,6 @@ namespace MissionPlanner
                             }
                             else
                             {
-                                log.Warn("Reconnecting");
                                 // close existing
                                 comPort.Close();
                                 // reopen
@@ -460,7 +453,6 @@ namespace MissionPlanner
                     }
                     catch
                     {
-                        log.Error("Failed to reconnect");
                         // sleep for 10 seconds on error
                         System.Threading.Thread.Sleep(10000);
                     }
@@ -561,7 +553,6 @@ namespace MissionPlanner
                 }
                 catch (Exception ex)
                 {
-                    log.Error(ex);
                 }
             }
         }
@@ -665,11 +656,9 @@ namespace MissionPlanner
                 }
                 else if (ubx_m8p.@class == 0x5 && ubx_m8p.subclass == 0x1)
                 {
-                    log.InfoFormat("ubx ack {0} {1}", ubx_m8p.packet[6], ubx_m8p.packet[7]);
                 }
                 else if (ubx_m8p.@class == 0x5 && ubx_m8p.subclass == 0x0)
                 {
-                    log.InfoFormat("ubx Nack {0} {1}", ubx_m8p.packet[6], ubx_m8p.packet[7]);
                 }
                 else if (ubx_m8p.@class == 0xa && ubx_m8p.subclass == 0x4)
                 {
@@ -712,8 +701,6 @@ namespace MissionPlanner
                     var tmode = ubx_m8p.packet.ByteArrayToStructure<Utilities.ubx_m8p.ubx_cfg_tmode3>(6);
 
                     ubxmode = tmode;
-
-                    log.InfoFormat("ubx TMODE3 {0} {1}", (ubx_m8p.ubx_cfg_tmode3.modeflags) tmode.flags, "");
                 }
                 else
                 {
@@ -730,7 +717,6 @@ namespace MissionPlanner
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -860,7 +846,6 @@ namespace MissionPlanner
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -936,8 +921,6 @@ namespace MissionPlanner
             try
             {
                 string[] bspos = Settings.Instance["base_pos"].Split(',');
-
-                log.Info("basepos: "+ Settings.Instance["base_pos"].ToString());
 
                 basepos = new PointLatLngAlt(double.Parse(bspos[0], CultureInfo.InvariantCulture),
                     double.Parse(bspos[1], CultureInfo.InvariantCulture),

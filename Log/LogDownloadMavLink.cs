@@ -17,7 +17,6 @@ using Core.Geometry;
 using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Core;
-using log4net;
 using MissionPlanner.Comms;
 using MissionPlanner.Utilities;
 using System.Diagnostics;
@@ -27,7 +26,6 @@ namespace MissionPlanner.Log
 {
     public partial class LogDownloadMavLink : Form
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         SerialStatus status = SerialStatus.Connecting;
         bool closed;
         string logfile = "";
@@ -111,7 +109,6 @@ namespace MissionPlanner.Log
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                     }
                 }
 
@@ -203,8 +200,6 @@ namespace MissionPlanner.Log
 
         string GetLog(ushort no, string fileName)
         {
-            log.Info("GetLog " + no);
-
             MainV2.comPort.Progress += comPort_Progress;
 
             status = SerialStatus.Reading;
@@ -212,15 +207,9 @@ namespace MissionPlanner.Log
             // used for log fn
             MAVLink.MAVLinkMessage hbpacket = MainV2.comPort.getHeartBeat();
 
-            if (hbpacket != null)
-                log.Info("Got hbpacket length: " + hbpacket.Length);
-
             // get df log from mav
             using (var ms = MainV2.comPort.GetLog(no))
             {
-                if (ms != null)
-                    log.Info("Got Log length: " + ms.Length);
-
                 ms.Seek(0, SeekOrigin.Begin);
 
                 status = SerialStatus.Done;
@@ -234,7 +223,6 @@ namespace MissionPlanner.Log
                 // make log dir
                 Directory.CreateDirectory(Path.GetDirectoryName(logfile));
 
-                log.Info("about to write: " + logfile);
                 // save memorystream to file
                 using (BinaryWriter bw = new BinaryWriter(File.OpenWrite(logfile)))
                 {
@@ -247,8 +235,6 @@ namespace MissionPlanner.Log
                 }
             }
 
-            log.Info("about to convertbin: " + logfile);
-
             // create ascii log
             BinaryLog.ConvertBin(logfile, logfile + ".log");
 
@@ -256,7 +242,6 @@ namespace MissionPlanner.Log
             logfile = logfile + ".log";
 
             // rename file if needed
-            log.Info("about to GetFirstGpsTime: " + logfile);
             // get gps time of assci log
             DateTime logtime = new DFLog().GetFirstGpsTime(logfile);
 

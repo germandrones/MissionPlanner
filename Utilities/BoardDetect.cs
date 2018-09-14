@@ -3,7 +3,6 @@ using System.Reflection;
 using System.Management;
 using System.Windows.Forms;
 using System.Threading;
-using log4net;
 using System.Globalization;
 using MissionPlanner.Comms;
 using MissionPlanner.Utilities;
@@ -13,8 +12,6 @@ namespace MissionPlanner.Utilities
 {
     public class BoardDetect
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         public enum boards
         {
             none = 0,
@@ -64,7 +61,6 @@ namespace MissionPlanner.Utilities
                         // check port name as well
                         if (obj2.Properties["Name"].Value.ToString().ToUpper().Contains(serialPort.PortName.ToUpper()))
                         {
-                            log.Info("is a 2560-2");
                             return boards.b2560v2;
                         }
                     }
@@ -74,7 +70,6 @@ namespace MissionPlanner.Utilities
                         // check port name as well
                         //if (obj2.Properties["Name"].Value.ToString().ToUpper().Contains(serialPort.PortName.ToUpper()))
                         {
-                            log.Info("is a px4");
                             return boards.px4;
                         }
                     }
@@ -91,7 +86,6 @@ namespace MissionPlanner.Utilities
 
                             foreach (string port1 in allports)
                             {
-                                log.Info(DateTime.Now.Millisecond + " Trying Port " + port1);
                                 try
                                 {
                                     using (var up = new Uploader(port1, 115200))
@@ -104,48 +98,39 @@ namespace MissionPlanner.Utilities
 
                                         if (up.fw_maxsize == 2080768 && up.board_type == 9 && up.bl_rev >= 5)
                                         {
-                                            log.Info("is a px4v3");
                                             return boards.px4v3;
                                         }
                                         else
                                         {
-                                            log.Info("is a px4v2");
                                             return boards.px4v2;
                                         }
                                     }
                                 }
                                 catch (Exception ex)
                                 {
-                                    log.Error(ex);
                                 }
                             }
                         }
-
-                        log.Info("Failed to detect px4 board type");
                         return boards.none;
                     }
 
                     if (obj2.Properties["PNPDeviceID"].Value.ToString().Contains(@"USB\VID_26AC&PID_0012"))
                     {
-                        log.Info("is a px4v4 pixracer");
                         return boards.px4v4;
                     }
 
                     if (obj2.Properties["PNPDeviceID"].Value.ToString().Contains(@"USB\VID_26AC&PID_0013"))
                     {
-                        log.Info("is a px4v4pro pixhawk 3 pro");
                         return boards.px4v4pro;
                     }
 
                     if (obj2.Properties["PNPDeviceID"].Value.ToString().Contains(@"USB\VID_26AC&PID_0001"))
                     {
-                        log.Info("is a px4v2 bootloader");
                         return boards.px4v2;
                     }
 
                     if (obj2.Properties["PNPDeviceID"].Value.ToString().Contains(@"USB\VID_26AC&PID_0016"))
                     {
-                        log.Info("is a px4v2 bootloader");
                         CustomMessageBox.Show(
                             "You appear to have a bootloader with a bad PID value, please update your bootloader.");
                         return boards.px4v2;
@@ -155,49 +140,41 @@ namespace MissionPlanner.Utilities
 
                     if (obj2.Properties["PNPDeviceID"].Value.ToString().Contains(@"USB\VID_27AC&PID_1140"))
                     {
-                        log.Info("is a vrbrain 4.0 bootloader");
                         return boards.vrbrainv40;
                     }
 
                     if (obj2.Properties["PNPDeviceID"].Value.ToString().Contains(@"USB\VID_27AC&PID_1145"))
                     {
-                        log.Info("is a vrbrain 4.5 bootloader");
                         return boards.vrbrainv45;
                     }
 
                     if (obj2.Properties["PNPDeviceID"].Value.ToString().Contains(@"USB\VID_27AC&PID_1150"))
                     {
-                        log.Info("is a vrbrain 5.0 bootloader");
                         return boards.vrbrainv50;
                     }
 
                     if (obj2.Properties["PNPDeviceID"].Value.ToString().Contains(@"USB\VID_27AC&PID_1151"))
                     {
-                        log.Info("is a vrbrain 5.1 bootloader");
                         return boards.vrbrainv51;
                     }
 
                     if (obj2.Properties["PNPDeviceID"].Value.ToString().Contains(@"USB\VID_27AC&PID_1152"))
                     {
-                        log.Info("is a vrbrain 5.2 bootloader");
                         return boards.vrbrainv52;
                     }
 
                     if (obj2.Properties["PNPDeviceID"].Value.ToString().Contains(@"USB\VID_27AC&PID_1910"))
                     {
-                        log.Info("is a vrbrain core 1.0 bootloader");
                         return boards.vrcorev10;
                     }
 
                     if (obj2.Properties["PNPDeviceID"].Value.ToString().Contains(@"USB\VID_27AC&PID_1351"))
                     {
-                        log.Info("is a vrubrain 5.1 bootloader");
                         return boards.vrubrainv51;
                     }
 
                     if (obj2.Properties["PNPDeviceID"].Value.ToString().Contains(@"USB\VID_27AC&PID_1352"))
                     {
-                        log.Info("is a vrubrain 5.2 bootloader");
                         return boards.vrubrainv52;
                     }
                 }
@@ -277,7 +254,6 @@ namespace MissionPlanner.Utilities
                     if (b1 == 0x14 && b2 == 0x10)
                     {
                         serialPort.Close();
-                        log.Info("is a 1280");
                         return boards.b1280;
                     }
                 }
@@ -285,8 +261,6 @@ namespace MissionPlanner.Utilities
 
             if (serialPort.IsOpen)
                 serialPort.Close();
-
-            log.Warn("Not a 1280");
 
             Thread.Sleep(500);
 
@@ -340,13 +314,11 @@ namespace MissionPlanner.Utilities
                                             .ToUpper()
                                             .Contains(serialPort.PortName.ToUpper()))
                                     {
-                                        log.Info("is a 2560-2");
                                         return boards.b2560v2;
                                     }
                                 }
                             }
 
-                            log.Info("is a 2560");
                             return boards.b2560;
                         }
                     }
@@ -357,7 +329,6 @@ namespace MissionPlanner.Utilities
             }
 
             serialPort.Close();
-            log.Warn("Not a 2560");
 
             if (DialogResult.Yes == CustomMessageBox.Show("Is this a APM 2+?", "APM 2+", MessageBoxButtons.YesNo))
             {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using log4net;
 using MissionPlanner;
 using MissionPlanner.Utilities;
 
@@ -11,10 +10,6 @@ namespace MissionPlanner
 {
     public class Magfitrotation : Utils
     {
-        private static readonly ILog log =
-            LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-
         // copy of https://github.com/mavlink/mavlink/blob/master/pymavlink/tools/magfit_rotation_gyro.py
         class Rotation
         {
@@ -143,7 +138,6 @@ namespace MissionPlanner
                 }
                 catch (Exception ex)
                 {
-                    log.Error(ex);
                     return "";
                 }
 

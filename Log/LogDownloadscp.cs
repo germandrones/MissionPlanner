@@ -17,7 +17,6 @@ using Core.Geometry;
 using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Core;
-using log4net;
 using MissionPlanner.Comms;
 using MissionPlanner.Utilities;
 using System.Diagnostics;
@@ -30,7 +29,6 @@ namespace MissionPlanner.Log
 {
     public partial class LogDownloadscp : Form
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         SerialStatus status = SerialStatus.Connecting;
         bool closed;
         string logfile = "";
@@ -135,7 +133,6 @@ namespace MissionPlanner.Log
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                     }
                 }
 
@@ -227,9 +224,6 @@ namespace MissionPlanner.Log
 
         string GetLog(string no, string fileName)
         {
-            log.Info("GetLog " + no);
-
-            
             status = SerialStatus.Reading;
 
                 logfile = Settings.Instance.LogDir + Path.DirectorySeparatorChar
@@ -237,9 +231,6 @@ namespace MissionPlanner.Log
 
                 // make log dir
                 Directory.CreateDirectory(Path.GetDirectoryName(logfile));
-
-                log.Info("about to write: " + logfile);
-                // save memorystream to file
 
 
             SftpClient client = new SftpClient(_connectionInfo);
@@ -253,16 +244,12 @@ namespace MissionPlanner.Log
 
             client.Disconnect();
 
-            log.Info("about to convertbin: " + logfile);
-
             // create ascii log
             BinaryLog.ConvertBin(logfile, logfile + ".log");
 
             //update the new filename
             logfile = logfile + ".log";
 
-            // rename file if needed
-            log.Info("about to GetFirstGpsTime: " + logfile);
             // get gps time of assci log
             DateTime logtime = new DFLog().GetFirstGpsTime(logfile);
 

@@ -5,8 +5,6 @@ using System.Net;
 using System.IO;
 using System.Text;
 using System.Threading;
-using log4net;
-using log4net.Config;
 using System.Diagnostics;
 using System.Linq;
 using MissionPlanner.Utilities;
@@ -22,8 +20,6 @@ namespace MissionPlanner
 {
     public static class Program
     {
-        private static readonly ILog log = LogManager.GetLogger("Program");
-
         public static DateTime starttime = DateTime.Now;
 
         public static string name { get; internal set; }
@@ -76,8 +72,6 @@ namespace MissionPlanner
             Thread = Thread.CurrentThread;
 
             System.Windows.Forms.Application.EnableVisualStyles();
-            XmlConfigurator.Configure();
-            log.Info("******************* Logging Configured *******************");
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
 
             ServicePointManager.DefaultConnectionLimit = 10;
@@ -177,10 +171,6 @@ namespace MissionPlanner
 
             CleanupFiles();
 
-            log.InfoFormat("64bit os {0}, 64bit process {1}", System.Environment.Is64BitOperatingSystem,
-                System.Environment.Is64BitProcess);
-
-
             Device.DeviceStructure test1 = new Device.DeviceStructure(73225);
             Device.DeviceStructure test2 = new Device.DeviceStructure(262434);
             Device.DeviceStructure test3 = new Device.DeviceStructure(131874);
@@ -225,7 +215,6 @@ namespace MissionPlanner
             }
             catch (Exception ex)
             {
-                log.Fatal("Fatal app exception", ex);
                 Console.WriteLine(ex.ToString());
 
                 Console.WriteLine("\nPress any key to exit!");
@@ -281,7 +270,6 @@ namespace MissionPlanner
             }
             catch (Exception ex)
             {
-                log.Error("Exception during update", ex);
             }
 
             try
@@ -294,7 +282,6 @@ namespace MissionPlanner
             }
             catch (Exception ex)
             {
-                log.Error("Exception during update", ex);
             }
         }
 
@@ -318,9 +305,6 @@ namespace MissionPlanner
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             var list = AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies();
-
-            log.Error(list);
-
             handleException((Exception) e.ExceptionObject);
         }
 
@@ -358,8 +342,6 @@ namespace MissionPlanner
 
             MissionPlanner.Utilities.Tracking.AddException(ex);
 
-            log.Debug(ex.ToString());
-
             GetStackTrace(ex);
 
             // hyperlinks error
@@ -391,7 +373,6 @@ namespace MissionPlanner
             if (ex.GetType() == typeof (ObjectDisposedException) || ex.GetType() == typeof (InvalidOperationException))
                 // something is trying to update while the form, is closing.
             {
-                log.Error(ex);
                 return; // ignore
             }
             if (ex.GetType() == typeof (FileNotFoundException) || ex.GetType() == typeof (BadImageFormatException))
@@ -406,11 +387,8 @@ namespace MissionPlanner
             if (ex.StackTrace != null && ex.StackTrace.Contains("System.IO.Ports.SerialStream.Dispose") ||
                 ex.StackTrace != null && ex.StackTrace.Contains("System.IO.Ports.SerialPortStream.Dispose"))
             {
-                log.Error(ex);
                 return; // ignore
             }
-
-            log.Info("Th Name " + Thread.Name);
 
             DialogResult dr =
                 CustomMessageBox.Show("An error has occurred\n" + ex.ToString() + "\n\nReport this Error???",
@@ -481,7 +459,6 @@ namespace MissionPlanner
                 catch (Exception exp)
                 {
                     Console.WriteLine(exp.ToString());
-                    log.Error(exp);
                     CustomMessageBox.Show("Could not send report! Typically due to lack of internet connection.");
                 }
             }

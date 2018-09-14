@@ -9,7 +9,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using log4net;
 using MissionPlanner.Utilities;
 using System.Configuration;
 using System.Text.RegularExpressions;
@@ -21,9 +20,6 @@ namespace Installer
 {
     public partial class Installer : Form
     {
-        private static readonly ILog log =
-            LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private string installlocation = @"C:\Program Files (x86)\Mission Planner";
 
         private string md5s = "";
@@ -152,7 +148,6 @@ namespace Installer
                     {
                         var answer = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLower();
 
-                        log.Debug(filename + "," + hash + "," + answer);
 
                         return hash == answer;
                     }
@@ -160,7 +155,6 @@ namespace Installer
             }
             catch (Exception ex)
             {
-                log.Info("md5 fail " + ex.ToString());
             }
 
             return false;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using System.Windows.Forms;
-using log4net;
 using MissionPlanner.Controls;
 using MissionPlanner.Controls.BackstageView;
 using MissionPlanner.GCSViews.ConfigurationView;
@@ -13,7 +12,6 @@ namespace MissionPlanner.GCSViews
 {
     public partial class InitialSetup : MyUserControl, IActivate
     {
-        internal static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static string lastpagename = "";
 
         public InitialSetup()
@@ -86,7 +84,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
                 return null;
             }
 

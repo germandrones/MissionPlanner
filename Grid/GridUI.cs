@@ -15,7 +15,6 @@ using com.drew.metadata.exif;
 using GMap.NET;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
-using log4net;
 using MissionPlanner.GCSViews;
 using MissionPlanner.Maps;
 using MissionPlanner.Properties;
@@ -27,8 +26,6 @@ namespace MissionPlanner
 {
     public partial class GridUI : Form
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         // Variables
         const double rad2deg = (180 / Math.PI);
         const double deg2rad = (1.0 / rad2deg);
@@ -1477,7 +1474,6 @@ namespace MissionPlanner
                     }
                     catch (JpegProcessingException ex)
                     {
-                        log.InfoFormat(ex.Message);
                         return;
                     }
 
@@ -1840,7 +1836,6 @@ namespace MissionPlanner
                 }
                 catch(Exception ex)
                 {
-                    log.Error(ex);
                 }
 
                 savesettings();

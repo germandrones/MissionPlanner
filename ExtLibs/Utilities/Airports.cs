@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Globalization;
-using log4net;
 using System.Reflection;
 
 namespace MissionPlanner.Utilities
@@ -19,8 +18,6 @@ namespace MissionPlanner.Utilities
         //http://ourairports.com/data/
 
         //http://openflights.org/data.html
-
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         static List<PointLatLngAlt> airports = new List<PointLatLngAlt>();
 
@@ -64,8 +61,6 @@ namespace MissionPlanner.Utilities
 
                 newairports = false;
 
-                log.Info("getAirports - regen list");
-
                 // generate a new list
                 currentcenter = centerpoint;
 
@@ -78,8 +73,6 @@ namespace MissionPlanner.Utilities
                         cache.Add(item);
                     }
                 }
-
-                log.Info("getAirports done " + (DateTime.Now - start).TotalSeconds + " sec");
 
                 return cache;
             }

@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using log4net;
 using MissionPlanner.Comms;
 using MissionPlanner.Controls;
 using MissionPlanner.Log;
@@ -17,7 +16,6 @@ namespace MissionPlanner.GCSViews
 {
     public partial class Terminal : MyUserControl, IActivate, IDeactivate
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         internal static ICommsSerial comPort;
         public static bool threadrun;
         private readonly List<string> cmdHistory = new List<string>();
@@ -242,8 +240,6 @@ namespace MissionPlanner.GCSViews
                             }
                         }
 
-                        log.Info("Command: " + cmd);
-
                         // do not change this  \r is correct - no \n
                         if (cmd == "+++")
                         {
@@ -390,7 +386,6 @@ namespace MissionPlanner.GCSViews
 
                         if (buffer.Length > 0)
                         {
-                            log.Info("got packet - sending reboot via mavlink");
                             TXT_terminal.AppendText("Via Mavlink\n");
                             mine.doReboot(false, false);
                             try
@@ -403,7 +398,6 @@ namespace MissionPlanner.GCSViews
                         }
                         else
                         {
-                            log.Info("no packet - sending reboot via console");
                             TXT_terminal.AppendText("Via Console\n");
                             try
                             {
@@ -426,7 +420,6 @@ namespace MissionPlanner.GCSViews
                     TXT_terminal.AppendText("Waiting for reboot\n");
 
                     // wait 7 seconds for px4 reboot
-                    log.Info("waiting for reboot");
                     var deadline = DateTime.Now.AddSeconds(9);
                     while (DateTime.Now < deadline)
                     {
@@ -451,12 +444,7 @@ namespace MissionPlanner.GCSViews
                 }
                 else
                 {
-                    log.Info("About to open " + comPort.PortName);
-
                     comPort.Open();
-
-                    log.Info("toggle dtr");
-
                     comPort.toggleDTR();
                 }
 
@@ -472,7 +460,6 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
                 TXT_terminal.AppendText("Cant open serial port\r\n");
                 return;
             }

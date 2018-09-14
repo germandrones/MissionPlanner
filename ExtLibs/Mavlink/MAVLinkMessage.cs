@@ -1,5 +1,4 @@
-﻿using log4net;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -12,8 +11,6 @@ public partial class MAVLink
 {
     public class MAVLinkMessage
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(MAVLinkMessage));
-
         public static readonly MAVLinkMessage Invalid = new MAVLinkMessage();
         object _locker = new object();
 
@@ -82,10 +79,7 @@ public partial class MAVLink
                             MavlinkUtil.ByteArrayToStructure(buffer, ref _data, 6, payloadlength);
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        log.Error(ex);
-                    }
+                    catch { }
                 }
 
                 return _data;

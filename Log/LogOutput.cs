@@ -13,14 +13,12 @@ using ICSharpCode.SharpZipLib.Zip;
 using KMLib;
 using KMLib.Feature;
 using KMLib.Geometry;
-using log4net;
 using MissionPlanner.Utilities;
 
 namespace MissionPlanner.Log
 {
     public class LogOutput
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         string lastline = "";
         string[] ctunlast = new string[] {"", "", "", "", "", "", "", "", "", "", "", "", "", ""};
         string[] ntunlast = new string[] {"", "", "", "", "", "", "", "", "", "", "", "", "", ""};
@@ -244,7 +242,6 @@ namespace MissionPlanner.Log
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                     }
                 }
             }
@@ -868,7 +865,6 @@ gnssId GNSS Type
                 Style style2 = new Style();
                 Color color = Color.FromArgb(0xff, (stylecode >> 16) & 0xff, (stylecode >> 8) & 0xff,
                     (stylecode >> 0) & 0xff);
-                log.Info("colour " + color.ToArgb().ToString("X") + " " + color.ToKnownColor().ToString());
                 style2.Add(new LineStyle(color, 4));
 
 

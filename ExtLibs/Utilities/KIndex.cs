@@ -1,5 +1,4 @@
-﻿using log4net;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,8 +10,6 @@ namespace MissionPlanner.Utilities
 {
     public class KIndex
     {
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         static string kindexurl = "http://services.swpc.noaa.gov/text/wwv.txt";
 
         //The estimated planetary K-index at 2100 UTC on 24 December was 3.
@@ -50,8 +47,6 @@ namespace MissionPlanner.Utilities
 
                         int kno = int.Parse(number);
 
-                        log.Info("K-Index is " + kno);
-
                         if (KIndexEvent != null)
                             KIndexEvent(kno, null);
 
@@ -61,7 +56,6 @@ namespace MissionPlanner.Utilities
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
 
             if (KIndexEvent != null)

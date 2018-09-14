@@ -1,5 +1,4 @@
-﻿using log4net;
-using MissionPlanner.Utilities;
+﻿using MissionPlanner.Utilities;
 using SharpDX;
 using SharpDX.DirectInput;
 using System;
@@ -16,7 +15,6 @@ namespace MissionPlanner.CamJoystick
     public class CamJoystick : IDisposable
     {
         public static bool[] CamJoyButtons = new bool[1];
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static SharpDX.DirectInput.DirectInput directInput = new SharpDX.DirectInput.DirectInput();
         public static MissionPlanner.CamJoystick.CamJoystick.JoyChannel[] JoyChannels = new MissionPlanner.CamJoystick.CamJoystick.JoyChannel[20];
         public static MissionPlanner.CamJoystick.CamJoystick.JoyButton[] JoyButtons = new MissionPlanner.CamJoystick.CamJoystick.JoyButton[128];
@@ -94,7 +92,6 @@ namespace MissionPlanner.CamJoystick
 
         public void loadconfig(string joystickconfigbutton = "Camjoystickbuttons.xml", string joystickconfigaxis = "Camjoystickaxis.xml")
         {
-            MissionPlanner.CamJoystick.CamJoystick.log.Info((object)("Loading Camjoystick config files " + joystickconfigbutton + " " + joystickconfigaxis));
             this.joystickconfigbutton = Settings.GetUserDataDirectory() + joystickconfigbutton;
             this.joystickconfigaxis = Settings.GetUserDataDirectory() + joystickconfigaxis;
             if (!File.Exists(this.joystickconfigbutton) || !File.Exists(this.joystickconfigaxis))
@@ -125,7 +122,6 @@ namespace MissionPlanner.CamJoystick
 
         public void saveconfig()
         {
-            MissionPlanner.CamJoystick.CamJoystick.log.Info((object)("Saving Camjoystick config files " + this.joystickconfigbutton + " " + this.joystickconfigaxis));
             using (StreamWriter streamWriter = new StreamWriter(this.joystickconfigbutton))
                 new XmlSerializer(typeof(MissionPlanner.CamJoystick.CamJoystick.JoyButton[]), new Type[1]
                 {
@@ -220,11 +216,8 @@ namespace MissionPlanner.CamJoystick
                 int[] pointOfView = camJoystickState2.GetPointOfView();
                 foreach (PropertyInfo property in camJoystickState2.GetType().GetProperties())
                 {
-                    MissionPlanner.CamJoystick.CamJoystick.log.InfoFormat("test name {0} old {1} new {2} ", (object)property.Name, hashtable[(object)property.Name], (object)int.Parse(property.GetValue((object)camJoystickState2, (object[])null).ToString()));
-                    MissionPlanner.CamJoystick.CamJoystick.log.InfoFormat("{0}  {1} {2}", (object)property.Name, (object)(int)hashtable[(object)property.Name], (object)(int.Parse(property.GetValue((object)camJoystickState2, (object[])null).ToString()) + threshold));
                     if ((int)hashtable[(object)property.Name] > int.Parse(property.GetValue((object)camJoystickState2, (object[])null).ToString()) + threshold || (int)hashtable[(object)property.Name] < int.Parse(property.GetValue((object)camJoystickState2, (object[])null).ToString()) - threshold)
                     {
-                        MissionPlanner.CamJoystick.CamJoystick.log.Info((object)property.Name);
                         CamJStick.Unacquire();
                         return (MissionPlanner.CamJoystick.CamJoystick.joystickaxis)Enum.Parse(typeof(MissionPlanner.CamJoystick.CamJoystick.joystickaxis), property.Name);
                     }
@@ -412,12 +405,10 @@ namespace MissionPlanner.CamJoystick
                 }
                 catch (SharpDXException ex)
                 {
-                    MissionPlanner.CamJoystick.CamJoystick.log.Error((object)ex);
                     int num;
                 }
                 catch (Exception ex)
                 {
-                    MissionPlanner.CamJoystick.CamJoystick.log.Info((object)("Joystick thread error " + ex.ToString()));
                 }
             }
         }
@@ -707,7 +698,6 @@ namespace MissionPlanner.CamJoystick
             this.Camjoystick.Poll();
             this.state = this.Camjoystick.CurrentCamJoystickState();
             ushort num = this.pickchannel(channel, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[channel].axis, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[channel].reverse, 0);
-            MissionPlanner.CamJoystick.CamJoystick.log.DebugFormat("{0} = {1} = {2}", (object)channel, (object)num, (object)this.state.X);
             return num;
         }
 
@@ -718,7 +708,6 @@ namespace MissionPlanner.CamJoystick
             this.Camjoystick.Poll();
             this.state = this.Camjoystick.CurrentCamJoystickState();
             ushort num = this.pickchannel(channel, MissionPlanner.CamJoystick.CamJoystick.JoyChannels[channel].axis, false, 0);
-            MissionPlanner.CamJoystick.CamJoystick.log.DebugFormat("{0} = {1} = {2}", (object)channel, (object)num, (object)this.state.X);
             return num;
         }
 

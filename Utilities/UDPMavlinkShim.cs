@@ -5,14 +5,11 @@ using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
-using log4net;
 
 namespace MissionPlanner.Utilities
 {
     public class UDPMavlinkShim
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private static UdpClient client;
 
         static UDPMavlinkShim()
@@ -24,7 +21,6 @@ namespace MissionPlanner.Utilities
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -63,7 +59,6 @@ namespace MissionPlanner.Utilities
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -80,7 +75,6 @@ namespace MissionPlanner.Utilities
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
     }

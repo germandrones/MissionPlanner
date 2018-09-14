@@ -1,5 +1,4 @@
-﻿using log4net;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,30 +23,18 @@ namespace MissionPlanner.Utilities
 
         public static void LogInfoFormat(this Control ctl, string format, params object[] args)
         {
-            ILog log = LogManager.GetLogger(ctl.GetType().FullName);
-
-            log.InfoFormat(format, args);
         }
 
         public static void LogErrorFormat(this Control ctl, string format, params object[] args)
         {
-            ILog log = LogManager.GetLogger(ctl.GetType().FullName);
-
-            log.ErrorFormat(format, args);
         }
 
         public static void LogInfo(this Control ctl, object ex)
         {
-            ILog log = LogManager.GetLogger(ctl.GetType().FullName);
-
-            log.Info(ex);
         }
 
         public static void LogError(this Control ctl, object ex)
         {
-            ILog log = LogManager.GetLogger(ctl.GetType().FullName);
-
-            log.Error(ex);
         }
 
         public static void ShowUserControl(this UserControl ctl)

@@ -8,7 +8,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 using System.Threading;
-using log4net;
 using System.Management;
 
 namespace MissionPlanner.Comms
@@ -16,12 +15,10 @@ namespace MissionPlanner.Comms
 
     public class SerialPort : System.IO.Ports.SerialPort, ICommsSerial
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(SerialPort));
-
         static object locker = new object();
 
-        public new bool DtrEnable { get { return base.DtrEnable; } set { log.Info(base.PortName + " DtrEnable " + value); if (base.DtrEnable == value) return; if (ispx4(base.PortName)) return; base.DtrEnable = value; } }
-        public new bool RtsEnable { get { return base.RtsEnable; } set { log.Info(base.PortName + " RtsEnable " + value); if (base.RtsEnable == value) return; if (ispx4(base.PortName)) return; base.RtsEnable = value; } }
+        public new bool DtrEnable { get { return base.DtrEnable; } set { if (base.DtrEnable == value) return; if (ispx4(base.PortName)) return; base.DtrEnable = value; } }
+        public new bool RtsEnable { get { return base.RtsEnable; } set { if (base.RtsEnable == value) return; if (ispx4(base.PortName)) return; base.RtsEnable = value; } }
         
 
         public new void Open()
@@ -63,7 +60,6 @@ namespace MissionPlanner.Comms
 
         public new void Close()
         {
-            log.Info("Closing port " + PortName);
             base.Close();
         }
 
@@ -158,12 +154,10 @@ namespace MissionPlanner.Comms
             // make sure we are exclusive
             lock (locker)
             {
-                log.Info("start GetNiceName " + port);
                 portnamenice = "";
 
                 if (comportnamecache.ContainsKey(port))
                 {
-                    log.Info("done GetNiceName cache " + port);
                     return comportnamecache[port];
                 }
 
@@ -174,8 +168,6 @@ namespace MissionPlanner.Comms
                 catch
                 {
                 }
-                log.Info("done GetNiceName " + port + " = " + portnamenice);
-
                 comportnamecache[port] = portnamenice;
 
                 return (string)portnamenice.Clone();
@@ -247,7 +239,7 @@ namespace MissionPlanner.Comms
                     }
                 }
             }
-            catch (Exception ex) { log.Error(ex); }
+            catch { }
 
             return false;
         }
@@ -276,8 +268,6 @@ namespace MissionPlanner.Comms
 
     public sealed class SerialPortFixer : IDisposable
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(SerialPortFixer));
-
         public static void Execute(string portName)
         {
             using (new SerialPortFixer(portName))
@@ -364,9 +354,7 @@ namespace MissionPlanner.Comms
         {
             Dcb dcb = new Dcb();
             GetCommStateNative(ref dcb);
-            log.Info("before dcb flags: " + dcb.Flags);
             dcb.Flags &= ~(1u << DcbFlagAbortOnError);
-            log.Info("after dcb flags: " + dcb.Flags);
             SetCommStateNative(ref dcb);
         }
 

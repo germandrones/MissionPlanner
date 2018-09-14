@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using com.drew.imaging.jpg;
 using com.drew.imaging.tiff;
 using com.drew.metadata;
-using log4net;
 using SharpKml.Base;
 using SharpKml.Dom;
 using System.Drawing;
@@ -40,8 +39,6 @@ namespace MissionPlanner.GeoRef
 
         private const string PHOTO_FILES_FILTER = "*.jpg;*.tif";
         private const int JXL_ID_OFFSET = 10;
-
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         // Key = path of file, Value = object with picture information
         private Dictionary<string, PictureInformation> picturesInfo;
@@ -130,12 +127,10 @@ namespace MissionPlanner.GeoRef
                 }
                 catch (JpegProcessingException e)
                 {
-                    log.InfoFormat(e.Message);
                     return dtaken;
                 }
                 catch (TiffProcessingException e)
                 {
-                    log.InfoFormat(e.Message);
                     return dtaken;
                 }
 
@@ -144,7 +139,6 @@ namespace MissionPlanner.GeoRef
                     if (lcDirectory.ContainsTag(0x9003))
                     {
                         dtaken = lcDirectory.GetDate(0x9003);
-                        log.InfoFormat("does " + lcDirectory.GetTagName(0x9003) + " " + dtaken);
 
                         filedatecache[fn] = dtaken;
 
@@ -154,7 +148,6 @@ namespace MissionPlanner.GeoRef
                     if (lcDirectory.ContainsTag(0x9004))
                     {
                         dtaken = lcDirectory.GetDate(0x9004);
-                        log.InfoFormat("does " + lcDirectory.GetTagName(0x9004) + " " + dtaken);
 
                         filedatecache[fn] = dtaken;
 
@@ -900,8 +893,6 @@ namespace MissionPlanner.GeoRef
                     lastRecordN = GenPhotoStationRecord(swloctrim, picInfo.Path, picInfo.Lat, picInfo.Lon,
                         picInfo.getAltitude(useAMSLAlt), 0, 0, picInfo.Yaw, picInfo.Width, picInfo.Height, lastRecordN);
 
-                    log.InfoFormat(filename + " " + picInfo.Lon + " " + picInfo.Lat + " " +
-                                   picInfo.getAltitude(useAMSLAlt) + "           ");
                 }
 
                 Serializer serializer = new Serializer();

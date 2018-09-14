@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using MissionPlanner.Utilities;
-using log4net;
 
 namespace MissionPlanner.Utilities
 {
@@ -21,9 +20,6 @@ namespace MissionPlanner.Utilities
                       @"(?<MetaKey>\w+)(?:{(?<MetaFrame>[^:]+)})?:(?<MetaValue>.+)");
 
         private static readonly Regex _parentDirectoryRegex = new Regex("(?<ParentDirectory>[../]*)(?<Path>.+)");
-
-        private static readonly ILog log =
-            LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         static Dictionary<string, string> cachequeue = new Dictionary<string, string>();
         static Dictionary<string, string> cache = new Dictionary<string, string>();
@@ -51,7 +47,6 @@ namespace MissionPlanner.Utilities
             if (MissionPlanner.Utilities.Update.dobeta)
             {
                 parameterLocationsString = ConfigurationManager.AppSettings["ParameterLocationsBleeding"];
-                log.Info("Using Bleeding param gen urls");
             }
 
             if (urls != null)
@@ -155,7 +150,6 @@ namespace MissionPlanner.Utilities
                 {
                     var newPath = parameterLocation.Replace(currentfn, newfn);
                     var dataFromAddress = ReadDataFromAddress(newPath);
-                    log.Info("Nested Group " + NestedGroups.Groups[1]);
                     ParseParameterInformation(dataFromAddress, objXmlTextWriter, parameterPrefix, string.Empty, vehicleType);
                     ParseGroupInformation(dataFromAddress, objXmlTextWriter, newPath, parameterPrefix, vehicleType);
                 }
@@ -181,7 +175,6 @@ namespace MissionPlanner.Utilities
                                         StringSplitOptions.None)
                                         .ForEach(separatedPath =>
                                         {
-                                            log.Info("Process " + parameterPrefix + node.Key + " : " + separatedPath);
                                             Uri newUri = new Uri(new Uri(parameterLocation), separatedPath.Trim());
 
                                             var newPath = newUri.AbsoluteUri;
@@ -324,7 +317,7 @@ namespace MissionPlanner.Utilities
                                                         metaDict[metaKey] = metaMatch.Groups["MetaValue"].Value
                                                             .Trim(new char[] {' '});
                                                     }
-                                                } catch { log.Error("Invalid MetaFrame " + metaframe); }
+                                                } catch {  }
                                             }
                                         }
                                     }
@@ -335,7 +328,6 @@ namespace MissionPlanner.Utilities
                                 }
                                 else
                                 {
-                                    log.Error("Duplicate Key " + key);
                                 }
                             }
                         }
@@ -384,7 +376,6 @@ namespace MissionPlanner.Utilities
         {
             if (attempt > 2)
             {
-                log.Error(String.Format("Failed {0}", address));
                 lock (cachequeue)
                 {
                     cachequeue.Remove(address);
@@ -393,8 +384,6 @@ namespace MissionPlanner.Utilities
             }
 
             string data = string.Empty;
-
-            log.Info(address);
 
             while (true)
             {
@@ -415,7 +404,6 @@ namespace MissionPlanner.Utilities
 
             if (cache.ContainsKey(address))
             {
-                log.Info("using cache " + address);
                 lock (cachequeue)
                 {
                     cachequeue.Remove(address);
@@ -437,9 +425,6 @@ namespace MissionPlanner.Utilities
                 // Get the response.
                 using (var response = request.GetResponse())
                 {
-                    // Display the status.
-                    log.Info(((HttpWebResponse) response).StatusDescription);
-
                     // Get the stream containing content returned by the server.
                     using (var dataStream = response.GetResponseStream())
                     {
@@ -462,8 +447,6 @@ namespace MissionPlanner.Utilities
             }
             catch (WebException ex)
             {
-                log.Error(String.Format("The request to {0} failed.", address), ex);
-
                 attempt++;
 
                 lock (cachequeue)

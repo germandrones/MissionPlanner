@@ -9,15 +9,11 @@ using System.Windows.Forms;
 using System.IO;
 using MissionPlanner.Utilities;
 using System.Collections;
-using log4net;
 
 namespace MissionPlanner.Controls
 {
     public partial class DefaultSettings : UserControl, IActivate
     {
-        private static readonly ILog log =
-            LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         List<GitHubContent.FileInfo> paramfiles;
 
         public event EventHandler OnChange;
@@ -52,10 +48,7 @@ namespace MissionPlanner.Controls
                     BUT_paramfileload.Enabled = true;
                 });
             }
-            catch (Exception ex)
-            {
-                log.Error(ex);
-            }
+            catch { }
         }
 
         private void BUT_paramfileload_Click(object sender, EventArgs e)

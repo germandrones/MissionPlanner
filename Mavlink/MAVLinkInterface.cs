@@ -14,7 +14,6 @@ using System.Windows.Forms;
 
 using System.Diagnostics;
 
-using log4net;
 using MissionPlanner.Comms;
 using MissionPlanner.Controls;
 using MissionPlanner.Mavlink;
@@ -26,7 +25,6 @@ namespace MissionPlanner
 {
     public class MAVLinkInterface : MAVLink, IDisposable, IMAVLinkInterface
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private ICommsSerial _baseStream;
 
         public ICommsSerial BaseStream
@@ -216,8 +214,6 @@ namespace MissionPlanner
             get { return _logplaybackfile; }
             set {
                 _logplaybackfile = value;
-                if (_logplaybackfile != null && _logplaybackfile.BaseStream is FileStream)
-                    log.Info("Logplaybackfile set " + ((FileStream)_logplaybackfile.BaseStream).Name);
                 MAVlist.Clear();
             }
         }
@@ -384,8 +380,6 @@ namespace MissionPlanner
 
                 lock (objlock) // so we dont have random traffic
                 {
-                    log.Info("Open port with " + BaseStream.PortName + " " + BaseStream.BaudRate);
-
                     if (BaseStream is UdpSerial)
                     {
                         progressWorkerEventArgs.CancelRequestChanged += (o, e) => {
@@ -436,8 +430,6 @@ namespace MissionPlanner
                         giveComport = false;
                         return;
                     }
-
-                    log.Info(DateTime.Now.Millisecond + " Start connect loop ");
 
                     if (DateTime.Now > deadline)
                     {
@@ -555,13 +547,11 @@ Please check the following
                 giveComport = false;
                 if (string.IsNullOrEmpty(progressWorkerEventArgs.ErrorMessage))
                     progressWorkerEventArgs.ErrorMessage = Strings.ConnectFailed;
-                log.Error(e);
                 throw;
             }
             //frmProgressReporter.Close();
             giveComport = false;
             frmProgressReporter.UpdateProgressAndStatus(100, Strings.Done);
-            log.Info("Done open " + MAV.sysid + " " + MAV.compid);
             MAV.packetslost = 0;
             MAV.synclost = 0;
         }
@@ -604,8 +594,6 @@ Please check the following
             MAVlist[message.sysid, message.compid].sysid = message.sysid;
             MAVlist[message.sysid, message.compid].compid = message.compid;
             MAVlist[message.sysid, message.compid].recvpacketcount = message.seq;
-            log.InfoFormat("ID sys {0} comp {1} ver{2} type {3} name {4}", message.sysid, message.compid, mavlinkversion,
-                MAV.aptype.ToString(), MAV.apname.ToString());
         }
 
         public MAVLinkMessage getHeartBeat()
@@ -651,10 +639,6 @@ Please check the following
                     generatePacket((int)ty.msgid, indata, sysid, compid);
                     return;
                 }
-            }
-            if (!validPacket)
-            {
-                log.Info("Mavlink : NOT VALID PACKET sendPacket() " + indata.GetType().ToString());
             }
         }
 
@@ -985,13 +969,11 @@ Please check the following
         {
             if (!MAVlist[sysid, compid].param.ContainsKey(paramname))
             {
-                log.Warn("Trying to set Param that doesnt exist " + paramname + "=" + value);
                 return false;
             }
 
             if (MAVlist[sysid, compid].param[paramname].Value == value && !force)
             {
-                log.Warn("setParam " + paramname + " not modified as same");
                 return true;
             }
 
@@ -1022,9 +1004,6 @@ Please check the following
 
             generatePacket((byte)MAVLINK_MSG_ID.PARAM_SET, req, sysid, compid);
 
-            log.InfoFormat("setParam '{0}' = '{1}' sysid {2} compid {3}", paramname, value, sysid,
-                compid);
-
             DateTime start = DateTime.Now;
             int retrys = 3;
 
@@ -1034,7 +1013,6 @@ Please check the following
                 {
                     if (retrys > 0)
                     {
-                        log.Info("setParam Retry " + retrys);
                         generatePacket((byte)MAVLINK_MSG_ID.PARAM_SET, req, sysid, compid);
                         start = DateTime.Now;
                         retrys--;
@@ -1062,7 +1040,6 @@ Please check the following
 
                         if (st != paramname)
                         {
-                            log.InfoFormat("MAVLINK bad param response - {0} vs {1}", paramname, st);
                             continue;
                         }
 
@@ -1076,8 +1053,6 @@ Please check the following
                             var offset = Marshal.OffsetOf(typeof(mavlink_param_value_t), "param_value");
                             MAVlist[sysid, compid].param[st] = new MAVLinkParam(st, BitConverter.GetBytes(par.param_value), (MAV_PARAM_TYPE)par.param_type, (MAV_PARAM_TYPE)par.param_type);
                         }
-
-                        log.Info("setParam gotback " + st + " : " + MAVlist[sysid, compid].param[st]);
 
                         lastparamset = DateTime.Now;
 
@@ -1247,7 +1222,6 @@ Please check the following
                 return;
             }
 
-            log.InfoFormat("getParamList {0} {1}", sysidcurrent, compidcurrent);
             if (sysidcurrent > 1) return;
 
             frmProgressReporter = new ProgressReporterDialogue
@@ -1332,8 +1306,6 @@ Please check the following
 
                     if (lastonebyone.AddMilliseconds(600) < DateTime.Now)
                     {
-                        log.Info("Get param 1 by 1 - got " + indexsreceived.Count + " of " + param_total);
-
                         int queued = 0;
                         // try getting individual params
                         for (short i = 0; i <= (param_total - 1); i++)
@@ -1371,7 +1343,6 @@ Please check the following
                                 }
                                 catch (Exception excp)
                                 {
-                                    log.Info("GetParam Failed index: " + i + " " + excp);
                                     throw excp;
                                 }
                             }
@@ -1412,20 +1383,11 @@ Please check the following
                         // check if we already have it
                         if (indexsreceived.Contains(par.param_index))
                         {
-                            log.Info("Already got " + (par.param_index) + " '" + paramID + "' " + (indexsreceived.Count * 100) / param_total);
                             if (frmProgressReporter != null)
                                 this.frmProgressReporter.UpdateProgressAndStatus(
                                     (indexsreceived.Count * 100) / param_total, "Already Got param " + paramID);
                             continue;
                         }
-
-                        //Console.WriteLine(DateTime.Now.Millisecond + " gp2 ");
-
-                        if (!MainV2.MONO)
-                            log.Info(DateTime.Now.Millisecond + " got param " + (par.param_index) + " of " +
-                                     (par.param_count) + " name: " + paramID);
-
-                        //Console.WriteLine(DateTime.Now.Millisecond + " gp2a ");
 
                         if (MAVlist[sysid,compid].apname == MAV_AUTOPILOT.ARDUPILOTMEGA)
                         {
@@ -1560,8 +1522,6 @@ Please check the following
         {
             if (name == "" && index == -1) return 0;
 
-            log.Info("GetParam name: '" + name + "' or index: " + index + " " + sysid + ":" + compid);
-
             MAVLinkMessage buffer;
 
             mavlink_param_request_read_t req = new mavlink_param_request_read_t();
@@ -1594,7 +1554,6 @@ Please check the following
                 {
                     if (retrys > 0)
                     {
-                        log.Info("GetParam Retry " + retrys);
                         generatePacket((byte) MAVLINK_MSG_ID.PARAM_REQUEST_READ, req, sysid, compid);
                         start = DateTime.Now;
                         retrys--;
@@ -1625,9 +1584,6 @@ Please check the following
                         // not the correct id
                         if (!(par.param_index == index || st == name))
                         {
-                            log.ErrorFormat("Wrong Answer {0} - {1} - {2}    --- '{3}' vs '{4}'", par.param_index,
-                                ASCIIEncoding.ASCII.GetString(par.param_id), par.param_value,
-                                ASCIIEncoding.ASCII.GetString(req.param_id).TrimEnd(), st);
                             continue;
                         }
 
@@ -1644,9 +1600,6 @@ Please check the following
                         }
 
                         MAVlist[sysid, compid].param_types[st] = (MAV_PARAM_TYPE) par.param_type;
-
-                        log.Info(DateTime.Now.Millisecond + " got param " + (par.param_index) + " of " +
-                                 (par.param_count) + " name: " + st);
 
                         return par.param_value;
                     }
@@ -1713,7 +1666,6 @@ Please check the following
                 generatePacket((byte) MAVLINK_MSG_ID.REQUEST_DATA_STREAM, req);
                 Thread.Sleep(20);
                 generatePacket((byte) MAVLINK_MSG_ID.REQUEST_DATA_STREAM, req);
-                log.Info("Stopall Done");
             }
             catch
             {
@@ -1752,7 +1704,6 @@ Please check the following
                 {
                     if (retrys > 0)
                     {
-                        log.Info("setWPCurrent Retry " + retrys);
                         generatePacket((byte) MAVLINK_MSG_ID.MISSION_SET_CURRENT, req);
                         start = DateTime.Now;
                         retrys--;
@@ -1871,9 +1822,6 @@ Please check the following
             req.param6 = p6;
             req.param7 = p7;
 
-            log.InfoFormat("doCommand cmd {0} {1} {2} {3} {4} {5} {6} {7}", actionid.ToString(), p1, p2, p3, p4, p5, p6,
-                p7);
-
             generatePacket((byte) MAVLINK_MSG_ID.COMMAND_LONG, req, sysid, compid);
 
             if (!requireack)
@@ -1939,7 +1887,6 @@ Please check the following
                 {
                     if (retrys > 0)
                     {
-                        log.Info("doCommand Retry " + retrys);
                         generatePacket((byte) MAVLINK_MSG_ID.COMMAND_LONG, req, sysid, compid);
                         start = DateTime.Now;
                         retrys--;
@@ -1959,12 +1906,8 @@ Please check the following
 
                         if (ack.command != req.command)
                         {
-                            log.InfoFormat("doCommand cmd resp {0} - {1} - Commands dont match", (MAV_CMD) ack.command,
-                                (MAV_RESULT) ack.result);
                             continue;
                         }
-
-                        log.InfoFormat("doCommand cmd resp {0} - {1}", (MAV_CMD) ack.command, (MAV_RESULT) ack.result);
 
                         if (ack.result == (byte) MAV_RESULT.ACCEPTED)
                         {
@@ -2224,9 +2167,6 @@ Please check the following
             {
                 return;
             }
-
-            log.InfoFormat("Request stream {0} at {1} hz for {2}:{3}",
-                Enum.Parse(typeof(MAV_DATA_STREAM), id.ToString()), hzrate, sysid, compid);
             getDatastream((byte) sysid, (byte) compid, id, hzrate);
         }
 
@@ -2306,7 +2246,6 @@ Please check the following
                 {
                     if (retrys > 0)
                     {
-                        log.Info("getWPCount Retry " + retrys + " - giv com " + giveComport);
                         generatePacket((byte) MAVLINK_MSG_ID.MISSION_REQUEST_LIST, req);
                         start = DateTime.Now;
                         retrys--;
@@ -2323,9 +2262,6 @@ Please check the following
                     if (buffer.msgid == (byte) MAVLINK_MSG_ID.MISSION_COUNT)
                     {
                         var count = buffer.ToStructure<mavlink_mission_count_t>();
-
-
-                        log.Info("wpcount: " + count.count);
                         giveComport = false;
                         return count.count; // should be ushort, but apm has limited wp count < byte
                     }
@@ -2349,7 +2285,6 @@ Please check the following
                 {
                     if (retrys > 0)
                     {
-                        log.Info("getHomePosition Retry " + retrys + " - giv com " + giveComport);
                         doCommand(MAV_CMD.GET_HOME_POSITION, 0, 0, 0, 0, 0, 0, 0, false);
                         giveComport = true;
                         start = DateTime.Now;
@@ -2376,7 +2311,6 @@ Please check the following
                 }
                 else
                 {
-                    log.Info(DateTime.Now + " PC getHomePosition ");
                 }
             }
         }
@@ -2436,7 +2370,6 @@ Please check the following
                 {
                     if (retrys > 0)
                     {
-                        log.Info("getWP Retry " + retrys);
                         if (use_int)
                             generatePacket((byte)MAVLINK_MSG_ID.MISSION_REQUEST_INT, req);
                         else
@@ -2477,9 +2410,6 @@ Please check the following
                         loc.lat = ((wp.x));
                         loc.lng = ((wp.y));
 
-                        log.InfoFormat("getWP {0} {1} {2} {3} {4} opt {5}", loc.id, loc.p1, loc.alt, loc.lat, loc.lng,
-                            loc.options);
-
                         break;
                     }
                     else if (buffer.msgid == (byte) MAVLINK_MSG_ID.MISSION_ITEM_INT)
@@ -2509,9 +2439,6 @@ Please check the following
                         {
                             loc.lat = wp.x;
                         }
-
-                        log.InfoFormat("getWPint {0} {1} {2} {3} {4} opt {5}", loc.id, loc.p1, loc.alt, loc.lat, loc.lng,
-                            loc.options);
 
                         break;
                     }
@@ -2695,7 +2622,6 @@ Please check the following
                 {
                     if (retrys > 0)
                     {
-                        log.Info("setWPTotal Retry " + retrys);
                         generatePacket((byte) MAVLINK_MSG_ID.MISSION_COUNT, req);
                         start = DateTime.Now;
                         retrys--;
@@ -2752,9 +2678,6 @@ Please check the following
             {
                 mavlink_gps_rtcm_data_t gps = new mavlink_gps_rtcm_data_t();
                 var msglen = 180;
-
-                if (length > msglen * 4)
-                    log.Error("Message too large " + length);
 
                 // number of packets we need, including a termination packet if needed
                 var nopackets = (length % msglen) == 0 ? length / msglen + 1 : (length / msglen) + 1;
@@ -2902,9 +2825,6 @@ Please check the following
 
             ushort index = req.seq;
 
-            log.InfoFormat("setWP {7}:{8} {6} frame {0} cmd {1} p1 {2} x {3} y {4} z {5}", req.frame, req.command, req.param1,
-                req.x, req.y, req.z, index, req.target_system,req.target_component);
-
             // request
             generatePacket((byte) MAVLINK_MSG_ID.MISSION_ITEM, req);
 
@@ -2918,7 +2838,6 @@ Please check the following
                 {
                     if (retrys > 0)
                     {
-                        log.Info("setWP Retry " + retrys);
                         generatePacket((byte) MAVLINK_MSG_ID.MISSION_ITEM, req);
 
                         start = DateTime.Now;
@@ -2934,9 +2853,6 @@ Please check the following
                     if (buffer.msgid == (byte) MAVLINK_MSG_ID.MISSION_ACK)
                     {
                         var ans = buffer.ToStructure<mavlink_mission_ack_t>();
-                        log.Info("set wp " + index + " ACK 47 : " + buffer.msgid + " ans " +
-                                 Enum.Parse(typeof (MAV_MISSION_RESULT), ans.type.ToString()));
-
 
                         if (req.current == 2)
                         {
@@ -2961,7 +2877,6 @@ Please check the following
                         var ans = buffer.ToStructure<mavlink_mission_request_t>();
                         if (ans.seq == (index + 1))
                         {
-                            log.Info("set wp doing " + index + " req " + ans.seq + " REQ 40 : " + buffer.msgid);
                             giveComport = false;
 
                             if (req.current == 2)
@@ -2984,9 +2899,6 @@ Please check the following
                         }
                         else
                         {
-                            log.InfoFormat(
-                                "set wp fail doing " + index + " req " + ans.seq + " ACK 47 or REQ 40 : " + buffer.msgid +
-                                " seq {0} ts {1} tc {2}", req.seq, req.target_system, req.target_component);
                             // resend point now
                             start = DateTime.MinValue;
                         }
@@ -3007,9 +2919,6 @@ Please check the following
 
             ushort index = req.seq;
 
-            log.InfoFormat("setWPint {7}:{8} {6} frame {0} cmd {1} p1 {2} x {3} y {4} z {5}", req.frame, req.command, req.param1,
-                req.x / 1.0e7, req.y /1.0e7 , req.z, index, req.target_system, req.target_component);
-
             // request
             generatePacket((byte)MAVLINK_MSG_ID.MISSION_ITEM_INT, req);
 
@@ -3022,7 +2931,6 @@ Please check the following
                 {
                     if (retrys > 0)
                     {
-                        log.Info("setWP Retry " + retrys);
                         generatePacket((byte)MAVLINK_MSG_ID.MISSION_ITEM_INT, req);
 
                         start = DateTime.Now;
@@ -3038,8 +2946,6 @@ Please check the following
                     if (buffer.msgid == (byte)MAVLINK_MSG_ID.MISSION_ACK)
                     {
                         var ans = buffer.ToStructure<mavlink_mission_ack_t>();
-                        log.Info("set wp " + index + " ACK 47 : " + buffer.msgid + " ans " +
-                                 Enum.Parse(typeof(MAV_MISSION_RESULT), ans.type.ToString()));
                         giveComport = false;
 
                         if (req.current == 2)
@@ -3065,7 +2971,6 @@ Please check the following
                         var ans = buffer.ToStructure<mavlink_mission_request_t>();
                         if (ans.seq == (index + 1))
                         {
-                            log.Info("set wp doing " + index + " req " + ans.seq + " REQ 40 : " + buffer.msgid);
                             giveComport = false;
 
                             if (req.current == 2)
@@ -3089,9 +2994,6 @@ Please check the following
                         }
                         else
                         {
-                            log.InfoFormat(
-                                "set wp fail doing " + index + " req " + ans.seq + " ACK 47 or REQ 40 : " + buffer.msgid +
-                                " seq {0} ts {1} tc {2}", req.seq, req.target_system, req.target_component);
                             // resend point now
                             start = DateTime.MinValue;
                         }
@@ -3125,8 +3027,6 @@ Please check the following
                     if (buffer.msgid == (byte) MAVLINK_MSG_ID.MISSION_REQUEST)
                     {
                         var ans = buffer.ToStructure<mavlink_mission_request_t>();
-
-                        log.InfoFormat("getRequestedWPNo seq {0} ts {1} tc {2}", ans.seq, ans.target_system, ans.target_component);
 
                         giveComport = false;
 
@@ -3187,8 +3087,6 @@ Please check the following
                         setMode(sysid, compid, "GUIDED");
                 }
 
-                log.InfoFormat("setGuidedModeWP {0}:{1} lat {2} lng {3} alt {4}", sysid, compid, gotohere.lat, gotohere.lng, gotohere.alt);
-
                 if (MAVlist[sysid,compid].cs.firmware == MainV2.Firmwares.ArduPlane)
                 {
                     MAV_MISSION_RESULT ans = setWP(sysid, compid, gotohere, 0, MAV_FRAME.GLOBAL_RELATIVE_ALT, (byte)2);
@@ -3205,7 +3103,6 @@ Please check the following
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
 
             giveComport = false;
@@ -3224,8 +3121,6 @@ Please check the following
             {
                 gotohere.id = (ushort)MAV_CMD.WAYPOINT;
 
-                log.InfoFormat("setNewWPAlt {0}:{1} lat {2} lng {3} alt {4}", sysid, compid, gotohere.lat, gotohere.lng, gotohere.alt);
-
                 MAV_MISSION_RESULT ans = setWP(gotohere, 0, MAV_FRAME.GLOBAL_RELATIVE_ALT, (byte)3);
 
                 if (ans != MAV_MISSION_RESULT.MAV_MISSION_ACCEPTED)
@@ -3241,7 +3136,6 @@ Please check the following
             catch (Exception ex)
             {
                 giveComport = false;
-                log.Error(ex);
                 throw;
             }
 
@@ -3467,8 +3361,6 @@ Please check the following
                             {
                                 if (DateTime.Now > to)
                                 {
-                                    log.InfoFormat("MAVLINK: 1 wait time out btr {0} len {1}", BaseStream.BytesToRead,
-                                        length);
                                     throw new TimeoutException("Timeout");
                                 }
                                 Thread.Sleep(1);
@@ -3486,7 +3378,6 @@ Please check the following
                     }
                     catch (Exception e)
                     {
-                        log.Info("MAVLink readpacket read error: " + e.ToString());
                         break;
                     }
 
@@ -3502,7 +3393,6 @@ Please check the following
                                 if (buildplaintxtline.Length > 3)
                                     plaintxtline = buildplaintxtline;
 
-                                log.Info(plaintxtline);
                                 // reset for next line
                                 buildplaintxtline = "";
                             }
@@ -3540,8 +3430,6 @@ Please check the following
                             {
                                 if (DateTime.Now > to)
                                 {
-                                    log.InfoFormat("MAVLINK: 2 wait time out btr {0} len {1}", BaseStream.BytesToRead,
-                                        length);
                                     throw new TimeoutException("Timeout");
                                 }
                                 Thread.Sleep(1);
@@ -3581,8 +3469,6 @@ Please check the following
                                     {
                                         if (DateTime.Now > to)
                                         {
-                                            log.InfoFormat("MAVLINK: 3 wait time out btr {0} len {1}",
-                                                BaseStream.BytesToRead, length);
                                             break;
                                         }
                                         Thread.Sleep(1);
@@ -3590,9 +3476,6 @@ Please check the following
                                     if (BaseStream.IsOpen)
                                     {
                                         int read = BaseStream.Read(buffer, headerlengthstx, length - (headerlengthstx));
-                                        if (read != (length - headerlengthstx))
-                                            log.InfoFormat("MAVLINK: bad read {0}, {1}, {2}", headerlengthstx, length,
-                                                count);
                                         if (rawlogfile != null && rawlogfile.CanWrite)
                                         {
                                             // write only what we read, temp is the whole packet, so 6-end
@@ -3673,11 +3556,9 @@ Please check the following
             {
                 if (msginfo.length == 0) // pass for unknown packets
                 {
-                    log.InfoFormat("unknown packet type {0}", message.msgid);
                 }
                 else
                 {
-                    log.InfoFormat("Mavlink Bad Packet (Len Fail) len {0} pkno {1}", buffer.Length, message.msgid);
                     return MAVLinkMessage.Invalid;
                 }
             }
@@ -3686,12 +3567,6 @@ Please check the following
             if ((message.crc16 >> 8) != (crc >> 8) ||
                 (message.crc16 & 0xff) != (crc & 0xff))
             {
-                if (buffer.Length > 5 && msginfo.name != null)
-                    log.InfoFormat("Mavlink Bad Packet (crc fail) len {0} crc {1} vs {4} pkno {2} {3}", buffer.Length,
-                        crc, message.msgid, msginfo.name.ToString(),
-                        message.crc16);
-                if (logreadmode)
-                    log.InfoFormat("bad packet pos {0} ", logplaybackfile.BaseStream.Position);
                 return MAVLinkMessage.Invalid;
             }
 
@@ -3764,7 +3639,6 @@ Please check the following
 
                 if (!valid)
                 {
-                    log.InfoFormat("Packet failed signature but passed crc");
                     return MAVLinkMessage.Invalid;
                 }
             }
@@ -3823,10 +3697,6 @@ Please check the following
 
                             MAVlist[sysid, compid].packetslost += numLost;
                             WhenPacketLost.OnNext(numLost);
-
-                           if(!logreadmode)
-                                log.InfoFormat("mav {2}-{4} seqno {0} exp {3} pkts lost {1}", packetSeqNo, numLost, sysid,
-                                    expectedPacketSeqNo,compid);
                         }
 
                         MAVlist[sysid, compid].packetsnotlost++;
@@ -3990,7 +3860,6 @@ Please check the following
                         string logdata = Encoding.ASCII.GetString(msg.text);
                         int ind = logdata.IndexOf('\0');
                         if (ind != -1) logdata = logdata.Substring(0, ind);
-                        log.Info(DateTime.Now + " " + sev + " " + logdata);
 
                         if (!logreadmode)
                         {   // Live log stream
@@ -4071,7 +3940,6 @@ Please check the following
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                     }
 
                     try
@@ -4099,7 +3967,6 @@ Please check the following
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
 
             // update last valid packet receive time
@@ -4124,7 +3991,6 @@ Please check the following
                         }
                         catch (Exception ex)
                         {
-                            log.Error(ex);
                         }
                     }
                 }
@@ -4153,8 +4019,6 @@ Please check the following
                     }
                 }
 
-                log.Info("SubscribeToPacketType " + item.Key + " " + item.Value);
-
                 Subscriptions.Add(item);
             }
 
@@ -4165,7 +4029,6 @@ Please check the following
         {
             lock (Subscriptions)
             {
-                log.Info("UnSubscribeToPacketType " + item.Key + " " + item.Value);
                 Subscriptions.Remove(item);
             }
         }
@@ -4174,7 +4037,6 @@ Please check the following
         {
             lock (Subscriptions)
             {
-                log.Info("UnSubscribeToPacketType " + msgtype + " " + item);
                 var ans = Subscriptions.Where(a => { return a.Key == msgtype && a.Value == item; });
                 Subscriptions.Remove(ans.First());
             }
@@ -4377,7 +4239,6 @@ Please check the following
                 {
                     if (retrys > 0)
                     {
-                        log.Info("getVersion Retry " + retrys + " - giv com " + giveComport);
                         generatePacket((byte) MAVLINK_MSG_ID.AUTOPILOT_VERSION_REQUEST, req);
                         start = DateTime.Now;
                         retrys--;
@@ -4425,7 +4286,6 @@ Please check the following
                 {
                     if (retrys > 0)
                     {
-                        log.Info("getFencePoint Retry " + retrys + " - giv com " + giveComport);
                         generatePacket((byte) MAVLINK_MSG_ID.FENCE_FETCH_POINT, req);
                         start = DateTime.Now;
                         retrys--;
@@ -4492,7 +4352,6 @@ Please check the following
                 {
                     if (retrys > 0)
                     {
-                        log.Info("GetLog Retry " + retrys + " - giv com " + giveComport);
                         generatePacket((byte) MAVLINK_MSG_ID.LOG_REQUEST_DATA, req);
                         start = DateTime.Now;
                         retrys--;
@@ -4540,18 +4399,11 @@ Please check the following
                         if (data.count < 90 || data.count == 0)
                         {
                             totallength = data.ofs + data.count;
-                            log.Info("start fillin len " + totallength + " count " + set.Count + " datalen " +
-                                     data.count);
                             break;
                         }
                     }
                 }
             }
-
-            log.Info("set count " + set.Count);
-            log.Info("count total " + ((totallength)/90 + 1));
-            log.Info("totallength " + totallength);
-            log.Info("current length " + ms.Length);
 
             while (true && (BaseStream.IsOpen || logreadmode))
             {
@@ -4578,8 +4430,6 @@ Please check the following
 
                             req.ofs = (uint) (a*90);
                             req.count = bytereq;
-                            log.Info("req missing " + req.ofs + " bytes " + req.count + " got " + set.Count + "/" +
-                                     ((totallength)/90 + 1));
                             generatePacket((byte) MAVLINK_MSG_ID.LOG_REQUEST_DATA, req);
                             start = DateTime.Now;
                             break;
@@ -4645,10 +4495,6 @@ Please check the following
 
             mavlink_log_entry_t entry1 = GetLogEntry(0, ushort.MaxValue);
 
-            log.Info("id " + entry1.id + " lastllogno " + entry1.last_log_num + " #logs " + entry1.num_logs + " size " +
-                     entry1.size);
-            //ans.Add(entry1);
-
             for (ushort a = (ushort) (entry1.last_log_num - entry1.num_logs + 1); a <= entry1.last_log_num; a++)
             {
                 mavlink_log_entry_t entry = GetLogEntry(a, a);
@@ -4679,8 +4525,6 @@ Please check the following
             req.start = startno;
             req.end = endno;
 
-            log.Info("GetLogEntry " + startno + "-" + endno);
-
             // request point
             generatePacket((byte) MAVLINK_MSG_ID.LOG_REQUEST_LIST, req);
 
@@ -4693,7 +4537,6 @@ Please check the following
                 {
                     if (retrys > 0)
                     {
-                        log.Info("GetLogEntry Retry " + retrys + " - giv com " + giveComport);
                         generatePacket((byte) MAVLINK_MSG_ID.LOG_REQUEST_LIST, req);
                         start = DateTime.Now;
                         retrys--;
@@ -4787,7 +4630,6 @@ Please check the following
                 {
                     if (retrys > 0)
                     {
-                        log.Info("getRallyPoint Retry " + retrys + " - giv com " + giveComport);
                         generatePacket((byte) MAVLINK_MSG_ID.FENCE_FETCH_POINT, req);
                         start = DateTime.Now;
                         retrys--;
@@ -4977,8 +4819,6 @@ Please check the following
                         byte0 = tempb;
                         if (byte0 != 'U' && byte0 != MAVLINK_STX_MAVLINK1 && byte0 != MAVLINK_STX)
                         {
-                            log.DebugFormat("logread - lost sync byte {0} pos {1}", byte0,
-                                logplaybackfile.BaseStream.Position);
                             // seek to next valid
                             do
                             {
@@ -5059,13 +4899,11 @@ Please check the following
 
                 if (mode.base_mode == 0)
                 {
-                    log.Error("No Mode Changed " + modein);
                     return false;
                 }
             }
             catch
             {
-                log.Error("Failed to find Mode");
                 return false;
             }
 
@@ -5110,7 +4948,6 @@ Please check the following
                             MAVlist[sysid, compid].cs.firmware = MainV2.Firmwares.ArduTracker;
                             break;
                         default:
-                            log.Error(MAVlist[sysid, compid].aptype + " not registered as valid type");
                             break;
                     }
                     break;

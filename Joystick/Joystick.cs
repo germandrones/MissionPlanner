@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections;
-using log4net;
 using System.Reflection;
 using System.IO;
 using MissionPlanner.Utilities;

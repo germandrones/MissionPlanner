@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
-using log4net;
 using System.Threading;
 
 namespace MissionPlanner.Utilities
@@ -18,8 +17,6 @@ namespace MissionPlanner.Utilities
         //http://adsb.tc.faa.gov/WG3_Meetings/Meeting9/1090-WP-9-14.pdf
         //*8D75804B580FF2CF7E9BA6F701D0
         //*8D75804B580FF6B283EB7A157117
-
-        private static readonly ILog log =        LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// When a plane position has been updated. you will need to age your own entries
@@ -34,7 +31,6 @@ namespace MissionPlanner.Utilities
 
         public adsb()
         {
-            log.Info("adsb ctor");
 
             thisthread = new Thread(TryConnect);
 
@@ -47,7 +43,6 @@ namespace MissionPlanner.Utilities
 
         public static void Stop()
         {
-            log.Info("adsb stop");
             run = false;
 
             if (thisthread != null)
@@ -57,7 +52,6 @@ namespace MissionPlanner.Utilities
                 thisthread = null;
             }
 
-            log.Info("adsb stopped");
         }
 
         void TryConnect()
@@ -66,7 +60,6 @@ namespace MissionPlanner.Utilities
 
             while (run)
             {
-                log.Info("adsb connect loop");
                 //custom
                 try
                 {
@@ -75,14 +68,11 @@ namespace MissionPlanner.Utilities
                         using (TcpClient cl = new TcpClient())
                         {
                             cl.Connect(server, serverport);
-
-                            log.Info("Connected " + server + ":" + serverport);
-
                             ReadMessage(cl.GetStream());
                         }
                     }
                 }
-                catch (Exception ex) { log.Error(ex); }
+                catch { }
 
                 // dump1090 sbs
                 try
@@ -91,9 +81,6 @@ namespace MissionPlanner.Utilities
                     {
 
                         cl.Connect(System.Net.IPAddress.Loopback, 30003);
-
-                        log.Info("Connected loopback:30003");
-
                         ReadMessage(cl.GetStream());
                     }
                 }
@@ -106,9 +93,6 @@ namespace MissionPlanner.Utilities
                     {
 
                         cl.Connect(System.Net.IPAddress.Loopback, 30002);
-
-                        log.Info("Connected loopback:30002");
-
                         ReadMessage(cl.GetStream());
                     }
                 }
@@ -122,9 +106,6 @@ namespace MissionPlanner.Utilities
                     {
 
                         cl.Connect(System.Net.IPAddress.Loopback, 31004);
-
-                        log.Info("Connected loopback:31004");
-
                         ReadMessage(cl.GetStream());
                     }
                 }
@@ -137,9 +118,6 @@ namespace MissionPlanner.Utilities
                     {
 
                         cl.Connect(System.Net.IPAddress.Loopback, 31001);
-
-                        log.Info("Connected loopback:31001");
-
                         ReadMessage(cl.GetStream());
                     }
                 }
@@ -153,9 +131,6 @@ namespace MissionPlanner.Utilities
                     {
 
                         cl.Connect(System.Net.IPAddress.Loopback, 47806);
-
-                        log.Info("Connected loopback:47806");
-
                         ReadMessage(cl.GetStream());
                     }
                 }
@@ -165,8 +140,6 @@ namespace MissionPlanner.Utilities
                 GC.Collect();
                 System.Threading.Thread.Sleep(5000);
             }
-
-            log.Info("adsb thread exit");
         }
 
         static Hashtable Planes = new Hashtable();
@@ -741,8 +714,6 @@ namespace MissionPlanner.Utilities
                     }
                     else
                     {
-                        log.Info(line);
-
                     }
                 }
                 else if (by == 0x1a)
@@ -789,10 +760,6 @@ namespace MissionPlanner.Utilities
                         default:
                             break;
                     }
-                }
-                else
-                {
-                    log.Info("bad sync 0x" + by.ToString("X2") + " " + (char)by);
                 }
             }
         }
@@ -850,8 +817,6 @@ namespace MissionPlanner.Utilities
         {
             if (!avrline.StartsWith("*"))
                 return null;
-
-            log.Debug(avrline);
 
             avrline = avrline.Trim().TrimEnd(';');
 

@@ -6,7 +6,6 @@ using System.Collections;
 using netDxf.Entities;
 using netDxf.Tables;
 using System.Reflection;
-using log4net;
 using MissionPlanner.Log;
 using MissionPlanner.Controls;
 using MissionPlanner.Utilities;
@@ -15,8 +14,6 @@ namespace MissionPlanner
 {
     public class MagCalib
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         static double error = 99;
         static double error2 = 99;
         static double error3 = 99;
@@ -126,7 +123,6 @@ namespace MissionPlanner
                     }
                     catch (Exception ex)
                     {
-                        log.Debug(ex.ToString());
                     }
                 }
             }
@@ -321,7 +317,6 @@ namespace MissionPlanner
                 }
                 catch (Exception ex)
                 {
-                    log.Debug(ex.ToString());
                     CustomMessageBox.Show("Log Can not be opened. Are you still connected?");
                     return;
                 }
@@ -516,7 +511,6 @@ namespace MissionPlanner
                         if (Math.Abs(lsq[0]) < 999)
                         {
                             centre = new Vector3(lsq[0], lsq[1], lsq[2]);
-                            log.Info("new centre " + centre.ToString());
 
                             prsphere.sphere1.CenterPoint = new OpenTK.Vector3(
                                 (float)centre.x, (float)centre.y, (float)centre.z);
@@ -535,7 +529,6 @@ namespace MissionPlanner
                         if (Math.Abs(lsq[0]) < 999)
                         {
                             Vector3 centre2 = new Vector3(lsq[0], lsq[1], lsq[2]);
-                            log.Info("new centre2 " + centre2.ToString());
 
                             prsphere.sphere2.CenterPoint = new OpenTK.Vector3(
                                 (float)centre2.x, (float)centre2.y, (float)centre2.z);
@@ -554,7 +547,6 @@ namespace MissionPlanner
                         if (Math.Abs(lsq[0]) < 999)
                         {
                             Vector3 centre3 = new Vector3(lsq[0], lsq[1], lsq[2]);
-                            log.Info("new centre2 " + centre3.ToString());
 
                             prsphere.sphere3.CenterPoint = new OpenTK.Vector3(
                                 (float)centre3.x, (float)centre3.y, (float)centre3.z);
@@ -738,18 +730,15 @@ namespace MissionPlanner
                 ellipsoid = true;
             }
 
-            log.Info("Compass 1");
             ans = MagCalib.LeastSq(datacompass1, ellipsoid);
 
             if (havecompass2 && datacompass2.Count > 0)
             {
-                log.Info("Compass 2");
                 ans2 = MagCalib.LeastSq(datacompass2, ellipsoid);
             }
 
             if (havecompass3 && datacompass3.Count > 0)
             {
-                log.Info("Compass 3");
                 ans3 = MagCalib.LeastSq(datacompass3, ellipsoid);
             }
         }
@@ -864,30 +853,20 @@ namespace MissionPlanner
 
             double[] x = LeastSq(data, false);
 
-            log.InfoFormat("magcal 1 ofs {0},{1},{2} strength {3} old ofs {4},{5},{6}", x[0], x[1], x[2], x[3], ofsDoubles[0], ofsDoubles[1], ofsDoubles[2]);
-
             x = LeastSq(data, true);
-
-            log.InfoFormat("magcalel 1 ofs {0},{1},{2} strength {3} old ofs {4},{5},{6}", x[0], x[1], x[2], x[3], ofsDoubles[0], ofsDoubles[1], ofsDoubles[2]);
 
             if (data2.Count > 0)
             {
                 double[] x2 = LeastSq(data2, false);
-                log.InfoFormat("magcal 2 ofs {0},{1},{2} strength {3} old ofs {4},{5},{6}", x2[0], x2[1], x2[2], x2[3], ofsDoubles2[0], ofsDoubles2[1], ofsDoubles2[2]);
                 x2 = LeastSq(data2, true);
-                log.InfoFormat("magcalel 2 ofs {0},{1},{2} strength {3} old ofs {4},{5},{6}", x2[0], x2[1], x2[2], x2[3], ofsDoubles2[0], ofsDoubles2[1], ofsDoubles2[2]);
             }
 
             if (data3.Count > 0)
             {
                 double[] x3 = LeastSq(data3, false);
-                log.InfoFormat("magcal 3 ofs {0},{1},{2} strength {3} old ofs {4},{5},{6}", x3[0], x3[1], x3[2], x3[3], ofsDoubles3[0], ofsDoubles3[1], ofsDoubles3[2]);
                 x3 = LeastSq(data3, true);
-                log.InfoFormat("magcalel 3 ofs {0},{1},{2} strength {3} old ofs {4},{5},{6}", x3[0], x3[1], x3[2], x3[3], ofsDoubles3[0], ofsDoubles3[1], ofsDoubles3[2]);
             }
 
-
-            log.Info("Least Sq Done " + DateTime.Now);
 
             doDXF(vertexes, x);
 
@@ -930,8 +909,6 @@ namespace MissionPlanner
             if (throttleThreshold <= 0)
                 useData = true;
 
-            log.Info("Start log: " + DateTime.Now);
-
             using (MAVLinkInterface mine = new MAVLinkInterface())
             {
                 try
@@ -941,7 +918,6 @@ namespace MissionPlanner
                 }
                 catch (Exception ex)
                 {
-                    log.Debug(ex.ToString());
                     CustomMessageBox.Show("Log Can not be opened. Are you still connected?");
                     return new double[] { 0 };
                 }
@@ -1021,8 +997,6 @@ namespace MissionPlanner
                     }
                 }
 
-                log.Info("Log Processed " + DateTime.Now);
-
                 Console.WriteLine("Extracted " + data.Count + " data points");
                 Console.WriteLine("Current offset: " + offset);
 
@@ -1056,23 +1030,10 @@ namespace MissionPlanner
             System.Console.WriteLine("Old Method {0} {1} {2}", -(maxx + minx) / 2, -(maxy + miny) / 2, -(maxz + minz) / 2);
 
             double[] x = LeastSq(data);
-
-            log.InfoFormat("magcal 1 ofs {0},{1},{2} strength {3} ", x[0], x[1], x[2], x[3]);
-
             x = LeastSq(data, true);
-
-            log.InfoFormat("magcalel 1 ofs {0},{1},{2} di {3},{4},{5} di {6} {7} {8} rad {9}", x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], rad);
-
             x = doLSQ(data, sphere_ellipsoid_error, new double[] { x[0], x[1], x[2], 1, 1, 1, 0, 0, 0 });
-
-            log.InfoFormat("magcalel 2 ofs {0},{1},{2} di {3},{4},{5} di {6} {7} {8} rad {9}", x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], rad);
-
-            log.Info("Least Sq Done " + DateTime.Now);
-
             doDXF(vertexes, x);
-
             Array.Resize<double>(ref x, 3);
-
             return x;
         }
 
@@ -1092,8 +1053,6 @@ namespace MissionPlanner
             dxf.AddEntity(pnt);
 
             dxf.Save(Settings.GetUserDataDirectory() + "magoffset.dxf");
-
-            log.Info("dxf Done " + DateTime.Now);
         }
 
         static double avg_samples = 0;
@@ -1119,9 +1078,6 @@ namespace MissionPlanner
         public static double[] LeastSq(List<Tuple<float, float, float>> data, bool ellipsoid = false)
         {
             avg_samples = calcRadius(data);
-
-            log.Info("lsq avg " + avg_samples + " count " + data.Count);
-
             double[] x;
 
             //
@@ -1132,8 +1088,6 @@ namespace MissionPlanner
             rad = avg_samples;//x[3];
 
             Array.Resize(ref x, 4);
-
-            log.Info("lsq rad " + rad);
 
             if (ellipsoid)
             {
@@ -1170,14 +1124,6 @@ namespace MissionPlanner
             alglib.minlmoptimize(state, t1, null, data);
 
             alglib.minlmresults(state, out x, out rep);
-
-            log.InfoFormat("passes {0}", rep.iterationscount);
-            log.InfoFormat("term type {0}", rep.terminationtype);
-            log.InfoFormat("njac {0}", rep.njac);
-            log.InfoFormat("ncholesky {0}", rep.ncholesky);
-            log.InfoFormat("nfunc{0}", rep.nfunc);
-            log.InfoFormat("ngrad {0}", rep.ngrad);
-            log.InfoFormat("ans {0}", alglib.ap.format(x, 4));
 
             if (data == datacompass1)
             {

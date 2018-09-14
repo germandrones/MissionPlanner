@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Text;
 using System.ComponentModel;
 using MissionPlanner.Utilities;
-using log4net;
 using MissionPlanner.Attributes;
 using MissionPlanner;
 using System.Collections;
@@ -17,8 +16,6 @@ namespace MissionPlanner
 {
     public class CurrentState : ICloneable
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         public event EventHandler csCallBack;
 
         [JsonIgnore]
@@ -1601,9 +1598,7 @@ namespace MissionPlanner
                             mavinterface.requestDatastream(MAVLink.MAV_DATA_STREAM.RC_CHANNELS, MAV.cs.raterc, MAV.sysid, MAV.compid);// request rc info
                         }
                         catch
-                        {
-                            log.Error("Failed to request rates");
-                        }
+                        { }
                         lastdata = DateTime.Now.AddSeconds(30); // prevent flooding
                     }
 
@@ -1723,7 +1718,6 @@ namespace MissionPlanner
 
                                 if (!found)
                                 {
-                                    log.Warn("Mode not found bm:" + highlatency.base_mode + " cm:" + highlatency.custom_mode);
                                 }
                             }
                         }
@@ -2004,13 +1998,7 @@ namespace MissionPlanner
                                                 break;
                                             }
                                         }
-
-                                        if (!found)
-                                        {
-                                            log.Warn("Mode not found bm:" + hb.base_mode + " cm:" + hb.custom_mode);
-                                        }
                                     }
-
                                     _mode = hb.custom_mode;
                                 }
                             }
@@ -2596,7 +2584,6 @@ namespace MissionPlanner
                 }
                 catch
                 {
-                    log.InfoFormat("CurrentState Binding error");
                 }
             }
         }

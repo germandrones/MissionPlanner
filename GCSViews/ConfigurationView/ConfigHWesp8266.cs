@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using log4net;
 using MissionPlanner.Controls;
 using Timer = System.Threading.Timer;
 
@@ -14,8 +13,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
 {
     public partial class ConfigHWESP8266 : UserControl, IActivate
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         public ConfigHWESP8266()
         {
             InitializeComponent();

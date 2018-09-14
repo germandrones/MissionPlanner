@@ -7,14 +7,12 @@ using System.IO.Ports;
 using System.Threading;
 using System.Net; // dns, ip address
 using System.Net.Sockets; // tcplistner
-using log4net;
 using System.IO;
 
 namespace MissionPlanner.Comms
 {
     public class UdpSerialConnect : CommsBase,  ICommsSerial, IDisposable
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(UdpSerialConnect));
         public UdpClient client = new UdpClient();
         public IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
         byte[] rbuffer = new byte[0];
@@ -76,11 +74,9 @@ namespace MissionPlanner.Comms
         {
             if (client.Client.Connected)
             {
-                log.Warn("UdpSerialConnect socket already open");
                 return;
             }
 
-            log.Info("UDP Open");
 
             string dest = Port;
             string host = "127.0.0.1";
@@ -128,7 +124,6 @@ namespace MissionPlanner.Comms
                 // this should only happen if we have established a connection in the first place
                 if (client != null && retrys > 0)
                 {
-                    log.Info("udp reconnect");
                     client = new UdpClient();
                     client.Connect(OnSettings("UDP_host", ""), int.Parse(OnSettings("UDP_port", "")));
                     retrys--;
@@ -243,7 +238,6 @@ namespace MissionPlanner.Comms
             VerifyConnected();
             int size = (int)client.Available;
             byte[] crap = new byte[size];
-            log.InfoFormat("UdpSerialConnect DiscardInBuffer {0}",size);
             Read(crap, 0, size);
         }
 

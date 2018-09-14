@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 using GMap.NET;
-using log4net;
 using MissionPlanner.Maps;
 using MissionPlanner.Utilities;
 using Newtonsoft.Json;
@@ -13,8 +12,6 @@ namespace MissionPlanner
 {
     public class MAVState : MAVLink, IDisposable
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         [JsonIgnore]
         [IgnoreDataMember]
         public MAVLinkInterface parent;

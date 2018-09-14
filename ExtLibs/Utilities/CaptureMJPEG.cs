@@ -6,15 +6,11 @@ using System.Net;
 using System.IO;
 using System.Drawing;
 using System.Threading;
-using log4net;
 
 namespace MissionPlanner.Utilities
 {
     public class CaptureMJPEG
     {
-        private static readonly ILog log =
-    LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         static Thread asyncthread;
         static bool running = false;
         public static string URL = @"http://127.0.0.1:56781/map.jpg";
@@ -88,7 +84,6 @@ namespace MissionPlanner.Utilities
                 // Get the response.
                 WebResponse response = request.GetResponse();
                 // Display the status.
-                log.Debug(((HttpWebResponse)response).StatusDescription);
                 // Get the stream containing content returned by the server.
                 Stream dataStream = response.GetResponseStream();
 
@@ -175,7 +170,7 @@ namespace MissionPlanner.Utilities
                         System.Threading.Thread.Sleep(1);
                         ReadLine(br);
                     }
-                    catch (Exception ex) { log.Info(ex); break; }
+                    catch (Exception ex) { break; }
                 }
 
                 // clear last image
@@ -186,7 +181,7 @@ namespace MissionPlanner.Utilities
                 response.Close();
 
             }
-            catch (Exception ex) { log.Error(ex); }
+            catch { }
 
             running = false;
         }

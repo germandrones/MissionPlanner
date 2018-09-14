@@ -17,7 +17,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Xml; // config file
 using System.Runtime.InteropServices; // dll imports
-using log4net;
 
 using MissionPlanner;
 using System.Reflection;

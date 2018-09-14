@@ -11,14 +11,11 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using log4net;
 
 namespace MissionPlanner.Utilities
 {
     public class UDPVideoShim
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private static UdpClient client;
         private static UdpClient client2;
         private static UdpClient client3;
@@ -34,7 +31,6 @@ namespace MissionPlanner.Utilities
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
             try
             {
@@ -43,7 +39,6 @@ namespace MissionPlanner.Utilities
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
             try
             {
@@ -52,7 +47,6 @@ namespace MissionPlanner.Utilities
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -71,7 +65,6 @@ namespace MissionPlanner.Utilities
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
 
             try
@@ -82,7 +75,6 @@ namespace MissionPlanner.Utilities
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
 
             try
@@ -91,7 +83,6 @@ namespace MissionPlanner.Utilities
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -161,7 +152,6 @@ namespace MissionPlanner.Utilities
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -183,7 +173,6 @@ namespace MissionPlanner.Utilities
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -206,7 +195,6 @@ namespace MissionPlanner.Utilities
             }
             catch (Exception ex)
             {
-                log.Error(ex);
                 return false;
             }
         }

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
-using log4net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -13,8 +12,6 @@ namespace MissionPlanner.Utilities
 {
     public class GitHubContent
     {
-        internal static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         //http://developer.github.com/v3/repos/contents/#get-contents
         //GET /repos/:owner/:repo/contents/:path
         public static string githubapiurl = "https://api.github.com/repos";
@@ -95,7 +92,6 @@ namespace MissionPlanner.Utilities
                 {
                     answer.Add(fi);
                 }
-                log.Info(fi.name);
             }
 
             return answer;

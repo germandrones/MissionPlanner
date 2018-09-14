@@ -10,14 +10,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using IronPython.Runtime;
 using MissionPlanner.Utilities;
-using log4net;
 
 namespace MissionPlanner.Controls
 {
     public partial class Loading : Form
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         static Loading Instance;
 
         static object locker = new object();
@@ -67,7 +64,6 @@ namespace MissionPlanner.Controls
 
         public new static void Close()
         {
-            log.Info("Loading.Close()");
             lock (locker)
             {
                 if (Instance != null)
@@ -93,12 +89,6 @@ namespace MissionPlanner.Controls
         /// <returns></returns>
         public static void ShowLoading(string Text, IWin32Window owner = null)
         {
-            //if (MainV2.MONO)
-            {
-                log.Info(Text);
-                //return;
-            }
-
             // ensure we only have one instance at a time
             lock (locker)
             {
@@ -108,7 +98,6 @@ namespace MissionPlanner.Controls
                     return;
                 }
 
-                log.Info("Create Instance");
                 // create form on ui thread
                 MainV2.instance.Invoke((MethodInvoker) delegate
                 {

@@ -5,16 +5,12 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
-using log4net;
 using MissionPlanner.Utilities;
 
 namespace MissionPlanner.Mavlink
 {
     internal class MAVAuthKeys
     {
-        private static readonly ILog log =
-    LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         static string keyfile = Settings.GetUserDataDirectory() + "authkeys.xml";
 
         static Crypto Rij = new Crypto();
@@ -86,7 +82,6 @@ namespace MissionPlanner.Mavlink
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
     }

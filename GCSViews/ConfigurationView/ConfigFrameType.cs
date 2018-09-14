@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using System.Windows.Forms;
-using log4net;
 using MissionPlanner.Controls;
 using Transitions;
 
@@ -21,7 +20,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
 
         private const float DisabledOpacity = 0.2F;
         private const float EnabledOpacity = 1.0F;
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private bool indochange;
 
         public ConfigFrameType()

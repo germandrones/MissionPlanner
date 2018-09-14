@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
-using log4net;
 using MissionPlanner.Controls;
 
 namespace MissionPlanner.Utilities
@@ -26,9 +25,6 @@ namespace MissionPlanner.Utilities
             BurntKermit
         }
 
-        private static readonly ILog log =
-            LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private static Themes _currentTheme = Themes.BurntKermit;
 
         /// <summary>
@@ -37,7 +33,6 @@ namespace MissionPlanner.Utilities
         /// <param name="theme"></param>
         public static void SetTheme(Themes theme)
         {
-            log.Debug("Theme set to " + Enum.GetName(typeof (Themes), theme));
             _currentTheme = theme;
         }
 

@@ -2,7 +2,6 @@
 using System.Text;
 using System.Net; // dns, ip address
 using System.Net.Sockets; // tcplistner
-using log4net;
 using System.IO.Ports;
 using System.IO;
 using System;
@@ -12,7 +11,6 @@ namespace MissionPlanner.Comms
 {
     public class UdpSerial : CommsBase, ICommsSerial, IDisposable
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public UdpClient client = new UdpClient();
         /// <summary>
         /// this is the remote endpoint we send messages too. this class does not support multiple remote endpoints.
@@ -91,7 +89,6 @@ namespace MissionPlanner.Comms
         {
             if (client.Client.Connected || IsOpen)
             {
-                log.Info("UDPSerial socket already open");
                 return;
             }
 
@@ -149,7 +146,6 @@ namespace MissionPlanner.Comms
                 RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
 
                 client.Receive(ref RemoteIpEndPoint);
-                log.InfoFormat("UDPSerial connecting to {0} : {1}", RemoteIpEndPoint.Address, RemoteIpEndPoint.Port);
                 EndPointList.Add(RemoteIpEndPoint);
                 _isopen = true;
             }
@@ -159,7 +155,6 @@ namespace MissionPlanner.Comms
                 {
                     client.Close();
                 }
-                log.Info(ex.ToString());
                 //CustomMessageBox.Show("Please check your Firewall settings\nPlease try running this command\n1.    Run the following command in an elevated command prompt to disable Windows Firewall temporarily:\n    \nNetsh advfirewall set allprofiles state off\n    \nNote: This is just for test; please turn it back on with the command 'Netsh advfirewall set allprofiles state on'.\n", "Error");
                 throw new Exception("The socket/UDPSerial is closed " + ex);
             }
@@ -288,7 +283,6 @@ namespace MissionPlanner.Comms
             VerifyConnected();
             int size = client.Available;
             byte[] crap = new byte[size];
-            log.InfoFormat("UdpSerial DiscardInBuffer {0}",size);
             Read(crap, 0, size);
         }
 

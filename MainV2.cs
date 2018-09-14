@@ -13,7 +13,6 @@ using System.Linq;
 using System.Threading;
 using MissionPlanner.Utilities;
 using IronPython.Hosting;
-using log4net;
 using MissionPlanner.Controls;
 using MissionPlanner.Comms;
 using MissionPlanner.Log;
@@ -32,8 +31,6 @@ namespace MissionPlanner
     public partial class MainV2 : Form
     {
         public static MissionPlanner.CamJoystick.CamJoystick.Colibri_Protocol Colibri = new MissionPlanner.CamJoystick.CamJoystick.Colibri_Protocol();
-
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private static class NativeMethods
         {
@@ -353,7 +350,6 @@ namespace MissionPlanner
         
         public MainV2()
         {
-            log.Info("Mainv2 ctor");
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
             Settings.Instance["NUM_tracklength"] = "200";
@@ -509,22 +505,18 @@ namespace MissionPlanner
 
             try
             {
-                log.Info("Create FD");
                 FlightData = new GCSViews.FlightData();
-                log.Info("Create FP");
                 FlightPlanner = new GCSViews.FlightPlanner();
                 FlightData.Width = MyView.Width;
                 FlightPlanner.Width = MyView.Width;
             }
             catch (ArgumentException e)
             {
-                log.Fatal(e);
                 CustomMessageBox.Show(e.ToString() + "\n\n Font Issues? Please install this http://www.microsoft.com/en-us/download/details.aspx?id=16083");
                 Application.Exit();
             }
             catch (Exception e)
             {
-                log.Fatal(e);
                 CustomMessageBox.Show("A Major error has occured : " + e.ToString());
                 Application.Exit();
             }
@@ -615,13 +607,13 @@ namespace MissionPlanner
             {
                 CustomMessageBox.Show( "NOTE: your attitude rate is 0, the hud will not work\nChange in Configuration > Planner > Telemetry Rates");
             }
-            
+
             // create log dir if it doesnt exist
             try
             {
                 if (!Directory.Exists(Settings.Instance.LogDir)) Directory.CreateDirectory(Settings.Instance.LogDir);
             }
-            catch (Exception ex) { log.Error(ex); }
+            catch { }
 
             Microsoft.Win32.SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
 
@@ -658,8 +650,6 @@ namespace MissionPlanner
 
         void comPort_MavChanged(object sender, EventArgs e)
         {
-            log.Info("Mav Changed " + MainV2.comPort.MAV.sysid);
-
             HUD.Custom.src = MainV2.comPort.MAV.cs;
 
             CustomWarning.defaultsrc = MainV2.comPort.MAV.cs;
@@ -705,7 +695,6 @@ namespace MissionPlanner
             {
                 Utilities.Airports.ReadOurairports(Settings.GetRunningDirectory() + "airports.csv");
                 Utilities.Airports.checkdups = true;
-                log.Info("Loaded " + Utilities.Airports.GetAirportCount + " airports");
             }
             catch
             {
@@ -792,7 +781,6 @@ namespace MissionPlanner
 
         private void ResetConnectionStats()
         {
-            log.Info("Reset connection stats");
             // If the form has been closed, or never shown before, we need do nothing, as 
             // connection stats will be reset when shown
             if (this.connectionStatsForm != null && connectionStatsForm.Visible)
@@ -903,16 +891,12 @@ namespace MissionPlanner
 
         public void doDisconnect(MAVLinkInterface comPort)
         {
-            log.Info("We are disconnecting");
             try
             {
                 comPort.BaseStream.DtrEnable = false;
                 comPort.Close();
             }
-            catch (Exception ex)
-            {
-                log.Error(ex);
-            }
+            catch { }
 
             // now that we have closed the connection, cancel the connection stats
             // so that the 'time connected' etc does not grow, but the user can still
@@ -961,7 +945,6 @@ namespace MissionPlanner
         public void doConnect(MAVLinkInterface comPort, string portname, string baud)
         {
             bool skipconnectcheck = false;
-            log.Info("We are connecting to " + portname + " " + baud );
             switch (portname)
             {
                 case "preset":
@@ -1028,32 +1011,25 @@ namespace MissionPlanner
 
             try
             {
-                log.Info("Set Portname");
                 // set port, then options
                 if(portname.ToLower() != "preset") comPort.BaseStream.PortName = portname;
 
-                log.Info("Set Baudrate");
                 try
                 {
                     if(baud != "" && baud != "0") comPort.BaseStream.BaudRate = int.Parse(baud);
                 }
                 catch (Exception exp)
                 {
-                    log.Error(exp);
                 }
 
                 // prevent serialreader from doing anything
                 comPort.giveComport = true;
 
-                log.Info("About to do dtr if needed");
-                
                 // reset on connect logic.
                 if (Settings.Instance.GetBoolean("CHK_resetapmonconnect") == true)
                 {
-                    log.Info("set dtr rts to false");
                     comPort.BaseStream.DtrEnable = false;
                     comPort.BaseStream.RtsEnable = false;
-
                     comPort.BaseStream.toggleDTR();
                 }
 
@@ -1090,12 +1066,10 @@ namespace MissionPlanner
                             new BufferedStream(File.Open(tlog, FileMode.CreateNew, FileAccess.ReadWrite, FileShare.None));
                         comPort.rawlogfile =
                             new BufferedStream(File.Open(rlog, FileMode.CreateNew, FileAccess.ReadWrite, FileShare.None));
-                        log.Info("creating logfile " + dt + ".tlog");
                     }
                 }
                 catch (Exception exp2)
                 {
-                    log.Error(exp2);
                     CustomMessageBox.Show(Strings.Failclog);
                 } // soft fail
 
@@ -1107,7 +1081,6 @@ namespace MissionPlanner
 
                 if (!comPort.BaseStream.IsOpen)
                 {
-                    log.Info("comport is closed. existing connect");
                     try
                     {
                         _connectionControl.IsConnected(false);
@@ -1217,7 +1190,6 @@ namespace MissionPlanner
             }
             catch (Exception ex)
             {
-                log.Warn(ex);
                 try
                 {
                     _connectionControl.IsConnected(false);
@@ -1226,7 +1198,6 @@ namespace MissionPlanner
                 }
                 catch (Exception ex2)
                 {
-                    log.Warn(ex2);
                 }
                 CustomMessageBox.Show("Can not establish a connection\n\n" + ex.Message);
                 return;
@@ -1236,7 +1207,6 @@ namespace MissionPlanner
         private void MenuConnect_Click(object sender, EventArgs e)
         {
             comPort.giveComport = false;            
-            log.Info("MenuConnect Start");
 
             // sanity check
             if (comPort.BaseStream.IsOpen && MainV2.comPort.MAV.cs.groundspeed > 4)
@@ -1249,7 +1219,6 @@ namespace MissionPlanner
 
             try
             {
-                log.Info("Cleanup last logfiles");
                 if (comPort.logfile != null) comPort.logfile.Close();
                 if (comPort.rawlogfile != null) comPort.rawlogfile.Close();
             }
@@ -1336,8 +1305,6 @@ namespace MissionPlanner
             GMap.NET.GMaps.Instance.CacheOnIdleRead = false;
             GMap.NET.GMaps.Instance.BoostCacheEngine = true;
 
-            log.Info("MainV2_FormClosing");
-
             Settings.Instance["MainHeight"] = this.Height.ToString();
             Settings.Instance["MainWidth"] = this.Width.ToString();
             Settings.Instance["MainMaximised"] = this.WindowState.ToString();
@@ -1388,7 +1355,6 @@ namespace MissionPlanner
 
             GStreamer.StopAll();
 
-            log.Info("closing vlcrender");
             try
             {
                 while (vlcrender.store.Count > 0) vlcrender.store[0].Stop();
@@ -1397,13 +1363,10 @@ namespace MissionPlanner
             {
             }
 
-            log.Info("closing serialthread");
-
             serialThread = false;
 
             if (serialreaderthread != null) serialreaderthread.Join();
 
-            log.Info("sorting tlogs");
             try
             {
                 System.Threading.ThreadPool.QueueUserWorkItem((WaitCallback) delegate
@@ -1422,12 +1385,9 @@ namespace MissionPlanner
             {
             }
 
-            log.Info("closing MyView");
-
             // close all tabs
             MyView.Dispose();
 
-            log.Info("closing fd");
             try
             {
                 FlightData.Dispose();
@@ -1435,7 +1395,6 @@ namespace MissionPlanner
             catch
             {
             }
-            log.Info("closing fp");
             try
             {
                 FlightPlanner.Dispose();
@@ -1457,7 +1416,6 @@ namespace MissionPlanner
             SaveConfig();
 
             Console.WriteLine(serialreaderthread?.IsAlive);
-            log.Info("MainV2_FormClosing done");
             if (MONO) this.Dispose();
         }
 
@@ -1478,13 +1436,11 @@ namespace MissionPlanner
         {
             try
             {
-                log.Info("Loading config");
                 Settings.Instance.Load();
                 comPortName = Settings.Instance.ComPort;
             }
             catch (Exception ex)
             {
-                log.Error("Bad Config File", ex);
             }
         }
 
@@ -1492,7 +1448,6 @@ namespace MissionPlanner
         {
             try
             {
-                log.Info("Saving config");
                 Settings.Instance.ComPort = comPortName;
                 if (_connectionControl != null) Settings.Instance.BaudRate = _connectionControl.CMB_baudrate.Text;
                 Settings.Instance.APMFirmware = MainV2.comPort.MAV.cs.firmware.ToString();
@@ -1723,7 +1678,6 @@ namespace MissionPlanner
                 }
                 catch (Exception ex)
                 {
-                    MainV2.log.Error((object)ex);
                 }
             }
             this.CamjoysendThreadExited = true;
@@ -1784,7 +1738,6 @@ namespace MissionPlanner
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                     }
 
                     // update connect/disconnect button and info stats
@@ -1794,7 +1747,6 @@ namespace MissionPlanner
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                     }
 
                     // not doing anything
@@ -1925,7 +1877,6 @@ namespace MissionPlanner
                                 }
                                 catch (Exception ex)
                                 {
-                                    log.Error(ex);
                                     // close the bad port
                                     try
                                     {
@@ -1996,7 +1947,6 @@ namespace MissionPlanner
                             }
                             catch (Exception ex)
                             {
-                                log.Error(ex);
                             }
                         }
                         // update currentstate of sysids on the port
@@ -2008,7 +1958,6 @@ namespace MissionPlanner
                             }
                             catch (Exception ex)
                             {
-                                log.Error(ex);
                             }
                         }
                     }
@@ -2016,14 +1965,12 @@ namespace MissionPlanner
                 catch (Exception e)
                 {
                     Tracking.AddException(e);
-                    log.Error("Serial Reader fail :" + e.ToString());
                     try
                     {
                         comPort.Close();
                     }
                     catch (Exception ex)
                     {
-                        log.Error(ex);
                     }
                 }
             }
@@ -2095,15 +2042,12 @@ namespace MissionPlanner
             
 
             this.PerformLayout();
-            log.Info("show FlightData");
             MenuFlightData_Click(this, e);
-            log.Info("show FlightData... Done");
             MainMenu_ItemClicked(this, new ToolStripItemClickedEventArgs(MenuFlightData));
 
             this.SuspendLayout();
 
             // Additional Thread to look for the joystick if connected.
-            MainV2.log.Info((object)"start camjoystickDetectThread");
             this.CamjoystickDetectThread = new Thread(new ThreadStart(this.CamjoystickDetect))
             {
                 IsBackground = true,
@@ -2115,7 +2059,6 @@ namespace MissionPlanner
 
 
             // This thread sends CameraJoystick Data over Mavlink.
-            MainV2.log.Info((object)"start camjoystick");
             this.Camjoystickthread = new Thread(new ThreadStart(this.Camjoysticksend))
             {
                 IsBackground = true,
@@ -2125,7 +2068,6 @@ namespace MissionPlanner
             this.Camjoystickthread.Start();
 
 
-            log.Info("start serialreader");
             // setup main serial reader
             serialreaderthread = new Thread(SerialReader)
             {
@@ -2177,7 +2119,6 @@ namespace MissionPlanner
             ZeroConf.ProbeForRTSP();
             this.ResumeLayout();
             Program.Splash?.Close();
-            log.Info("appload time");
             MissionPlanner.Utilities.Tracking.AddTiming("AppLoad", "Load Time", (DateTime.Now - Program.starttime).TotalMilliseconds, "");
 
 
@@ -2189,7 +2130,6 @@ namespace MissionPlanner
             }
             catch (Exception ex)
             {
-                log.Error("Update check failed", ex);
             }
             #endregion
 
@@ -2269,7 +2209,6 @@ namespace MissionPlanner
                 if (cmd != "")
                 {
                     cmdargs[cmd] = s;
-                    log.Info("ProcessCommandLine: "+ cmd + " = " + s);
                     cmd = "";
                     continue;
                 }
@@ -2277,11 +2216,8 @@ namespace MissionPlanner
                 {
                     // we are not a command, and the file exists.
                     cmdargs["file"] = s;
-                    log.Info("ProcessCommandLine: " + "file" + " = " + s);
                     continue;
                 }
-
-                log.Info("ProcessCommandLine: UnKnown = " + s);
             }
 
             return cmdargs;
@@ -2307,7 +2243,6 @@ namespace MissionPlanner
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -2320,7 +2255,6 @@ namespace MissionPlanner
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -2332,7 +2266,6 @@ namespace MissionPlanner
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -2351,7 +2284,6 @@ namespace MissionPlanner
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
 
             try
@@ -2370,7 +2302,6 @@ namespace MissionPlanner
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
 
             try
@@ -2384,7 +2315,6 @@ namespace MissionPlanner
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -2398,16 +2328,12 @@ namespace MissionPlanner
             }
             catch (Exception ex)
             {
-                log.Error("Update check failed", ex);
             }
         }
 
         private void MainV2_Resize(object sender, EventArgs e)
         {
-            // mono - resize is called before the control is created
-            if (MyView != null) log.Info("myview width " + MyView.Width + " height " + MyView.Height);
-
-            log.Info("this   width " + this.Width + " height " + this.Height);
+            
         }
 
         private void MenuHelp_Click(object sender, EventArgs e)
@@ -2509,8 +2435,6 @@ namespace MissionPlanner
 
         public void changelanguage(CultureInfo ci)
         {
-            log.Info("change lang to " + ci.ToString() + " current " + Thread.CurrentThread.CurrentUICulture.ToString());
-
             if (ci != null && !Thread.CurrentThread.CurrentUICulture.Equals(ci))
             {
                 Thread.CurrentThread.CurrentUICulture = ci;
@@ -2804,14 +2728,10 @@ namespace MissionPlanner
                                 case DBT_DEVTYP_DEVICEINTERFACE:
                                     DEV_BROADCAST_DEVICEINTERFACE inter = new DEV_BROADCAST_DEVICEINTERFACE();
                                     Marshal.PtrToStructure(m.LParam, inter);
-                                    log.InfoFormat("Interface {0}",
-                                        ASCIIEncoding.Unicode.GetString(inter.dbcc_name, 0, inter.dbcc_size - (4*3)));
                                     break;
                                 case DBT_DEVTYP_PORT:
                                     DEV_BROADCAST_PORT prt = new DEV_BROADCAST_PORT();
                                     Marshal.PtrToStructure(m.LParam, prt);
-                                    log.InfoFormat("port {0}",
-                                        ASCIIEncoding.Unicode.GetString(prt.dbcp_name, 0, prt.dbcp_size - (4*3)));
                                     break;
                             }
                         }
@@ -2819,8 +2739,6 @@ namespace MissionPlanner
                         {
                         }
                     }
-                    log.InfoFormat("Device Change {0} {1} {2}", m.Msg, (WM_DEVICECHANGE_enum) m.WParam, m.LParam);
-
                     if (DeviceChanged != null)
                     {
                         try
@@ -2845,7 +2763,6 @@ namespace MissionPlanner
 
                     if (child is Form)
                     {
-                        log.Debug("ApplyThemeTo " + child.Name);
                         ThemeManager.ApplyThemeTo(child);
                     }
                     break;

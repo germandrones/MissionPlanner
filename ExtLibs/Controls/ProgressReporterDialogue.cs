@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Threading;
 using System.Windows.Forms;
 using System.Reflection;
-using log4net;
 
 namespace MissionPlanner.Controls
 {
@@ -16,8 +15,6 @@ namespace MissionPlanner.Controls
     /// </remarks>
     public partial class ProgressReporterDialogue : Form, IProgressReporterDialogue
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private Exception workerException;
         public ProgressWorkerEventArgs doWorkArgs { get; set; }
 
@@ -57,8 +54,6 @@ namespace MissionPlanner.Controls
         private void RunBackgroundOperation(object o)
         {
             Running = true;
-            log.Info("RunBackgroundOperation");
-
             try
             {
                 Thread.CurrentThread.Name = "ProgressReporterDialogue Background thread";
@@ -82,13 +77,10 @@ namespace MissionPlanner.Controls
             }
             catch { Running = false; return; }
 
-            log.Info("Focus ctl ");
-
             try
             {
                 this.Invoke((MethodInvoker)delegate
                 {
-                    log.Info("in focus invoke");
                      // if this windows isnt the current active windows, popups inherit the wrong parent.
                     if (!this.Focused)
                     {
@@ -101,9 +93,7 @@ namespace MissionPlanner.Controls
 
             try
             {
-                log.Info("DoWork");
                 if (this.DoWork != null) this.DoWork(this, doWorkArgs);
-                log.Info("DoWork Done");
             }
             catch(Exception e)
             {

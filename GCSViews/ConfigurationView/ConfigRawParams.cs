@@ -10,7 +10,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
-using log4net;
 using Microsoft.Scripting.Utils;
 using MissionPlanner.Controls;
 using MissionPlanner.Utilities;
@@ -21,9 +20,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
     {
         // from http://stackoverflow.com/questions/2512781/winforms-big-paragraph-tooltip/2512895#2512895
         private const int maximumSingleLineTooltipLength = 50;
-
-        private static readonly ILog log =
-            LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private static Hashtable tooltips = new Hashtable();
         // Changes made to the params between writing to the copter
@@ -57,7 +53,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                 if (!String.IsNullOrEmpty(Settings.Instance["rawparam_" + col.Name + "_width"]))
                 {
                     col.Width = Settings.Instance.GetInt32("rawparam_" + col.Name + "_width");
-                    log.InfoFormat("{0} to {1}", col.Name, col.Width);
                 }
             }
 
@@ -329,7 +324,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                 }
                 catch (Exception ex)
                 {
-                    log.Error("Exception getting param list", ex);
                     CustomMessageBox.Show(Strings.ErrorReceivingParams, Strings.ERROR);
                 }
 
@@ -481,7 +475,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
 
             //Params.Sort(Params.Columns[0], ListSortDirection.Ascending);
 
-            log.Info("processToScreen");
 
             var sorted = new List<string>();
             foreach (string item in MainV2.comPort.MAV.param.Keys)
@@ -489,7 +482,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
 
             sorted.Sort();
 
-            log.Info("sorted");
 
             var rowlist = new List<DataGridViewRow>();
 
@@ -505,8 +497,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                 }
 
                 if (value == null || value == "") continue;
-
-                log.Info("Doing: " + value);
 
                 var row = new DataGridViewRow();
                 rowlist.Add(row);
@@ -536,17 +526,12 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                 }
                 catch (Exception ex)
                 {
-                    log.Error(ex);
                 }
             }
-
-            log.Info("about to add all");
 
             Params.Enabled = false;
             Params.Rows.AddRange(rowlist.ToArray());
             Params.Enabled = true;
-
-            log.Info("Done");
         }
 
         private void updatedefaultlist(object crap)
@@ -568,7 +553,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -648,7 +632,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                 }
                 catch (Exception ex)
                 {
-                    log.Error(ex);
                     CustomMessageBox.Show(Strings.ErrorCommunicating + "\n" + ex, Strings.ERROR);
                 }
             }

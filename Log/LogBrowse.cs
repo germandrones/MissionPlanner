@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using log4net;
 using ZedGraph; // Graphs
 using System.Xml;
 using System.Collections;
@@ -24,8 +23,6 @@ namespace MissionPlanner.Log
 {
     public partial class LogBrowse : Form
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private static string lastLogDir;
 
         CollectionBuffer logdata;
@@ -563,8 +560,6 @@ namespace MissionPlanner.Log
             {
                 ThreadPool.QueueUserWorkItem(o => LoadLog(logfilename));
             }
-
-            log.Info("LogBrowse_Load Done");
         }
 
         public void LoadLog(string FileName)
@@ -579,15 +574,7 @@ namespace MissionPlanner.Log
                 Stream stream;
 
                 stream = File.Open(FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-
-                log.Info("before read " + (GC.GetTotalMemory(false)/1024.0/1024.0));
-
                 logdata = new CollectionBuffer(stream);
-
-                log.Info("got log lines " + (GC.GetTotalMemory(false)/1024.0/1024.0));
-
-                log.Info("process to datagrid " + (GC.GetTotalMemory(false)/1024.0/1024.0));
-
                 Loading.ShowLoading("Scanning coloum widths", this);
 
                 int b = 0;
@@ -611,8 +598,6 @@ namespace MissionPlanner.Log
                     }
                 }
 
-                log.Info("Done " + (GC.GetTotalMemory(false)/1024.0/1024.0));
-
                 this.BeginInvoke((Action) delegate {
                     LoadLog2(FileName, logdata, colcount);
                 });
@@ -622,8 +607,6 @@ namespace MissionPlanner.Log
                 CustomMessageBox.Show("Failed to read File: " + ex.ToString());
                 return;
             }
-
-            log.Info("LoadLog Done");
         }
 
         void LoadLog2(String FileName, CollectionBuffer logdata, int colcount)
@@ -631,8 +614,6 @@ namespace MissionPlanner.Log
             try
             {
                 this.Text = "Log Browser - " + Path.GetFileName(FileName);
-
-                log.Info("set dgv datasourse " + (GC.GetTotalMemory(false)/1024.0/1024.0));
 
                 if (MainV2.MONO)
                 {
@@ -678,11 +659,7 @@ namespace MissionPlanner.Log
                     dataGridView1.RowCount = 0;
                     dataGridView1.RowCount = logdata.Count;
                     dataGridView1.ColumnCount = colcount;
-
-                    log.Info("datagrid size set " + (GC.GetTotalMemory(false)/1024.0/1024.0));
                 }
-
-                log.Info("datasource set " + (GC.GetTotalMemory(false)/1024.0/1024.0));
             }
             catch (Exception ex)
             {
@@ -695,8 +672,6 @@ namespace MissionPlanner.Log
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
 
-            log.Info("Done timetable " + (GC.GetTotalMemory(false)/1024.0/1024.0));
-
             Loading.ShowLoading("Generating Time", this);
 
             try
@@ -705,10 +680,7 @@ namespace MissionPlanner.Log
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
-
-            log.Info("Done time " + (GC.GetTotalMemory(false)/1024.0/1024.0));
 
             CreateChart(zg1);
 
@@ -717,8 +689,6 @@ namespace MissionPlanner.Log
             Loading.ShowLoading("Generating Map", this);
 
             DrawMap();
-
-            log.Info("Done map " + (GC.GetTotalMemory(false) / 1024.0 / 1024.0));
 
             Loading.Close();
 
@@ -735,8 +705,6 @@ namespace MissionPlanner.Log
             //CMB_preselect.DisplayMember = "Name";
             CMB_preselect.DataSource = null;
             CMB_preselect.DataSource = graphs;
-
-            log.Info("LoadLog2 Done");
         }
 
         private void populateRowData(int rowstartoffset, int rowIndex, int destDGV = -1)
@@ -913,7 +881,6 @@ namespace MissionPlanner.Log
                             if (inner.Name.StartsWith("F"))
                             {
                                 dataGridView1.Columns[a].HeaderText = inner.ReadString();
-                                log.Info(a + " " + dataGridView1.Columns[a].HeaderText);
                                 a++;
                             }
                         }
@@ -927,7 +894,6 @@ namespace MissionPlanner.Log
             }
             catch
             {
-                log.Info("DGV logbrowse error");
             }
         }
 
@@ -1199,11 +1165,7 @@ namespace MissionPlanner.Log
                         CustomMessageBox.Show(Strings.NoFMTMessage + type + " - " + fieldname, Strings.ERROR);
                     return;
                 }
-
-                log.Info("Graphing " + type + " - " + fieldname);
-
                 Loading.ShowLoading("Graphing " + type + " - " + fieldname, this);
-
                 ThreadPool.QueueUserWorkItem(o => GraphItem_GetList(fieldname, type, dflog, dataModifier, left));
             }
             else
@@ -1215,7 +1177,6 @@ namespace MissionPlanner.Log
 
         void GraphItem_GetList(string fieldname, string type, DFLog dflog, DataModifer dataModifier, bool left)
         {
-            log.Info("GraphItem_GetList " + type + " " + fieldname);
             int col = dflog.FindMessageOffset(type, fieldname);
 
             // field does not exist
@@ -1293,7 +1254,6 @@ namespace MissionPlanner.Log
                     catch
                     {
                         error++;
-                        log.Info("Bad Data : " + type + " " + col + " " + a);
                         if (error >= 500)
                         {
                             CustomMessageBox.Show("There is to much bad data - failing");
@@ -1863,8 +1823,6 @@ namespace MissionPlanner.Log
                     i++;
                 }
 
-                log.Info("done reading map points");
-
                 // add last part of each
                 // gps1
                 GMapRoute route = new GMapRoute(routelist, "route_" + rtcnt);
@@ -1923,7 +1881,6 @@ namespace MissionPlanner.Log
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
             if (rtcnt > 0)
                 myGMAP1.RoutesEnabled = true;
@@ -2286,13 +2243,7 @@ namespace MissionPlanner.Log
 
             if (CHK_map.Checked)
             {
-                log.Info("Get map");
-
                 myGMAP1.MapProvider = GCSViews.FlightData.mymap.MapProvider;
-
-                // DrawMap();
-
-                log.Info("map done");
             }
         }
 

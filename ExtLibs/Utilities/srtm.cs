@@ -6,15 +6,11 @@ using System.Text.RegularExpressions;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Threading;
 using System.Collections;
-using log4net;
 
 namespace MissionPlanner.Utilities
 {
     public class srtm : IDisposable
     {
-        private static readonly ILog log =
-            LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         public enum tiletype
         {
             valid,
@@ -39,7 +35,6 @@ namespace MissionPlanner.Utilities
             get { return _datadirectory; }
             set
             {
-                log.Info(value);
                 _datadirectory = value;
             }
         }
@@ -62,8 +57,6 @@ namespace MissionPlanner.Utilities
 
         static srtm()
         {
-            log.Info(".cctor");
-
             // running tostring at a high rate was costing cpu
             for (int y = -90; y <= 90; y++)
             {
@@ -335,7 +328,6 @@ namespace MissionPlanner.Utilities
 
                         if (requestThread == null)
                         {
-                            log.Info("Getting " + filename);
                             lock (objlock)
                             {
                                 queue.Add(filename);
@@ -352,7 +344,6 @@ namespace MissionPlanner.Utilities
                             {
                                 if (!queue.Contains(filename))
                                 {
-                                    log.Info("Getting " + filename);
                                     queue.Add(filename);
                                 }
                             }
@@ -362,7 +353,6 @@ namespace MissionPlanner.Utilities
             }
             catch (Exception ex)
             {
-                log.Error(ex);
                 return altresponce.Invalid;
             }
 
@@ -381,8 +371,6 @@ namespace MissionPlanner.Utilities
 
         static MemoryStream readFile(string filename)
         {
-            log.Info(filename);
-
             if (filecache.ContainsKey(filename))
             {
                 return (MemoryStream) filecache[filename];
@@ -404,8 +392,6 @@ namespace MissionPlanner.Utilities
 
         static void requestRunner()
         {
-            log.Info("requestRunner start");
-
             requestThreadrun = true;
 
             while (requestThreadrun)
@@ -423,7 +409,6 @@ namespace MissionPlanner.Utilities
 
                     if (item != "")
                     {
-                        log.Info(item);
                         get3secfile(item);
                         lock (objlock)
                         {
@@ -433,7 +418,6 @@ namespace MissionPlanner.Utilities
                 }
                 catch (Exception ex)
                 {
-                    log.Error(ex);
                 }
                 Thread.Sleep(1000);
             }
@@ -494,8 +478,6 @@ namespace MissionPlanner.Utilities
             {
                 WebRequest req = HttpWebRequest.Create(url);
 
-                log.Info("Get " + url);
-
                 using (WebResponse res = req.GetResponse())
                 using (Stream resstream = res.GetResponseStream())
                 using (
@@ -519,8 +501,6 @@ namespace MissionPlanner.Utilities
 
                     bw.Close();
 
-                    log.Info("Got " + url + " " + size);
-
                     FastZip fzip = new FastZip();
 
                     fzip.ExtractZip(datadirectory + Path.DirectorySeparatorChar + filename + ".zip", datadirectory, "");
@@ -528,7 +508,6 @@ namespace MissionPlanner.Utilities
             }
             catch (Exception ex)
             {
-                log.Error(ex);
             }
         }
 
@@ -560,8 +539,6 @@ namespace MissionPlanner.Utilities
 
             try
             {
-                log.Info("srtm req " + url);
-
                 WebRequest req = HttpWebRequest.Create(url);
 
                 using (WebResponse res = req.GetResponse())
@@ -603,7 +580,6 @@ namespace MissionPlanner.Utilities
             }
             catch (WebException ex)
             {
-                log.Error(ex);
                 throw;
             }
 

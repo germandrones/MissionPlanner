@@ -2,12 +2,8 @@
 using OSGeo.GDAL;
 using System.Drawing.Imaging;
 using System.Drawing;
-using log4net;
 using System.Reflection;
 using OSGeo.OSR;
-using log4net.Layout;
-using log4net.Appender;
-using log4net.Config;
 using System.IO;
 using System.Collections.Generic;
 using GMap.NET;
