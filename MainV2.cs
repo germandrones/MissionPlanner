@@ -532,6 +532,19 @@ namespace MissionPlanner
             // Two diferent configs to show
             DisplayConfiguration = Settings.isDevMode ? DisplayConfiguration.Developer() : DisplayConfiguration.Basic();
 
+            // Hide from end user stuff and functionality,
+            // which is not tested yet...
+            if(Settings.isDevMode)
+            {
+                // we put here stuff which is in dev mode still...
+                FlightData.BUT_8ShapeMode.Visible = true;
+            }
+            else
+            {
+                FlightData.BUT_8ShapeMode.Visible = false;
+            }
+
+
             if (Settings.isDevMode) this.Text += " DEVMODE" + " v." + Application.ProductVersion;
 
             LayoutChanged += updateLayout;
