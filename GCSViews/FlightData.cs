@@ -82,7 +82,8 @@ namespace MissionPlanner.GCSViews
         internal static GMapOverlay geofence;
         internal static GMapOverlay rallypointoverlay;
         internal static GMapOverlay photosoverlay;
-        internal static GMapOverlay poioverlay = new GMapOverlay("POI"); // poi layer
+        internal static GMapOverlay poioverlay; // poi layer
+        internal static GMapOverlay losoverlay;// LOS Overlay
 
         public double ColibriPTCLat = 0.0;
         public double ColibriPTCLng = 0.0;
@@ -323,7 +324,11 @@ namespace MissionPlanner.GCSViews
             rallypointoverlay = new GMapOverlay("rally points");
             gMapControl1.Overlays.Add(rallypointoverlay);
 
+            poioverlay = new GMapOverlay("POI"); // poi layer
             gMapControl1.Overlays.Add(poioverlay);
+
+            losoverlay = new GMapOverlay("line of sight");// LOS Overlay
+            gMapControl1.Overlays.Add(losoverlay);
 
             MainV2.comPort.ParamListChanged += FlightData_ParentChanged;
         }
@@ -1073,8 +1078,7 @@ namespace MissionPlanner.GCSViews
                             list10.Add(time, ConvertToDouble(list10item.GetValue(MainV2.comPort.MAV.cs, null)));
                     }
 
-
-
+                    
                     // update map
                     if (tracklast.AddSeconds(0.05) < DateTime.Now) // check on 100ms 10 Hz update rate
                     {
@@ -1143,7 +1147,7 @@ namespace MissionPlanner.GCSViews
                         updateClearRoutesMarkers();
 
                         // Draw Plane Marker
-                        if (route.Points.Count > 0)
+                        //if (route.Points.Count > 0)
                         {
                             // draw all icons for all connected mavs
                             foreach (var port in MainV2.Comports.ToArray())
@@ -1171,7 +1175,121 @@ namespace MissionPlanner.GCSViews
                             }
                         }
 
+                        #region Gimbal LOS Visualization
+                        if(MainV2.comPort.MAV.cs.gimbal_los_points.Count > 0)
+                        {
+                            // preform gimbal LOS points visualizing
+                            switch (MainV2.comPort.MAV.cs.gimbal_los_points.Count)
+                            {
+                                case 1:
+                                    {
+                                        double num5 = 5E-05;
+                                        MainV2.comPort.MAV.cs.gimbal_los_points.Add(new PointLatLng(MainV2.comPort.MAV.cs.gimbal_los_points[0].Lat, MainV2.comPort.MAV.cs.gimbal_los_points[0].Lng + num5));
+                                        List<PointLatLng> pointLatLngList1 = MainV2.comPort.MAV.cs.gimbal_los_points;
+                                        double lat1 = MainV2.comPort.MAV.cs.gimbal_los_points[0].Lat + num5;
+                                        PointLatLng pointLatLng1 = MainV2.comPort.MAV.cs.gimbal_los_points[0];
+                                        double lng1 = pointLatLng1.Lng + num5;
+                                        PointLatLng pointLatLng2 = new PointLatLng(lat1, lng1);
+                                        pointLatLngList1.Add(pointLatLng2);
+                                        List<PointLatLng> pointLatLngList2 = MainV2.comPort.MAV.cs.gimbal_los_points;
+                                        pointLatLng1 = MainV2.comPort.MAV.cs.gimbal_los_points[0];
+                                        double lat2 = pointLatLng1.Lat + num5;
+                                        pointLatLng1 = MainV2.comPort.MAV.cs.gimbal_los_points[0];
+                                        double lng2 = pointLatLng1.Lng;
+                                        PointLatLng pointLatLng3 = new PointLatLng(lat2, lng2);
+                                        pointLatLngList2.Add(pointLatLng3);
+                                        GMapPolygon gmapPolygon1 = new GMapPolygon(MainV2.comPort.MAV.cs.gimbal_los_points, "Los");
+                                        gmapPolygon1.Fill = new SolidBrush(Color.FromArgb(byte.MaxValue, Color.GreenYellow));
+                                        gmapPolygon1.Stroke = new Pen(Color.GreenYellow, 5f);
+                                        losoverlay.Polygons.Clear();
+                                        losoverlay.Polygons.Add(gmapPolygon1);
+                                        break;
+                                    }
+                                case 2:
+                                    {
+                                        PointLatLngAlt pointLatLngAlt1 = new PointLatLngAlt(MainV2.comPort.MAV.cs.lat, MainV2.comPort.MAV.cs.lng);
+                                        double bearing1 = pointLatLngAlt1.GetBearing((PointLatLngAlt)MainV2.comPort.MAV.cs.gimbal_los_points[0]);
+                                        double distance1 = pointLatLngAlt1.GetDistance((PointLatLngAlt)MainV2.comPort.MAV.cs.gimbal_los_points[0]);
+                                        double bearing2 = pointLatLngAlt1.GetBearing((PointLatLngAlt)MainV2.comPort.MAV.cs.gimbal_los_points[1]);
+                                        double distance2 = pointLatLngAlt1.GetDistance((PointLatLngAlt)MainV2.comPort.MAV.cs.gimbal_los_points[1]);
 
+                                        PointLatLngAlt pointLatLngAlt2 = (PointLatLngAlt)MainV2.comPort.MAV.cs.gimbal_los_points[0].newpos(bearing1, distance1);
+                                        PointLatLngAlt pointLatLngAlt3 = (PointLatLngAlt)MainV2.comPort.MAV.cs.gimbal_los_points[1].newpos(bearing2, distance2);
+
+                                        GMapPolygon gmapPolygon2 = new GMapPolygon(new List<PointLatLng>()
+                                        {
+                                            MainV2.comPort.MAV.cs.gimbal_los_points[0],
+                                            pointLatLngAlt2,
+                                            pointLatLngAlt3,
+                                            MainV2.comPort.MAV.cs.gimbal_los_points[1]
+                                        }, "Los");
+
+                                        gmapPolygon2.Fill = (Brush)new SolidBrush(Color.FromArgb(40, Color.Blue));
+                                        gmapPolygon2.Stroke = new Pen(Color.GreenYellow, 1f);
+                                        FlightData.losoverlay.Polygons.Clear();
+                                        FlightData.losoverlay.Polygons.Add(gmapPolygon2);
+                                        break;
+                                    }
+                                case 3:
+                                    {
+                                        PointLatLngAlt pointLatLngAlt4 = new PointLatLngAlt(MainV2.comPort.MAV.cs.lat, MainV2.comPort.MAV.cs.lng);
+                                        double distance3 = pointLatLngAlt4.GetDistance((PointLatLngAlt)MainV2.comPort.MAV.cs.gimbal_los_points[0]);
+                                        double distance4 = pointLatLngAlt4.GetDistance((PointLatLngAlt)MainV2.comPort.MAV.cs.gimbal_los_points[1]);
+                                        double distance5 = pointLatLngAlt4.GetDistance((PointLatLngAlt)MainV2.comPort.MAV.cs.gimbal_los_points[2]);
+                                        int num6 = distance3 >= distance4 ? (distance4 >= distance5 ? 2 : 1) : (distance3 >= distance5 ? 2 : 0);
+                                        List<PointLatLng> points2 = new List<PointLatLng>();
+                                        List<PointLatLng> points3 = new List<PointLatLng>();
+                                        switch (num6)
+                                        {
+                                            case 0:
+                                                points2.Add(MainV2.comPort.MAV.cs.gimbal_los_points[0]);
+                                                points2.Add(MainV2.comPort.MAV.cs.gimbal_los_points[1]);
+                                                points3.Add(MainV2.comPort.MAV.cs.gimbal_los_points[0]);
+                                                points3.Add(MainV2.comPort.MAV.cs.gimbal_los_points[2]);
+                                                break;
+                                            case 1:
+                                                points2.Add(MainV2.comPort.MAV.cs.gimbal_los_points[1]);
+                                                points2.Add(MainV2.comPort.MAV.cs.gimbal_los_points[0]);
+                                                points3.Add(MainV2.comPort.MAV.cs.gimbal_los_points[1]);
+                                                points3.Add(MainV2.comPort.MAV.cs.gimbal_los_points[2]);
+                                                break;
+                                            case 2:
+                                                points2.Add(MainV2.comPort.MAV.cs.gimbal_los_points[2]);
+                                                points2.Add(MainV2.comPort.MAV.cs.gimbal_los_points[0]);
+                                                points3.Add(MainV2.comPort.MAV.cs.gimbal_los_points[2]);
+                                                points3.Add(MainV2.comPort.MAV.cs.gimbal_los_points[1]);
+                                                break;
+                                        }
+                                        GMapPolygon gmapPolygon3 = new GMapPolygon(points2, "Los0");
+                                        GMapPolygon gmapPolygon4 = new GMapPolygon(points3, "Los1");
+                                        gmapPolygon3.Fill = (Brush)new SolidBrush(Color.FromArgb(40, Color.Blue));
+                                        gmapPolygon3.Stroke = new Pen(Color.GreenYellow, 1f);
+                                        gmapPolygon4.Fill = (Brush)new SolidBrush(Color.FromArgb(40, Color.Blue));
+                                        gmapPolygon4.Stroke = new Pen(Color.GreenYellow, 1f);
+                                        FlightData.losoverlay.Polygons.Clear();
+                                        FlightData.losoverlay.Polygons.Add(gmapPolygon3);
+                                        FlightData.losoverlay.Polygons.Add(gmapPolygon4);
+                                        break;
+                                    }
+                                case 4:
+                                    {
+                                        GMapPolygon gmapPolygon5 = new GMapPolygon(MainV2.comPort.MAV.cs.gimbal_los_points, "Los");
+                                        gmapPolygon5.Fill = (Brush)new SolidBrush(Color.FromArgb(40, Color.Blue));
+                                        gmapPolygon5.Stroke = new Pen(Color.GreenYellow, 1f);
+                                        //FlightData.losoverlay.Polygons.Clear();
+                                        FlightData.losoverlay.Polygons.Add(gmapPolygon5);
+                                        break;
+                                    }
+                            }
+                        }
+                        else
+                        {
+                            // clear LOS Lines
+                            losoverlay.Polygons.Clear();
+                        }
+                        #endregion
+
+                        #region disabled visualizing stuff
                         // add this after the mav icons are drawn
                         /*if (MainV2.comPort.MAV.cs.MovingBase != null && MainV2.comPort.MAV.cs.MovingBase == PointLatLngAlt.Zero)
                         {
@@ -1287,8 +1405,8 @@ namespace MissionPlanner.GCSViews
                         catch
                         {
                         }*/
+                        #endregion
 
-                        
 
                         gMapControl1.HoldInvalidation = false;
 

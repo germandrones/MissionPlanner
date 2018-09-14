@@ -684,7 +684,7 @@ namespace MissionPlanner
         public float trip_roll { get; set; } = 0;
         public float trip_cam_lat { get; set; } = 0;
         public float trip_cam_lng { get; set; } = 0;
-
+        public List<GMap.NET.PointLatLng> gimbal_los_points = new List<GMap.NET.PointLatLng>();
         #endregion
 
         public float targetaltd100
@@ -1643,7 +1643,16 @@ namespace MissionPlanner
                                 }
                             case 1:
                                 {
-
+                                    //update LOS data from gimbal
+                                    gimbal_los_points.Clear();// clear list
+                                    if (mavlinkV2ExtensionT2.los_upper_left_corner_lat != -294967296)
+                                        gimbal_los_points.Add(new GMap.NET.PointLatLng((double)mavlinkV2ExtensionT2.los_upper_left_corner_lat / 10000000.0, (double)mavlinkV2ExtensionT2.los_upper_left_corner_lon / 10000000.0));
+                                    if (mavlinkV2ExtensionT2.los_upper_right_corner_lat != -294967296)
+                                        gimbal_los_points.Add(new GMap.NET.PointLatLng((double)mavlinkV2ExtensionT2.los_upper_right_corner_lat / 10000000.0, (double)mavlinkV2ExtensionT2.los_upper_right_corner_lon / 10000000.0));
+                                    if (mavlinkV2ExtensionT2.los_lower_right_corner_lat != -294967296)
+                                        gimbal_los_points.Add(new GMap.NET.PointLatLng((double)mavlinkV2ExtensionT2.los_lower_right_corner_lat / 10000000.0, (double)mavlinkV2ExtensionT2.los_lower_right_corner_lon / 10000000.0));
+                                    if (mavlinkV2ExtensionT2.los_lower_left_corner_lat != -294967296)
+                                        gimbal_los_points.Add(new GMap.NET.PointLatLng((double)mavlinkV2ExtensionT2.los_lower_left_corner_lat / 10000000.0, (double)mavlinkV2ExtensionT2.los_lower_left_corner_lon / 10000000.0));
                                     break;
                                 }
                         }
