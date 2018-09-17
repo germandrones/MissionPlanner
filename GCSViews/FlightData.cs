@@ -1123,7 +1123,7 @@ namespace MissionPlanner.GCSViews
                         updateClearRoutesMarkers();
 
                         // Draw Plane Marker
-                        //if (route.Points.Count > 0)
+                        if (route.Points.Count > 0)
                         {
                             // draw all icons for all connected mavs
                             foreach (var port in MainV2.Comports.ToArray())
@@ -1162,6 +1162,7 @@ namespace MissionPlanner.GCSViews
                                         double num5 = 5E-05;
                                         MainV2.comPort.MAV.cs.gimbal_los_points.Add(new PointLatLng(MainV2.comPort.MAV.cs.gimbal_los_points[0].Lat, MainV2.comPort.MAV.cs.gimbal_los_points[0].Lng + num5));
                                         List<PointLatLng> pointLatLngList1 = MainV2.comPort.MAV.cs.gimbal_los_points;
+
                                         double lat1 = MainV2.comPort.MAV.cs.gimbal_los_points[0].Lat + num5;
                                         PointLatLng pointLatLng1 = MainV2.comPort.MAV.cs.gimbal_los_points[0];
                                         double lng1 = pointLatLng1.Lng + num5;
@@ -1252,7 +1253,7 @@ namespace MissionPlanner.GCSViews
                                         GMapPolygon gmapPolygon5 = new GMapPolygon(MainV2.comPort.MAV.cs.gimbal_los_points, "Los");
                                         gmapPolygon5.Fill = (Brush)new SolidBrush(Color.FromArgb(40, Color.Blue));
                                         gmapPolygon5.Stroke = new Pen(Color.GreenYellow, 1f);
-                                        //FlightData.losoverlay.Polygons.Clear();
+                                        FlightData.losoverlay.Polygons.Clear();
                                         FlightData.losoverlay.Polygons.Add(gmapPolygon5);
                                         break;
                                     }

@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 using System.Threading;
 using System.Management;
+using System.Windows.Forms;
 
 namespace MissionPlanner.Comms
 {
@@ -54,7 +55,11 @@ namespace MissionPlanner.Comms
             {
                 try { Close(); }
                 catch { }
+#if DEBUG
                 throw;
+#else
+                MessageBox.Show("Unable to open serial port. Please check connection settings.", "Connection fails", MessageBoxButtons.OK, MessageBoxIcon.Error);
+#endif
             }
         }
 
@@ -117,7 +122,7 @@ namespace MissionPlanner.Comms
                     .Select(FixBlueToothPortNameBug)
                     .ToArray();
 
-                    #region find all FTDI
+#region find all FTDI
                     ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PnPEntity  WHERE Caption like '%(COM%'");
                     List<string> ftdi_ports = new List<string>();
 
@@ -137,7 +142,7 @@ namespace MissionPlanner.Comms
                             }
                         }
                     }
-                    #endregion
+#endregion
                 }
                 catch { }
 
@@ -274,7 +279,7 @@ namespace MissionPlanner.Comms
             {
             }
         }
-        #region IDisposable Members
+#region IDisposable Members
 
         public void Dispose()
         {
@@ -286,9 +291,9 @@ namespace MissionPlanner.Comms
             GC.SuppressFinalize(this);
         }
 
-        #endregion
+#endregion
 
-        #region Implementation
+#region Implementation
 
         private const int DcbFlagAbortOnError = 14;
         private const int CommStateRetries = 10;
@@ -422,7 +427,7 @@ namespace MissionPlanner.Comms
             }
         }
 
-        #region Nested type: COMSTAT
+#region Nested type: COMSTAT
 
         [StructLayout(LayoutKind.Sequential)]
         private struct Comstat
@@ -432,9 +437,9 @@ namespace MissionPlanner.Comms
             public readonly uint cbOutQue;
         }
 
-        #endregion
+#endregion
 
-        #region Nested type: DCB
+#region Nested type: DCB
 
         /*
          * https://msdn.microsoft.com/en-us/library/windows/desktop/aa363214(v=vs.85).aspx
@@ -474,8 +479,8 @@ namespace MissionPlanner.Comms
             public readonly ushort wReserved1;
         }
 
-        #endregion
+#endregion
 
-        #endregion
+#endregion
     }
 }

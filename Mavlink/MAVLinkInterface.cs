@@ -545,9 +545,13 @@ Please check the following
                 {
                 }
                 giveComport = false;
-                if (string.IsNullOrEmpty(progressWorkerEventArgs.ErrorMessage))
-                    progressWorkerEventArgs.ErrorMessage = Strings.ConnectFailed;
+
+#if DEBUG
+                if (string.IsNullOrEmpty(progressWorkerEventArgs.ErrorMessage)) progressWorkerEventArgs.ErrorMessage = Strings.ConnectFailed;
                 throw;
+#else
+                return;
+#endif
             }
             //frmProgressReporter.Close();
             giveComport = false;

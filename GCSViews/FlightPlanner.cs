@@ -2098,7 +2098,11 @@ namespace MissionPlanner.GCSViews
             }
             catch
             {
+#if DEBUG
                 throw;
+#else
+                MessageBox.Show("Unable to download mission waypoints. Please check connection.", "Please connect first", MessageBoxButtons.OK, MessageBoxIcon.Error);
+#endif
             }
 
             // Hide commands from user. Commands for internal use for example:MAV_CMD_SET_FORBIDDEN_ZONE 
@@ -2177,7 +2181,7 @@ namespace MissionPlanner.GCSViews
             
             GCSViews.FlightData.isMapDirty = true;
 
-            #region Common Checks on upload
+#region Common Checks on upload
             // Prevent upload mission if UAV is armed!
             if (MainV2.comPort.MAV.cs.armed && !Settings.isDevMode)
             {
@@ -2209,7 +2213,7 @@ namespace MissionPlanner.GCSViews
                 CustomMessageBox.Show("Your home location is invalid", Strings.ERROR);
                 return;
             }
-            #endregion
+#endregion
 
             // check mission on safety
 
@@ -2315,7 +2319,7 @@ namespace MissionPlanner.GCSViews
                 }
             }
 
-            #region Saving and Uploading the mission
+#region Saving and Uploading the mission
             MainV2.missionUploading = true;
             IProgressReporterDialogue frmProgressReporter = new ProgressReporterDialogue
             {
@@ -2330,7 +2334,7 @@ namespace MissionPlanner.GCSViews
             frmProgressReporter.RunBackgroundOperationAsync();
             frmProgressReporter.Dispose();
 
-            #endregion
+#endregion
 
             MainMap.Focus();
             FlightData.HWP_updated = false;
@@ -2624,7 +2628,11 @@ namespace MissionPlanner.GCSViews
             catch (Exception ex)
             {
                 MainV2.comPort.giveComport = false;
+#if DEBUG
                 throw;
+#else
+                MessageBox.Show("Unable to send mission waypoints. Please check connection.","Please connect first", MessageBoxButtons.OK, MessageBoxIcon.Error);
+#endif
             }
 
             MainV2.comPort.giveComport = false;
@@ -3295,7 +3303,7 @@ namespace MissionPlanner.GCSViews
 
         //public long ElapsedMilliseconds;
 
-        #region -- map events --
+#region -- map events --
 
         void MainMap_OnMarkerLeave(GMapMarker item)
         {
@@ -4171,7 +4179,7 @@ namespace MissionPlanner.GCSViews
             // MainMap.Focus();
         }
 
-        #endregion
+#endregion
 
         private void comboBoxMapType_SelectedValueChanged(object sender, EventArgs e)
         {
@@ -7396,7 +7404,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
         // method creates a circle survey with the ROI in the center of circle
         private void createCircleSurveyToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            #region check if we modify an existing wp into circle
+#region check if we modify an existing wp into circle
             bool do_insert = false;
             int RWP = m_selectedPoint;
             if (RWP < 0) { do_insert = false; }
@@ -7413,9 +7421,9 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 MessageBox.Show("Only a waypoint can be modified.", "Warning", MessageBoxButtons.OK);
                 return;
             }
-            #endregion
+#endregion
 
-            #region User given parameter parse
+#region User given parameter parse
             // if Last mission item exist and it is landing point, dont add any shapes
             if (Commands.Rows.Count > 0 && Commands.Rows[Commands.Rows.Count - 1].Cells[Command.Index].Value.ToString().Contains(MAVLink.MAV_CMD.LAND.ToString()) && !do_insert)
             {
@@ -7440,13 +7448,13 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             if (!int.TryParse(PointsIn, out int Points))        { CustomMessageBox.Show("Bad Points value"); return; }
             if (!int.TryParse(Directionin, out int Direction))  { CustomMessageBox.Show("Bad Direction value"); return; }
             if (!int.TryParse(RepeatsIn, out int Repeats))      { CustomMessageBox.Show("Bad Repeat value"); return; }
-            #endregion
+#endregion
 
             // where the mouse is clicked
             double mp_lat = do_insert ? Double.Parse(Commands.Rows[selectedrow].Cells[Lat.Index].Value.ToString()) : MouseDownEnd.Lat;
             double mp_lng = do_insert ? Double.Parse(Commands.Rows[selectedrow].Cells[Lon.Index].Value.ToString()) : MouseDownEnd.Lng;
 
-            #region ROI Point inserting(new or modify existing)
+#region ROI Point inserting(new or modify existing)
 
             if (do_insert)
             {
@@ -7463,11 +7471,11 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 Commands.Rows[selectedrow].Cells[Lon.Index].Value = mp_lng.ToString();
             }
 
-            #endregion
+#endregion
 
             int index_of_repeatPosition = do_insert ? selectedrow + 2 : Commands.Rows.Count + 2; //Skip initial waypoint of 8 shape
 
-            #region find the previous WP or use Home Position
+#region find the previous WP or use Home Position
             // find the previous WP location(lat,lng), if exists otherwise use homeposition
             PointLatLngAlt plla_prev = new PointLatLngAlt();
             bool prevPointFound = false;
@@ -7485,7 +7493,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 }
             }
             if (!prevPointFound) { plla_prev = MainV2.comPort.MAV.cs.HomeLocation; } // use the home position if no wp defined
-            #endregion
+#endregion
 
             // get bearing angle to define orientation circle based on previous WP location
             double bearing = GetBearing(plla_prev, new PointLatLng(mp_lat, mp_lng));
@@ -7519,7 +7527,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 setfromMap(pll.Lat, pll.Lng, (int)float.Parse(TXT_DefaultAlt.Text));
             }
 
-            #region Repeats message
+#region Repeats message
             //do jump setting
             if (Repeats > 0)
             {
@@ -7529,7 +7537,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 Commands.Rows[selectedrow].Cells[Param1.Index].Value = index_of_repeatPosition.ToString();
                 Commands.Rows[selectedrow].Cells[Param2.Index].Value = Repeats.ToString();
             }
-            #endregion
+#endregion
 
             quickadd = false;
             writeKML();
@@ -7560,7 +7568,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 return;
             }
 
-            #region user parameters
+#region user parameters
             // if Last mission item exist and it is landing point, dont add any shapes
             if (Commands.Rows.Count > 0 && Commands.Rows[Commands.Rows.Count - 1].Cells[Command.Index].Value.ToString().Contains(MAVLink.MAV_CMD.LAND.ToString()) && !do_insert)
             {
@@ -7590,13 +7598,13 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             if (!int.TryParse(RepeatsIn, out Repeats)) { CustomMessageBox.Show("Bad Repeat value"); return; }
 
             double circle_step = 360.0f / Points;
-            #endregion
+#endregion
 
             double mp_lat = do_insert ? Double.Parse(Commands.Rows[selectedrow].Cells[Lat.Index].Value.ToString()) : MouseDownEnd.Lat;
             double mp_lng = do_insert ? Double.Parse(Commands.Rows[selectedrow].Cells[Lon.Index].Value.ToString()) : MouseDownEnd.Lng;
 
             // put DO_SET_ROI before 8 shape
-            #region ROI Point inserting
+#region ROI Point inserting
             if (do_insert)
             {
                 // convert selected wp to DO_SET_ROI
@@ -7611,11 +7619,11 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 Commands.Rows[selectedrow].Cells[Lat.Index].Value = mp_lat.ToString();
                 Commands.Rows[selectedrow].Cells[Lon.Index].Value = mp_lng.ToString();
             }
-            #endregion
+#endregion
 
             int index_of_repeatPosition = do_insert ? selectedrow + 2 : Commands.Rows.Count + 2; //Skip initial waypoint of 8 shape
 
-            #region orientation of 8 shape
+#region orientation of 8 shape
 
             // get the previous waypoint, if not exists, use homeposition
             PointLatLngAlt plla_prev = new PointLatLngAlt();
@@ -7642,9 +7650,9 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
 
             // get bearing angle to define orientation of 8 shape
             double bearing = GetBearing(plla_prev, new PointLatLng(mp_lat, mp_lng));
-            #endregion
+#endregion
 
-            #region 8-shape centers calculation
+#region 8-shape centers calculation
             // calculate new points for the right center
             PointLatLngAlt plla_right = new PointLatLngAlt(mp_lat, mp_lng).gps_offset(Radius * Math.Cos(bearing * MathHelper.deg2rad), -Radius * Math.Sin(bearing * MathHelper.deg2rad));
             double start_angle_right = 270 + bearing;
@@ -7659,14 +7667,14 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
 
             double plla_left_lat_rad = plla_left.Lat * MathHelper.deg2rad;
             double plla_left_lng_rad = plla_left.Lng * MathHelper.deg2rad;
-            #endregion
+#endregion
 
             double a;
 
             Radius = (int)(Radius / CurrentState.multiplierdist);
             quickadd = true;
 
-            #region right ear of pattern
+#region right ear of pattern
             // Adding the right side of 8 shape
             a = start_angle_right;
             for (; a <= (start_angle_right + 360) && a >= 0; a += circle_step)
@@ -7690,9 +7698,9 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
 
                 setfromMap(pll.Lat, pll.Lng, (int)float.Parse(TXT_DefaultAlt.Text));
             }
-            #endregion
+#endregion
 
-            #region left ear of pattern
+#region left ear of pattern
             // adding the left side of 8 shape and reverse the circle orientation loop
             a = start_angle_left;
             a += 360;
@@ -7722,9 +7730,9 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 PointLatLng pll = new PointLatLng(lat2 * MathHelper.rad2deg, lon2 * MathHelper.rad2deg);
                 setfromMap(pll.Lat, pll.Lng, (int)float.Parse(TXT_DefaultAlt.Text));
             }
-            #endregion
+#endregion
 
-            #region Repeats message
+#region Repeats message
             //do jump setting
             if (Repeats > 0)
             {
@@ -7734,7 +7742,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 Commands.Rows[selectedrow].Cells[Param1.Index].Value = index_of_repeatPosition.ToString();
                 Commands.Rows[selectedrow].Cells[Param2.Index].Value = Repeats.ToString();
             }
-            #endregion
+#endregion
 
             quickadd = false;
             writeKML();
