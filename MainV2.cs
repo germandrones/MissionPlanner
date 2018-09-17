@@ -1575,6 +1575,7 @@ namespace MissionPlanner
                             if (!MainV2.comPort.BaseStream.IsOpen) { Thread.Sleep(250); continue; }
                             MainV2.comPort.sendPacket((object)mavlinkV2ExtensionT, (int)MainV2.comPort.MAV.sysid, (int)MainV2.comPort.MAV.compid);
                             ++num;
+
                             MainV2.ManualControl = false; // do only once!
                             continue;
                         }
@@ -1674,7 +1675,7 @@ namespace MissionPlanner
                             ++num;                            
                         }
                     }
-                    Thread.Sleep(100); //10 Hz update
+                    Thread.Sleep(40); //10 Hz update
                 }
                 catch (Exception ex)
                 {

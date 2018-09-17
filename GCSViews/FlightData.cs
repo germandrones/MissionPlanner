@@ -3867,19 +3867,7 @@ namespace MissionPlanner.GCSViews
 
         Random random = new Random();
 
-        private void BTN_ActionTriggerCamNow_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                MainV2.comPort.setDigicamControl(true);
-                return;
-            }
-            catch
-            {
-                CustomMessageBox.Show(Strings.CommandFailed, Strings.ERROR);
-                return;
-            }
-        }
+       
 
 
         private Process gst;
@@ -4495,6 +4483,17 @@ namespace MissionPlanner.GCSViews
             ((Button)sender).Enabled = true;*/
         }
         #endregion
+
+        private void BTN_ActionTriggerCamNow_Click(object sender, EventArgs e)
+        {
+            ((Button)sender).Enabled = false;
+            ThreadPool.QueueUserWorkItem(delegate (object state)
+            {
+                try { MainV2.comPort.setDigicamControl(true); }
+                catch { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Camera Trigger command failed..."); }
+            });
+            ((Button)sender).Enabled = true;
+        }
 
         private void BUT_quickrtl_Click(object sender, EventArgs e)
         {

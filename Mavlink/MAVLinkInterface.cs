@@ -1554,7 +1554,7 @@ Please check the following
 
             while (true)
             {
-                if (!(start.AddMilliseconds(700) > DateTime.Now))
+                if (!(start.AddMilliseconds(1000) > DateTime.Now))
                 {
                     if (retrys > 0)
                     {
