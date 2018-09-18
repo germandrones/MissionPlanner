@@ -52,6 +52,7 @@ namespace MissionPlanner
             this.MenuArduPilot = new System.Windows.Forms.ToolStripButton();
             this.menu = new MissionPlanner.Controls.MyButton();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.geotaggingToolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.CTX_mainmenu.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -88,7 +89,8 @@ namespace MissionPlanner
             this.fullScreenToolStripMenuItem,
             this.readonlyToolStripMenuItem,
             this.connectionOptionsToolStripMenuItem,
-            this.connectionListToolStripMenuItem});
+            this.connectionListToolStripMenuItem,
+            this.geotaggingToolToolStripMenuItem});
             this.CTX_mainmenu.Name = "CTX_mainmenu";
             resources.ApplyResources(this.CTX_mainmenu, "CTX_mainmenu");
             // 
@@ -243,6 +245,12 @@ namespace MissionPlanner
             this.panel1.Name = "panel1";
             this.panel1.MouseLeave += new System.EventHandler(this.MainMenu_MouseLeave);
             // 
+            // geotaggingToolToolStripMenuItem
+            // 
+            this.geotaggingToolToolStripMenuItem.Name = "geotaggingToolToolStripMenuItem";
+            resources.ApplyResources(this.geotaggingToolToolStripMenuItem, "geotaggingToolToolStripMenuItem");
+            this.geotaggingToolToolStripMenuItem.Click += new System.EventHandler(this.geotaggingToolToolStripMenuItem_Click);
+            // 
             // MainV2
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -285,5 +293,6 @@ namespace MissionPlanner
         private System.Windows.Forms.ToolStripMenuItem connectionOptionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton MenuArduPilot;
         private System.Windows.Forms.ToolStripMenuItem connectionListToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem geotaggingToolToolStripMenuItem;
     }
 }

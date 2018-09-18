@@ -25,6 +25,7 @@ using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using SharpDX.DirectInput;
+using MissionPlanner.GeoRef;
 
 namespace MissionPlanner
 {
@@ -2927,6 +2928,11 @@ namespace MissionPlanner
         private void toolStripConnectionControl_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void geotaggingToolToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new Georefimage().Show();
         }
     }
 }

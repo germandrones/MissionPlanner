@@ -154,8 +154,14 @@
   <data name="connectionListToolStripMenuItem.Text" xml:space="preserve">
     <value>Connection List</value>
   </data>
+  <data name="geotaggingToolToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>181, 22</value>
+  </data>
+  <data name="geotaggingToolToolStripMenuItem.Text" xml:space="preserve">
+    <value>Geotagging Tool</value>
+  </data>
   <data name="CTX_mainmenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>182, 114</value>
+    <value>182, 158</value>
   </data>
   <data name="&gt;&gt;CTX_mainmenu.Name" xml:space="preserve">
     <value>CTX_mainmenu</value>
@@ -1078,6 +1084,12 @@
   </data>
   <data name="&gt;&gt;MenuArduPilot.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;geotaggingToolToolStripMenuItem.Name" xml:space="preserve">
+    <value>geotaggingToolToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;geotaggingToolToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>MainV2</value>

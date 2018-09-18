@@ -1125,13 +1125,17 @@ namespace MissionPlanner.GeoRef
 
             string[] files = Directory.GetFiles(dirWithImages, "*.jpg");
 
+            if (files.Length == 0) // try to capture *.tif files
+            {
+                files = Directory.GetFiles(dirWithImages, "*.tif");
+            }
+
             TXT_outputlog.AppendText("Images read : " + files.Length + "\n");
 
             // Check that we have same number of CAMs than files
             if (files.Length != list.Count)
             {
-                TXT_outputlog.AppendText(string.Format("CAM Msgs and Files discrepancy. Check it! files: {0} vs CAM msg: {1}\n",files.Length,list.Count));
-                return null;
+                if (MessageBox.Show(string.Format("CAM Msgs and Files discrepancy. Image files: {0} vs CAM msg: {1}\nContinue?", files.Length, list.Count), "Geotagging images", MessageBoxButtons.YesNo) == DialogResult.No) return null;
             }
 
             Array.Sort(files, compareFileByPhotoTime);
@@ -1142,6 +1146,9 @@ namespace MissionPlanner.GeoRef
             foreach (var currentCAM in list.Values)
             {
                 i++;
+                // check if index is out of range
+                if (i == files.Length) break;
+
                 PictureInformation p = new PictureInformation();
 
                 // Fill shot time in Picture

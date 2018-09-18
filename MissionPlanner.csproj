@@ -1410,6 +1410,9 @@
     <None Include="Drivers\vrugimbal.inf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="m3u\GeoRefnetworklink.kml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="NoFly\Areas-Lisboa.kmz">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
