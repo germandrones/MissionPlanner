@@ -1572,21 +1572,9 @@ namespace MissionPlanner
                         if (!gotwind)
                             dowindcalc();
                     }
-                 
 
-                    // re-request streams
-                    if (!(lastdata.AddSeconds(8) > DateTime.Now) && mavinterface.BaseStream.IsOpen && !MainV2.missionUploading)
+                    if (!(lastdata.AddSeconds(8) > DateTime.Now) && mavinterface.BaseStream.IsOpen)
                     {
-                        try /*Try to update Data stream rates from Parameters*/
-                        {
-                            if (MAV.param.ContainsKey("SR1_EXT_STAT"))  MAV.cs.ratestatus =     (byte)MAV.param["SR1_EXT_STAT"].Value;
-                            if (MAV.param.ContainsKey("SR1_POSITION"))  MAV.cs.rateposition =   (byte)MAV.param["SR1_POSITION"].Value;
-                            if (MAV.param.ContainsKey("SR1_EXTRA1"))    MAV.cs.rateattitude =   (byte)MAV.param["SR1_EXTRA1"].Value;
-                            if (MAV.param.ContainsKey("SR1_RAW_SENS"))  MAV.cs.ratesensors =    (byte)MAV.param["SR1_RAW_SENS"].Value;
-                            if (MAV.param.ContainsKey("SR1_RC_CHAN"))   MAV.cs.raterc =         (byte)MAV.param["SR1_RC_CHAN"].Value;
-                        }
-                        catch { }
-
                         try
                         {
                             mavinterface.requestDatastream(MAVLink.MAV_DATA_STREAM.EXTENDED_STATUS, MAV.cs.ratestatus, MAV.sysid, MAV.compid); // mode
@@ -1597,8 +1585,7 @@ namespace MissionPlanner
                             mavinterface.requestDatastream(MAVLink.MAV_DATA_STREAM.RAW_SENSORS, MAV.cs.ratesensors, MAV.sysid, MAV.compid); // request raw sensor
                             mavinterface.requestDatastream(MAVLink.MAV_DATA_STREAM.RC_CHANNELS, MAV.cs.raterc, MAV.sysid, MAV.compid);// request rc info
                         }
-                        catch
-                        { }
+                        catch { }
                         lastdata = DateTime.Now.AddSeconds(30); // prevent flooding
                     }
 

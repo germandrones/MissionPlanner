@@ -3227,6 +3227,7 @@ Please check the following
 
             MainV2.comPort.doCommand(MAV_CMD.DO_DIGICAM_CONTROL, 0, 0, 0, 0, 1, 0, 0);
 
+
             //MAVLINK_MSG_ID.CAMERA_FEEDBACK;
 
             //mavlink_camera_feedback_t

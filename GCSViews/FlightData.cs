@@ -3294,14 +3294,11 @@ namespace MissionPlanner.GCSViews
         
         private void triggerCameraToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
+            ThreadPool.QueueUserWorkItem(delegate (object state)
             {
-                MainV2.comPort.setDigicamControl(true);
-            }
-            catch
-            {
-                CustomMessageBox.Show(Strings.CommandFailed, Strings.ERROR);
-            }
+                try { MainV2.comPort.setDigicamControl(true); }
+                catch { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Camera Trigger command failed..."); }
+            });
         }
 
         private void TRK_zoom_Scroll(object sender, EventArgs e)
@@ -4292,6 +4289,8 @@ namespace MissionPlanner.GCSViews
                         MainV2.comPort.setMode("Loiter");
                     if (MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduCopter2)
                         MainV2.comPort.setMode("Loiter");
+
+                    Debug.WriteLine("LOITER!");
                 }
                 catch { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + Strings.CommandFailed); }
             });
@@ -4356,7 +4355,10 @@ namespace MissionPlanner.GCSViews
             if (!MainV2.comPort.BaseStream.IsOpen) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Please Connect first"); return; }
             string inputValue = "";
             if (DialogResult.Cancel == InputBox.Show("Change Altitude", "Enter new Altitude(meter):", ref inputValue, false)) return;
+
             if (!float.TryParse(inputValue, out float _newAltitude)) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Bad Altitude"); return; }
+
+            if (_newAltitude < 30) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Unsafe Altitude! min Alt: 30 meter"); return; }
 
             ((Button)sender).Enabled = false;
             ThreadPool.QueueUserWorkItem(delegate (object state)

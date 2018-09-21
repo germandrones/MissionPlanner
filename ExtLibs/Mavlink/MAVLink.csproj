@@ -24,11 +24,5 @@
     <PackageReference Include="log4net" Version="2.0.8" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.Web.Extensions">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.Extensions.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 
 </Project>
