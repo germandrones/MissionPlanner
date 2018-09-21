@@ -4301,6 +4301,7 @@ namespace MissionPlanner.GCSViews
         #region ResumeMission - OK
         private void BUT_resumemis_Click(object sender, EventArgs e)
         {
+            if (MainV2.comPort.MAV.cs.mode == "FBWA" || MainV2.comPort.MAV.cs.mode == "Manual") { return; } // do nothing
             if (!MainV2.comPort.BaseStream.IsOpen) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Please Connect first"); return; }
 
             string lastAutoWP = MainV2.comPort.MAV.cs.lastautowp.ToString();
@@ -4440,6 +4441,8 @@ namespace MissionPlanner.GCSViews
 
         private void BUT_setwp_Click(object sender, EventArgs e)
         {
+            if (MainV2.comPort.MAV.cs.mode == "FBWA" || MainV2.comPort.MAV.cs.mode == "Manual") { return; } // do nothing
+
             if (!MainV2.comPort.BaseStream.IsOpen) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Please Connect first"); return; }
 
             string lastAutoWP = MainV2.comPort.MAV.cs.lastautowp.ToString();
