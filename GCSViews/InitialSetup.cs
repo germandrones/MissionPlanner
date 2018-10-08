@@ -7,6 +7,7 @@ using MissionPlanner.GCSViews.ConfigurationView;
 using MissionPlanner.Utilities;
 using System.Resources;
 using GCSViews.ConfigurationView.ConfigGimbalJoystick;
+using GCSViews.ConfigurationView.ConfigurationView;
 
 namespace MissionPlanner.GCSViews
 {
@@ -108,6 +109,8 @@ namespace MissionPlanner.GCSViews
             }
 
             AddBackstageViewPage(typeof(ConfigGimbal), "Gimbal Joystick", true);
+            AddBackstageViewPage(typeof(ConfigSerialGimbalControl), "Gimbal Serial Control", true);
+            
 
             var mand = AddBackstageViewPage(typeof(ConfigMandatory), rm.GetString("backstageViewPagemand.Text"), isConnected);
 

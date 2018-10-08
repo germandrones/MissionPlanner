@@ -225,6 +225,7 @@
     <Compile Include="GCSViews\ConfigurationView\ConfigGimbalJoystick.cs">
       <SubType>Control</SubType>
     </Compile>
+    <Compile Include="GCSViews\ConfigurationView\ConfigSerialGimbalControl.cs" />
     <Compile Include="Log\LogStrings.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -244,6 +245,7 @@
     </Compile>
     <Compile Include="RAW_Sensor.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="ResEdit.cs"> <SubType>Control</SubType> </Compile>
+    <Compile Include="SerialCamJoystick\SerialCamJoystick.cs" />
     <Compile Include="SerialInjectGPS.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="SerialOutputMD.cs"> <SubType>Control</SubType> </Compile>
     <Compile Include="SerialOutputNMEA.cs"> <SubType>Control</SubType> </Compile>

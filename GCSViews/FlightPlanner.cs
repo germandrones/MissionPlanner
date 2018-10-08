@@ -7576,7 +7576,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 return;
             }
 
-            string RadiusIn = "50";
+            string RadiusIn = "100";
             if (DialogResult.Cancel == InputBox.Show("Radius", "Radius", ref RadiusIn))
                 return;
 
@@ -7674,7 +7674,12 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             Radius = (int)(Radius / CurrentState.multiplierdist);
             quickadd = true;
 
-#region right ear of pattern
+            // allow debug messages. TODO: Delete it later!
+            Debug.WriteLine("ptcright: {0} {1}", (plla_right.Lat).ToString("0.000000"), (plla_right.Lng).ToString("0.000000"));
+            Debug.WriteLine("ptcrightRAD: {0} {1}", plla_right_lat_rad.ToString("0.000000"), plla_right_lng_rad.ToString("0.000000"));
+
+
+            #region right ear of pattern
             // Adding the right side of 8 shape
             a = start_angle_right;
             for (; a <= (start_angle_right + 360) && a >= 0; a += circle_step)
@@ -7685,6 +7690,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 
                 float d = Radius;
                 float R = 6371000;
+
                 var lat2 = Math.Asin(
                     Math.Sin(plla_right_lat_rad) * Math.Cos(d / R) +
                     Math.Cos(plla_right_lat_rad) * Math.Sin(d / R) *
@@ -7694,8 +7700,10 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 var lon2 = plla_right_lng_rad +
                     Math.Atan2(Math.Sin(a * MathHelper.deg2rad) * Math.Sin(d / R) * Math.Cos(plla_right_lat_rad),
                     Math.Cos(d / R) - Math.Sin(plla_right_lat_rad) * Math.Sin(lat2));
+
                 PointLatLng pll = new PointLatLng(lat2 * MathHelper.rad2deg, lon2 * MathHelper.rad2deg);
 
+                Debug.WriteLine("pt: {0} {1}", (lat2 * MathHelper.rad2deg).ToString("0.000000"), (lon2 * MathHelper.rad2deg).ToString("0.000000"));
                 setfromMap(pll.Lat, pll.Lng, (int)float.Parse(TXT_DefaultAlt.Text));
             }
 #endregion
