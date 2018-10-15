@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.IO.Ports;
 using System.Linq;
 using System.Management;
 using System.Net;
@@ -32,6 +33,14 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             {
                 BUT_FW_Update.Enabled = false;
             }
+
+            TB_UpdaterManual.Text = @"1. Please make sure Mission Planner is not connected to Autopilot.
+2. Plug USB Cable into Service USB Socket in Songbird.
+3. Click button [Start Bootloader Mode].
+4. Click button [Refresh AP Serial Ports].
+5. Click button [Upload Firmware from File].
+6. Select Firmware archive .zip file.
+7. After Firmware update, please re-plug the battery. ";
         }
 
 
@@ -54,7 +63,7 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                     if (!upload_PX4_Firmware("firmware_temp.px4", PX4_Serial_Port))
                     {
                         add_LogText("Unable to upload PX Firmware.");
-                    }                    
+                    }
                 }
 
                 //upload a GD Firmware
@@ -64,13 +73,13 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                     if (!upload_PGD_Firmware("firmware_temp.hex", GD_Serial_Port))
                     {
                         add_LogText("Unable to upload GD Firmware.");
-                    }                    
+                    }
                 }
-                
             }
             
             RemoveTemporaries();  
             add_LogText("Done!");
+            add_LogText("Please replug battery...");
         }
 
         #region GD Uploader
@@ -92,9 +101,11 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                     if (queryObj["DeviceID"].ToString().Contains("VID_0403")) // GD FTDI Vendor ID
                     {
                         string devCaption = queryObj["Caption"].ToString();
+                        //portsFound.Add(p);
+
                         foreach (string p in ports)
                         {
-                            if (devCaption.Contains(p))
+                            if (devCaption.Contains("(" + p + ")")) // exactly expression
                             {
                                 portsFound.Add(p);
                             }
@@ -196,13 +207,14 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                 fw.Progress += fw_Progress;
 
                 var boardtype = BoardDetect.boards.px4v2;
+
                 try
                 {
                     return fw.UploadFlash(comPort, fileName, boardtype);
                 }
                 catch (MissingFieldException)
                 {
-                    CustomMessageBox.Show("Please update, your install is currupt", Strings.ERROR);
+                    CustomMessageBox.Show("Please update, your install is corrupt", Strings.ERROR);
                     return false;
                 }
             }
@@ -249,7 +261,7 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         #endregion
 
         #region Progress Reporter
-        private void add_LogText(string text)
+        public void add_LogText(string text)
         {
             FW_Uploader_log.AppendText(text + Environment.NewLine);
         }
@@ -273,17 +285,18 @@ namespace MissionPlanner.GCSViews.ConfigurationView
 
         private void BUT_Serial_Refresh_Click(object sender, EventArgs e)
         {
+            // reboot to bootloader
             add_LogText("Trying to find FW Board...");
             PX_port.Items.Clear();
             FindPX4_port();
-            if (PX_port.Items.Count > 0) { PX_port.SelectedIndex = 0; }else add_LogText("FW Board not found!");
+            if (PX_port.Items.Count > 0) { PX_port.SelectedIndex = 0; } else add_LogText("FW Board not found!");
 
             add_LogText("Trying to find GD Board...");
             GD_Port.Items.Clear();
             FindGD_port();
             if (GD_Port.Items.Count > 0) { GD_Port.SelectedIndex = 0; } else add_LogText("GD Board not found!");
 
-            
+
             if (PX_port.Items.Count == 0 || GD_Port.Items.Count == 0)
             {
                 BUT_FW_Update.Enabled = false;
@@ -292,7 +305,29 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             {
                 BUT_FW_Update.Enabled = true;
                 add_LogText("Ready");
+            }            
+        }
+
+        private void myButton1_Click(object sender, EventArgs e)
+        {
+            // reboot px4 in bootloader mode...
+            try
+            {
+                MainV2.comPort.BaseStream.Open();
+                MainV2.comPort.giveComport = true;
+                if (MainV2.comPort.getHeartBeat().Length > 0)
+                {
+                    MainV2.comPort.doReboot(true, false);
+                    MainV2.comPort.Close();
+                    MainV2.comPort.BaseStream.Close();
+                }
+                else
+                {
+                    MainV2.comPort.BaseStream.Close();
+                }
             }
+            catch { }
+            add_LogText("Bootloader Mode is enabled...");
         }
     }
 

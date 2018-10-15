@@ -2134,18 +2134,19 @@ namespace MissionPlanner
 
 
             // Serial Gimbal Controller Init
-            this.serialCamControl = new SerialCamJoystick("COM1", 9600);
-            if(this.serialCamControl.startThread())MainV2.comPort.MAV.cs.messages.Add("Gimbal Controller detected");
-            this.serialCamThread = new Thread(new ThreadStart(this.serialCamThreadRead))
+            if (Settings.useSerialJoystick)
             {
-                IsBackground = true,
-                Priority = ThreadPriority.Normal,
-                Name = "Camera Serial input thread"
-            };
-            this.serialCamThreadRun = true;
-            this.serialCamThread.Start();
-
-
+                this.serialCamControl = new SerialCamJoystick("COM1", 9600);
+                if (this.serialCamControl.startThread()) MainV2.comPort.MAV.cs.messages.Add("Gimbal Controller detected");
+                this.serialCamThread = new Thread(new ThreadStart(this.serialCamThreadRead))
+                {
+                    IsBackground = true,
+                    Priority = ThreadPriority.Normal,
+                    Name = "Camera Serial input thread"
+                };
+                this.serialCamThreadRun = true;
+                this.serialCamThread.Start();
+            }
 
             // Additional Thread to look for the joystick if connected.
             this.CamjoystickDetectThread = new Thread(new ThreadStart(this.CamjoystickDetect))

@@ -118,13 +118,37 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="myButton1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 99</value>
+  </data>
+  <data name="myButton1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>121, 24</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="myButton1.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="myButton1.Text" xml:space="preserve">
+    <value>Start bootloader mode</value>
+  </data>
+  <data name="&gt;&gt;myButton1.Name" xml:space="preserve">
+    <value>myButton1</value>
+  </data>
+  <data name="&gt;&gt;myButton1.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;myButton1.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;myButton1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="progress.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 34</value>
   </data>
   <data name="progress.Size" type="System.Drawing.Size, System.Drawing">
     <value>401, 15</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="progress.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
   </data>
@@ -138,16 +162,13 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;progress.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="lbl_status.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+    <value>1</value>
   </data>
   <data name="lbl_status.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 52</value>
   </data>
   <data name="lbl_status.Size" type="System.Drawing.Size, System.Drawing">
-    <value>37, 13</value>
+    <value>404, 16</value>
   </data>
   <data name="lbl_status.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -165,19 +186,19 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;lbl_status.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="BUT_Serial_Refresh.Location" type="System.Drawing.Point, System.Drawing">
-    <value>90, 71</value>
+    <value>133, 99</value>
   </data>
   <data name="BUT_Serial_Refresh.Size" type="System.Drawing.Size, System.Drawing">
-    <value>110, 23</value>
+    <value>130, 24</value>
   </data>
   <data name="BUT_Serial_Refresh.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
   </data>
   <data name="BUT_Serial_Refresh.Text" xml:space="preserve">
-    <value>Refresh Serial Ports</value>
+    <value>Refresh AP Serial ports</value>
   </data>
   <data name="&gt;&gt;BUT_Serial_Refresh.Name" xml:space="preserve">
     <value>BUT_Serial_Refresh</value>
@@ -189,7 +210,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;BUT_Serial_Refresh.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="PX_port.Location" type="System.Drawing.Point, System.Drawing">
     <value>113, 7</value>
@@ -210,7 +231,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;PX_port.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -241,7 +262,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -271,10 +292,13 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
+  </data>
+  <data name="FW_Uploader_log.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
   </data>
   <data name="FW_Uploader_log.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 110</value>
+    <value>0, 129</value>
   </data>
   <data name="FW_Uploader_log.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -283,7 +307,7 @@
     <value>Vertical</value>
   </data>
   <data name="FW_Uploader_log.Size" type="System.Drawing.Size, System.Drawing">
-    <value>401, 63</value>
+    <value>426, 127</value>
   </data>
   <data name="FW_Uploader_log.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -298,22 +322,22 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;FW_Uploader_log.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="BUT_FW_Update.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="BUT_FW_Update.Location" type="System.Drawing.Point, System.Drawing">
-    <value>206, 71</value>
+    <value>269, 99</value>
   </data>
   <data name="BUT_FW_Update.Size" type="System.Drawing.Size, System.Drawing">
-    <value>110, 23</value>
+    <value>138, 24</value>
   </data>
   <data name="BUT_FW_Update.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
   <data name="BUT_FW_Update.Text" xml:space="preserve">
-    <value>Upload a Firmware</value>
+    <value>Upload Firmware from File</value>
   </data>
   <data name="&gt;&gt;BUT_FW_Update.Name" xml:space="preserve">
     <value>BUT_FW_Update</value>
@@ -325,7 +349,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;BUT_FW_Update.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="GD_Port.Location" type="System.Drawing.Point, System.Drawing">
     <value>333, 7</value>
@@ -346,13 +370,13 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;GD_Port.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 13</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>417, 186</value>
+    <value>428, 258</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -367,13 +391,64 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="TB_UpdaterManual.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="TB_UpdaterManual.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 16</value>
+  </data>
+  <data name="TB_UpdaterManual.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="TB_UpdaterManual.Size" type="System.Drawing.Size, System.Drawing">
+    <value>393, 239</value>
+  </data>
+  <data name="TB_UpdaterManual.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;TB_UpdaterManual.Name" xml:space="preserve">
+    <value>TB_UpdaterManual</value>
+  </data>
+  <data name="&gt;&gt;TB_UpdaterManual.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TB_UpdaterManual.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;TB_UpdaterManual.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>448, 13</value>
+  </data>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>399, 258</value>
+  </data>
+  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Firmware Updater How-To</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>443, 213</value>
+    <value>850, 279</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ConfigFirmware</value>

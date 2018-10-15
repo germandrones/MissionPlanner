@@ -103,11 +103,12 @@ namespace MissionPlanner.GCSViews
             {
                 if (!Program.WindowsStoreApp)
                 {
-                    AddBackstageViewPage(typeof(ConfigFirmwareDisabled), "Firmware Update", isConnected);
-                    AddBackstageViewPage(typeof(ConfigFirmware), "Firmware Update", isDisConnected);
+                    //AddBackstageViewPage(typeof(ConfigFirmwareDisabled), "Firmware Update", isConnected);
+                    //AddBackstageViewPage(typeof(ConfigFirmware), "Firmware Update", isDisConnected);
+                    //AddBackstageViewPage(typeof(ConfigFirmware), "Firmware Update", true);
                 }
             }
-
+            AddBackstageViewPage(typeof(ConfigFirmware), "Firmware Update", true);
             AddBackstageViewPage(typeof(ConfigGimbal), "Gimbal Joystick", true);
             AddBackstageViewPage(typeof(ConfigSerialGimbalControl), "Gimbal Serial Control", true);
             

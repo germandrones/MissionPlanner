@@ -16,6 +16,7 @@ namespace MissionPlanner.Utilities
         static Settings _instance;
 
         public static bool isDevMode = false;
+        public static bool useSerialJoystick = false;
 
         public static Settings Instance
         {

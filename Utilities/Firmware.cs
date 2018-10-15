@@ -572,6 +572,8 @@ namespace MissionPlanner.Utilities
             return ans;
         }
 
+        
+
 
         public bool UploadPX4(string comPort, string filename, BoardDetect.boards board)
         {
@@ -591,7 +593,6 @@ namespace MissionPlanner.Utilities
             AttemptRebootToBootloader();
 
             DateTime DEADLINE = DateTime.Now.AddSeconds(30);
-
             updateProgress(-1, "Trying to upload Firmware on: " + comPort);
 
             while (DateTime.Now < DEADLINE)
@@ -626,7 +627,7 @@ namespace MissionPlanner.Utilities
                 // test if pausing here stops - System.TimeoutException: The write timed out.
                 System.Threading.Thread.Sleep(500);
 
-                try
+                /*try
                 {
                     up.currentChecksum(fw);
                 }
@@ -642,7 +643,7 @@ namespace MissionPlanner.Utilities
                     up.close();
                     CustomMessageBox.Show(Strings.NoNeedToUpload);
                     return true;
-                }
+                }*/
 
                 try
                 {
@@ -662,7 +663,7 @@ namespace MissionPlanner.Utilities
                 }
 
                 // wait for IO firmware upgrade and boot to a mavlink state
-                CustomMessageBox.Show(Strings.PleaseWaitForTheMusicalTones);
+                //CustomMessageBox.Show(Strings.PleaseWaitForTheMusicalTones);
 
                 return true;
             }
@@ -781,24 +782,24 @@ namespace MissionPlanner.Utilities
             return false;
         }
 
-        private void AttemptRebootToBootloader()
-        {
+        public void AttemptRebootToBootloader()
+        {            
             string[] allports = SerialPort.GetPortNames();
 
-            foreach (string port in allports)
-            {
-                try
+                foreach (string port in allports)
                 {
-                    using (var up = new Uploader(port, 115200))
+                    try
                     {
-                        up.identify();
-                        return;
+                        using (var up = new Uploader(port, 115200))
+                        {
+                            up.identify();
+                            return;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
                     }
                 }
-                catch (Exception ex)
-                {
-                }
-            }
 
             if (MainV2.comPort.BaseStream is SerialPort)
             {
@@ -812,8 +813,10 @@ namespace MissionPlanner.Utilities
                     if (MainV2.comPort.getHeartBeat().Length > 0)
                     {
                         updateProgress(-1, "Reboot to Bootloader");
+                        
                         MainV2.comPort.doReboot(true, false);
                         MainV2.comPort.Close();
+                        MainV2.comPort.BaseStream.Close();
                     }
                     else
                     {
@@ -1004,7 +1007,7 @@ namespace MissionPlanner.Utilities
                 }
                 catch (MissingFieldException)
                 {
-                    CustomMessageBox.Show("Please update, your install is currupt", Strings.ERROR);
+                    CustomMessageBox.Show("Please update, your install is corrupt", Strings.ERROR);
                     return false;
                 }
             }

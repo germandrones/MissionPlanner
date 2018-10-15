@@ -65,6 +65,7 @@ namespace MissionPlanner
             Console.WriteLine("Debug under mono    MONO_LOG_LEVEL=debug mono MissionPlanner.exe");
 
             if (Program.args.Contains("-dev")) Settings.isDevMode = true;
+            if (Program.args.Contains("-serial_joystick")) Settings.useSerialJoystick = true;
 
             var t = Type.GetType("Mono.Runtime");
             MONO = (t != null);
