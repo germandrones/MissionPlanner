@@ -125,43 +125,49 @@
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="autoHideToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 22</value>
+    <value>183, 22</value>
   </data>
   <data name="autoHideToolStripMenuItem.Text" xml:space="preserve">
     <value>AutoHide</value>
   </data>
   <data name="fullScreenToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 22</value>
+    <value>183, 22</value>
   </data>
   <data name="fullScreenToolStripMenuItem.Text" xml:space="preserve">
     <value>Full Screen</value>
   </data>
   <data name="readonlyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 22</value>
+    <value>183, 22</value>
   </data>
   <data name="readonlyToolStripMenuItem.Text" xml:space="preserve">
     <value>Readonly</value>
   </data>
   <data name="connectionOptionsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 22</value>
+    <value>183, 22</value>
   </data>
   <data name="connectionOptionsToolStripMenuItem.Text" xml:space="preserve">
     <value>Connection Options</value>
   </data>
   <data name="connectionListToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 22</value>
+    <value>183, 22</value>
   </data>
   <data name="connectionListToolStripMenuItem.Text" xml:space="preserve">
     <value>Connection List</value>
   </data>
   <data name="geotaggingToolToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 22</value>
+    <value>183, 22</value>
   </data>
   <data name="geotaggingToolToolStripMenuItem.Text" xml:space="preserve">
     <value>Geotagging Tool</value>
   </data>
+  <data name="mavlinkUDPOutputToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>183, 22</value>
+  </data>
+  <data name="mavlinkUDPOutputToolStripMenuItem.Text" xml:space="preserve">
+    <value>Mavlink UDP Output</value>
+  </data>
   <data name="CTX_mainmenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>182, 158</value>
+    <value>184, 180</value>
   </data>
   <data name="&gt;&gt;CTX_mainmenu.Name" xml:space="preserve">
     <value>CTX_mainmenu</value>
@@ -1025,6 +1031,12 @@
   <data name="&gt;&gt;connectionListToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;geotaggingToolToolStripMenuItem.Name" xml:space="preserve">
+    <value>geotaggingToolToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;geotaggingToolToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;MenuFlightData.Name" xml:space="preserve">
     <value>MenuFlightData</value>
   </data>
@@ -1085,10 +1097,10 @@
   <data name="&gt;&gt;MenuArduPilot.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;geotaggingToolToolStripMenuItem.Name" xml:space="preserve">
-    <value>geotaggingToolToolStripMenuItem</value>
+  <data name="&gt;&gt;mavlinkUDPOutputToolStripMenuItem.Name" xml:space="preserve">
+    <value>mavlinkUDPOutputToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;geotaggingToolToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;mavlinkUDPOutputToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

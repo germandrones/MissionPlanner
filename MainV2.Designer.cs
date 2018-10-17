@@ -40,6 +40,7 @@ namespace MissionPlanner
             this.readonlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectionOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectionListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.geotaggingToolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuFlightData = new System.Windows.Forms.ToolStripButton();
             this.MenuFlightPlanner = new System.Windows.Forms.ToolStripButton();
             this.MenuInitConfig = new System.Windows.Forms.ToolStripButton();
@@ -52,7 +53,7 @@ namespace MissionPlanner
             this.MenuArduPilot = new System.Windows.Forms.ToolStripButton();
             this.menu = new MissionPlanner.Controls.MyButton();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.geotaggingToolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mavlinkUDPOutputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.CTX_mainmenu.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -90,7 +91,8 @@ namespace MissionPlanner
             this.readonlyToolStripMenuItem,
             this.connectionOptionsToolStripMenuItem,
             this.connectionListToolStripMenuItem,
-            this.geotaggingToolToolStripMenuItem});
+            this.geotaggingToolToolStripMenuItem,
+            this.mavlinkUDPOutputToolStripMenuItem});
             this.CTX_mainmenu.Name = "CTX_mainmenu";
             resources.ApplyResources(this.CTX_mainmenu, "CTX_mainmenu");
             // 
@@ -126,6 +128,12 @@ namespace MissionPlanner
             this.connectionListToolStripMenuItem.Name = "connectionListToolStripMenuItem";
             resources.ApplyResources(this.connectionListToolStripMenuItem, "connectionListToolStripMenuItem");
             this.connectionListToolStripMenuItem.Click += new System.EventHandler(this.connectionListToolStripMenuItem_Click);
+            // 
+            // geotaggingToolToolStripMenuItem
+            // 
+            this.geotaggingToolToolStripMenuItem.Name = "geotaggingToolToolStripMenuItem";
+            resources.ApplyResources(this.geotaggingToolToolStripMenuItem, "geotaggingToolToolStripMenuItem");
+            this.geotaggingToolToolStripMenuItem.Click += new System.EventHandler(this.geotaggingToolToolStripMenuItem_Click);
             // 
             // MenuFlightData
             // 
@@ -245,11 +253,11 @@ namespace MissionPlanner
             this.panel1.Name = "panel1";
             this.panel1.MouseLeave += new System.EventHandler(this.MainMenu_MouseLeave);
             // 
-            // geotaggingToolToolStripMenuItem
+            // mavlinkUDPOutputToolStripMenuItem
             // 
-            this.geotaggingToolToolStripMenuItem.Name = "geotaggingToolToolStripMenuItem";
-            resources.ApplyResources(this.geotaggingToolToolStripMenuItem, "geotaggingToolToolStripMenuItem");
-            this.geotaggingToolToolStripMenuItem.Click += new System.EventHandler(this.geotaggingToolToolStripMenuItem_Click);
+            this.mavlinkUDPOutputToolStripMenuItem.Name = "mavlinkUDPOutputToolStripMenuItem";
+            resources.ApplyResources(this.mavlinkUDPOutputToolStripMenuItem, "mavlinkUDPOutputToolStripMenuItem");
+            this.mavlinkUDPOutputToolStripMenuItem.Click += new System.EventHandler(this.mavlinkUDPOutputToolStripMenuItem_Click);
             // 
             // MainV2
             // 
@@ -294,5 +302,6 @@ namespace MissionPlanner
         private System.Windows.Forms.ToolStripButton MenuArduPilot;
         private System.Windows.Forms.ToolStripMenuItem connectionListToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem geotaggingToolToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mavlinkUDPOutputToolStripMenuItem;
     }
 }

@@ -3033,5 +3033,10 @@ namespace MissionPlanner
         {
             new Georefimage().Show();
         }
+
+        private void mavlinkUDPOutputToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new SerialOutputPass().Show();
+        }
     }
 }
