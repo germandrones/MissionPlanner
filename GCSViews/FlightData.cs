@@ -870,7 +870,6 @@ namespace MissionPlanner.GCSViews
                         MainV2.comPort.logplaybackfile = null;
                     }
 
-
                     //Console.WriteLine(DateTime.Now.Millisecond);
 
                     if (updatescreen.AddMilliseconds(300) < DateTime.Now)
@@ -1178,8 +1177,10 @@ namespace MissionPlanner.GCSViews
                                         GMapPolygon gmapPolygon1 = new GMapPolygon(MainV2.comPort.MAV.cs.gimbal_los_points, "Los");
                                         gmapPolygon1.Fill = new SolidBrush(Color.FromArgb(byte.MaxValue, Color.GreenYellow));
                                         gmapPolygon1.Stroke = new Pen(Color.GreenYellow, 5f);
+
                                         losoverlay.Polygons.Clear();
-                                        losoverlay.Polygons.Add(gmapPolygon1);
+                                        losoverlay.Polygons.Add(gmapPolygon1);                                       
+                                        
                                         break;
                                     }
                                 case 2:
@@ -1255,6 +1256,14 @@ namespace MissionPlanner.GCSViews
                                         gmapPolygon5.Stroke = new Pen(Color.GreenYellow, 1f);
                                         FlightData.losoverlay.Polygons.Clear();
                                         FlightData.losoverlay.Polygons.Add(gmapPolygon5);
+                                        
+                                        /*losoverlay.Markers.Clear();
+                                        foreach (PointLatLng los in MainV2.comPort.MAV.cs.gimbal_los_points)
+                                        {
+                                            GMarkerGoogle m = new GMarkerGoogle(los, GMarkerGoogleType.lightblue_dot);
+                                            losoverlay.Markers.Add(m);
+                                        }*/
+
                                         break;
                                     }
                             }
@@ -4375,7 +4384,7 @@ namespace MissionPlanner.GCSViews
         private void modifyandSetSpeed_Click(object sender, EventArgs e)
         {
             if (!MainV2.comPort.BaseStream.IsOpen) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Please Connect first"); return; }
-            string inputValue = "";
+            string inputValue = "15";
 
             if (DialogResult.Cancel == InputBox.Show("Change Airspeed", "Enter new Airspeed(meter/s):", ref inputValue, false)) return;
             if (!float.TryParse(inputValue, out float _newAirspeed)) { MainV2.comPort.MAV.cs.messages.Add(DateTime.Now.ToLongTimeString() + "    " + "Bad Airspeed"); return; }

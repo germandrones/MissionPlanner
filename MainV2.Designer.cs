@@ -41,6 +41,7 @@ namespace MissionPlanner
             this.connectionOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectionListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.geotaggingToolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mavlinkUDPOutputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuFlightData = new System.Windows.Forms.ToolStripButton();
             this.MenuFlightPlanner = new System.Windows.Forms.ToolStripButton();
             this.MenuInitConfig = new System.Windows.Forms.ToolStripButton();
@@ -53,7 +54,6 @@ namespace MissionPlanner
             this.MenuArduPilot = new System.Windows.Forms.ToolStripButton();
             this.menu = new MissionPlanner.Controls.MyButton();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.mavlinkUDPOutputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.CTX_mainmenu.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -134,6 +134,12 @@ namespace MissionPlanner
             this.geotaggingToolToolStripMenuItem.Name = "geotaggingToolToolStripMenuItem";
             resources.ApplyResources(this.geotaggingToolToolStripMenuItem, "geotaggingToolToolStripMenuItem");
             this.geotaggingToolToolStripMenuItem.Click += new System.EventHandler(this.geotaggingToolToolStripMenuItem_Click);
+            // 
+            // mavlinkUDPOutputToolStripMenuItem
+            // 
+            this.mavlinkUDPOutputToolStripMenuItem.Name = "mavlinkUDPOutputToolStripMenuItem";
+            resources.ApplyResources(this.mavlinkUDPOutputToolStripMenuItem, "mavlinkUDPOutputToolStripMenuItem");
+            this.mavlinkUDPOutputToolStripMenuItem.Click += new System.EventHandler(this.mavlinkUDPOutputToolStripMenuItem_Click);
             // 
             // MenuFlightData
             // 
@@ -252,12 +258,6 @@ namespace MissionPlanner
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             this.panel1.MouseLeave += new System.EventHandler(this.MainMenu_MouseLeave);
-            // 
-            // mavlinkUDPOutputToolStripMenuItem
-            // 
-            this.mavlinkUDPOutputToolStripMenuItem.Name = "mavlinkUDPOutputToolStripMenuItem";
-            resources.ApplyResources(this.mavlinkUDPOutputToolStripMenuItem, "mavlinkUDPOutputToolStripMenuItem");
-            this.mavlinkUDPOutputToolStripMenuItem.Click += new System.EventHandler(this.mavlinkUDPOutputToolStripMenuItem_Click);
             // 
             // MainV2
             // 

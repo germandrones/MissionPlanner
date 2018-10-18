@@ -1564,7 +1564,10 @@ Please check the following
                         continue;
                     }
                     giveComport = false;
-                    throw new TimeoutException("Timeout on read - GetParam");
+
+                    CustomMessageBox.Show("Timeout on read parameters.");                    
+                    return -1;                   
+                    //throw new TimeoutException("Timeout on read - GetParam");
                 }
 
                 buffer = readPacket();

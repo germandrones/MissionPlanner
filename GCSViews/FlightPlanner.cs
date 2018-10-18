@@ -2179,7 +2179,6 @@ namespace MissionPlanner.GCSViews
         public void BUT_write_Click(object sender, EventArgs e)
         {
             
-            GCSViews.FlightData.isMapDirty = true;
 
 #region Common Checks on upload
             // Prevent upload mission if UAV is armed!
@@ -2339,6 +2338,18 @@ namespace MissionPlanner.GCSViews
             MainMap.Focus();
             FlightData.HWP_updated = false;
             MainV2.missionUploading = false;
+            GCSViews.FlightData.isMapDirty = true;
+
+            // reset hwps
+            MainV2.comPort.MAV.cs.hwp1_lat = 0;
+            MainV2.comPort.MAV.cs.hwp1_lng = 0;
+            MainV2.comPort.MAV.cs.hwp2_lat = 0;
+            MainV2.comPort.MAV.cs.hwp2_lng = 0;
+            MainV2.comPort.MAV.cs.hwp3_lat = 0;
+            MainV2.comPort.MAV.cs.hwp3_lng = 0;
+            MainV2.comPort.MAV.cs.hwp4_lat = 0;
+            MainV2.comPort.MAV.cs.hwp4_lng = 0;
+            MainV2.comPort.MAV.cs.gotHWP = false;
         }
 
 
@@ -2377,7 +2388,7 @@ namespace MissionPlanner.GCSViews
             }
         }
 
-        List<Locationwp> GetCommandList()
+        public List<Locationwp> GetCommandList()
         {
             List<Locationwp> commands = new List<Locationwp>();            
 
