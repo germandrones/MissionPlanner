@@ -224,7 +224,7 @@ namespace MissionPlanner.Utilities
                 displayServoTab = false,
                 displayScriptsTab = false,
                 displayTelemetryTab = true,
-                displayDataflashTab = false,
+                displayDataflashTab = true,
                 displayMessagesTab = false,
 
                 //flight plan

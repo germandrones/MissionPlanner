@@ -1709,7 +1709,7 @@ namespace MissionPlanner
                             if ((uint)MainV2.Camjoystick.getJoystickAxis(15) > 0U) MainV2.Colibri.EditingControlRetracting = MainV2.comPort.MAV.cs.colibri_ch15 > (ushort)1300 ? (byte)1 : (byte)0;
                             if ((uint)MainV2.Camjoystick.getJoystickAxis(16) > 0U) MainV2.Colibri.EditingControlFollowTarget = MainV2.comPort.MAV.cs.colibri_ch16 > (ushort)1300 ? (byte)1 : (byte)0;
 
-                            /*if ((uint)MainV2.Camjoystick.getJoystickAxis(17) > 0U)
+                            if ((uint)MainV2.Camjoystick.getJoystickAxis(17) > 0U)
                             {
                                 // mode changed by joystick action
                                 MainV2.Colibri.EditingSwitchMode = MainV2.comPort.MAV.cs.colibri_ch17 > (ushort)1300 ? (byte)1 : (byte)0;
@@ -1723,7 +1723,7 @@ namespace MissionPlanner
                                     //this.FlightData.RadioBtnObs.Checked = true;
                                     this.FlightData.ColibriCamMode = (byte)6;
                                 }
-                            }*/
+                            }
 
                             // if mode switch joystick button is pressed...
                             if ((uint)MainV2.Camjoystick.getJoystickAxis(1) > 0U)

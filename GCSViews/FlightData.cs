@@ -1257,12 +1257,12 @@ namespace MissionPlanner.GCSViews
                                         FlightData.losoverlay.Polygons.Clear();
                                         FlightData.losoverlay.Polygons.Add(gmapPolygon5);
                                         
-                                        /*losoverlay.Markers.Clear();
+                                        losoverlay.Markers.Clear();
                                         foreach (PointLatLng los in MainV2.comPort.MAV.cs.gimbal_los_points)
                                         {
                                             GMarkerGoogle m = new GMarkerGoogle(los, GMarkerGoogleType.lightblue_dot);
                                             losoverlay.Markers.Add(m);
-                                        }*/
+                                        }
 
                                         break;
                                     }

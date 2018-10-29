@@ -1873,13 +1873,11 @@ namespace MissionPlanner.GeoRef
                                                 Path.GetExtension(Filename);
 
                         // Just in case
-                        if (File.Exists(outputfilename))
-                            File.Delete(outputfilename);
+                        if (File.Exists(outputfilename)) File.Delete(outputfilename);
 
                         ImageCodecInfo ici = GetImageCodec("image/jpeg");
                         EncoderParameters eps = new EncoderParameters(1);
                         eps.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 100L);
-
                         Pic.Save(outputfilename);
                     }
                 }

@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using MissionPlanner.Comms;
 using System.Net.Sockets;
 using System.Threading;
+using System.Net;
 
 namespace MissionPlanner
 {
@@ -22,6 +23,22 @@ namespace MissionPlanner
         {
             InitializeComponent();
 
+            CMB_baudrate.SelectedIndex = 6; // default 57600
+
+            // Detect my local ip address automatically
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    myLocalIP.Text = ip.ToString();
+                }
+            }
+
+            if(myLocalIP.Text.Contains("127.0.0.1")){
+                MessageBox.Show("No network adapters with an IPv4 address in the system!");
+            }
+            
             chk_write.Checked = MainV2.comPort.MirrorStreamWrite;
 
             CMB_serialport.Items.AddRange(SerialPort.GetPortNames());
@@ -36,6 +53,43 @@ namespace MissionPlanner
             }
 
             MissionPlanner.Utilities.Tracking.AddPage(this.GetType().ToString(), this.Text);
+        }
+
+        private void BTN_StartServer_Click(object sender, EventArgs e)
+        {
+            // check if tcp connection is open
+            if (MainV2.comPort.MirrorStream != null && MainV2.comPort.MirrorStream.IsOpen || listener != null)
+            {
+                MainV2.comPort.MirrorStream.Close();
+                BTN_StartServer.Text = "Start Server";                
+            }
+            else
+            {
+                try
+                {
+                    MainV2.comPort.MirrorStream = new TcpSerial();
+                    int port = 14550;
+                    Int32.TryParse(myLocalPort.Text, out port);
+
+                    listener = new TcpListener(System.Net.IPAddress.Any, port);
+                    listener.Start(0);
+                    listener.BeginAcceptTcpClient(new AsyncCallback(DoAcceptTcpClientCallback), listener);
+                    BTN_StartServer.Text = "Stop Server";
+                }
+                catch {
+                    CustomMessageBox.Show("Can't open TCP Listener");
+                }
+
+                try
+                {
+                    MainV2.comPort.MirrorStream.BaudRate = int.Parse(CMB_baudrate.Text);
+                }
+                catch
+                {
+                    CustomMessageBox.Show(Strings.InvalidBaudRate);
+                    return;
+                }
+            }
         }
 
         private void BUT_connect_Click(object sender, EventArgs e)

@@ -33,6 +33,12 @@
             this.BUT_connect = new MissionPlanner.Controls.MyButton();
             this.CMB_baudrate = new System.Windows.Forms.ComboBox();
             this.chk_write = new System.Windows.Forms.CheckBox();
+            this.myLabel1 = new MissionPlanner.Controls.MyLabel();
+            this.myLocalIP = new System.Windows.Forms.TextBox();
+            this.myLocalPort = new System.Windows.Forms.TextBox();
+            this.myLabel2 = new MissionPlanner.Controls.MyLabel();
+            this.BTN_StartServer = new MissionPlanner.Controls.MyButton();
+            this.myLabel3 = new MissionPlanner.Controls.MyLabel();
             this.SuspendLayout();
             // 
             // CMB_serialport
@@ -72,10 +78,51 @@
             this.chk_write.UseVisualStyleBackColor = true;
             this.chk_write.CheckedChanged += new System.EventHandler(this.chk_write_CheckedChanged);
             // 
+            // myLabel1
+            // 
+            resources.ApplyResources(this.myLabel1, "myLabel1");
+            this.myLabel1.Name = "myLabel1";
+            this.myLabel1.resize = false;
+            // 
+            // myLocalIP
+            // 
+            resources.ApplyResources(this.myLocalIP, "myLocalIP");
+            this.myLocalIP.Name = "myLocalIP";
+            // 
+            // myLocalPort
+            // 
+            resources.ApplyResources(this.myLocalPort, "myLocalPort");
+            this.myLocalPort.Name = "myLocalPort";
+            // 
+            // myLabel2
+            // 
+            resources.ApplyResources(this.myLabel2, "myLabel2");
+            this.myLabel2.Name = "myLabel2";
+            this.myLabel2.resize = false;
+            // 
+            // BTN_StartServer
+            // 
+            resources.ApplyResources(this.BTN_StartServer, "BTN_StartServer");
+            this.BTN_StartServer.Name = "BTN_StartServer";
+            this.BTN_StartServer.UseVisualStyleBackColor = true;
+            this.BTN_StartServer.Click += new System.EventHandler(this.BTN_StartServer_Click);
+            // 
+            // myLabel3
+            // 
+            resources.ApplyResources(this.myLabel3, "myLabel3");
+            this.myLabel3.Name = "myLabel3";
+            this.myLabel3.resize = false;
+            // 
             // SerialOutputPass
             // 
-            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            resources.ApplyResources(this, "$this");
+            this.Controls.Add(this.myLabel3);
+            this.Controls.Add(this.BTN_StartServer);
+            this.Controls.Add(this.myLabel2);
+            this.Controls.Add(this.myLocalPort);
+            this.Controls.Add(this.myLocalIP);
+            this.Controls.Add(this.myLabel1);
             this.Controls.Add(this.chk_write);
             this.Controls.Add(this.CMB_baudrate);
             this.Controls.Add(this.BUT_connect);
@@ -92,5 +139,11 @@
         private Controls.MyButton BUT_connect;
         private System.Windows.Forms.ComboBox CMB_baudrate;
         private System.Windows.Forms.CheckBox chk_write;
+        private Controls.MyLabel myLabel1;
+        private System.Windows.Forms.TextBox myLocalIP;
+        private System.Windows.Forms.TextBox myLocalPort;
+        private Controls.MyLabel myLabel2;
+        private Controls.MyButton BTN_StartServer;
+        private Controls.MyLabel myLabel3;
     }
 }

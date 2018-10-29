@@ -1116,103 +1116,116 @@ Please check the following
         void FrmProgressNecessaryParams(object sender, ProgressWorkerEventArgs e, object passdata = null)
         {
             // Stream Rates
-            if (frmProgressReporter != null) this.frmProgressReporter.UpdateProgressAndStatus(50, "Getting Stream Rates");
-            MainV2.comPort.GetParam("SR1_EXT_STAT");
-            MainV2.comPort.GetParam("SR1_EXTRA1");
-            MainV2.comPort.GetParam("SR1_EXTRA2");
-            MainV2.comPort.GetParam("SR1_EXTRA3");
-            MainV2.comPort.GetParam("SR1_PARAMS");
-            MainV2.comPort.GetParam("SR1_POSITION");
-            MainV2.comPort.GetParam("SR1_RAW_CTRL");
-            MainV2.comPort.GetParam("SR1_RAW_SENS");
-            MainV2.comPort.GetParam("SR1_RC_CHAN");
+            try
+            {
+                if (frmProgressReporter != null) this.frmProgressReporter.UpdateProgressAndStatus(50, "Getting Stream Rates");
+                MainV2.comPort.GetParam("SR1_EXT_STAT");
+                MainV2.comPort.GetParam("SR1_EXTRA1");
+                MainV2.comPort.GetParam("SR1_EXTRA2");
+                MainV2.comPort.GetParam("SR1_EXTRA3");
+                MainV2.comPort.GetParam("SR1_PARAMS");
+                MainV2.comPort.GetParam("SR1_POSITION");
+                MainV2.comPort.GetParam("SR1_RAW_CTRL");
+                MainV2.comPort.GetParam("SR1_RAW_SENS");
+                MainV2.comPort.GetParam("SR1_RC_CHAN");
+            }
+            catch { }
 
-            if (frmProgressReporter != null) this.frmProgressReporter.UpdateProgressAndStatus(75, "Getting Common Settings");
-            MainV2.comPort.GetParam("WP_LOITER_RAD");
-            MainV2.comPort.GetParam("WP_RADIUS");
-            MainV2.comPort.GetParam("TRIM_ARSPD_CM");
+
+            try
+            {
+                if (frmProgressReporter != null) this.frmProgressReporter.UpdateProgressAndStatus(75, "Getting Common Settings");
+                MainV2.comPort.GetParam("WP_LOITER_RAD");
+                MainV2.comPort.GetParam("WP_RADIUS");
+                MainV2.comPort.GetParam("TRIM_ARSPD_CM");
+            }
+            catch { }
 
 
             if (Settings.isDevMode) // load mag params only in dev mode
             {
-                // For magnetometer neede params download also
-                if (frmProgressReporter != null) this.frmProgressReporter.UpdateProgressAndStatus(90, "Getting Compas Settings");
-                MainV2.comPort.GetParam("MAG_ENABLE");
-                MainV2.comPort.GetParam("COMPASS_LEARN");
+                // For magnetometer needed params download also
+                try
+                {
+                    if (frmProgressReporter != null) this.frmProgressReporter.UpdateProgressAndStatus(90, "Getting Compass Settings");
+                    MainV2.comPort.GetParam("MAG_ENABLE");
+                    MainV2.comPort.GetParam("COMPASS_LEARN");
 
-                MainV2.comPort.GetParam("COMPASS_AUTODEC");
-                MainV2.comPort.GetParam("COMPASS_CAL_FIT");
-                MainV2.comPort.GetParam("COMPASS_DEC");
-                MainV2.comPort.GetParam("COMPASS_DEV_ID");
-                MainV2.comPort.GetParam("COMPASS_DEV_ID2");
-                MainV2.comPort.GetParam("COMPASS_DEV_ID3");
+                    MainV2.comPort.GetParam("COMPASS_AUTODEC");
+                    MainV2.comPort.GetParam("COMPASS_CAL_FIT");
+                    MainV2.comPort.GetParam("COMPASS_DEC");
+                    MainV2.comPort.GetParam("COMPASS_DEV_ID");
+                    MainV2.comPort.GetParam("COMPASS_DEV_ID2");
+                    MainV2.comPort.GetParam("COMPASS_DEV_ID3");
 
-                MainV2.comPort.GetParam("COMPASS_DIA_X");
-                MainV2.comPort.GetParam("COMPASS_DIA_Y");
-                MainV2.comPort.GetParam("COMPASS_DIA_Z");
+                    MainV2.comPort.GetParam("COMPASS_DIA_X");
+                    MainV2.comPort.GetParam("COMPASS_DIA_Y");
+                    MainV2.comPort.GetParam("COMPASS_DIA_Z");
 
-                MainV2.comPort.GetParam("COMPASS_DIA2_X");
-                MainV2.comPort.GetParam("COMPASS_DIA2_Y");
-                MainV2.comPort.GetParam("COMPASS_DIA2_Z");
+                    MainV2.comPort.GetParam("COMPASS_DIA2_X");
+                    MainV2.comPort.GetParam("COMPASS_DIA2_Y");
+                    MainV2.comPort.GetParam("COMPASS_DIA2_Z");
 
-                MainV2.comPort.GetParam("COMPASS_DIA3_X");
-                MainV2.comPort.GetParam("COMPASS_DIA3_Y");
-                MainV2.comPort.GetParam("COMPASS_DIA3_Z");
+                    MainV2.comPort.GetParam("COMPASS_DIA3_X");
+                    MainV2.comPort.GetParam("COMPASS_DIA3_Y");
+                    MainV2.comPort.GetParam("COMPASS_DIA3_Z");
 
-                MainV2.comPort.GetParam("COMPASS_EXTERN2");
-                MainV2.comPort.GetParam("COMPASS_EXTERN3");
-                MainV2.comPort.GetParam("COMPASS_EXTERNAL");
+                    MainV2.comPort.GetParam("COMPASS_EXTERN2");
+                    MainV2.comPort.GetParam("COMPASS_EXTERN3");
+                    MainV2.comPort.GetParam("COMPASS_EXTERNAL");
 
-                MainV2.comPort.GetParam("COMPASS_MOT_X");
-                MainV2.comPort.GetParam("COMPASS_MOT_Y");
-                MainV2.comPort.GetParam("COMPASS_MOT_Z");
+                    MainV2.comPort.GetParam("COMPASS_MOT_X");
+                    MainV2.comPort.GetParam("COMPASS_MOT_Y");
+                    MainV2.comPort.GetParam("COMPASS_MOT_Z");
 
-                MainV2.comPort.GetParam("COMPASS_MOT2_X");
-                MainV2.comPort.GetParam("COMPASS_MOT2_Y");
-                MainV2.comPort.GetParam("COMPASS_MOT2_Z");
+                    MainV2.comPort.GetParam("COMPASS_MOT2_X");
+                    MainV2.comPort.GetParam("COMPASS_MOT2_Y");
+                    MainV2.comPort.GetParam("COMPASS_MOT2_Z");
 
-                MainV2.comPort.GetParam("COMPASS_MOT3_X");
-                MainV2.comPort.GetParam("COMPASS_MOT3_Y");
-                MainV2.comPort.GetParam("COMPASS_MOT3_Z");
+                    MainV2.comPort.GetParam("COMPASS_MOT3_X");
+                    MainV2.comPort.GetParam("COMPASS_MOT3_Y");
+                    MainV2.comPort.GetParam("COMPASS_MOT3_Z");
 
-                MainV2.comPort.GetParam("COMPASS_MOTCT");
+                    MainV2.comPort.GetParam("COMPASS_MOTCT");
 
-                MainV2.comPort.GetParam("COMPASS_ODI_X");
-                MainV2.comPort.GetParam("COMPASS_ODI_Y");
-                MainV2.comPort.GetParam("COMPASS_ODI_Z");
+                    MainV2.comPort.GetParam("COMPASS_ODI_X");
+                    MainV2.comPort.GetParam("COMPASS_ODI_Y");
+                    MainV2.comPort.GetParam("COMPASS_ODI_Z");
 
-                MainV2.comPort.GetParam("COMPASS_ODI2_X");
-                MainV2.comPort.GetParam("COMPASS_ODI2_Y");
-                MainV2.comPort.GetParam("COMPASS_ODI2_Z");
+                    MainV2.comPort.GetParam("COMPASS_ODI2_X");
+                    MainV2.comPort.GetParam("COMPASS_ODI2_Y");
+                    MainV2.comPort.GetParam("COMPASS_ODI2_Z");
 
-                MainV2.comPort.GetParam("COMPASS_ODI3_X");
-                MainV2.comPort.GetParam("COMPASS_ODI3_Y");
-                MainV2.comPort.GetParam("COMPASS_ODI3_Z");
+                    MainV2.comPort.GetParam("COMPASS_ODI3_X");
+                    MainV2.comPort.GetParam("COMPASS_ODI3_Y");
+                    MainV2.comPort.GetParam("COMPASS_ODI3_Z");
 
-                MainV2.comPort.GetParam("COMPASS_OFFS_MAX");
+                    MainV2.comPort.GetParam("COMPASS_OFFS_MAX");
 
-                MainV2.comPort.GetParam("COMPASS_OFS_X");
-                MainV2.comPort.GetParam("COMPASS_OFS_Y");
-                MainV2.comPort.GetParam("COMPASS_OFS_Z");
+                    MainV2.comPort.GetParam("COMPASS_OFS_X");
+                    MainV2.comPort.GetParam("COMPASS_OFS_Y");
+                    MainV2.comPort.GetParam("COMPASS_OFS_Z");
 
-                MainV2.comPort.GetParam("COMPASS_OFS2_X");
-                MainV2.comPort.GetParam("COMPASS_OFS2_Y");
-                MainV2.comPort.GetParam("COMPASS_OFS2_Z");
+                    MainV2.comPort.GetParam("COMPASS_OFS2_X");
+                    MainV2.comPort.GetParam("COMPASS_OFS2_Y");
+                    MainV2.comPort.GetParam("COMPASS_OFS2_Z");
 
-                MainV2.comPort.GetParam("COMPASS_OFS3_X");
-                MainV2.comPort.GetParam("COMPASS_OFS3_Y");
-                MainV2.comPort.GetParam("COMPASS_OFS3_Z");
+                    MainV2.comPort.GetParam("COMPASS_OFS3_X");
+                    MainV2.comPort.GetParam("COMPASS_OFS3_Y");
+                    MainV2.comPort.GetParam("COMPASS_OFS3_Z");
 
-                MainV2.comPort.GetParam("COMPASS_ORIENT");
-                MainV2.comPort.GetParam("COMPASS_ORIENT2");
-                MainV2.comPort.GetParam("COMPASS_ORIENT3");
+                    MainV2.comPort.GetParam("COMPASS_ORIENT");
+                    MainV2.comPort.GetParam("COMPASS_ORIENT2");
+                    MainV2.comPort.GetParam("COMPASS_ORIENT3");
 
-                MainV2.comPort.GetParam("COMPASS_PRIMARY");
-                MainV2.comPort.GetParam("COMPASS_TYPEMASK");
+                    MainV2.comPort.GetParam("COMPASS_PRIMARY");
+                    MainV2.comPort.GetParam("COMPASS_TYPEMASK");
 
-                MainV2.comPort.GetParam("COMPASS_USE");
-                MainV2.comPort.GetParam("COMPASS_USE2");
-                MainV2.comPort.GetParam("COMPASS_USE3");
+                    MainV2.comPort.GetParam("COMPASS_USE");
+                    MainV2.comPort.GetParam("COMPASS_USE2");
+                    MainV2.comPort.GetParam("COMPASS_USE3");
+                }
+                catch { }
             }
             if (frmProgressReporter != null) this.frmProgressReporter.UpdateProgressAndStatus(100, "Done");
         }
@@ -1565,9 +1578,9 @@ Please check the following
                     }
                     giveComport = false;
 
-                    CustomMessageBox.Show("Timeout on read parameters.");                    
-                    return -1;                   
-                    //throw new TimeoutException("Timeout on read - GetParam");
+                    //CustomMessageBox.Show("Timeout on read parameters.");                    
+                    //return -1;                   
+                    throw new TimeoutException("Timeout on read - GetParam");
                 }
 
                 buffer = readPacket();
