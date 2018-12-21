@@ -3257,8 +3257,7 @@ namespace MissionPlanner.GCSViews
 
                 // set databinding for value
                 ((QuickView) checkbox.Tag).DataBindings.Clear();
-                ((QuickView) checkbox.Tag).DataBindings.Add(new Binding("number", bindingSourceQuickTab, checkbox.Name,
-                    true));
+                ((QuickView) checkbox.Tag).DataBindings.Add(new Binding("number", bindingSourceQuickTab, checkbox.Name, true));
 
                 // close selection form
                 ((Form) checkbox.Parent).Close();

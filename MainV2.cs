@@ -1774,7 +1774,7 @@ namespace MissionPlanner
                             ++num;                            
                         }
                     }
-                    Thread.Sleep(40); //10 Hz update
+                    Thread.Sleep(100); //10 Hz update
                 }
                 catch (Exception ex)
                 {
