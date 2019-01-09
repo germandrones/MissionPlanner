@@ -4079,8 +4079,38 @@ namespace MissionPlanner.GCSViews
                 PTC_Lat.Text = MouseDownStart.Lat.ToString();
                 PTC_Lon.Text = MouseDownStart.Lng.ToString();
                 PTC_Alt.Text = alt.ToString();
+                doPTC();
                 MainV2.ManualControl = true;
             }
+        }
+
+        public void doPTC()
+        {
+            MAVLink.mavlink_v2_extension_t mavlinkV2ExtensionT = new MAVLink.mavlink_v2_extension_t();
+            mavlinkV2ExtensionT.v2_type = (byte)0;
+            mavlinkV2ExtensionT.ptc_cam_lat = 0;
+            mavlinkV2ExtensionT.ptc_cam_lng = 0;
+            mavlinkV2ExtensionT.ptc_cam_alt = 0;
+            mavlinkV2ExtensionT.los_gnd_lat = 0;
+            mavlinkV2ExtensionT.los_gnd_lng = 0;
+            mavlinkV2ExtensionT.los_gnd_alt = 0;
+            mavlinkV2ExtensionT.pos_pitch_los_x = 0.0f;
+            mavlinkV2ExtensionT.pos_roll_los_y = 0.0f;
+            mavlinkV2ExtensionT.los_z = 0.0f;
+
+            mavlinkV2ExtensionT.ptc_cam_alt = (int)(this.ColibriPTCASL * 1000.0);
+            mavlinkV2ExtensionT.ptc_cam_lat = (int)(this.ColibriPTCLat * 10000000.0);
+            mavlinkV2ExtensionT.ptc_cam_lng = (int)(this.ColibriPTCLng * 10000000.0);
+            mavlinkV2ExtensionT.pos_pitch_los_x = this.ColibriPositionPitch;
+            mavlinkV2ExtensionT.pos_roll_los_y = this.ColibriPositionRoll;
+            mavlinkV2ExtensionT.los_z = 0.0f;
+
+            MainV2.Colibri.EditingControlCameraMode = this.ColibriCamMode;
+            byte[] a_pBuffer = new byte[20];
+            MainV2.Colibri.GetransmitPacket(a_pBuffer);
+            mavlinkV2ExtensionT.payload = a_pBuffer;
+            if (!MainV2.comPort.BaseStream.IsOpen) { MessageBox.Show("Please Connect first", "No Telemetry"); }
+            MainV2.comPort.sendPacket((object)mavlinkV2ExtensionT, (int)MainV2.comPort.MAV.sysid, (int)MainV2.comPort.MAV.compid);
         }
 
 
@@ -4236,6 +4266,7 @@ namespace MissionPlanner.GCSViews
                 PTC_Lat.Text = MouseDownStart.Lat.ToString();
                 PTC_Lon.Text = MouseDownStart.Lng.ToString();
                 PTC_Alt.Text = alt.ToString();
+                doPTC();
                 MainV2.ManualControl = true;
 
             }
@@ -4255,6 +4286,7 @@ namespace MissionPlanner.GCSViews
                 this.ColibriPTCLng = this.MouseDownStart.Lng;
                 this.ColibriPTCASL = alt;
                 this.ColibriCamMode = (byte)2;
+                doPTC();
                 MainV2.ManualControl = true;
             }
         }

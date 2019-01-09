@@ -118,6 +118,18 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             if (Settings.Instance["speedunits"] != null)
                 CMB_speedunits.Text = Settings.Instance["speedunits"].ToString();
 
+            if (Settings.Instance["cameraPacketSendInterval"]!=null)
+            {
+                int value = 0;
+                int.TryParse(Settings.Instance["cameraPacketSendInterval"], out value);
+                v2ExtensionInterval.Value = value;
+            }
+            else
+            {
+                // use default value
+                v2ExtensionInterval.Value = MainV2.cameraPacketSendInterval;
+            }
+
             try
             {
                 if (Settings.Instance["video_device"] != null)
@@ -545,6 +557,12 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         private void but_AAsignin_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void v2ExtensionInterval_ValueChanged(object sender, EventArgs e)
+        {
+            Settings.Instance["cameraPacketSendInterval"] = v2ExtensionInterval.Value.ToString();
+            MainV2.cameraPacketSendInterval = (int)v2ExtensionInterval.Value;
         }
     }
 }

@@ -2015,6 +2015,7 @@ namespace MissionPlanner.GCSViews
         /// <param name="e"></param>
         public void BUT_read_Click(object sender, EventArgs e)
         {
+            MainV2.missionUploading = true;
             GCSViews.FlightData.isMapDirty = true;
 
             if (Commands.Rows.Count > 0)
@@ -2045,7 +2046,8 @@ namespace MissionPlanner.GCSViews
 
             frmProgressReporter.RunBackgroundOperationAsync();
 
-            frmProgressReporter.Dispose();            
+            frmProgressReporter.Dispose();
+            MainV2.missionUploading = false;
         }
 
         void getWPs(object sender, ProgressWorkerEventArgs e, object passdata = null)

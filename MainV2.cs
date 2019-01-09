@@ -229,6 +229,7 @@ namespace MissionPlanner
         public SerialCamJoystick serialCamControl;
         public Thread serialCamThread;
         public bool serialCamThreadRun = false;
+        public static int cameraPacketSendInterval = 40;
 
         /// <summary>
         /// track the last heartbeat sent
@@ -471,6 +472,12 @@ namespace MissionPlanner
             if (!Settings.Instance.ContainsKey("plane_guid")) Settings.Instance["plane_guid"] = Guid.NewGuid().ToString();
             if (!Settings.Instance.ContainsKey("copter_guid")) Settings.Instance["copter_guid"] = Guid.NewGuid().ToString();
             if (!Settings.Instance.ContainsKey("rover_guid")) Settings.Instance["rover_guid"] = Guid.NewGuid().ToString();
+
+            if (Settings.Instance.ContainsKey("cameraPacketSendInterval"))
+            {
+                int.TryParse(Settings.Instance["cameraPacketSendInterval"], out cameraPacketSendInterval);
+            }
+
 
             // force the default parameters that user not allowed to change
             Settings.Instance["theme"] = "Germandrones";
@@ -1482,6 +1489,7 @@ namespace MissionPlanner
             }
         }
 
+
         private void serialCamThreadRead()
         {
             int num = 0;
@@ -1490,67 +1498,73 @@ namespace MissionPlanner
                 try
                 {
                     string action = this.serialCamControl.getAction();
-
-                    MAVLink.mavlink_v2_extension_t mavlinkV2ExtensionT = new MAVLink.mavlink_v2_extension_t();
-                    mavlinkV2ExtensionT.v2_type = (byte)0;
-                    mavlinkV2ExtensionT.ptc_cam_lat = 0;
-                    mavlinkV2ExtensionT.ptc_cam_lng = 0;
-                    mavlinkV2ExtensionT.ptc_cam_alt = 0;
-                    mavlinkV2ExtensionT.los_gnd_lat = 0;
-                    mavlinkV2ExtensionT.los_gnd_lng = 0;
-                    mavlinkV2ExtensionT.los_gnd_alt = 0;
-                    mavlinkV2ExtensionT.pos_pitch_los_x = 0.0f;
-                    mavlinkV2ExtensionT.pos_roll_los_y = 0.0f;
-                    mavlinkV2ExtensionT.los_z = 0.0f;
-
-                    //catch additional modes here not assigned yet
-                    switch (action)
+                    if (!MainV2.missionUploading) // on mission uploading do pause
                     {
-                        case "FF-01-00-03-00-02-06": // F1
-                        case "FF-01-00-03-00-03-07": // F2
-                                break;
-                        default: break;
-                    }
+                        MAVLink.mavlink_v2_extension_t mavlinkV2ExtensionT = new MAVLink.mavlink_v2_extension_t();
+                        mavlinkV2ExtensionT.v2_type = (byte)0;
+                        mavlinkV2ExtensionT.ptc_cam_lat = 0;
+                        mavlinkV2ExtensionT.ptc_cam_lng = 0;
+                        mavlinkV2ExtensionT.ptc_cam_alt = 0;
+                        mavlinkV2ExtensionT.los_gnd_lat = 0;
+                        mavlinkV2ExtensionT.los_gnd_lng = 0;
+                        mavlinkV2ExtensionT.los_gnd_alt = 0;
+                        mavlinkV2ExtensionT.pos_pitch_los_x = 0.0f;
+                        mavlinkV2ExtensionT.pos_roll_los_y = 0.0f;
+                        mavlinkV2ExtensionT.los_z = 0.0f;
 
-                    if (action.Contains("FF-01-04-00-00-00-05")) { this.FlightData.ColibriCamMode = (byte)6; } //observe mode
-                    else if (action.Contains("FF-01-02-00-00-00-03")) { this.FlightData.ColibriCamMode = (byte)4; } //stow mode
-
-                    MainV2.Colibri.EditingControlZoomIn = action.Contains("FF-01-00-20-00-00-21") ? (byte)1 : (byte)0;
-                    MainV2.Colibri.EditingControlZoomOut = action.Contains("FF-01-00-40-00-00-41") ? (byte)1 : (byte)0;
-                    MainV2.Colibri.EditingControlRecord = action.Contains("FF-01-00-07-00-C9-D1") ? (byte)1 : (byte)0;
-                    MainV2.Colibri.EditingControlNuc = action.Contains("FF-01-01-00-00-00-02") ? (byte)1 : (byte)0;
-                    MainV2.Colibri.EditingControlTracker = action.Contains("FF-01-00-03-00-01-05") ? (byte)1 : (byte)0;
-                    MainV2.Colibri.EditingControlCameraType = action.Contains("FF-01-01-80-00-00-82") ? (byte)1 : (byte)0;
-                    MainV2.Colibri.EditingControlCameraMode = this.FlightData.ColibriCamMode;
-
-                    int trimX = 0;
-                    int trimY = 0;
-                    if (action.Length > 0)
-                    {
-                        string[] hex = action.Split('-');
-                        if (hex[0] == "FF" && hex[1] == "01" && hex[2] == "00")
+                        //catch additional modes here not assigned yet
+                        switch (action)
                         {
-                            int signX = 0;
-                            int signY = 0;
-                            if (hex[3] == "02" || hex[3] == "0A" || hex[3] == "12") signX = -1; else signX = 1;
-                            if (hex[3] == "0C" || hex[3] == "08" || hex[3] == "0A") signY = 1; else signY = -1;
-                            trimX = Convert.ToInt32(hex[4], 16) * signX * 2; // X movement 0 -> 3F(63)
-                            trimY = Convert.ToInt32(hex[5], 16) * signY * 2; // Y movement 0 -> 3F(63)
-
-                            MainV2.Colibri.EditingControlYaw = (ushort)512;
-                            MainV2.Colibri.EditingControlRoll = (ushort)(512 + trimX);
-                            MainV2.Colibri.EditingControlPitch = (ushort)(512 + trimY);
+                            case "FF-01-00-03-00-02-06": // F1
+                            case "FF-01-00-03-00-03-07": // F2
+                                break;
+                            default: break;
                         }
-                    }
 
-                    
-                    byte[] a_pBuffer = new byte[20];
-                    MainV2.Colibri.GetransmitPacket(a_pBuffer);
-                    mavlinkV2ExtensionT.payload = a_pBuffer;
-                    //if (!MainV2.comPort.BaseStream.IsOpen) { Thread.Sleep(250); continue; }
-                    MainV2.comPort.sendPacket((object)mavlinkV2ExtensionT, (int)MainV2.comPort.MAV.sysid, (int)MainV2.comPort.MAV.compid);
-                    ++num;
-                    Thread.Sleep(40); 
+                        if (action.Contains("FF-01-04-00-00-00-05")) { this.FlightData.ColibriCamMode = (byte)6; } //observe mode
+                        else if (action.Contains("FF-01-02-00-00-00-03")) { this.FlightData.ColibriCamMode = (byte)4; } //stow mode
+                        else if (action.Contains("FF-01-00-03-00-02-06")) { this.FlightData.ColibriCamMode = (byte)3; } //pilot mode
+
+                        MainV2.Colibri.EditingControlZoomIn =       action.Contains("FF-01-00-20-00-00-21") ? (byte)1 : (byte)0;
+                        MainV2.Colibri.EditingControlZoomOut =      action.Contains("FF-01-00-40-00-00-41") ? (byte)1 : (byte)0;
+                        MainV2.Colibri.EditingControlRecord =       action.Contains("FF-01-00-07-00-C9-D1") ? (byte)1 : (byte)0;
+                        MainV2.Colibri.EditingControlNuc =          action.Contains("FF-01-01-00-00-00-02") ? (byte)1 : (byte)0;
+                        MainV2.Colibri.EditingControlTracker =      action.Contains("FF-01-00-03-00-01-05") ? (byte)1 : (byte)0;
+                        MainV2.Colibri.EditingControlCameraType =   action.Contains("FF-01-01-80-00-00-82") ? (byte)1 : (byte)0;
+                        MainV2.Colibri.EditingControlCameraMode = this.FlightData.ColibriCamMode;
+
+                        int trimX = 0;
+                        int trimY = 0;
+                        int movementSpeed = 4;
+                        if (action.Length > 0)
+                        {
+                            string[] hex = action.Split('-');
+                            if (hex[0] == "FF" && hex[1] == "01" && hex[2] == "00" && hex[3] != "07" && hex[3] != "20" && hex[3] != "40")// && hex[3] != "03")
+                            {
+                                int signX = 0;
+                                int signY = 0;
+                                if (hex[3] == "02" || hex[3] == "0A" || hex[3] == "12") signX = -1; else signX = 1;
+                                if (hex[3] == "0C" || hex[3] == "08" || hex[3] == "0A") signY = 1; else signY = -1;
+                                trimX = Convert.ToInt32(hex[4], 16) * signX * movementSpeed; // X movement 0 -> 3F(63)
+                                trimY = Convert.ToInt32(hex[5], 16) * signY * movementSpeed; // Y movement 0 -> 3F(63)
+
+                                MainV2.Colibri.EditingControlYaw = (ushort)512;
+                                MainV2.Colibri.EditingControlRoll = (ushort)(512 + trimX);
+                                MainV2.Colibri.EditingControlPitch = (ushort)(512 + trimY);
+                            }
+                        }
+
+
+                        byte[] a_pBuffer = new byte[20];
+                        MainV2.Colibri.GetransmitPacket(a_pBuffer);
+                        mavlinkV2ExtensionT.payload = a_pBuffer;
+                        //if (!MainV2.comPort.BaseStream.IsOpen) { Thread.Sleep(250); continue; }
+                        MainV2.comPort.sendPacket((object)mavlinkV2ExtensionT, (int)MainV2.comPort.MAV.sysid, (int)MainV2.comPort.MAV.compid);
+                        ++num;
+
+                        if (cameraPacketSendInterval < 10) Thread.Sleep(10); // prevent get stuck
+                        else Thread.Sleep(cameraPacketSendInterval);
+                    }
                 }
                 catch { }
             }
@@ -1774,7 +1788,8 @@ namespace MissionPlanner
                             ++num;                            
                         }
                     }
-                    Thread.Sleep(100); //10 Hz update
+                    if (cameraPacketSendInterval < 10) Thread.Sleep(10); // prevent get stuck
+                    else Thread.Sleep(cameraPacketSendInterval); //10 Hz update
                 }
                 catch (Exception ex)
                 {

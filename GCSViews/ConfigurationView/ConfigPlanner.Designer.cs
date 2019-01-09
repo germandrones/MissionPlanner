@@ -73,7 +73,10 @@
             this.chk_tfr = new System.Windows.Forms.CheckBox();
             this.chk_norcreceiver = new System.Windows.Forms.CheckBox();
             this.CHK_AutoParamCommit = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.v2ExtensionInterval = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.NUM_tracklength)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.v2ExtensionInterval)).BeginInit();
             this.SuspendLayout();
             // 
             // label26
@@ -390,9 +393,37 @@
             this.CHK_AutoParamCommit.UseVisualStyleBackColor = true;
             this.CHK_AutoParamCommit.CheckedChanged += new System.EventHandler(this.CHK_AutoParamCommit_CheckedChanged);
             // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
+            // 
+            // v2ExtensionInterval
+            // 
+            resources.ApplyResources(this.v2ExtensionInterval, "v2ExtensionInterval");
+            this.v2ExtensionInterval.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.v2ExtensionInterval.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.v2ExtensionInterval.Name = "v2ExtensionInterval";
+            this.v2ExtensionInterval.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.v2ExtensionInterval.ValueChanged += new System.EventHandler(this.v2ExtensionInterval_ValueChanged);
+            // 
             // ConfigPlanner
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.Controls.Add(this.v2ExtensionInterval);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.CHK_AutoParamCommit);
             this.Controls.Add(this.chk_norcreceiver);
             this.Controls.Add(this.chk_tfr);
@@ -440,6 +471,7 @@
             this.Name = "ConfigPlanner";
             resources.ApplyResources(this, "$this");
             ((System.ComponentModel.ISupportInitialize)(this.NUM_tracklength)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.v2ExtensionInterval)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -490,5 +522,7 @@
         private System.Windows.Forms.CheckBox chk_tfr;
         private System.Windows.Forms.CheckBox chk_norcreceiver;
         private System.Windows.Forms.CheckBox CHK_AutoParamCommit;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.NumericUpDown v2ExtensionInterval;
     }
 }
